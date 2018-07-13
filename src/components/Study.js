@@ -6,23 +6,36 @@ import {
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import UserLink from 'components/UserLink'
+import UpdateStudyForm from 'components/UpdateStudyForm'
 
 class Study extends Component {
+  state = {
+    edit: false,
+  }
+
   render() {
+    const { study } =  this.props
     return (
       <div className="Study">
         <div className="Study__name">
-          <UserLink user={this.props.study.owner} />
+          <UserLink user={study.owner} />
           <span className="Study__name-divider">/</span>
-          <a href={this.props.study.url}>{this.props.study.name}</a>
+          <a href={study.url}>{study.name}</a>
         </div>
-        <div className="Study__description">{this.props.study.description}</div>
+        <UpdateStudyForm study={study}/>
         <Link
           className="Study__lessons-tab"
-          to={this.props.location.pathname + "/lessons"}
+          to={study.resourcePath + "/lessons"}
         >
           Lessons
         </Link>
+        {study.viewerCanAdmin &&
+        <Link
+          className="Study__lessons-tab"
+          to={study.resourcePath + "/settings"}
+        >
+          Settings
+        </Link>}
       </div>
     )
   }
@@ -34,14 +47,15 @@ export default withRouter(createFragmentContainer(Study, graphql`
     advancedAt
     createdAt
     description
-    ...LessonList_study
+    lessonCount
     name
     owner {
       ...UserLink_user
     }
+    resourcePath
     updatedAt
     url
-    viewerCanUpdate
+    viewerCanAdmin
     viewerHasAppled
     viewerHasEnrolled
   }

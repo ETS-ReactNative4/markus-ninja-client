@@ -3,13 +3,15 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import convert from 'htmr'
 
 class Lesson extends Component {
   render() {
+    const { lesson } = this.props
     return (
       <div className="Lesson">
-        <div className="Lesson__title">{this.props.lesson.title}</div>
-        <div className="Lesson__body">{this.props.lesson.body}</div>
+        <div className="Lesson__title">{lesson.title}</div>
+        <div className="Lesson__body">{convert(lesson.bodyHTML)}</div>
       </div>
     )
   }

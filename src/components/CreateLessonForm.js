@@ -1,37 +1,13 @@
 import React, {Component} from 'react'
 import { withRouter } from 'react-router-dom';
 import CreateLessonMutation from 'mutations/CreateLessonMutation'
+import RichTextEditor from 'components/RichTextEditor'
 
 class CreateLessonForm extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      error: null,
-      body: "",
-      title: "",
-    }
-
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-  }
-
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value,
-    })
-  }
-
-  handleSubmit(e) {
-    e.preventDefault()
-    const { body, title } = this.state
-    CreateLessonMutation(
-      body,
-      this.props.study.__id,
-      title,
-      (response, error) => {
-        this.props.history.push(response.createLesson.resourcePath)
-      }
-    )
+  state = {
+    error: null,
+    body: "",
+    title: "",
   }
 
   render() {
@@ -43,19 +19,33 @@ class CreateLessonForm extends Component {
           type="text"
           name="title"
           value={this.state.title}
-          onChange={this.handleChange}
+          onChange={(e) => this.setState({title: e.target.value})}
         />
         <label htmlFor="CreateLessonForm__body">Body</label>
-        <input
+        <RichTextEditor
           id="CreateLessonForm__body"
-          type="body"
-          name="body"
-          value={this.state.body}
-          onChange={this.handleChange}
+          onChange={this.handleChangeBody}
         />
         <button type="submit">Create lesson</button>
         <span>{this.state.error}</span>
       </form>
+    )
+  }
+
+  handleChangeBody = (body) => {
+    this.setState({body})
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const { body, title } = this.state
+    CreateLessonMutation(
+      body,
+      this.props.study.__id,
+      title,
+      (response, error) => {
+        this.props.history.push(response.createLesson.resourcePath)
+      }
     )
   }
 }

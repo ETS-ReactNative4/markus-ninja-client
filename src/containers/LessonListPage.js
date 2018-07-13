@@ -7,9 +7,17 @@ import { Link } from 'react-router-dom'
 import environment from 'Environment'
 import LessonList from 'components/LessonList'
 
+import { LESSONS_PER_PAGE } from 'consts'
+
 const LessonListPageQuery = graphql`
-  query LessonListPageQuery($owner: String!, $name: String!) {
+  query LessonListPageQuery(
+    $owner: String!,
+    $name: String!,
+    $count: Int!,
+    $after: String
+  ) {
     study(owner: $owner, name: $name) {
+      id
       ...LessonList_study
     }
   }
@@ -24,6 +32,7 @@ class LessonListPage extends Component {
         variables={{
           owner: this.props.match.params.owner,
           name: this.props.match.params.name,
+          count: LESSONS_PER_PAGE,
         }}
         render={({error,  props}) => {
           if (error) {

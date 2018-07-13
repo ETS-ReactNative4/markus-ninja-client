@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import { withRouter } from 'react-router'
-import LoginUserMutation from 'mutations/LoginUserMutation'
+import CreateUserMutation from 'mutations/CreateUserMutation'
 
-class LoginForm extends Component {
+class SignupForm extends Component {
   state = {
     error: null,
+    email: "",
     username: "",
     password: "",
   }
@@ -12,23 +12,31 @@ class LoginForm extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <label htmlFor="LoginForm__username">Username</label>
+        <label htmlFor="SignupForm__email">Email</label>
         <input
-          id="LoginForm__username"
+          id="SignupForm__email"
+          type="email"
+          name="email"
+          value={this.state.email}
+          onChange={this.handleChange}
+        />
+        <label htmlFor="SignupForm__username">Username</label>
+        <input
+          id="SignupForm__username"
           type="text"
           name="username"
           value={this.state.username}
           onChange={this.handleChange}
         />
-        <label htmlFor="LoginForm__password">Password</label>
+        <label htmlFor="SignupForm__password">Password</label>
         <input
-          id="LoginForm__password"
+          id="SignupForm__password"
           type="password"
           name="password"
           value={this.state.password}
           onChange={this.handleChange}
         />
-        <button type="submit">Login</button>
+        <button type="submit">Signup</button>
         <span>{this.state.error}</span>
       </form>
     )
@@ -42,9 +50,9 @@ class LoginForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { username, password } = this.state
-    LoginUserMutation(username, password, (token, error) => {
-      if (error !== null && error !== undefined) {
+    const { email, username, password } = this.state
+    CreateUserMutation(email, username, password, (token, error) => {
+      if (error !== null) {
         this.setState({ error: error.message })
       }
       window.sessionStorage.setItem("access_token", token.token)
@@ -53,4 +61,4 @@ class LoginForm extends Component {
   }
 }
 
-export default withRouter(LoginForm)
+export default SignupForm

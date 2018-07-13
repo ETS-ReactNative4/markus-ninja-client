@@ -3,7 +3,8 @@ import { Route, Switch } from 'react-router-dom'
 
 import CreateStudyPage from 'containers/CreateStudyPage'
 import Header from 'components/Header'
-import LoginFormPage from 'containers/LoginFormPage'
+import LoginPage from 'containers/LoginPage'
+import SignupPage from 'containers/SignupPage'
 import StudyPage from 'containers/StudyPage'
 import StudyListPage from 'containers/StudyListPage'
 import './App.css'
@@ -17,7 +18,8 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={StudyListPage} />
             <Route exact path="/new" component={CreateStudyPage} />
-            <Route exact path="/login" component={LoginFormPage} />
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/signup" component={SignupPage} />
             <Route path="/:owner/:name" component={StudyPage} />
           </Switch>
         </div>

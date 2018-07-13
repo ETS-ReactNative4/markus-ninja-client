@@ -8,14 +8,17 @@ const {
 const store = new Store(new RecordSource())
 
 const network = Network.create((operation, variables) => {
-  const accessToken = window.sessionStorage.getItem("access_token");
-  return fetch('http://localhost:5000/graphql', {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ' + accessToken,
-      'Content-Type': 'application/json',
-    },
+  const headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  }
+  const accessToken = window.sessionStorage.getItem("access_token")
+  if (accessToken !== null) {
+    headers.Authorization = "Bearer "+ accessToken
+  }
+  return fetch("http://localhost:5000/graphql", {
+    method: "POST",
+    headers,
     body: JSON.stringify({
       query: operation.text,
       variables,

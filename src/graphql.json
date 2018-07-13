@@ -10,6 +10,71 @@
 			"subscriptionType": null,
 			"types": [
 				{
+					"kind": "OBJECT",
+					"name": "AccessToken",
+					"description": "Represents an access token.",
+					"fields": [
+						{
+							"name": "expiresAt",
+							"description": "Identifies the date and time when the token expires.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "issuedAt",
+							"description": "Identifies the date and time when the token was issued.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "token",
+							"description": "The token used by the client for authentication.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "Token",
+							"ofType": null
+						}
+					],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
 					"kind": "INPUT_OBJECT",
 					"name": "AddEmailInput",
 					"description": "Input type for AddEmail.",
@@ -1025,12 +1090,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -1121,42 +1186,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "UserConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "LabelConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppledStudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppleGiverConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentConnection",
 							"ofType": null
 						},
 						{
@@ -1166,7 +1196,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "StudyConnection",
+							"name": "EventConnection",
 							"ofType": null
 						},
 						{
@@ -1176,12 +1206,47 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonConnection",
+							"name": "AppleGiverConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "EmailConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppledStudyConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentConnection",
 							"ofType": null
 						},
 						{
@@ -1321,6 +1386,59 @@
 						},
 						{
 							"name": "name",
+							"description": null,
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
+					"name": "CreateUserInput",
+					"description": "Input type for CreateUser.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "email",
+							"description": null,
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "login",
+							"description": null,
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "password",
 							"description": null,
 							"type": {
 								"kind": "NON_NULL",
@@ -1795,17 +1913,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "UserAsset",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -1924,42 +2037,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "UserEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "LabelEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppledStudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppleGiverEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentEdge",
 							"ofType": null
 						},
 						{
@@ -1969,7 +2047,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "StudyEdge",
+							"name": "EventEdge",
 							"ofType": null
 						},
 						{
@@ -1979,12 +2057,47 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonEdge",
+							"name": "AppleGiverEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "EmailEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppledStudyEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentEdge",
 							"ofType": null
 						},
 						{
@@ -2359,17 +2472,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "User",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Study",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "User",
 							"ofType": null
 						}
 					]
@@ -3910,12 +4023,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -5444,6 +5557,84 @@
 				},
 				{
 					"kind": "INPUT_OBJECT",
+					"name": "LoginUserInput",
+					"description": "Input type for LoginUser.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "login",
+							"description": null,
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "password",
+							"description": null,
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "OBJECT",
+					"name": "LoginUserPayload",
+					"description": "Return type for LoginUser.",
+					"fields": [
+						{
+							"name": "token",
+							"description": "The token used by the client for authentication.",
+							"args": [],
+							"type": {
+								"kind": "OBJECT",
+								"name": "AccessToken",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "user",
+							"description": "The user for which the token was issued.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "User",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
 					"name": "MoveLessonInput",
 					"description": "Input type for MoveLesson.",
 					"fields": null,
@@ -5639,6 +5830,33 @@
 							"type": {
 								"kind": "OBJECT",
 								"name": "Study",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "createUser",
+							"description": "Creates a new user.",
+							"args": [
+								{
+									"name": "input",
+									"description": null,
+									"type": {
+										"kind": "NON_NULL",
+										"name": null,
+										"ofType": {
+											"kind": "INPUT_OBJECT",
+											"name": "CreateUserInput",
+											"ofType": null
+										}
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "OBJECT",
+								"name": "User",
 								"ofType": null
 							},
 							"isDeprecated": false,
@@ -5882,6 +6100,33 @@
 							"type": {
 								"kind": "INTERFACE",
 								"name": "Appleable",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "loginUser",
+							"description": "Returns a token for use in authentication.",
+							"args": [
+								{
+									"name": "input",
+									"description": null,
+									"type": {
+										"kind": "NON_NULL",
+										"name": null,
+										"ofType": {
+											"kind": "INPUT_OBJECT",
+											"name": "LoginUserInput",
+											"ofType": null
+										}
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "OBJECT",
+								"name": "LoginUserPayload",
 								"ofType": null
 							},
 							"isDeprecated": false,
@@ -6330,17 +6575,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "User",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Label",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Notification",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -6350,12 +6590,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Email",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Notification",
 							"ofType": null
 						},
 						{
@@ -6370,7 +6610,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Email",
+							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
@@ -8497,24 +8742,8 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "viewerCanDelete",
-							"description": "Can the viewer delete this object?",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Boolean",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "viewerCanUpdate",
-							"description": "Can the viewer update this object?",
+							"name": "viewerCanAdmin",
+							"description": "Can the viewer admin this object?",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -8530,7 +8759,7 @@
 						},
 						{
 							"name": "viewerHasAppled",
-							"description": "Has the viewer appled this appleable.",
+							"description": "Has the viewer appled this appleable?",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -8546,7 +8775,7 @@
 						},
 						{
 							"name": "viewerHasEnrolled",
-							"description": "Has the viewer enrolled in this enrollable.",
+							"description": "Has the viewer enrolled in this enrollable?",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -8570,11 +8799,6 @@
 						},
 						{
 							"kind": "INTERFACE",
-							"name": "Deleteable",
-							"ofType": null
-						},
-						{
-							"kind": "INTERFACE",
 							"name": "Enrollable",
 							"ofType": null
 						},
@@ -8591,11 +8815,6 @@
 						{
 							"kind": "INTERFACE",
 							"name": "UniformResourceLocatable",
-							"ofType": null
-						},
-						{
-							"kind": "INTERFACE",
-							"name": "Updateable",
 							"ofType": null
 						}
 					],
@@ -8761,17 +8980,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "UserAsset",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -9061,6 +9280,11 @@
 						{
 							"kind": "OBJECT",
 							"name": "PRT",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AccessToken",
 							"ofType": null
 						}
 					]
@@ -9782,17 +10006,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "User",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
 							"ofType": null
 						},
 						{
@@ -9808,6 +10022,16 @@
 						{
 							"kind": "OBJECT",
 							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
@@ -9986,6 +10210,16 @@
 						{
 							"name": "description",
 							"description": "The description of the study.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "name",
+							"description": "The name of the study.",
 							"type": {
 								"kind": "SCALAR",
 								"name": "String",
@@ -10292,22 +10526,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "UserAsset",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
