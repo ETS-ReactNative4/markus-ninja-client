@@ -3,12 +3,14 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import { get } from 'utils'
 
 class UserLink extends Component {
   render() {
+    const user = get(this.props, "user", {})
     return (
-      <a href={this.props.user.url}>
-        {this.props.user.login}
+      <a href={user.url}>
+        {user.login}
       </a>
     )
   }

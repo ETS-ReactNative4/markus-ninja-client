@@ -4,7 +4,6 @@ import {
   graphql,
 } from 'react-relay'
 import { Link } from 'react-router-dom'
-import { withRouter } from 'react-router'
 import LessonPreview from './LessonPreview.js'
 import { get } from 'utils'
 
@@ -12,20 +11,21 @@ import { LESSONS_PER_PAGE } from 'consts'
 
 class LessonList extends Component {
   render() {
-    console.log(LESSONS_PER_PAGE)
+    const lessonEdges = get(this.props, "study.lessons.edges", [])
+    const resourcePath = get(this.props, "study.resourcePath", "")
     return (
       <div>
         {
-          this.props.study.lessons.edges === undefined || this.props.study.lessons.edges.length < 1 ? (
+          lessonEdges === undefined || lessonEdges.length < 1 ? (
             <Link
               className="LessonList__new-lesson"
-              to={this.props.location.pathname + "/new"}
+              to={resourcePath + "/lessons/new"}
             >
               Create a lesson
             </Link>
           ) : (
             <div className="LessonList__lessons">
-              {this.props.study.lessons.edges.map(({node}) => (
+              {lessonEdges.map(({node}) => (
                 <LessonPreview key={node.__id} lesson={node} />
               ))}
               <button
@@ -42,19 +42,20 @@ class LessonList extends Component {
   }
 
   _loadMore = () => {
-    if (!this.props.relay.hasMore()) {
+    const relay = get(this.props, "relay")
+    if (!relay.hasMore()) {
       console.log("Nothing more to load")
       return
-    } else if (this.props.relay.isLoading()){
+    } else if (relay.isLoading()){
       console.log("Request is already pending")
       return
     }
 
-    this.props.relay.loadMore(LESSONS_PER_PAGE)
+    relay.loadMore(LESSONS_PER_PAGE)
   }
 }
 
-export default withRouter(createPaginationContainer(LessonList,
+export default createPaginationContainer(LessonList,
   {
     study: graphql`
       fragment LessonList_study on Study {
@@ -108,4 +109,4 @@ export default withRouter(createPaginationContainer(LessonList,
       }
     },
   },
-))
+)

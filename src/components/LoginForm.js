@@ -10,6 +10,7 @@ class LoginForm extends Component {
   }
 
   render() {
+    const { username, password, error } = this.state
     return (
       <form onSubmit={this.handleSubmit}>
         <label htmlFor="LoginForm__username">Username</label>
@@ -17,7 +18,7 @@ class LoginForm extends Component {
           id="LoginForm__username"
           type="text"
           name="username"
-          value={this.state.username}
+          value={username}
           onChange={this.handleChange}
         />
         <label htmlFor="LoginForm__password">Password</label>
@@ -25,11 +26,11 @@ class LoginForm extends Component {
           id="LoginForm__password"
           type="password"
           name="password"
-          value={this.state.password}
+          value={password}
           onChange={this.handleChange}
         />
         <button type="submit">Login</button>
-        <span>{this.state.error}</span>
+        <span>{error}</span>
       </form>
     )
   }

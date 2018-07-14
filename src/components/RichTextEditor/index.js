@@ -22,10 +22,11 @@ class RichTextEditor extends React.Component {
   }
 
   render() {
+    const { editorState } = this.state
     return (
       <div className="RichTextEditor">
         <Editor
-          editorState={this.state.editorState}
+          editorState={editorState}
           onChange={this.handleChange}
           placeholder="Enter text"
           ref="editor"

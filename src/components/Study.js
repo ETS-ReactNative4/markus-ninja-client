@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
+import { get } from 'utils'
 import UserLink from 'components/UserLink'
 import UpdateStudyForm from 'components/UpdateStudyForm'
 
@@ -14,7 +15,7 @@ class Study extends Component {
   }
 
   render() {
-    const { study } =  this.props
+    const study = get(this.props, "study", {})
     return (
       <div className="Study">
         <div className="Study__name">

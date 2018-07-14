@@ -4,10 +4,11 @@ import {
   graphql,
 } from 'react-relay'
 import convert from 'htmr'
+import { get } from 'utils'
 
 class Lesson extends Component {
   render() {
-    const { lesson } = this.props
+    const lesson = get(this.props, "lesson", {})
     return (
       <div className="Lesson">
         <div className="Lesson__title">{lesson.title}</div>

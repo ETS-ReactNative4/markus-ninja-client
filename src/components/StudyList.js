@@ -4,12 +4,14 @@ import {
   graphql,
 } from 'react-relay'
 import StudyPreview from './StudyPreview.js'
+import { get } from 'utils'
 
 class StudyList extends Component {
   render() {
+    const studyEdges = get(this.props, "viewer.studies.edges", [])
     return (
       <div>
-        {this.props.viewer.studies.edges.map(({node}) => (
+        {studyEdges.map(({node}) => (
           <StudyPreview key={node.__id} study={node} />
         ))}
       </div>

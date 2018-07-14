@@ -3,13 +3,15 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import { get } from 'utils'
 
 class StudyPreview extends Component {
   render() {
+    const study = get(this.props, "study", {})
     return (
       <div>
-        <a href={this.props.study.url}>
-          {this.props.study.description} ({this.props.study.nameWithOwner})
+        <a href={study.url}>
+          {study.description} ({study.nameWithOwner})
         </a>
       </div>
     )

@@ -11,10 +11,11 @@ class UpdateStudyForm extends Component {
   }
 
   render() {
-    const description = !isEmpty(this.state.description) ?
-      this.state.description :
-      "No description provided."
-    if (!this.state.edit) {
+    const { edit, error } = this.state
+    const description = isEmpty(this.state.description) ?
+      "No description provided." :
+      this.state.description
+    if (!edit) {
       return (
         <div className="UpdateStudyForm">
           <span className="UpdateStudyForm__description">{description}</span>
@@ -30,12 +31,12 @@ class UpdateStudyForm extends Component {
             type="description"
             name="description"
             placeholder="Short description of this study"
-            value={this.state.description}
+            value={description}
             onChange={this.handleChange}
           />
           <button type="submit">Save</button>
           <button onClick={this.handleToggleEdit}>Cancel</button>
-          <span>{this.state.error}</span>
+          <span>{error}</span>
         </form>
       )
     }
@@ -51,7 +52,7 @@ class UpdateStudyForm extends Component {
     e.preventDefault()
     const { description } = this.state
     UpdateStudyMutation(
-      this.props.study.__id,
+      this.props.study.id,
       description,
       null,
       (error) => {

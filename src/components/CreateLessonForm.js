@@ -11,6 +11,7 @@ class CreateLessonForm extends Component {
   }
 
   render() {
+    const { title, error } = this.state
     return (
       <form onSubmit={this.handleSubmit}>
         <label htmlFor="CreateLessonForm__title">Lesson title (optional)</label>
@@ -18,7 +19,7 @@ class CreateLessonForm extends Component {
           id="CreateLessonForm__title"
           type="text"
           name="title"
-          value={this.state.title}
+          value={title}
           onChange={(e) => this.setState({title: e.target.value})}
         />
         <label htmlFor="CreateLessonForm__body">Body</label>
@@ -27,7 +28,7 @@ class CreateLessonForm extends Component {
           onChange={this.handleChangeBody}
         />
         <button type="submit">Create lesson</button>
-        <span>{this.state.error}</span>
+        <span>{error}</span>
       </form>
     )
   }
@@ -40,9 +41,9 @@ class CreateLessonForm extends Component {
     e.preventDefault()
     const { body, title } = this.state
     CreateLessonMutation(
-      body,
       this.props.study.__id,
       title,
+      body,
       (response, error) => {
         this.props.history.push(response.createLesson.resourcePath)
       }
