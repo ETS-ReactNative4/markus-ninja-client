@@ -4,32 +4,31 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import CreateLessonForm from 'components/CreateLessonForm'
+import StudySettings from 'components/StudySettings'
 
-const CreateLessonPageQuery = graphql`
-  query CreateLessonPageQuery($owner: String!, $name: String!) {
+const StudySettingsPageQuery = graphql`
+  query StudySettingsPageQuery($owner: String!, $name: String!) {
     study(owner: $owner, name: $name) {
-      ...CreateLessonForm_study
+      ...StudySettings_study
     }
   }
 `
 
-class CreateLessonPage extends Component {
+class StudySettingsPage extends Component {
   render() {
-    const { match } = this.props
     return (
       <QueryRenderer
         environment={environment}
-        query={CreateLessonPageQuery}
+        query={StudySettingsPageQuery}
         variables={{
-          owner: match.params.owner,
-          name: match.params.name,
+          owner: this.props.match.params.owner,
+          name: this.props.match.params.name,
         }}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            return <CreateLessonForm study={props.study}></CreateLessonForm>
+            return <StudySettings study={props.study}></StudySettings>
           }
           return <div>Loading</div>
         }}
@@ -38,4 +37,4 @@ class CreateLessonPage extends Component {
   }
 }
 
-export default CreateLessonPage
+export default StudySettingsPage

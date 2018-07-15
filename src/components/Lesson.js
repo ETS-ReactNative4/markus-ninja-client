@@ -3,16 +3,17 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import convert from 'htmr'
-import { get } from 'utils'
+import { get, nullOr } from 'utils'
+import UpdateLessonBodyForm from 'components/UpdateLessonBodyForm'
+import LessonHeader from 'components/LessonHeader'
 
 class Lesson extends Component {
   render() {
     const lesson = get(this.props, "lesson", {})
     return (
       <div className="Lesson">
-        <div className="Lesson__title">{lesson.title}</div>
-        <div className="Lesson__body">{convert(lesson.bodyHTML)}</div>
+        <LessonHeader lesson={nullOr(lesson)}/>
+        <UpdateLessonBodyForm lesson={nullOr(lesson)}/>
       </div>
     )
   }

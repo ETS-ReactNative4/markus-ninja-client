@@ -18,6 +18,7 @@ const LessonListPageQuery = graphql`
   ) {
     study(owner: $owner, name: $name) {
       id
+      resourcePath
       ...LessonList_study
     }
   }
@@ -42,7 +43,7 @@ class LessonListPage extends Component {
               <div>
                 <Link
                   className="LessonListPage__new-lesson"
-                  to={this.props.location.pathname + "/new"}
+                  to={props.study.resourcePath + "/lessons/new"}
                 >
                   New lesson
                 </Link>

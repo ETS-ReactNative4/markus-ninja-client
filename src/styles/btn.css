@@ -1,0 +1,15 @@
+.btn {
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn-link {
+  display: inline-block;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
+  border: 0;
+  appearance: none;
+}

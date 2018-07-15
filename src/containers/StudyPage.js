@@ -9,6 +9,7 @@ import Study from 'components/Study'
 import CreateLessonPage from 'containers/CreateLessonPage'
 import LessonPage from 'containers/LessonPage'
 import LessonListPage from 'containers/LessonListPage'
+import StudySettingsPage from 'containers/StudySettingsPage'
 
 const StudyPageQuery = graphql`
   query StudyPageQuery($owner: String!, $name: String!) {
@@ -49,7 +50,12 @@ class StudyPage extends Component {
                   <Route
                     exact
                     path="/:owner/:name/lessons/new"
-                    render={() => <CreateLessonPage study={props.study} />}
+                    component={CreateLessonPage}
+                  />
+                  <Route
+                    exact
+                    path="/:owner/:name/settings"
+                    component={StudySettingsPage}
                   />
                 </Switch>
               </div>

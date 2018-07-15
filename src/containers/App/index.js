@@ -7,7 +7,6 @@ import LoginPage from 'containers/LoginPage'
 import SignupPage from 'containers/SignupPage'
 import StudyPage from 'containers/StudyPage'
 import StudyListPage from 'containers/StudyListPage'
-import './App.css'
 
 class App extends Component {
   render() {

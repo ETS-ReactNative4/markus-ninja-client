@@ -12,6 +12,10 @@ const mutation = graphql`
       createdAt
       number
       resourcePath
+      study {
+        id
+        advancedAt
+      }
       title
     }
   }
@@ -31,6 +35,14 @@ export default (studyId, title, body, callback) => {
     {
       mutation,
       variables,
+      updater: proxyStore => {
+        const createLessonField = proxyStore.getRootField('createLesson')
+        const lessonStudy = createLessonField.getLinkedRecord('study')
+        const studyAdvancedAt = lessonStudy.getValue('advancedAt')
+
+        const study = proxyStore.get(studyId)
+        study.setValue(studyAdvancedAt, 'advancedAt')
+      },
       onCompleted: callback,
       onError: err => console.error(err),
     },

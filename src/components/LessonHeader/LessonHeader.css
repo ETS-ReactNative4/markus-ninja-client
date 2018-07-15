@@ -1,0 +1,28 @@
+.LessonHeader__show {
+  display: block;
+}
+
+.LessonHeader.open .LessonHeader__show {
+  display: none;
+}
+
+.LessonHeader__edit {
+  display: none;
+}
+
+.LessonHeader.open .LessonHeader__edit {
+  display: block;
+}
+
+.LessonHeader__edit .edit-lesson-title {
+  width: 760px;
+  padding: 7px 10px;
+}
+
+.LessonHeader__actions {
+  float: right;
+}
+
+.LessonHeader__title {
+  word-wrap: break-word;
+}

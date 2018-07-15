@@ -1,5 +1,8 @@
 import React, {Component} from 'react'
-import { withRouter } from 'react-router-dom';
+import {
+  createFragmentContainer,
+  graphql,
+} from 'react-relay'
 import CreateLessonMutation from 'mutations/CreateLessonMutation'
 import RichTextEditor from 'components/RichTextEditor'
 
@@ -41,7 +44,7 @@ class CreateLessonForm extends Component {
     e.preventDefault()
     const { body, title } = this.state
     CreateLessonMutation(
-      this.props.study.__id,
+      this.props.study.id,
       title,
       body,
       (response, error) => {
@@ -51,4 +54,8 @@ class CreateLessonForm extends Component {
   }
 }
 
-export default withRouter(CreateLessonForm)
+export default createFragmentContainer(CreateLessonForm, graphql`
+  fragment CreateLessonForm_study on Study {
+    id
+  }
+`)

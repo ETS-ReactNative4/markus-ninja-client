@@ -54,9 +54,13 @@ export function isEmpty(value) {
     (typeof value === 'object' && !Object.keys(value).length === 0)
 }
 
+export function isObject(value) {
+  if (value === null) { return false }
+  return ((typeof value === 'function') || (typeof value === 'object'))
+}
+
 export function get(object = {}, path = "", defaultValue) {
-  if (typeof object !== 'object' ||
-    typeof path !== 'string') {
+  if (!isObject(object) || typeof path !== 'string') {
     return defaultValue
   }
   const properties = path.split(".")
@@ -64,12 +68,18 @@ export function get(object = {}, path = "", defaultValue) {
   for (let i = 0; i < properties.length; i++) {
     const property = properties[i]
     if (i === properties.length - 1 &&
-      typeof head === 'object') {
+      isObject(head)) {
+      if (isNil(head[property])) { return defaultValue }
       return head[property]
-    } else if (typeof head !== 'object') {
+    } else if (!isObject(head)) {
       return defaultValue
     } else {
       head = head[property]
     }
   }
+}
+
+export function nullOr(value) {
+  if (value === undefined) { return null }
+  return value
 }

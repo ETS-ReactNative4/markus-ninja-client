@@ -5,7 +5,7 @@ import {
 } from 'react-relay'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
-import { get } from 'utils'
+import { get, nullOr } from 'utils'
 import UserLink from 'components/UserLink'
 import UpdateStudyForm from 'components/UpdateStudyForm'
 
@@ -19,11 +19,11 @@ class Study extends Component {
     return (
       <div className="Study">
         <div className="Study__name">
-          <UserLink user={study.owner} />
+          <UserLink user={nullOr(study.owner)} />
           <span className="Study__name-divider">/</span>
           <a href={study.url}>{study.name}</a>
         </div>
-        <UpdateStudyForm study={study}/>
+        <UpdateStudyForm study={nullOr(study)}/>
         <Link
           className="Study__lessons-tab"
           to={study.resourcePath + "/lessons"}

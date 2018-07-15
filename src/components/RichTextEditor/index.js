@@ -1,5 +1,11 @@
 import * as React from 'react'
-import {CompositeDecorator, Editor, EditorState} from 'draft-js'
+import {
+  CompositeDecorator,
+  ContentState,
+  Editor,
+  EditorState,
+} from 'draft-js'
+import { get } from 'utils'
 import './RichTextEditor.css'
 
 class RichTextEditor extends React.Component {
@@ -16,19 +22,24 @@ class RichTextEditor extends React.Component {
       },
     ])
 
+    const initialValue = get(props, "initialValue")
     this.state = {
-      editorState: EditorState.createEmpty(compositeDecorator)
+      editorState: EditorState.createWithContent(
+        ContentState.createFromText(initialValue),
+        compositeDecorator,
+      )
     }
   }
 
   render() {
     const { editorState } = this.state
+    const { placeholder } = this.props
     return (
       <div className="RichTextEditor">
         <Editor
           editorState={editorState}
           onChange={this.handleChange}
-          placeholder="Enter text"
+          placeholder={placeholder || "Enter text"}
           ref="editor"
         />
       </div>
