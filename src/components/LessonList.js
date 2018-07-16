@@ -16,7 +16,7 @@ class LessonList extends Component {
     return (
       <div>
         {
-          lessonEdges === undefined || lessonEdges.length < 1 ? (
+          lessonEdges.length < 1 ? (
             <Link
               className="LessonList__new-lesson"
               to={resourcePath + "/lessons/new"}

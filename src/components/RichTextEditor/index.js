@@ -22,7 +22,7 @@ class RichTextEditor extends React.Component {
       },
     ])
 
-    const initialValue = get(props, "initialValue")
+    const initialValue = get(props, "initialValue", "")
     this.state = {
       editorState: EditorState.createWithContent(
         ContentState.createFromText(initialValue),

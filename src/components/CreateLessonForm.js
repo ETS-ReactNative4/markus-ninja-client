@@ -29,6 +29,7 @@ class CreateLessonForm extends Component {
         <RichTextEditor
           id="CreateLessonForm__body"
           onChange={this.handleChangeBody}
+          placeholder="Begin your lesson"
         />
         <button type="submit">Create lesson</button>
         <span>{error}</span>

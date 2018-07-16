@@ -10,7 +10,7 @@ class StudyPreview extends Component {
     const study = get(this.props, "study", {})
     return (
       <div>
-        <a href={study.url + "/lessons"}>
+        <a href={study.url}>
           {study.description} ({study.nameWithOwner})
         </a>
       </div>

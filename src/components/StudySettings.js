@@ -5,7 +5,7 @@ import {
 } from 'react-relay'
 import { get } from 'utils'
 import UpdateStudyNameForm from 'components/UpdateStudyNameForm'
-import StudyDangerZoneForm from 'components/StudyDangerZoneForm'
+import StudyDangerZone from 'components/StudyDangerZone'
 
 class StudySettings extends Component {
   render() {
@@ -13,7 +13,7 @@ class StudySettings extends Component {
     return (
       <div className="StudySettings">
         <UpdateStudyNameForm study={study} />
-        <StudyDangerZoneForm study={study} />
+        <StudyDangerZone study={study} />
       </div>
     )
   }

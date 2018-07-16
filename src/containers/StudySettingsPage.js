@@ -16,13 +16,14 @@ const StudySettingsPageQuery = graphql`
 
 class StudySettingsPage extends Component {
   render() {
+    const { match } = this.props
     return (
       <QueryRenderer
         environment={environment}
         query={StudySettingsPageQuery}
         variables={{
-          owner: this.props.match.params.owner,
-          name: this.props.match.params.name,
+          owner: match.params.owner,
+          name: match.params.name,
         }}
         render={({error,  props}) => {
           if (error) {

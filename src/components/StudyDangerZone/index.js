@@ -3,7 +3,7 @@ import { withRouter } from 'react-router'
 import DeleteStudyMutation from 'mutations/DeleteStudyMutation'
 import { isNil } from 'utils'
 
-class StudyDangerZoneForm extends Component {
+class StudyDangerZone extends Component {
   state = {
     error: null,
   }
@@ -11,14 +11,16 @@ class StudyDangerZoneForm extends Component {
   render() {
     const { error } = this.state
     return (
-      <form onSubmit={this.handleSubmit}>
-        <h4 className="StudyDangerZoneForm__delete-header">Delete this study</h4>
-        <div className="StudyDangerZoneForm__delete-description">
-          Once you delete a study, there is no going back. Please be certain.
-        </div>
-        <button type="submit">Delete this study</button>
-        <span>{error}</span>
-      </form>
+      <div className="StudyDangerZone">
+        <form onSubmit={this.handleSubmit}>
+          <h4 className="StudyDangerZone__delete-header">Delete this study</h4>
+          <div className="StudyDangerZone__delete-description">
+            Once you delete a study, there is no going back. Please be certain.
+          </div>
+          <button type="submit">Delete this study</button>
+          <span>{error}</span>
+        </form>
+      </div>
     )
   }
 
@@ -36,4 +38,4 @@ class StudyDangerZoneForm extends Component {
   }
 }
 
-export default withRouter(StudyDangerZoneForm)
+export default withRouter(StudyDangerZone)

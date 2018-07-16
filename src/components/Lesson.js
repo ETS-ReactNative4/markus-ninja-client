@@ -4,7 +4,7 @@ import {
   graphql,
 } from 'react-relay'
 import { get, nullOr } from 'utils'
-import UpdateLessonBodyForm from 'components/UpdateLessonBodyForm'
+import LessonBody from 'components/LessonBody'
 import LessonHeader from 'components/LessonHeader'
 
 class Lesson extends Component {
@@ -13,7 +13,7 @@ class Lesson extends Component {
     return (
       <div className="Lesson">
         <LessonHeader lesson={nullOr(lesson)}/>
-        <UpdateLessonBodyForm lesson={nullOr(lesson)}/>
+        <LessonBody lesson={nullOr(lesson)}/>
       </div>
     )
   }

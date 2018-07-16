@@ -1,14 +1,10 @@
 import React, {Component} from 'react'
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay'
 import convert from 'htmr'
 import RichTextEditor from 'components/RichTextEditor'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
 import { get, isNil } from 'utils'
 
-class UpdateLessonBodyForm extends Component {
+class LessonBody extends Component {
   state = {
     edit: false,
     error: null,
@@ -20,7 +16,7 @@ class UpdateLessonBodyForm extends Component {
     const { edit, error, body } = this.state
     if (!edit) {
       return (
-        <div className="UpdateLessonBodyForm">
+        <div className="LessonBody">
           <div className="UpdateLessonBodyForm__bodyHTML">{convert(lesson.bodyHTML)}</div>
           <button
             className="UpdateLessonBodyForm__edit"
@@ -72,10 +68,4 @@ class UpdateLessonBodyForm extends Component {
   }
 }
 
-export default createFragmentContainer(UpdateLessonBodyForm, graphql`
-  fragment UpdateLessonBodyForm_lesson on Lesson {
-    id
-    body
-    bodyHTML
-  }
-`)
+export default LessonBody

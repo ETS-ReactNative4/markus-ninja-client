@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { get, nullOr } from 'utils'
 import UserLink from 'components/UserLink'
-import UpdateStudyForm from 'components/UpdateStudyForm'
+import Counter from 'components/Counter'
 
 class Study extends Component {
   state = {
@@ -23,20 +23,28 @@ class Study extends Component {
           <span className="Study__name-divider">/</span>
           <a href={study.url}>{study.name}</a>
         </div>
-        <UpdateStudyForm study={nullOr(study)}/>
-        <Link
-          className="Study__lessons-tab"
-          to={study.resourcePath + "/lessons"}
-        >
-          Lessons
-        </Link>
-        {study.viewerCanAdmin &&
-        <Link
-          className="Study__lessons-tab"
-          to={study.resourcePath + "/settings"}
-        >
-          Settings
-        </Link>}
+        <div className="Study__nav">
+          <Link
+            className="Study__nav-item"
+            to={study.resourcePath}
+          >
+            Overview
+          </Link>
+          <Link
+            className="Study__nav-item"
+            to={study.resourcePath + "/lessons"}
+          >
+            Lessons
+            <Counter>{study.lessonCount}</Counter>
+          </Link>
+          {study.viewerCanAdmin &&
+          <Link
+            className="Study__nav-item"
+            to={study.resourcePath + "/settings"}
+          >
+            Settings
+          </Link>}
+        </div>
       </div>
     )
   }
@@ -47,7 +55,6 @@ export default withRouter(createFragmentContainer(Study, graphql`
     id
     advancedAt
     createdAt
-    description
     lessonCount
     name
     owner {

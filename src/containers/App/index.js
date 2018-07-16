@@ -6,7 +6,8 @@ import Header from 'components/Header'
 import LoginPage from 'containers/LoginPage'
 import SignupPage from 'containers/SignupPage'
 import StudyPage from 'containers/StudyPage'
-import StudyListPage from 'containers/StudyListPage'
+import ViewerStudiesPage from 'containers/ViewerStudiesPage'
+import UserPage from 'containers/UserPage'
 
 class App extends Component {
   render() {
@@ -15,10 +16,11 @@ class App extends Component {
         <Header />
         <div className="App__content">
           <Switch>
-            <Route exact path="/" component={StudyListPage} />
+            <Route exact path="/" component={ViewerStudiesPage} />
             <Route exact path="/new" component={CreateStudyPage} />
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/signup" component={SignupPage} />
+            <Route exact path="/:login" component={UserPage} />
             <Route path="/:owner/:name" component={StudyPage} />
           </Switch>
         </div>

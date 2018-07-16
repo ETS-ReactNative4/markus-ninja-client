@@ -4,6 +4,8 @@ const {
   RecordSource,
   Store,
 } = require('relay-runtime')
+const { isNil } = require('utils')
+const base64url = require('base64url')
 
 const store = new Store(new RecordSource())
 
@@ -13,8 +15,15 @@ const network = Network.create((operation, variables) => {
     "Content-Type": "application/json",
   }
   const accessToken = window.sessionStorage.getItem("access_token")
-  if (accessToken !== null) {
-    headers.Authorization = "Bearer "+ accessToken
+  if (!isNil(accessToken)) {
+    const tokenParts = accessToken.split(".")
+    const decodedPayload = base64url.decode(tokenParts[0])
+    const payload = JSON.parse(decodedPayload)
+    if (Date(payload.Exp) < Date.now()) {
+      window.sessionStorage.removeItem("access_token")
+    } else {
+      headers.Authorization = "Bearer "+ accessToken
+    }
   }
   return fetch("http://localhost:5000/graphql", {
     method: "POST",
