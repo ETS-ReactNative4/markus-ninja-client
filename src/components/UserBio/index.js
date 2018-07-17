@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { withRouter } from 'react-router-dom';
-import UpdateUserMutation from 'mutations/UpdateUserMutation'
+import UpdateViewerProfileMutation from 'mutations/UpdateViewerProfileMutation'
 import { get, isNil } from 'utils'
 import cls from 'classnames'
 import convert from 'htmr'
@@ -74,9 +74,10 @@ class UserBio extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { bio } = this.state
-    UpdateUserMutation(
+    UpdateViewerProfileMutation(
       this.props.user.id,
       bio,
+      null,
       null,
       (error) => {
         if (!isNil(error)) {

@@ -9,6 +9,8 @@ import { get, nullOr } from 'utils'
 import UserLink from 'components/UserLink'
 import Counter from 'components/Counter'
 
+import './Study.css'
+
 class Study extends Component {
   state = {
     edit: false,

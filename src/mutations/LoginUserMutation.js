@@ -3,6 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
+import { get } from 'utils'
 
 const mutation = graphql`
   mutation LoginUserMutation($input: LoginUserInput!) {
@@ -33,7 +34,7 @@ export default (login, password, callback) => {
       mutation,
       variables,
       onCompleted: (response, error) => {
-        callback(response.loginUser.token, error)
+        callback(get(response, "loginUser.token", null), error)
       },
       onError: err => console.error(err),
     },

@@ -6,6 +6,7 @@ const {
 } = require('relay-runtime')
 const { isNil } = require('utils')
 const base64url = require('base64url')
+const moment = require('moment')
 
 const store = new Store(new RecordSource())
 
@@ -19,7 +20,8 @@ const network = Network.create((operation, variables) => {
     const tokenParts = accessToken.split(".")
     const decodedPayload = base64url.decode(tokenParts[0])
     const payload = JSON.parse(decodedPayload)
-    if (Date(payload.Exp) < Date.now()) {
+    if (moment.unix(payload.Exp).isBefore(moment())) {
+      console.error("access_token expired")
       window.sessionStorage.removeItem("access_token")
     } else {
       headers.Authorization = "Bearer "+ accessToken
@@ -34,6 +36,14 @@ const network = Network.create((operation, variables) => {
     }),
   }).then(response => {
     return response.json()
+  }).then(json => {
+    if (!isNil(json.error)) {
+      if (json.error === 'unauthorized') {
+        console.error("unauthorized user")
+        window.sessionStorage.removeItem("access_token")
+      }
+    }
+    return json
   })
 })
 

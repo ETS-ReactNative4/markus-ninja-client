@@ -18,11 +18,14 @@ class User extends Component {
 
   render() {
     const user = get(this.props, "user", {})
+    const email = get(user, "email.value", null)
     return (
       <div className="User">
         <div className="User__name">{user.name}</div>
         <div className="User__username">{user.login}</div>
         <UserBio user={user} />
+        {email &&
+        <div className="User__email">{email}</div>}
         <nav className="User__nav">
           <Link
             className="User__nav-item"
@@ -73,7 +76,9 @@ export default withRouter(createFragmentContainer(User, graphql`
     bio
     bioHTML
     createdAt
-    email
+    email {
+      value
+    }
     enrollees(first: 0) {
       totalCount
     }

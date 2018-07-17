@@ -23,8 +23,9 @@ class UserPage extends Component {
   render() {
     const { location, match } = this.props
     const Tab = (props) => {
-      const tab = queryString.parse(get(location, "search", "")).tab
-      switch (tab) {
+      const query = queryString.parse(get(location, "search", ""))
+      const tab = get(query, "tab", "")
+      switch (tab.toLowerCase()) {
         case "apples":
           return <UserApplesPage {...props} />
         case "studies":

@@ -16,6 +16,8 @@ class Header extends Component {
           <Link className="Header__link" to="/login">Login</Link>
           <span className="Header__link-divider">|</span>
           <Link className="Header__link" to="/signup">Signup</Link>
+          <span className="Header__link-divider">|</span>
+          <Link className="Header__link" to="/settings">Settings</Link>
         </div>
       </div>
     )

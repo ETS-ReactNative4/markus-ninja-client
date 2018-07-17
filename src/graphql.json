@@ -1186,42 +1186,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "EmailConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAssetConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolledStudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "StudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "AppledStudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventConnection",
 							"ofType": null
 						},
 						{
@@ -1236,7 +1201,32 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AppleGiverConnection",
+							"name": "TopicConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabelConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EmailConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeConnection",
 							"ofType": null
 						},
 						{
@@ -1246,12 +1236,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "TopicConnection",
+							"name": "EventConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "NotificationConnection",
+							"name": "UserAssetConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverConnection",
 							"ofType": null
 						}
 					]
@@ -1913,12 +1908,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						}
 					]
@@ -2037,42 +2032,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "EmailEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAssetEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolledStudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "StudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "AppledStudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventEdge",
 							"ofType": null
 						},
 						{
@@ -2087,7 +2047,32 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AppleGiverEdge",
+							"name": "TopicEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabelEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EmailEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeEdge",
 							"ofType": null
 						},
 						{
@@ -2097,12 +2082,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "TopicEdge",
+							"name": "EventEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "NotificationEdge",
+							"name": "UserAssetEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverEdge",
 							"ofType": null
 						}
 					]
@@ -2147,22 +2137,6 @@
 						{
 							"name": "isVerified",
 							"description": "Is the email verified?",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Boolean",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "public",
-							"description": "Identifies whether the email is public or not.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -2472,17 +2446,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
 							"ofType": null
 						}
 					]
@@ -2762,152 +2736,6 @@
 							"deprecationReason": null
 						}
 					],
-					"possibleTypes": null
-				},
-				{
-					"kind": "OBJECT",
-					"name": "EnrolledStudyConnection",
-					"description": "A connection type for Study.",
-					"fields": [
-						{
-							"name": "pageInfo",
-							"description": "Information to aid in pagination.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "OBJECT",
-									"name": "PageInfo",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "edges",
-							"description": "A list of edges.",
-							"args": [],
-							"type": {
-								"kind": "LIST",
-								"name": null,
-								"ofType": {
-									"kind": "OBJECT",
-									"name": "EnrolledStudyEdge",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "nodes",
-							"description": "A list of nodes.",
-							"args": [],
-							"type": {
-								"kind": "LIST",
-								"name": null,
-								"ofType": {
-									"kind": "OBJECT",
-									"name": "Study",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "totalCount",
-							"description": "The total count of items in the connection.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						}
-					],
-					"inputFields": null,
-					"interfaces": [
-						{
-							"kind": "INTERFACE",
-							"name": "Connection",
-							"ofType": null
-						}
-					],
-					"enumValues": null,
-					"possibleTypes": null
-				},
-				{
-					"kind": "OBJECT",
-					"name": "EnrolledStudyEdge",
-					"description": "An edge type for Study.",
-					"fields": [
-						{
-							"name": "cursor",
-							"description": "A cursor for use in pagination.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "String",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "node",
-							"description": "The item at the end of the edge.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "OBJECT",
-									"name": "Study",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "enrolledAt",
-							"description": "When was the item enrolled?",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Time",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						}
-					],
-					"inputFields": null,
-					"interfaces": [
-						{
-							"kind": "INTERFACE",
-							"name": "Edge",
-							"ofType": null
-						}
-					],
-					"enumValues": null,
 					"possibleTypes": null
 				},
 				{
@@ -6332,7 +6160,7 @@
 						},
 						{
 							"name": "updateEmail",
-							"description": "Updates an email's type and/or whether it's public or not.",
+							"description": "Updates an email's type.",
 							"args": [
 								{
 									"name": "input",
@@ -6547,8 +6375,8 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "updateViewer",
-							"description": "Updates the bio, email, login, and/or name of the viewer.",
+							"name": "updateViewerAccount",
+							"description": "Updates the login and/or password of the viewer.",
 							"args": [
 								{
 									"name": "input",
@@ -6558,7 +6386,34 @@
 										"name": null,
 										"ofType": {
 											"kind": "INPUT_OBJECT",
-											"name": "UpdateViewerInput",
+											"name": "UpdateViewerAccountInput",
+											"ofType": null
+										}
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "OBJECT",
+								"name": "User",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "updateViewerProfile",
+							"description": "Updates the bio, email, and/or name of the viewer.",
+							"args": [
+								{
+									"name": "input",
+									"description": null,
+									"type": {
+										"kind": "NON_NULL",
+										"name": null,
+										"ofType": {
+											"kind": "INPUT_OBJECT",
+											"name": "UpdateViewerProfileInput",
 											"ofType": null
 										}
 									},
@@ -6607,31 +6462,6 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Email",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Event",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Lesson",
 							"ofType": null
 						},
@@ -6642,17 +6472,42 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Topic",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
+							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Notification",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Email",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Event",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
 							"ofType": null
 						}
 					]
@@ -9023,22 +8878,22 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
 							"ofType": null
 						}
 					]
@@ -9322,12 +9177,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "EVT",
+							"name": "AccessToken",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AccessToken",
+							"name": "EVT",
 							"ofType": null
 						},
 						{
@@ -10054,21 +9909,6 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Lesson",
 							"ofType": null
 						},
@@ -10079,12 +9919,27 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "Topic",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Topic",
+							"name": "UserAsset",
 							"ofType": null
 						}
 					]
@@ -10476,8 +10331,49 @@
 				},
 				{
 					"kind": "INPUT_OBJECT",
-					"name": "UpdateViewerInput",
-					"description": "Input type for UpdateViewer.",
+					"name": "UpdateViewerAccountInput",
+					"description": "Input type for UpdateViewerAccount.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "login",
+							"description": "The viewer's new username used to login.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "newPassword",
+							"description": "The viewer's new password.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "oldPassword",
+							"description": "The viewer's old password.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
+					"name": "UpdateViewerProfileInput",
+					"description": "Input type for UpdateViewerProfile.",
 					"fields": null,
 					"inputFields": [
 						{
@@ -10492,20 +10388,10 @@
 						},
 						{
 							"name": "emailId",
-							"description": "The ID of the viewer's public profile email.",
+							"description": "The ID of the viewer's public email.",
 							"type": {
 								"kind": "SCALAR",
 								"name": "ID",
-								"ofType": null
-							},
-							"defaultValue": null
-						},
-						{
-							"name": "login",
-							"description": "The viwer's username used to login.",
-							"type": {
-								"kind": "SCALAR",
-								"name": "String",
 								"ofType": null
 							},
 							"defaultValue": null
@@ -10569,22 +10455,22 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
 							"ofType": null
 						}
 					]
@@ -10594,6 +10480,22 @@
 					"name": "User",
 					"description": "Represents a user.",
 					"fields": [
+						{
+							"name": "accountUpdatedAt",
+							"description": "Identifies the date and time when the user's account was last updated.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
 						{
 							"name": "appled",
 							"description": "A list of studies the user has appled.",
@@ -10795,13 +10697,9 @@
 							"description": "The user's public profile email.",
 							"args": [],
 							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "String",
-									"ofType": null
-								}
+								"kind": "OBJECT",
+								"name": "Email",
+								"ofType": null
 							},
 							"isDeprecated": false,
 							"deprecationReason": null
@@ -10836,6 +10734,16 @@
 									"type": {
 										"kind": "SCALAR",
 										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "isVerified",
+									"description": "If true, then filter emails by whether they have been verified.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Boolean",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -11226,6 +11134,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "profileUpdatedAt",
+							"description": "Identifies the date and time when the user's profile was last updated.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "resourcePath",
 							"description": "The HTTP path for this user.",
 							"args": [],
@@ -11329,22 +11253,6 @@
 								"ofType": {
 									"kind": "OBJECT",
 									"name": "StudyConnection",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "updatedAt",
-							"description": "Identifies the date and time when the object was last updated.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Time",
 									"ofType": null
 								}
 							},
