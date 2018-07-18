@@ -4,9 +4,8 @@ const {
   RecordSource,
   Store,
 } = require('relay-runtime')
-const { isNil } = require('utils')
-const base64url = require('base64url')
-const moment = require('moment')
+const { isEmpty, isNil } = require('utils')
+const { getAuthHeader } = require('auth')
 
 const store = new Store(new RecordSource())
 
@@ -15,17 +14,9 @@ const network = Network.create((operation, variables) => {
     "Accept": "application/json",
     "Content-Type": "application/json",
   }
-  const accessToken = window.sessionStorage.getItem("access_token")
-  if (!isNil(accessToken)) {
-    const tokenParts = accessToken.split(".")
-    const decodedPayload = base64url.decode(tokenParts[0])
-    const payload = JSON.parse(decodedPayload)
-    if (moment.unix(payload.Exp).isBefore(moment())) {
-      console.error("access_token expired")
-      window.sessionStorage.removeItem("access_token")
-    } else {
-      headers.Authorization = "Bearer "+ accessToken
-    }
+  const accessToken = getAuthHeader()
+  if (!isEmpty(accessToken)) {
+    headers.Authorization = accessToken
   }
   return fetch("http://localhost:5000/graphql", {
     method: "POST",

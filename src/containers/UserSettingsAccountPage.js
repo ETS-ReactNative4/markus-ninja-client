@@ -4,14 +4,15 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import UserAccountChangePasswordForm from 'components/UserAccountChangePasswordForm'
-import UserAccountChangeUsernameForm from 'components/UserAccountChangeUsernameForm'
+import ChangePassword from 'components/ChangePassword'
+import ChangeUsername from 'components/ChangeUsername'
+import DeleteAccount from 'components/DeleteAccount'
 
 const UserSettingsAccountPageQuery = graphql`
   query UserSettingsAccountPageQuery {
     viewer {
       id
-      ...UserAccountChangeUsernameForm_user
+      ...ChangeUsername_user
     }
   }
 `
@@ -29,9 +30,11 @@ class UserSettingsAccountPage extends React.Component {
             return (
               <div>
                 <h2>Change password</h2>
-                <UserAccountChangePasswordForm />
+                <ChangePassword />
                 <h2>Change username</h2>
-                <UserAccountChangeUsernameForm user={props.viewer} />
+                <ChangeUsername user={props.viewer} />
+                <h2>Delete account</h2>
+                <DeleteAccount />
               </div>
             )
           }

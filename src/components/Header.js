@@ -1,23 +1,24 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
-
+import { isAuthenticated } from 'auth'
 
 class Header extends Component {
   render() {
+    const authenticated = isAuthenticated()
     return (
       <div className="Header">
         <div className="Header__links">
-          <span className="Header__text">Markus Ninja</span>
           <Link className="Header__link" to="/">Home</Link>
-          <span className="Header__link-divider">|</span>
           <Link className="Header__link" to="/new">New study</Link>
-          <span className="Header__link-divider">|</span>
-          <Link className="Header__link" to="/login">Login</Link>
-          <span className="Header__link-divider">|</span>
-          <Link className="Header__link" to="/signup">Signup</Link>
-          <span className="Header__link-divider">|</span>
-          <Link className="Header__link" to="/settings">Settings</Link>
+          {!authenticated &&
+          <Link className="Header__link" to="/login">Login</Link>}
+          {authenticated &&
+          <Link className="Header__link" to="/logout">Logout</Link>}
+          {!authenticated &&
+          <Link className="Header__link" to="/signup">Signup</Link>}
+          {authenticated &&
+          <Link className="Header__link" to="/settings">Settings</Link>}
         </div>
       </div>
     )

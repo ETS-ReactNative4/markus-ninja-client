@@ -1,0 +1,15 @@
+.DeleteAccount__info {
+  display: block;
+}
+
+.DeleteAccount.open .DeleteAccount__info {
+  display: none;
+}
+
+.DeleteAccount__form {
+  display: none;
+}
+
+.DeleteAccount.open .DeleteAccount__form {
+  display: block;
+}

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import UpdateViewerAccountMutation from 'mutations/UpdateViewerAccountMutation'
 import { isNil } from 'utils'
 
-class UserAccountChangePasswordForm extends Component {
+class ChangePassword extends Component {
   state = {
     confirmNewPassword: "",
     newPassword: "",
@@ -13,7 +13,7 @@ class UserAccountChangePasswordForm extends Component {
   render() {
     const { confirmNewPassword, newPassword, oldPassword, error } = this.state
     return (
-      <form className="UserAccountChangePasswordForm" onSubmit={this.handleSubmit}>
+      <form className="ChangePassword" onSubmit={this.handleSubmit}>
         <label htmlFor="user_old_password">Old password</label>
         <input
           id="user_old_password"
@@ -75,4 +75,4 @@ class UserAccountChangePasswordForm extends Component {
   }
 }
 
-export default UserAccountChangePasswordForm
+export default ChangePassword
