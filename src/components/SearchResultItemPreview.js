@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import { get } from 'utils'
 import LessonPreview from './LessonPreview'
 import StudyPreview from './StudyPreview'
+import TopicPreview from './TopicPreview'
+import UserPreview from './UserPreview'
+import UserAssetPreview from './UserAssetPreview'
 
 class SearchResultItemPreview extends Component {
   render() {
@@ -11,6 +14,12 @@ class SearchResultItemPreview extends Component {
         return <LessonPreview lesson={item} />
       case "Study":
         return <StudyPreview study={item} />
+      case "Topic":
+        return <TopicPreview topic={item} />
+      case "User":
+        return <UserPreview user={item} />
+      case "UserAsset":
+        return <UserAssetPreview asset={item} />
       default:
         return null
     }

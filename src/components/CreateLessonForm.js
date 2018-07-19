@@ -3,6 +3,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import { withRouter } from 'react-router'
 import CreateLessonMutation from 'mutations/CreateLessonMutation'
 import RichTextEditor from 'components/RichTextEditor'
 
@@ -55,8 +56,8 @@ class CreateLessonForm extends Component {
   }
 }
 
-export default createFragmentContainer(CreateLessonForm, graphql`
+export default withRouter(createFragmentContainer(CreateLessonForm, graphql`
   fragment CreateLessonForm_study on Study {
     id
   }
-`)
+`))

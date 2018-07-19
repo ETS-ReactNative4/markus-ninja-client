@@ -1191,7 +1191,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EventConnection",
+							"name": "NotificationConnection",
 							"ofType": null
 						},
 						{
@@ -1201,12 +1201,42 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "LessonCommentConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EmailConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "StudyConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
+							"name": "AppleGiverConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "UserAssetConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EventConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonConnection",
 							"ofType": null
 						},
 						{
@@ -1217,36 +1247,6 @@
 						{
 							"kind": "OBJECT",
 							"name": "AppledStudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EmailConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppleGiverConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonConnection",
 							"ofType": null
 						}
 					]
@@ -1947,12 +1947,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						}
 					]
@@ -2076,7 +2076,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EventEdge",
+							"name": "NotificationEdge",
 							"ofType": null
 						},
 						{
@@ -2086,12 +2086,42 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "LessonCommentEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EmailEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "StudyEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
+							"name": "AppleGiverEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "UserAssetEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EventEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonEdge",
 							"ofType": null
 						},
 						{
@@ -2102,36 +2132,6 @@
 						{
 							"kind": "OBJECT",
 							"name": "AppledStudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EmailEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppleGiverEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonEdge",
 							"ofType": null
 						}
 					]
@@ -3040,8 +3040,8 @@
 								"kind": "NON_NULL",
 								"name": null,
 								"ofType": {
-									"kind": "UNION",
-									"name": "EventSource",
+									"kind": "INTERFACE",
+									"name": "EventSourceable",
 									"ofType": null
 								}
 							},
@@ -3056,8 +3056,8 @@
 								"kind": "NON_NULL",
 								"name": null,
 								"ofType": {
-									"kind": "UNION",
-									"name": "EventTarget",
+									"kind": "INTERFACE",
+									"name": "EventTargetable",
 									"ofType": null
 								}
 							},
@@ -3275,17 +3275,34 @@
 					"possibleTypes": null
 				},
 				{
-					"kind": "UNION",
-					"name": "EventSource",
-					"description": "Any referencable object.",
-					"fields": null,
+					"kind": "INTERFACE",
+					"name": "EventSourceable",
+					"description": "Any object that can be the source of an event.",
+					"fields": [
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
 					"inputFields": null,
 					"interfaces": null,
 					"enumValues": null,
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "User",
 							"ofType": null
 						},
 						{
@@ -3300,23 +3317,40 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
 				},
 				{
-					"kind": "UNION",
-					"name": "EventTarget",
-					"description": "Any referencable object.",
-					"fields": null,
+					"kind": "INTERFACE",
+					"name": "EventTargetable",
+					"description": "Any object that can be the target of an event.",
+					"fields": [
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
 					"inputFields": null,
 					"interfaces": null,
 					"enumValues": null,
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "User",
 							"ofType": null
 						},
 						{
@@ -3326,7 +3360,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -4699,12 +4733,27 @@
 						},
 						{
 							"kind": "INTERFACE",
+							"name": "EventSourceable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "EventTargetable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
 							"name": "Labelable",
 							"ofType": null
 						},
 						{
 							"kind": "INTERFACE",
 							"name": "Node",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Searchable",
 							"ofType": null
 						},
 						{
@@ -5041,6 +5090,11 @@
 						{
 							"kind": "INTERFACE",
 							"name": "Deleteable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "EventSourceable",
 							"ofType": null
 						},
 						{
@@ -6533,12 +6587,22 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Event",
+							"name": "Notification",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Email",
 							"ofType": null
 						},
 						{
@@ -6553,27 +6617,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Topic",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Email",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Notification",
+							"name": "Event",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Topic",
 							"ofType": null
 						}
 					]
@@ -7175,6 +7229,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "relay",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Query",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "search",
 							"description": null,
 							"args": [
@@ -7244,7 +7314,7 @@
 								},
 								{
 									"name": "type",
-									"description": "The types of search items to search within.",
+									"description": "The types of search items to search for.",
 									"type": {
 										"kind": "NON_NULL",
 										"name": null,
@@ -7272,7 +7342,7 @@
 								"name": null,
 								"ofType": {
 									"kind": "OBJECT",
-									"name": "SearchResultItemConnection",
+									"name": "SearchableConnection",
 									"ofType": null
 								}
 							},
@@ -7691,6 +7761,12 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "APPLE_COUNT",
+							"description": "Order items by number of apples given.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "BEST_MATCH",
 							"description": "Order items by best match to query.",
 							"isDeprecated": false,
@@ -7703,14 +7779,20 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "NUMBER",
-							"description": "Order items by number.",
+							"name": "COMMENT_COUNT",
+							"description": "Order items by number of comments made.",
 							"isDeprecated": false,
 							"deprecationReason": null
 						},
 						{
-							"name": "NAME",
-							"description": "Order items by name.",
+							"name": "LESSON_COUNT",
+							"description": "Order items by number of lessons.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "STUDY_COUNT",
+							"description": "Order items by number of studies.",
 							"isDeprecated": false,
 							"deprecationReason": null
 						},
@@ -7724,17 +7806,75 @@
 					"possibleTypes": null
 				},
 				{
-					"kind": "UNION",
-					"name": "SearchResultItem",
-					"description": "The result of a search.",
+					"kind": "ENUM",
+					"name": "SearchType",
+					"description": "Represents the individual results of a search.",
 					"fields": null,
+					"inputFields": null,
+					"interfaces": null,
+					"enumValues": [
+						{
+							"name": "LESSON",
+							"description": "Returns results matching lessons in studies.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "STUDY",
+							"description": "Returns results matching studies.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "TOPIC",
+							"description": "Returns results matching topics.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "USER",
+							"description": "Returns results matching users on rkus.ninja.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "USER_ASSET",
+							"description": "Returns results matching user assets on rkus.ninja.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"possibleTypes": null
+				},
+				{
+					"kind": "INTERFACE",
+					"name": "Searchable",
+					"description": "Things that can be searched for.",
+					"fields": [
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
 					"inputFields": null,
 					"interfaces": null,
 					"enumValues": null,
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "User",
 							"ofType": null
 						},
 						{
@@ -7744,24 +7884,24 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Topic",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "User",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Topic",
 							"ofType": null
 						}
 					]
 				},
 				{
 					"kind": "OBJECT",
-					"name": "SearchResultItemConnection",
+					"name": "SearchableConnection",
 					"description": "A list of results that matched against a search query.",
 					"fields": [
 						{
@@ -7773,7 +7913,7 @@
 								"name": null,
 								"ofType": {
 									"kind": "OBJECT",
-									"name": "SearchResultItemEdge",
+									"name": "SearchableEdge",
 									"ofType": null
 								}
 							},
@@ -7804,8 +7944,8 @@
 								"kind": "LIST",
 								"name": null,
 								"ofType": {
-									"kind": "UNION",
-									"name": "SearchResultItem",
+									"kind": "INTERFACE",
+									"name": "Searchable",
 									"ofType": null
 								}
 							},
@@ -7831,6 +7971,22 @@
 						{
 							"name": "studyCount",
 							"description": "The number of studies that matched the search query.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "topicCount",
+							"description": "The number of topics that matched the search query.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -7884,8 +8040,8 @@
 				},
 				{
 					"kind": "OBJECT",
-					"name": "SearchResultItemEdge",
-					"description": "An edge in a search result item connection.",
+					"name": "SearchableEdge",
+					"description": "An edge in a searchable connection.",
 					"fields": [
 						{
 							"name": "cursor",
@@ -7908,8 +8064,8 @@
 							"description": "The item at the end of the edge.",
 							"args": [],
 							"type": {
-								"kind": "UNION",
-								"name": "SearchResultItem",
+								"kind": "INTERFACE",
+								"name": "Searchable",
 								"ofType": null
 							},
 							"isDeprecated": false,
@@ -7935,47 +8091,6 @@
 					"inputFields": null,
 					"interfaces": [],
 					"enumValues": null,
-					"possibleTypes": null
-				},
-				{
-					"kind": "ENUM",
-					"name": "SearchType",
-					"description": "Represents the individual results of a search.",
-					"fields": null,
-					"inputFields": null,
-					"interfaces": null,
-					"enumValues": [
-						{
-							"name": "LESSON",
-							"description": "Returns results matching lessons in studies.",
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "STUDY",
-							"description": "Returns results matching studies.",
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "TOPIC",
-							"description": "Returns results matching topics.",
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "USER",
-							"description": "Returns results matching users on rkus.ninja.",
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "USER_ASSET",
-							"description": "Returns results matching user assets on rkus.ninja.",
-							"isDeprecated": false,
-							"deprecationReason": null
-						}
-					],
 					"possibleTypes": null
 				},
 				{
@@ -8773,7 +8888,22 @@
 						},
 						{
 							"kind": "INTERFACE",
+							"name": "EventSourceable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "EventTargetable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
 							"name": "Node",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Searchable",
 							"ofType": null
 						},
 						{
@@ -8949,12 +9079,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -9243,12 +9373,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "AccessToken",
+							"name": "EVT",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EVT",
+							"name": "AccessToken",
 							"ofType": null
 						},
 						{
@@ -9462,6 +9592,11 @@
 						{
 							"kind": "INTERFACE",
 							"name": "Node",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Searchable",
 							"ofType": null
 						},
 						{
@@ -9985,6 +10120,11 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Study",
 							"ofType": null
 						},
@@ -9995,17 +10135,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Topic",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Topic",
 							"ofType": null
 						}
 					]
@@ -10526,12 +10661,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -11385,7 +11520,22 @@
 						},
 						{
 							"kind": "INTERFACE",
+							"name": "EventSourceable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "EventTargetable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
 							"name": "Node",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Searchable",
 							"ofType": null
 						},
 						{
@@ -11665,6 +11815,11 @@
 						{
 							"kind": "INTERFACE",
 							"name": "Node",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Searchable",
 							"ofType": null
 						},
 						{

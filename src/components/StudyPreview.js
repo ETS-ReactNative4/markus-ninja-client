@@ -22,6 +22,7 @@ export default createFragmentContainer(StudyPreview, graphql`
   fragment StudyPreview_study on Study {
     id
     description
+    lessonCount
     nameWithOwner
     url
   }

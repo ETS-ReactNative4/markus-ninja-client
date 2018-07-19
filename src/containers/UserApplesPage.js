@@ -17,6 +17,7 @@ const UserApplesPageQuery = graphql`
         @connection(key: "UserApplesPage_appled", filters: []) {
         edges {
           node {
+            __typename
             ...on Study {
               ...StudyPreview_study
             }
