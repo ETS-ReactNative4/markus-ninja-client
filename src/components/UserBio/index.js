@@ -20,9 +20,7 @@ class UserBio extends Component {
     return (
       <div className={cls("UserBio", {open})}>
         <div className="UserBio__show">
-          <h1 className="UserBio__bio">
-            <span className="UserBio__user-bio">{convert(user.bioHTML)}</span>
-          </h1>
+          <div className="UserBio__user-bio">{convert(user.bioHTML)}</div>
           <div className="UserBio__actions">
             <button
               className="btn"
@@ -75,7 +73,6 @@ class UserBio extends Component {
     e.preventDefault()
     const { bio } = this.state
     UpdateViewerProfileMutation(
-      this.props.user.id,
       bio,
       null,
       null,

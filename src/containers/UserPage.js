@@ -7,6 +7,8 @@ import queryString from 'query-string'
 import environment from 'Environment'
 import User from 'components/User'
 import UserApplesPage from 'containers/UserApplesPage'
+import UserPupilsPage from 'containers/UserPupilsPage'
+import UserTutorsPage from 'containers/UserTutorsPage'
 import UserStudiesPage from 'containers/UserStudiesPage'
 import { get } from 'utils'
 
@@ -28,6 +30,10 @@ class UserPage extends Component {
       switch (tab.toLowerCase()) {
         case "apples":
           return <UserApplesPage {...props} />
+        case "pupils":
+          return <UserPupilsPage {...props} />
+        case "tutors":
+          return <UserTutorsPage {...props} />
         case "studies":
           return <UserStudiesPage {...props} />
         default:

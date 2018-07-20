@@ -83,3 +83,13 @@ export function nullOr(value) {
   if (value === undefined) { return null }
   return value
 }
+
+export function debounce(func, delay) {
+  let inDebounce
+  return function() {
+    const context = this
+    const args = arguments
+    clearTimeout(inDebounce)
+    inDebounce = setTimeout(() => func.apply(context, args), delay)
+  }
+}

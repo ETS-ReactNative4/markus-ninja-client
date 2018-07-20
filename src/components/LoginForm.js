@@ -49,7 +49,7 @@ class LoginForm extends Component {
         this.setState({ error: error.message })
       }
       window.sessionStorage.setItem("access_token", token.token)
-      this.props.history.push("/")
+      this.props.history.replace("/")
     })
   }
 }

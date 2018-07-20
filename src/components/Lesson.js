@@ -3,6 +3,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import { Link } from 'react-router-dom'
 import { get, nullOr } from 'utils'
 import LessonBody from 'components/LessonBody'
 import LessonHeader from 'components/LessonHeader'
@@ -14,6 +15,10 @@ class Lesson extends Component {
       <div className="Lesson">
         <LessonHeader lesson={nullOr(lesson)}/>
         <LessonBody lesson={nullOr(lesson)}/>
+        {lesson.hasPrevLesson &&
+        <Link to={`./${lesson.number-1}`}>Previous</Link>}
+        {lesson.hasNextLesson &&
+        <Link to={`./${lesson.number+1}`}>Next</Link>}
       </div>
     )
   }
@@ -25,6 +30,8 @@ export default createFragmentContainer(Lesson, graphql`
     createdAt
     body
     bodyHTML
+    hasNextLesson
+    hasPrevLesson
     number
     title
     publishedAt
