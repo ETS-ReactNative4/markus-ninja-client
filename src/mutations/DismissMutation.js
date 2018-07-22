@@ -9,10 +9,8 @@ const mutation = graphql`
   mutation DismissMutation($input: DismissInput!) {
     dismiss(input: $input) {
       id
-      viewerHasEnrolled
-      ... on User {
-        viewerCanEnroll
-      }
+      viewerCanEnroll
+      viewerIsEnrolled
     }
   }
 `
@@ -31,15 +29,15 @@ export default (enrollableId, callback) => {
       variables,
       updater: proxyStore => {
         const dismissField = proxyStore.getRootField('dismiss')
-        const viewerHasEnrolled = dismissField.getValue('viewerHasEnrolled')
         const viewerCanEnroll = dismissField.getValue('viewerCanEnroll')
+        const viewerIsEnrolled = dismissField.getValue('viewerIsEnrolled')
         const viewerId = getViewerId()
 
         const viewer = proxyStore.get(viewerId)
-        viewer.setValue(viewerHasEnrolled, 'viewerHasEnrolled')
         viewer.setValue(viewerCanEnroll, 'viewerCanEnroll')
+        viewer.setValue(viewerIsEnrolled, 'viewerIsEnrolled')
       },
-      onCompleted: callback,
+      onCompleted: (response, error) => callback(error),
       onError: err => console.error(err),
     },
   )

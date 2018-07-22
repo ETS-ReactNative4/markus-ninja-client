@@ -38,6 +38,5 @@ export default createFragmentContainer(Lesson, graphql`
     updatedAt
     viewerCanUpdate
     viewerDidAuthor
-    viewerHasEnrolled
   }
 `)

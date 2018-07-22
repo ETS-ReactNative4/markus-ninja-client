@@ -6,6 +6,7 @@ import {
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { get, nullOr } from 'utils'
+import EnrollButton from 'components/EnrollButton'
 import UserLink from 'components/UserLink'
 import Counter from 'components/Counter'
 
@@ -25,6 +26,12 @@ class Study extends Component {
           <span className="Study__name-divider">/</span>
           <a href={study.url}>{study.name}</a>
         </div>
+        <ul className="Study__actions">
+          <li>
+            <EnrollButton enrollable={study} />
+          </li>
+          <li></li>
+        </ul>
         <div className="Study__nav">
           <Link
             className="Study__nav-item"
@@ -67,6 +74,6 @@ export default withRouter(createFragmentContainer(Study, graphql`
     url
     viewerCanAdmin
     viewerHasAppled
-    viewerHasEnrolled
+    ...EnrollButton_enrollable
   }
 `))

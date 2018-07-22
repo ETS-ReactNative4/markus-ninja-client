@@ -9,10 +9,8 @@ const mutation = graphql`
   mutation EnrollMutation($input: EnrollInput!) {
     enroll(input: $input) {
       id
-      viewerHasEnrolled
-      ... on User {
-        viewerCanEnroll
-      }
+      viewerCanEnroll
+      viewerIsEnrolled
     }
   }
 `
@@ -31,15 +29,15 @@ export default (enrollableId, callback) => {
       variables,
       updater: proxyStore => {
         const enrollField = proxyStore.getRootField('enroll')
-        const viewerHasEnrolled = enrollField.getValue('viewerHasEnrolled')
         const viewerCanEnroll = enrollField.getValue('viewerCanEnroll')
+        const viewerIsEnrolled = enrollField.getValue('viewerIsEnrolled')
         const viewerId = getViewerId()
 
         const viewer = proxyStore.get(viewerId)
-        viewer.setValue(viewerHasEnrolled, 'viewerHasEnrolled')
         viewer.setValue(viewerCanEnroll, 'viewerCanEnroll')
+        viewer.setValue(viewerIsEnrolled, 'viewerIsEnrolled')
       },
-      onCompleted: callback,
+      onCompleted: (response, error) => callback(error),
       onError: err => console.error(err),
     },
   )

@@ -1090,12 +1090,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -1186,7 +1186,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "AppledStudyConnection",
+							"name": "LessonCommentConnection",
 							"ofType": null
 						},
 						{
@@ -1196,17 +1196,22 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "StudyConnection",
+							"name": "UserAssetConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EventConnection",
+							"name": "EnrolleeConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AppleGiverConnection",
+							"name": "NotificationConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppledStudyConnection",
 							"ofType": null
 						},
 						{
@@ -1216,17 +1221,22 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAssetConnection",
+							"name": "EventConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonCommentConnection",
+							"name": "StudyConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "NotificationConnection",
+							"name": "UserConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverConnection",
 							"ofType": null
 						},
 						{
@@ -1237,16 +1247,6 @@
 						{
 							"kind": "OBJECT",
 							"name": "LabelConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserConnection",
 							"ofType": null
 						}
 					]
@@ -1942,12 +1942,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -2071,7 +2071,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "AppledStudyEdge",
+							"name": "LessonCommentEdge",
 							"ofType": null
 						},
 						{
@@ -2081,17 +2081,22 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "StudyEdge",
+							"name": "UserAssetEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EventEdge",
+							"name": "EnrolleeEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AppleGiverEdge",
+							"name": "NotificationEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppledStudyEdge",
 							"ofType": null
 						},
 						{
@@ -2101,17 +2106,22 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAssetEdge",
+							"name": "EventEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonCommentEdge",
+							"name": "StudyEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "NotificationEdge",
+							"name": "UserEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverEdge",
 							"ofType": null
 						},
 						{
@@ -2122,16 +2132,6 @@
 						{
 							"kind": "OBJECT",
 							"name": "LabelEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserEdge",
 							"ofType": null
 						}
 					]
@@ -2463,8 +2463,24 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "viewerHasEnrolled",
-							"description": "Has the viewer enrolled in this enrollable.",
+							"name": "viewerCanEnroll",
+							"description": "Can the viewer enroll in this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Boolean",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "viewerIsEnrolled",
+							"description": "Is the viewer enrolled in this enrollable.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -3302,17 +3318,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
 							"ofType": null
 						},
 						{
@@ -3956,12 +3972,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -4703,6 +4719,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "viewerCanEnroll",
+							"description": "Can the viewer enroll in this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Boolean",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "viewerCanUpdate",
 							"description": "Can the viewer update this lesson.",
 							"args": [],
@@ -4735,8 +4767,8 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "viewerHasEnrolled",
-							"description": "Has the viewer enrolled in this enrollable.",
+							"name": "viewerIsEnrolled",
+							"description": "Is the viewer enrolled in this enrollable.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -6614,22 +6646,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Event",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
 							"ofType": null
 						},
 						{
@@ -6639,12 +6661,27 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Notification",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Notification",
+							"name": "Topic",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Event",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "User",
 							"ofType": null
 						},
 						{
@@ -6655,11 +6692,6 @@
 						{
 							"kind": "OBJECT",
 							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "User",
 							"ofType": null
 						}
 					]
@@ -7917,7 +7949,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -7927,7 +7959,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Study",
 							"ofType": null
 						},
 						{
@@ -8880,6 +8912,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "viewerCanEnroll",
+							"description": "Can the viewer enroll in this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Boolean",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "viewerHasAppled",
 							"description": "Has the viewer appled this appleable?",
 							"args": [],
@@ -8896,8 +8944,8 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "viewerHasEnrolled",
-							"description": "Has the viewer enrolled in this enrollable?",
+							"name": "viewerIsEnrolled",
+							"description": "Is the viewer enrolled in this enrollable?",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -9112,17 +9160,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
 							"ofType": null
 						},
 						{
@@ -9411,17 +9459,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "AccessToken",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "EVT",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "PRT",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AccessToken",
 							"ofType": null
 						}
 					]
@@ -10148,17 +10196,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
 							"ofType": null
 						},
 						{
@@ -10168,17 +10211,22 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Topic",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "Study",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
 							"ofType": null
 						}
 					]
@@ -10694,17 +10742,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
 							"ofType": null
 						},
 						{
@@ -11549,8 +11597,8 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "viewerHasEnrolled",
-							"description": "Has the viewer enrolled in this enrollable.",
+							"name": "viewerIsEnrolled",
+							"description": "Is the viewer enrolled in this enrollable.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
