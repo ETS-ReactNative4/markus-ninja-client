@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { get } from 'utils'
 import Counter from 'components/Counter'
-import EnrollButton from 'components/EnrollButton'
+import EnrollmentSelect from 'components/EnrollmentSelect'
 import UserBio from 'components/UserBio'
 
 import './User.css'
@@ -21,7 +21,7 @@ class User extends Component {
         <div className="User__name">{user.name}</div>
         <div className="User__username">{user.login}</div>
         <UserBio user={user} />
-        <EnrollButton enrollable={user} />
+        <EnrollmentSelect enrollable={user} />
         {email &&
         <div className="User__email">{email}</div>}
         <nav className="User__nav">
@@ -89,6 +89,6 @@ export default withRouter(createFragmentContainer(User, graphql`
     studies(first: 0) {
       totalCount
     }
-    ...EnrollButton_enrollable
+    ...EnrollmentSelect_enrollable
   }
 `))

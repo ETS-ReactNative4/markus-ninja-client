@@ -6,7 +6,8 @@ import {
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { get, nullOr } from 'utils'
-import EnrollButton from 'components/EnrollButton'
+import AppleButton from 'components/AppleButton'
+import EnrollmentSelect from 'components/EnrollmentSelect'
 import UserLink from 'components/UserLink'
 import Counter from 'components/Counter'
 
@@ -28,9 +29,11 @@ class Study extends Component {
         </div>
         <ul className="Study__actions">
           <li>
-            <EnrollButton enrollable={study} />
+            <EnrollmentSelect enrollable={study} />
           </li>
-          <li></li>
+          <li>
+            <AppleButton appleable={study} />
+          </li>
         </ul>
         <div className="Study__nav">
           <Link
@@ -74,6 +77,6 @@ export default withRouter(createFragmentContainer(Study, graphql`
     url
     viewerCanAdmin
     viewerHasAppled
-    ...EnrollButton_enrollable
+    ...EnrollmentSelect_enrollable
   }
 `))

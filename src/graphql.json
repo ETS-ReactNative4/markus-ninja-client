@@ -1186,57 +1186,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonCommentConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAssetConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "AppledStudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "TopicConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "StudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppleGiverConnection",
 							"ofType": null
 						},
 						{
@@ -1246,7 +1196,57 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "NotificationConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "LabelConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "TopicConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAssetConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EventConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonConnection",
 							"ofType": null
 						}
 					]
@@ -1942,6 +1942,11 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "LessonComment",
 							"ofType": null
 						},
@@ -1949,38 +1954,8 @@
 							"kind": "OBJECT",
 							"name": "UserAsset",
 							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
 						}
 					]
-				},
-				{
-					"kind": "INPUT_OBJECT",
-					"name": "DismissInput",
-					"description": "Input type for Dismiss.",
-					"fields": null,
-					"inputFields": [
-						{
-							"name": "enrollableId",
-							"description": "The Enrollable ID to dismiss from.",
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "ID",
-									"ofType": null
-								}
-							},
-							"defaultValue": null
-						}
-					],
-					"interfaces": null,
-					"enumValues": null,
-					"possibleTypes": null
 				},
 				{
 					"kind": "OBJECT",
@@ -2071,57 +2046,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonCommentEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAssetEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "AppledStudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "TopicEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "StudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppleGiverEdge",
 							"ofType": null
 						},
 						{
@@ -2131,7 +2056,57 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "NotificationEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "LabelEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "TopicEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAssetEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EventEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonEdge",
 							"ofType": null
 						}
 					]
@@ -2417,35 +2392,26 @@
 					"possibleTypes": null
 				},
 				{
-					"kind": "INPUT_OBJECT",
-					"name": "EnrollInput",
-					"description": "Input type for Enroll.",
-					"fields": null,
-					"inputFields": [
-						{
-							"name": "enrollableId",
-							"description": "The Enrollable ID to enroll in.",
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "ID",
-									"ofType": null
-								}
-							},
-							"defaultValue": null
-						}
-					],
-					"interfaces": null,
-					"enumValues": null,
-					"possibleTypes": null
-				},
-				{
 					"kind": "INTERFACE",
 					"name": "Enrollable",
 					"description": "Things that can be enrolled in.",
 					"fields": [
+						{
+							"name": "enrollmentStatus",
+							"description": "Is the viewer dismissed, enrolled, or ignoring this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "ENUM",
+									"name": "EnrollmentStatus",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
 						{
 							"name": "id",
 							"description": null,
@@ -2477,22 +2443,6 @@
 							},
 							"isDeprecated": false,
 							"deprecationReason": null
-						},
-						{
-							"name": "viewerIsEnrolled",
-							"description": "Is the viewer enrolled in this enrollable.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Boolean",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
 						}
 					],
 					"inputFields": null,
@@ -2501,17 +2451,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Study",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -2996,6 +2946,35 @@
 					"possibleTypes": null
 				},
 				{
+					"kind": "ENUM",
+					"name": "EnrollmentStatus",
+					"description": "The possible states of an enrollment.",
+					"fields": null,
+					"inputFields": null,
+					"interfaces": null,
+					"enumValues": [
+						{
+							"name": "ENROLLED",
+							"description": "The User is notified of all conversations.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "IGNORED",
+							"description": "The User is never notified.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "UNENROLLED",
+							"description": "The User is notified only when participating or @mentioned.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"possibleTypes": null
+				},
+				{
 					"kind": "OBJECT",
 					"name": "Event",
 					"description": "Represents a event between two nodes.",
@@ -3099,6 +3078,11 @@
 					],
 					"inputFields": null,
 					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "LessonTimelineItem",
+							"ofType": null
+						},
 						{
 							"kind": "INTERFACE",
 							"name": "Node",
@@ -3318,22 +3302,22 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Study",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -3366,17 +3350,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Study",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -4425,6 +4409,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "enrollmentStatus",
+							"description": "Is the viewer dismissed, enrolled, or ignoring this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "ENUM",
+									"name": "EnrollmentStatus",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "events",
 							"description": "Returns a list of events associated with the lesson.",
 							"args": [
@@ -4655,6 +4655,73 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "timeline",
+							"description": "Returns a list of events, comments, etc. associated with the lesson.",
+							"args": [
+								{
+									"name": "after",
+									"description": "Returns the elements in the list that come after the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "before",
+									"description": "Returns the elements in the list that come before the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "first",
+									"description": "Returns the first n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "last",
+									"description": "Returns the last n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "orderBy",
+									"description": "Ordering options for events returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "EventOrder",
+										"ofType": null
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "LessonTimelineConnection",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "title",
 							"description": "The title of the lesson.",
 							"args": [],
@@ -4753,22 +4820,6 @@
 						{
 							"name": "viewerDidAuthor",
 							"description": "Did the viewer author this lesson.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Boolean",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "viewerIsEnrolled",
-							"description": "Is the viewer enrolled in this enrollable.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -5164,6 +5215,11 @@
 						{
 							"kind": "INTERFACE",
 							"name": "Labelable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "LessonTimelineItem",
 							"ofType": null
 						},
 						{
@@ -5570,6 +5626,158 @@
 							"deprecationReason": null
 						}
 					],
+					"possibleTypes": null
+				},
+				{
+					"kind": "OBJECT",
+					"name": "LessonTimelineConnection",
+					"description": "A connection type for LessonTimelineItem.",
+					"fields": [
+						{
+							"name": "pageInfo",
+							"description": "Information to aid in pagination.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "PageInfo",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "edges",
+							"description": "A list of edges.",
+							"args": [],
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "LessonTimelineItemEdge",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "nodes",
+							"description": "A list of nodes.",
+							"args": [],
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "INTERFACE",
+									"name": "LessonTimelineItem",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "totalCount",
+							"description": "The total count of items in the connection.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INTERFACE",
+					"name": "LessonTimelineItem",
+					"description": "Items that can be a part of a lesson's timeline.",
+					"fields": [
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": [
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Event",
+							"ofType": null
+						}
+					]
+				},
+				{
+					"kind": "OBJECT",
+					"name": "LessonTimelineItemEdge",
+					"description": "An edge type for LessonTimelineItem.",
+					"fields": [
+						{
+							"name": "cursor",
+							"description": "A cursor for use in pagination.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "node",
+							"description": "The item at the end of the edge.",
+							"args": [],
+							"type": {
+								"kind": "INTERFACE",
+								"name": "LessonTimelineItem",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [],
+					"enumValues": null,
 					"possibleTypes": null
 				},
 				{
@@ -6069,60 +6277,6 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "dismiss",
-							"description": "Dismisses viewer from an Enrollable.",
-							"args": [
-								{
-									"name": "input",
-									"description": null,
-									"type": {
-										"kind": "NON_NULL",
-										"name": null,
-										"ofType": {
-											"kind": "INPUT_OBJECT",
-											"name": "DismissInput",
-											"ofType": null
-										}
-									},
-									"defaultValue": null
-								}
-							],
-							"type": {
-								"kind": "INTERFACE",
-								"name": "Enrollable",
-								"ofType": null
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "enroll",
-							"description": "Enrolls viewer in an Enrollable.",
-							"args": [
-								{
-									"name": "input",
-									"description": null,
-									"type": {
-										"kind": "NON_NULL",
-										"name": null,
-										"ofType": {
-											"kind": "INPUT_OBJECT",
-											"name": "EnrollInput",
-											"ofType": null
-										}
-									},
-									"defaultValue": null
-								}
-							],
-							"type": {
-								"kind": "INTERFACE",
-								"name": "Enrollable",
-								"ofType": null
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
 							"name": "giveApple",
 							"description": "Gives an apple to an Appleable.",
 							"args": [
@@ -6364,6 +6518,33 @@
 							"type": {
 								"kind": "OBJECT",
 								"name": "Email",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "updateEnrollment",
+							"description": "Updates the viewer's enrollment status in an Enrollable.",
+							"args": [
+								{
+									"name": "input",
+									"description": null,
+									"type": {
+										"kind": "NON_NULL",
+										"name": null,
+										"ofType": {
+											"kind": "INPUT_OBJECT",
+											"name": "UpdateEnrollmentInput",
+											"ofType": null
+										}
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "INTERFACE",
+								"name": "Enrollable",
 								"ofType": null
 							},
 							"isDeprecated": false,
@@ -6646,17 +6827,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Email",
 							"ofType": null
 						},
 						{
@@ -6666,17 +6837,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Topic",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Event",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
 							"ofType": null
 						},
 						{
@@ -6686,12 +6852,27 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Email",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "Topic",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Event",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -7944,12 +8125,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Study",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "User",
 							"ofType": null
 						},
 						{
@@ -7959,12 +8140,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -8467,6 +8648,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "enrollmentStatus",
+							"description": "Is the viewer dismissed, enrolled, or ignoring this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "ENUM",
+									"name": "EnrollmentStatus",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "id",
 							"description": null,
 							"args": [],
@@ -8942,22 +9139,6 @@
 							},
 							"isDeprecated": false,
 							"deprecationReason": null
-						},
-						{
-							"name": "viewerIsEnrolled",
-							"description": "Is the viewer enrolled in this enrollable?",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Boolean",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
 						}
 					],
 					"inputFields": null,
@@ -9160,12 +9341,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Label",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
@@ -9175,7 +9356,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -9459,17 +9640,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "AccessToken",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "EVT",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "PRT",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AccessToken",
 							"ofType": null
 						}
 					]
@@ -10196,27 +10377,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
 							"ofType": null
 						},
 						{
@@ -10226,7 +10392,22 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Topic",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -10258,6 +10439,45 @@
 								"kind": "ENUM",
 								"name": "EmailType",
 								"ofType": null
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
+					"name": "UpdateEnrollmentInput",
+					"description": "Input type for UpdateEnrollment.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "enrollableId",
+							"description": "The Enrollable ID, for which to change enrollment state.",
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "status",
+							"description": "The new status of the enrollment.",
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "ENUM",
+									"name": "EnrollmentStatus",
+									"ofType": null
+								}
 							},
 							"defaultValue": null
 						}
@@ -10742,12 +10962,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Label",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
@@ -10757,7 +10977,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -11225,6 +11445,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "enrollmentStatus",
+							"description": "Is the viewer dismissed, enrolled, or ignoring this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "ENUM",
+									"name": "EnrollmentStatus",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "id",
 							"description": null,
 							"args": [],
@@ -11583,22 +11819,6 @@
 						{
 							"name": "viewerCanEnroll",
 							"description": "Can the viewer enroll in this enrollable.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Boolean",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "viewerIsEnrolled",
-							"description": "Is the viewer enrolled in this enrollable.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",

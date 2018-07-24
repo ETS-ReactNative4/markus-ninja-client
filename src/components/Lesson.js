@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { get, nullOr } from 'utils'
 import LessonBody from 'components/LessonBody'
 import LessonHeader from 'components/LessonHeader'
+import LessonTimeline from 'components/LessonTimeline'
 
 class Lesson extends Component {
   render() {
@@ -19,6 +20,7 @@ class Lesson extends Component {
         <Link to={`./${lesson.number-1}`}>Previous</Link>}
         {lesson.hasNextLesson &&
         <Link to={`./${lesson.number+1}`}>Next</Link>}
+        <LessonTimeline lesson={lesson} />
       </div>
     )
   }
@@ -33,6 +35,7 @@ export default createFragmentContainer(Lesson, graphql`
     hasNextLesson
     hasPrevLesson
     number
+    ...LessonTimeline_lesson
     title
     publishedAt
     updatedAt
