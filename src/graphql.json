@@ -297,6 +297,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "lessonTimelineEdge",
+							"description": "The edge from the lesson's timeline connection.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "LessonTimelineEventEdge",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "lesson",
 							"description": "The lesson commented on.",
 							"args": [],
@@ -943,13 +959,23 @@
 					"possibleTypes": null
 				},
 				{
+					"kind": "SCALAR",
+					"name": "Boolean",
+					"description": "The `Boolean` scalar type represents `true` or `false`.",
+					"fields": null,
+					"inputFields": null,
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
 					"kind": "INTERFACE",
-					"name": "Authorable",
-					"description": "Body that can be authored.",
+					"name": "Comment",
+					"description": "Represents a comment.",
 					"fields": [
 						{
 							"name": "author",
-							"description": "The user who authored this body. ",
+							"description": "The user who authored this comment. ",
 							"args": [],
 							"type": {
 								"kind": "OBJECT",
@@ -961,7 +987,7 @@
 						},
 						{
 							"name": "body",
-							"description": "The body as Markdown.",
+							"description": "The comment body as Markdown.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -977,7 +1003,7 @@
 						},
 						{
 							"name": "bodyHTML",
-							"description": "The body rendered to HTML.",
+							"description": "The comment body rendered to HTML.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -992,15 +1018,107 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "bodyText",
-							"description": "The body rendered to text.",
+							"name": "id",
+							"description": null,
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
 								"name": null,
 								"ofType": {
 									"kind": "SCALAR",
-									"name": "String",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "viewerDidAuthor",
+							"description": "Did the viewer author this comment.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Boolean",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": [
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						}
+					]
+				},
+				{
+					"kind": "INTERFACE",
+					"name": "Commentable",
+					"description": "Things that can be commented on.",
+					"fields": [
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": []
+				},
+				{
+					"kind": "OBJECT",
+					"name": "CommentedEvent",
+					"description": "Represents a commented event on a given subject.",
+					"fields": [
+						{
+							"name": "comment",
+							"description": "The comment assocated with this `commented` event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "INTERFACE",
+									"name": "Comment",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "commentable",
+							"description": "The commentable associated with this `commented` event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "INTERFACE",
+									"name": "Commentable",
 									"ofType": null
 								}
 							},
@@ -1040,43 +1158,15 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "publishedAt",
-							"description": "Identifies when the lesson comment was published at.",
-							"args": [],
-							"type": {
-								"kind": "SCALAR",
-								"name": "Time",
-								"ofType": null
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "updatedAt",
-							"description": "Identifies the date and time when the object was last updated.",
+							"name": "user",
+							"description": "The user who performed the event.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
 								"name": null,
 								"ofType": {
-									"kind": "SCALAR",
-									"name": "Time",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "viewerDidAuthor",
-							"description": "Did the viewer author this body.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Boolean",
+									"kind": "OBJECT",
+									"name": "User",
 									"ofType": null
 								}
 							},
@@ -1085,28 +1175,18 @@
 						}
 					],
 					"inputFields": null,
-					"interfaces": null,
-					"enumValues": null,
-					"possibleTypes": [
+					"interfaces": [
 						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
+							"kind": "INTERFACE",
+							"name": "LessonTimelineEvent",
 							"ofType": null
 						},
 						{
-							"kind": "OBJECT",
-							"name": "Lesson",
+							"kind": "INTERFACE",
+							"name": "Node",
 							"ofType": null
 						}
-					]
-				},
-				{
-					"kind": "SCALAR",
-					"name": "Boolean",
-					"description": "The `Boolean` scalar type represents `true` or `false`.",
-					"fields": null,
-					"inputFields": null,
-					"interfaces": null,
+					],
 					"enumValues": null,
 					"possibleTypes": null
 				},
@@ -1186,52 +1266,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "AppledStudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EmailConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppleGiverConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "StudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "TopicConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeConnection",
 							"ofType": null
 						},
 						{
@@ -1241,12 +1276,57 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "LessonConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "EventConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonConnection",
+							"name": "TopicConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabelConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppledStudyConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EmailConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverConnection",
 							"ofType": null
 						}
 					]
@@ -1634,6 +1714,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "deletedLessonTimelineEdgeId",
+							"description": "The ID of the edge from the lesson's timeline connection.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "lesson",
 							"description": "The lesson the deleted lesson comment was for.",
 							"args": [],
@@ -1942,7 +2038,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -1952,7 +2048,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Label",
 							"ofType": null
 						}
 					]
@@ -2046,52 +2142,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "AppledStudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EmailEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppleGiverEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "StudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "TopicEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeEdge",
 							"ofType": null
 						},
 						{
@@ -2101,12 +2152,57 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "LessonEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "EventEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonEdge",
+							"name": "TopicEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabelEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppledStudyEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EmailEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverEdge",
 							"ofType": null
 						}
 					]
@@ -2456,12 +2552,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "User",
 							"ofType": null
 						}
 					]
@@ -3080,11 +3176,6 @@
 					"interfaces": [
 						{
 							"kind": "INTERFACE",
-							"name": "LessonTimelineItem",
-							"ofType": null
-						},
-						{
-							"kind": "INTERFACE",
 							"name": "Node",
 							"ofType": null
 						}
@@ -3307,7 +3398,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
@@ -3317,7 +3408,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "User",
 							"ofType": null
 						}
 					]
@@ -3355,12 +3446,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "User",
 							"ofType": null
 						}
 					]
@@ -3956,12 +4047,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -4200,7 +4291,7 @@
 					"fields": [
 						{
 							"name": "author",
-							"description": "The user who authored this body. ",
+							"description": "The user who authored this lesson. ",
 							"args": [],
 							"type": {
 								"kind": "OBJECT",
@@ -4212,7 +4303,7 @@
 						},
 						{
 							"name": "body",
-							"description": "The body as Markdown.",
+							"description": "The lesson body as Markdown.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -4228,7 +4319,7 @@
 						},
 						{
 							"name": "bodyHTML",
-							"description": "The body rendered to HTML.",
+							"description": "The lesson body rendered to HTML.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -4244,7 +4335,7 @@
 						},
 						{
 							"name": "bodyText",
-							"description": "The body rendered to text.",
+							"description": "The lesson body rendered to text.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -4418,73 +4509,6 @@
 								"ofType": {
 									"kind": "ENUM",
 									"name": "EnrollmentStatus",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "events",
-							"description": "Returns a list of events associated with the lesson.",
-							"args": [
-								{
-									"name": "after",
-									"description": "Returns the elements in the list that come after the specified global ID.",
-									"type": {
-										"kind": "SCALAR",
-										"name": "String",
-										"ofType": null
-									},
-									"defaultValue": null
-								},
-								{
-									"name": "before",
-									"description": "Returns the elements in the list that come before the specified global ID.",
-									"type": {
-										"kind": "SCALAR",
-										"name": "String",
-										"ofType": null
-									},
-									"defaultValue": null
-								},
-								{
-									"name": "first",
-									"description": "Returns the first n elements form the list.",
-									"type": {
-										"kind": "SCALAR",
-										"name": "Int",
-										"ofType": null
-									},
-									"defaultValue": null
-								},
-								{
-									"name": "last",
-									"description": "Returns the last n elements form the list.",
-									"type": {
-										"kind": "SCALAR",
-										"name": "Int",
-										"ofType": null
-									},
-									"defaultValue": null
-								},
-								{
-									"name": "orderBy",
-									"description": "Ordering options for events returned from the connection.",
-									"type": {
-										"kind": "INPUT_OBJECT",
-										"name": "EventOrder",
-										"ofType": null
-									},
-									"defaultValue": null
-								}
-							],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "OBJECT",
-									"name": "EventConnection",
 									"ofType": null
 								}
 							},
@@ -4836,11 +4860,6 @@
 					],
 					"inputFields": null,
 					"interfaces": [
-						{
-							"kind": "INTERFACE",
-							"name": "Authorable",
-							"ofType": null
-						},
 						{
 							"kind": "INTERFACE",
 							"name": "Enrollable",
@@ -5199,7 +5218,7 @@
 					"interfaces": [
 						{
 							"kind": "INTERFACE",
-							"name": "Authorable",
+							"name": "Comment",
 							"ofType": null
 						},
 						{
@@ -5215,11 +5234,6 @@
 						{
 							"kind": "INTERFACE",
 							"name": "Labelable",
-							"ofType": null
-						},
-						{
-							"kind": "INTERFACE",
-							"name": "LessonTimelineItem",
 							"ofType": null
 						},
 						{
@@ -5631,7 +5645,7 @@
 				{
 					"kind": "OBJECT",
 					"name": "LessonTimelineConnection",
-					"description": "A connection type for LessonTimelineItem.",
+					"description": "A connection type for LessonTimelineEvent.",
 					"fields": [
 						{
 							"name": "pageInfo",
@@ -5658,7 +5672,7 @@
 								"name": null,
 								"ofType": {
 									"kind": "OBJECT",
-									"name": "LessonTimelineItemEdge",
+									"name": "LessonTimelineEventEdge",
 									"ofType": null
 								}
 							},
@@ -5674,7 +5688,7 @@
 								"name": null,
 								"ofType": {
 									"kind": "INTERFACE",
-									"name": "LessonTimelineItem",
+									"name": "LessonTimelineEvent",
 									"ofType": null
 								}
 							},
@@ -5705,8 +5719,8 @@
 				},
 				{
 					"kind": "INTERFACE",
-					"name": "LessonTimelineItem",
-					"description": "Items that can be a part of a lesson's timeline.",
+					"name": "LessonTimelineEvent",
+					"description": "Events that can be a part of a lesson's timeline.",
 					"fields": [
 						{
 							"name": "id",
@@ -5731,20 +5745,20 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "ReferencedEvent",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Event",
+							"name": "CommentedEvent",
 							"ofType": null
 						}
 					]
 				},
 				{
 					"kind": "OBJECT",
-					"name": "LessonTimelineItemEdge",
-					"description": "An edge type for LessonTimelineItem.",
+					"name": "LessonTimelineEventEdge",
+					"description": "An edge type for LessonTimelineEvent.",
 					"fields": [
 						{
 							"name": "cursor",
@@ -5764,11 +5778,11 @@
 						},
 						{
 							"name": "node",
-							"description": "The item at the end of the edge.",
+							"description": "The event at the end of the edge.",
 							"args": [],
 							"type": {
 								"kind": "INTERFACE",
-								"name": "LessonTimelineItem",
+								"name": "LessonTimelineEvent",
 								"ofType": null
 							},
 							"isDeprecated": false,
@@ -6827,7 +6841,37 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Email",
+							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "ReferencedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Event",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CommentedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Topic",
 							"ofType": null
 						},
 						{
@@ -6837,7 +6881,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
@@ -6852,27 +6896,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Event",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Email",
 							"ofType": null
 						}
 					]
@@ -7768,6 +7792,161 @@
 					"possibleTypes": null
 				},
 				{
+					"kind": "OBJECT",
+					"name": "ReferencedEvent",
+					"description": "Represents a referenced event on a given subject.",
+					"fields": [
+						{
+							"name": "createdAt",
+							"description": "Identifies the date and time when the object was created.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "isCrossStudy",
+							"description": "Is this reference from a different study? ",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Boolean",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "resourcePath",
+							"description": "The HTTP path to this resource.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "URI",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "source",
+							"description": "The source of the event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "INTERFACE",
+									"name": "EventSourceable",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "target",
+							"description": "The target of the event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "INTERFACE",
+									"name": "EventTargetable",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "url",
+							"description": "The HTTP URL to this resource.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "URI",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "user",
+							"description": "The user who performed the event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "User",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "LessonTimelineEvent",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Node",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "UniformResourceLocatable",
+							"ofType": null
+						}
+					],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
 					"kind": "INPUT_OBJECT",
 					"name": "RemoveLabelInput",
 					"description": "Input type for RemoveLabel.",
@@ -8130,7 +8309,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
@@ -8140,12 +8324,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "User",
 							"ofType": null
 						}
 					]
@@ -9341,7 +9520,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
@@ -9351,12 +9535,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Label",
 							"ofType": null
 						}
 					]
@@ -9640,12 +9819,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "AccessToken",
+							"name": "EVT",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EVT",
+							"name": "AccessToken",
 							"ofType": null
 						},
 						{
@@ -10382,22 +10561,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "User",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
+							"name": "ReferencedEvent",
 							"ofType": null
 						},
 						{
@@ -10408,6 +10572,26 @@
 						{
 							"kind": "OBJECT",
 							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Topic",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "User",
 							"ofType": null
 						}
 					]
@@ -10962,7 +11146,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
@@ -10972,12 +11161,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Label",
 							"ofType": null
 						}
 					]

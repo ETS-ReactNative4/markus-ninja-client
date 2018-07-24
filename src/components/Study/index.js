@@ -76,7 +76,7 @@ export default withRouter(createFragmentContainer(Study, graphql`
     updatedAt
     url
     viewerCanAdmin
-    viewerHasAppled
+    ...AppleButton_appleable
     ...EnrollmentSelect_enrollable
   }
 `))

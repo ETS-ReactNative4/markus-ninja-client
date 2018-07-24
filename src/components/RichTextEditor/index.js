@@ -31,6 +31,13 @@ class RichTextEditor extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    if (this.props.submit) {
+      const editorState = EditorState.push(this.state.editorState, ContentState.createFromText(""))
+      this.setState({ editorState })
+    }
+  }
+
   render() {
     const { editorState } = this.state
     const { placeholder } = this.props

@@ -8,6 +8,7 @@ import { get, nullOr } from 'utils'
 import LessonBody from 'components/LessonBody'
 import LessonHeader from 'components/LessonHeader'
 import LessonTimeline from 'components/LessonTimeline'
+import AddLessonCommentForm from 'components/AddLessonCommentForm'
 
 class Lesson extends Component {
   render() {
@@ -21,6 +22,7 @@ class Lesson extends Component {
         {lesson.hasNextLesson &&
         <Link to={`./${lesson.number+1}`}>Next</Link>}
         <LessonTimeline lesson={lesson} />
+        <AddLessonCommentForm lesson={lesson} />
       </div>
     )
   }
@@ -35,11 +37,12 @@ export default createFragmentContainer(Lesson, graphql`
     hasNextLesson
     hasPrevLesson
     number
-    ...LessonTimeline_lesson
     title
     publishedAt
     updatedAt
     viewerCanUpdate
     viewerDidAuthor
+    ...LessonTimeline_lesson
+    ...AddLessonCommentForm_lesson
   }
 `)

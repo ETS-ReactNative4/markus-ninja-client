@@ -17,9 +17,9 @@ class LessonBody extends Component {
     if (!edit) {
       return (
         <div className="LessonBody">
-          <div className="UpdateLessonBodyForm__bodyHTML">{convert(lesson.bodyHTML)}</div>
+          <div className="LessonBody__bodyHTML">{convert(lesson.bodyHTML)}</div>
           <button
-            className="UpdateLessonBodyForm__edit"
+            className="LessonBody__edit"
             onClick={this.handleToggleEdit}
           >
             Edit
@@ -30,7 +30,7 @@ class LessonBody extends Component {
       return (
         <form onSubmit={this.handleSubmit}>
           <RichTextEditor
-            id="UpdateLessonBodyForm__body"
+            id="LessonBody__body"
             onChange={this.handleChange}
             placeholder="Begin your lesson"
             initialValue={body}

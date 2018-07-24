@@ -9,7 +9,7 @@ import Lesson from 'components/Lesson'
 import { EVENTS_PER_PAGE } from 'consts'
 
 const LessonPageQuery = graphql`
-  query LessonPageQuery($owner: String!, $name: String!, $number: Int!, $count: Int!, $after: String!) {
+  query LessonPageQuery($owner: String!, $name: String!, $number: Int!, $count: Int!, $after: String) {
     study(owner: $owner, name: $name) {
       lesson(number: $number) {
         ...Lesson_lesson

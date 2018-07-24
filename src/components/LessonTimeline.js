@@ -3,7 +3,8 @@ import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import LessonTimelineItem from './LessonTimelineItem'
+import { withRouter } from 'react-router'
+import LessonTimelineEvent from './LessonTimelineEvent'
 import { get } from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
@@ -14,7 +15,7 @@ class LessonTimeline extends Component {
     return (
       <div className="LessonTimeline">
         {timelineEdges.map(({node}) => (
-          <LessonTimelineItem key={node.__id} item={node} />
+          <LessonTimelineEvent key={node.id} item={node} />
         ))}
         <button
           className="LessonTimeline__more"
@@ -40,23 +41,24 @@ class LessonTimeline extends Component {
   }
 }
 
-export default createPaginationContainer(LessonTimeline,
+export default withRouter(createPaginationContainer(LessonTimeline,
   {
     lesson: graphql`
       fragment LessonTimeline_lesson on Lesson {
         timeline(
           first: $count,
           after: $after,
-        ) @connection(key: "LessonTimeline_timeline") {
+          orderBy: {direction: ASC, field: CREATED_AT}
+        ) @connection(key: "LessonTimeline_timeline", filters: []) {
           edges {
             node {
               __typename
               id
-              ...on LessonComment {
-                ...LessonComment_comment
+              ...on CommentedEvent {
+                ...CommentedEvent_event
               }
-              ...on Event {
-                ...Event_event
+              ...on ReferencedEvent {
+                ...ReferencedEvent_event
               }
             }
           }
@@ -98,10 +100,10 @@ export default createPaginationContainer(LessonTimeline,
       return {
         owner: props.match.params.owner,
         name: props.match.params.name,
-        number: parseInt(this.props.match.params.number, 10),
+        number: parseInt(props.match.params.number, 10),
         count: paginationInfo.count,
         after: paginationInfo.cursor,
       }
     },
   },
-)
+))

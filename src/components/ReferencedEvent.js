@@ -4,36 +4,31 @@ import {
   graphql,
 } from 'react-relay'
 import { Link } from 'react-router-dom'
-import convert from 'htmr'
 import { get, timeDifferenceForDate } from 'utils'
 
-class Event extends Component {
+class ReferencedEvent extends Component {
   render() {
     const event = get(this.props, "event", {})
     return (
-      <div className="Event">
+      <div className="ReferencedEvent">
         <Link to={get(event, "user.resourcePath", "")}>@{get(event, "user.login", "")}</Link>
-        <span>{event.action} {timeDifferenceForDate(event.createdAt)}</span>
-        <div>{convert(get(event, "source.bodyHTML"))}</div>
+        <span>{event.isCrossStudy && "cross-"}referenced this {timeDifferenceForDate(event.createdAt)}</span>
+        <div>
+          form
+          <Link to={event.resourcePath}>here</Link>
+        </div>
       </div>
     )
   }
 }
 
-export default createFragmentContainer(Event, graphql`
-  fragment Event_event on Event {
-    action
+export default createFragmentContainer(ReferencedEvent, graphql`
+  fragment ReferencedEvent_event on ReferencedEvent {
     createdAt
     id
-    source {
-      id
-      ...on LessonComment {
-        bodyHTML
-      }
-    }
-    target {
-      id
-    }
+    isCrossStudy
+    resourcePath
+    url
     user {
       login
       resourcePath
