@@ -12,18 +12,21 @@ class EnrollmentSelect extends React.Component {
   }
   render() {
     const enrollable = get(this.props, "enrollable", {})
+    const studentCount = get(enrollable, "students.totalCount")
     const { status } = this.state
     return (
       <div className="EnrollmentSelect">
-        {enrollable.viewerCanEnroll &&
         <select
           value={status}
+          disabled={!enrollable.viewerCanEnroll}
           onChange={this.handleChange}
         >
           <option value="ENROLLED">Enrolled</option>
           <option value="IGNORED">Ignored</option>
           <option value="UNENROLLED">Unenrolled</option>
-        </select>}
+        </select>
+        {!isNil(studentCount) &&
+        <span className="EnrollmentSelect__count">{studentCount}</span>}
       </div>
     )
   }
@@ -49,5 +52,10 @@ export default createFragmentContainer(EnrollmentSelect, graphql`
     enrollmentStatus
     id
     viewerCanEnroll
+    ...on Study {
+      students: enrollees(first: 0) {
+        totalCount
+      }
+    }
   }
 `)

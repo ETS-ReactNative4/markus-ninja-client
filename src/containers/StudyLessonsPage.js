@@ -5,12 +5,12 @@ import {
 } from 'react-relay'
 import { Link } from 'react-router-dom'
 import environment from 'Environment'
-import LessonList from 'components/LessonList'
+import StudyLessons from 'components/StudyLessons'
 
 import { LESSONS_PER_PAGE } from 'consts'
 
-const LessonListPageQuery = graphql`
-  query LessonListPageQuery(
+const StudyLessonsPageQuery = graphql`
+  query StudyLessonsPageQuery(
     $owner: String!,
     $name: String!,
     $count: Int!,
@@ -19,17 +19,17 @@ const LessonListPageQuery = graphql`
     study(owner: $owner, name: $name) {
       id
       resourcePath
-      ...LessonList_study
+      ...StudyLessons_study
     }
   }
 `
 
-class LessonListPage extends Component {
+class StudyLessonsPage extends Component {
   render() {
     return (
       <QueryRenderer
         environment={environment}
-        query={LessonListPageQuery}
+        query={StudyLessonsPageQuery}
         variables={{
           owner: this.props.match.params.owner,
           name: this.props.match.params.name,
@@ -42,12 +42,12 @@ class LessonListPage extends Component {
             return (
               <div>
                 <Link
-                  className="LessonListPage__new-lesson"
+                  className="StudyLessonsPage__new-lesson"
                   to={props.study.resourcePath + "/lessons/new"}
                 >
                   New lesson
                 </Link>
-                <LessonList study={props.study}></LessonList>
+                <StudyLessons study={props.study}></StudyLessons>
               </div>
             )
           }
@@ -58,4 +58,4 @@ class LessonListPage extends Component {
   }
 }
 
-export default LessonListPage
+export default StudyLessonsPage

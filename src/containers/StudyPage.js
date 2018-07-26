@@ -8,7 +8,7 @@ import environment from 'Environment'
 import Study from 'components/Study'
 import CreateLessonPage from 'containers/CreateLessonPage'
 import LessonPage from 'containers/LessonPage'
-import LessonListPage from 'containers/LessonListPage'
+import StudyLessonsPage from 'containers/StudyLessonsPage'
 import StudyOverviewPage from 'containers/StudyOverviewPage'
 import StudySettingsPage from 'containers/StudySettingsPage'
 
@@ -51,7 +51,7 @@ class StudyPage extends Component {
                   <Route
                     exact
                     path="/:owner/:name/lessons"
-                    component={LessonListPage}
+                    component={StudyLessonsPage}
                   />
                   <Route
                     exact

@@ -1,0 +1,36 @@
+.StudyMetaDetails {
+  display: block;
+}
+
+.StudyMetaDetails.open .StudyMetaDetails__content {
+  display: none;
+}
+
+.StudyMetaDetails__edit {
+  display: none;
+}
+
+.StudyMetaDetails.open .StudyMetaDetails__edit {
+  display: block;
+}
+
+.StudyMetaDetails__edit-toggle {
+  float: right;
+}
+
+.StudyMetaTopics {
+  display: block;
+}
+
+.StudyMetaTopics.open .StudyMetaTopics__content {
+  display: none;
+}
+
+.StudyMetaTopics__edit {
+  display: none;
+}
+
+.StudyMetaTopics.open .StudyMetaTopics__edit {
+  display: block;
+}
+

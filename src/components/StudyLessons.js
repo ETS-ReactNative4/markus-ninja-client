@@ -9,7 +9,7 @@ import { get } from 'utils'
 
 import { LESSONS_PER_PAGE } from 'consts'
 
-class LessonList extends Component {
+class StudyLessons extends Component {
   render() {
     const lessonEdges = get(this.props, "study.lessons.edges", [])
     const resourcePath = get(this.props, "study.resourcePath", "")
@@ -18,18 +18,18 @@ class LessonList extends Component {
         {
           lessonEdges.length < 1 ? (
             <Link
-              className="LessonList__new-lesson"
+              className="StudyLessons__new-lesson"
               to={resourcePath + "/lessons/new"}
             >
               Create a lesson
             </Link>
           ) : (
-            <div className="LessonList__lessons">
+            <div className="StudyLessons__lessons">
               {lessonEdges.map(({node}) => (
                 <LessonPreview key={node.__id} lesson={node} />
               ))}
               <button
-                className="LessonList__more"
+                className="StudyLessons__more"
                 onClick={this._loadMore}
               >
                 More
@@ -55,15 +55,15 @@ class LessonList extends Component {
   }
 }
 
-export default createPaginationContainer(LessonList,
+export default createPaginationContainer(StudyLessons,
   {
     study: graphql`
-      fragment LessonList_study on Study {
+      fragment StudyLessons_study on Study {
         lessons(
           first: $count,
           after: $after,
           orderBy:{direction: ASC field:NUMBER}
-        ) @connection(key: "LessonList_lessons") {
+        ) @connection(key: "StudyLessons_lessons") {
           edges {
             node {
               ...LessonPreview_lesson
@@ -80,14 +80,14 @@ export default createPaginationContainer(LessonList,
   {
     direction: 'forward',
     query: graphql`
-      query LessonListForwardQuery(
+      query StudyLessonsForwardQuery(
         $owner: String!,
         $name: String!,
         $count: Int!,
         $after: String
       ) {
         study(owner: $owner, name: $name) {
-          ...LessonList_study
+          ...StudyLessons_study
         }
       }
     `,

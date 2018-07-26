@@ -7,7 +7,7 @@ import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import environment from 'Environment'
 import LessonPreview from 'components/LessonPreview'
-import StudyHeader from 'components/StudyHeader'
+import StudyMeta from 'components/StudyMeta'
 import { get, isNil } from 'utils'
 
 const StudyOverviewPageQuery = graphql`
@@ -15,9 +15,16 @@ const StudyOverviewPageQuery = graphql`
     study(owner: $owner, name: $name) {
       id
       description
-      resourcePath
       lesson(number: 1) {
         ...LessonPreview_lesson
+      }
+      resourcePath
+      topics(first: 10) {
+        nodes {
+          id
+          name
+          resourcePath
+        }
       }
     }
   }
@@ -41,7 +48,7 @@ class StudyOverviewPage extends Component {
           } else if (props) {
             return (
               <div>
-                <StudyHeader study={get(props, "study", {})}  />
+                <StudyMeta study={get(props, "study", {})}  />
                 {isNil(lesson)
                 ? <Link
                     className="LessonList__new-lesson"

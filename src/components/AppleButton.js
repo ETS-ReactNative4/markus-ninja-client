@@ -10,25 +10,26 @@ import TakeAppleMutation from 'mutations/TakeAppleMutation'
 class AppleButton extends React.Component {
   render() {
     const appleable = get(this.props, "appleable", {})
-    if (appleable.viewerHasAppled) {
-      return (
-        <button
-          className="AppleButton__take"
-          onClick={this.handleTake}
-        >
-          Take
-        </button>
-      )
-    } else {
-      return (
-        <button
-          className="AppleButton__give"
-          onClick={this.handleGive}
-        >
-          Give
-        </button>
-      )
-    }
+    return (
+      <span className="AppleButton">
+        {appleable.viewerHasAppled
+        ? <button
+            className="AppleButton__take"
+            onClick={this.handleTake}
+          >
+            Take apple
+          </button>
+        : <button
+            className="AppleButton__give"
+            onClick={this.handleGive}
+          >
+            Give apple
+          </button>}
+        <span className="AppleButton__count">
+          {get(appleable, "appleGivers.totalCount", 0)}
+        </span>
+      </span>
+    )
   }
 
   handleGive = (e) => {
@@ -58,5 +59,10 @@ export default createFragmentContainer(AppleButton, graphql`
   fragment AppleButton_appleable on Appleable {
     id
     viewerHasAppled
+    ...on Study {
+      appleGivers(first: 0) {
+        totalCount
+      }
+    }
   }
 `)

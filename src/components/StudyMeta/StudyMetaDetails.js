@@ -4,9 +4,7 @@ import UpdateStudyMutation from 'mutations/UpdateStudyMutation'
 import { get, isNil } from 'utils'
 import cls from 'classnames'
 
-import './StudyHeader.css'
-
-class StudyHeader extends Component {
+class StudyMetaDetails extends Component {
   state = {
     error: null,
     description: this.props.study.description,
@@ -17,22 +15,20 @@ class StudyHeader extends Component {
     const study = get(this.props, "study", {})
     const { description, error, open } = this.state
     return (
-      <div className={cls("StudyHeader", {open})}>
-        <div className="StudyHeader__show">
-          <div className="StudyHeader__actions">
-            <button
-              className="btn"
-              type="button"
-              onClick={this.handleToggleOpen}
-            >
-              Edit
-            </button>
-          </div>
-          <div className="StudyHeader__meta">
-            <span className="StudyHeader__study-description">{study.description}</span>
-          </div>
+      <div className={cls("StudyMetaDetails", {open})}>
+        <div className="StudyMetaDetails__content">
+          <span className="StudyMetaDetails__study-description">{study.description}</span>
         </div>
-        <div className="StudyHeader__edit">
+        <span className="StudyMetaDetails__edit-toggle">
+          <button
+            className="btn"
+            type="button"
+            onClick={this.handleToggleOpen}
+          >
+            Edit
+          </button>
+        </span>
+        <div className="StudyMetaDetails__edit">
           <form onSubmit={this.handleSubmit}>
             <input
               id="study-description"
@@ -91,4 +87,4 @@ class StudyHeader extends Component {
   }
 }
 
-export default withRouter(StudyHeader)
+export default withRouter(StudyMetaDetails)
