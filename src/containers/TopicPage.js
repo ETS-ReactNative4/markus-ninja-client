@@ -4,15 +4,12 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import TopicTopicables from 'components/TopicTopicables'
-import { TOPICABLES_PER_PAGE } from 'consts'
+import TopicSearchPage from 'containers/TopicSearchPage'
 
 const TopicPageQuery = graphql`
-  query TopicPageQuery($count: Int!, $after: String, $name: String!) {
+  query TopicPageQuery($name: String!) {
     topic(name: $name) {
       id
-      name
-      ...TopicTopicables_topic
     }
   }
 `
@@ -24,7 +21,6 @@ class TopicPage extends Component {
         environment={environment}
         query={TopicPageQuery}
         variables={{
-          count: TOPICABLES_PER_PAGE,
           name: this.props.match.params.name,
         }}
         render={({error,  props}) => {
@@ -33,7 +29,7 @@ class TopicPage extends Component {
           } else if (props) {
             return (
               <div className="TopicPage">
-                <TopicTopicables topic={props.topic} />
+                <TopicSearchPage topic={props.topic} />
               </div>
             )
           }

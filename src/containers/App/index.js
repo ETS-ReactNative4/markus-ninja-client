@@ -24,13 +24,13 @@ class App extends Component {
         <div className="App__content">
           <Switch>
             <Route exact path="/" component={ViewerStudiesPage} />
-            <Route exact path="/new" component={CreateStudyPage} />
+            <PrivateRoute exact path="/new" component={CreateStudyPage} />
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/logout" component={LogoutPage} />
             <Route exact path="/research" component={ResearchPage} />
             <Route exact path="/search" component={SearchPage} />
             <Route exact path="/signup" component={SignupPage} />
-            <PrivateRoute path="/settings" component={UserSettingsPage} />
+            <PrivateRoute exact path="/settings" component={UserSettingsPage} />
             <Route exact path="/topics/:name" component={TopicPage} />
             <Route exact path="/:login" component={UserPage} />
             <Route path="/:owner/:name" component={StudyPage} />

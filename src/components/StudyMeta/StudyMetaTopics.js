@@ -81,7 +81,7 @@ class StudyMetaTopics extends Component {
     const { topics } = this.state
     UpdateTopicsMutation(
       this.props.study.id,
-      topics,
+      topics.split(" "),
       (error) => {
         if (!isNil(error)) {
           this.setState({ error: error.message })
