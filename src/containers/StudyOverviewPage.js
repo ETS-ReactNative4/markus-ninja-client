@@ -9,9 +9,10 @@ import environment from 'Environment'
 import LessonPreview from 'components/LessonPreview'
 import StudyMeta from 'components/StudyMeta'
 import { get, isNil } from 'utils'
+import { TOPICS_PER_PAGE } from 'consts'
 
 const StudyOverviewPageQuery = graphql`
-  query StudyOverviewPageQuery($owner: String!, $name: String!) {
+  query StudyOverviewPageQuery($owner: String!, $name: String!, $count: Int!, $after: String) {
     study(owner: $owner, name: $name) {
       id
       description
@@ -19,13 +20,7 @@ const StudyOverviewPageQuery = graphql`
         ...LessonPreview_lesson
       }
       resourcePath
-      topics(first: 10) {
-        nodes {
-          id
-          name
-          resourcePath
-        }
-      }
+      ...StudyMetaTopics_study
     }
   }
 `
@@ -40,6 +35,7 @@ class StudyOverviewPage extends Component {
         variables={{
           owner: match.params.owner,
           name: match.params.name,
+          count: TOPICS_PER_PAGE,
         }}
         render={({error,  props}) => {
           const lesson = get(props, "study.lesson", null)

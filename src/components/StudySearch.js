@@ -1,34 +1,38 @@
 import React, {Component} from 'react'
 import {
   QueryRenderer,
+  createFragmentContainer,
   graphql,
 } from 'react-relay'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import queryString from 'query-string'
 import environment from 'Environment'
-import StudyPreview from 'components/StudyPreview'
+import SearchResultItemPreview from 'components/SearchResultItemPreview'
 import Counter from 'components/Counter'
 import { get } from 'utils'
 
 import { SEARCH_RESULTS_PER_PAGE } from 'consts'
 
-const TopicSearchPageQuery = graphql`
-  query TopicSearchPageQuery(
+const StudySearchQuery = graphql`
+  query StudySearchQuery(
     $count: Int!,
     $after: String,
     $orderBy: SearchOrder,
-    $within: ID!
     $query: String!,
-    $type: SearchType!
+    $type: SearchType!,
+    $within: ID!,
   ) {
-    search(first: $count, after: $after, orderBy: $orderBy, within: $within, query: $query, type: $type) {
+    search(first: $count, after: $after, orderBy: $orderBy, query: $query, type: $type, within: $within) {
       edges {
         node {
           __typename
           id
-          ...on Study {
-            ...StudyPreview_study
+          ...on Lesson {
+            ...LessonPreview_lesson
+          }
+          ...on UserAsset {
+            ...UserAssetPreview_asset
           }
         }
       }
@@ -36,28 +40,25 @@ const TopicSearchPageQuery = graphql`
         hasNextPage
         endCursor
       }
-      studyCount
+      lessonCount
+      userAssetCount
     }
   }
 `
 
-class TopicSearchPage extends Component {
+class StudySearch extends Component {
   render() {
     const searchQuery = queryString.parse(get(this.props, "location.search", ""))
     const query = get(searchQuery, "q", "*")
-    const type = get(searchQuery, "type", "study").toUpperCase()
+    const type = get(searchQuery, "type", "lesson").toUpperCase()
 
     const direction = get(searchQuery, "o", "desc").toUpperCase()
     const field = (() => {
       switch (get(searchQuery, "s", "").toLowerCase()) {
-        case "advanced":
-          return "ADVANCED_AT"
-        case "apples":
-          return "APPLE_COUNT"
         case "created":
           return "CREATED_AT"
-        case "lessons":
-          return "LESSON_COUNT"
+        case "comments":
+          return "COMMENT_COUNT"
         case "updated":
           return "UPDATED_AT"
         default:
@@ -71,13 +72,13 @@ class TopicSearchPage extends Component {
     return (
       <QueryRenderer
         environment={environment}
-        query={TopicSearchPageQuery}
+        query={StudySearchQuery}
         variables={{
           count: SEARCH_RESULTS_PER_PAGE,
           orderBy,
           query,
           type,
-          within: this.props.topic.id,
+          within: get(this.props, "study.id", ""),
         }}
         render={({error,  props}) => {
           if (error) {
@@ -86,18 +87,24 @@ class TopicSearchPage extends Component {
             const pathname = get(props, "location.pathname")
             const search = get(props, "search", {})
             const searchEdges = get(props, "search.edges", [])
-            searchQuery.type = "study"
-            const searchStudies = queryString.stringify(searchQuery)
+            searchQuery.type = "lesson"
+            const searchLessons = queryString.stringify(searchQuery)
+            searchQuery.type = "user_asset"
+            const searchUserAssets = queryString.stringify(searchQuery)
             return (
               <div>
                 <nav>
-                  <Link to={{pathname, search: searchStudies}}>
-                    Studies
-                    <Counter>{search.studyCount}</Counter>
+                  <Link to={{pathname, search: searchLessons}}>
+                    Lessons
+                    <Counter>{search.lessonCount}</Counter>
+                  </Link>
+                  <Link to={{pathname, search: searchUserAssets}}>
+                    UserAssets
+                    <Counter>{search.userAssetCount}</Counter>
                   </Link>
                 </nav>
                 {searchEdges.map(({node}) => (
-                  <StudyPreview key={node.id} study={node} />
+                  <SearchResultItemPreview key={node.id} item={node} />
                 ))}
               </div>
             )
@@ -109,4 +116,10 @@ class TopicSearchPage extends Component {
   }
 }
 
-export default withRouter(TopicSearchPage)
+export default withRouter(createFragmentContainer(StudySearch, graphql`
+  fragment StudySearch_study on Study {
+    id
+    nameWithOwner
+    resourcePath
+  }
+`))

@@ -80,11 +80,11 @@ export default withRouter(createPaginationContainer(LessonTimeline,
         $count: Int!,
         $after: String
       ) {
-          study(owner: $owner, name: $name) {
-            lesson(number: $number) {
-              ...LessonTimeline_lesson
-            }
+        study(owner: $owner, name: $name) {
+          lesson(number: $number) {
+            ...LessonTimeline_lesson
           }
+        }
       }
     `,
     getConnectionFromProps(props) {

@@ -3,6 +3,8 @@ import {
   createRefetchContainer,
   graphql,
 } from 'react-relay'
+import { Route, Link } from 'react-router-dom'
+import queryString from 'query-string'
 import SearchResultItemPreview from 'components/SearchResultItemPreview'
 import { debounce, get, isEmpty } from 'utils'
 
@@ -35,9 +37,25 @@ class SearchBarResults extends React.Component {
             value={type}
           />
         </form>
-        {searchEdges.map(({node}) => (
-          <SearchResultItemPreview key={node.id} item={node} />
-        ))}
+        <ul className="SearchBarResults__results">
+          <li className="SearchBarResults__item">
+            <Route path="/:owner/:name" render={({ match }) =>
+                <Link
+                  to={{
+                    pathname: match.url + "/search",
+                    search: queryString.stringify({ q }),
+                  }}
+                >
+                  Search this study...
+                </Link>}
+            />
+          </li>
+          {searchEdges.map(({node}) => (
+            <li key={node.id} className="SearchBarResults__item">
+              <SearchResultItemPreview item={node} />
+            </li>
+          ))}
+        </ul>
       </div>
     )
   }
@@ -68,7 +86,8 @@ export default createRefetchContainer(SearchBarResults,
   {
     data: graphql`
       fragment SearchBarResults_data on Query {
-        search(first: 7, query: $query, type: $type) {
+        search(first: 7, query: $query, type: $type)
+          @connection(key:"SearchBarResults_search", filters: []) {
           edges {
             node {
               __typename

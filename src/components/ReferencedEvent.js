@@ -14,7 +14,7 @@ class ReferencedEvent extends Component {
         <Link to={get(event, "user.resourcePath", "")}>@{get(event, "user.login", "")}</Link>
         <span>{event.isCrossStudy && "cross-"}referenced this {timeDifferenceForDate(event.createdAt)}</span>
         <div>
-          form
+          from
           <Link to={event.resourcePath}>here</Link>
         </div>
       </div>

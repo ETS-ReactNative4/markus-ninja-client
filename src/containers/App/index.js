@@ -12,6 +12,7 @@ import ResearchPage from 'containers/ResearchPage'
 import SearchPage from 'containers/SearchPage'
 import SignupPage from 'containers/SignupPage'
 import StudyPage from 'containers/StudyPage'
+import StudySearchPage from 'containers/StudySearchPage'
 import TopicPage from 'containers/TopicPage'
 import ViewerStudiesPage from 'containers/ViewerStudiesPage'
 import UserPage from 'containers/UserPage'
@@ -32,6 +33,7 @@ class App extends Component {
             <Route exact path="/signup" component={SignupPage} />
             <PrivateRoute exact path="/settings" component={UserSettingsPage} />
             <Route exact path="/topics/:name" component={TopicPage} />
+            <Route exact path="/:owner/:name/search" component={StudySearchPage} />
             <Route exact path="/:login" component={UserPage} />
             <Route path="/:owner/:name" component={StudyPage} />
           </Switch>

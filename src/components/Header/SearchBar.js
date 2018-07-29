@@ -3,6 +3,7 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import { withRouter } from 'react-router'
 import environment from 'Environment'
 import SearchBarResults from './SearchBarResults'
 
@@ -42,4 +43,4 @@ class SearchBar extends React.Component {
   }
 }
 
-export default SearchBar
+export default withRouter(SearchBar)
