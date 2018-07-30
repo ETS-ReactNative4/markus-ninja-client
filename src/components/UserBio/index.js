@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import UpdateViewerProfileMutation from 'mutations/UpdateViewerProfileMutation'
 import { get, isNil } from 'utils'
 import cls from 'classnames'
-import convert from 'htmr'
+import HTML from 'components/HTML'
 
 import './UserBio.css'
 
@@ -20,7 +20,7 @@ class UserBio extends Component {
     return (
       <div className={cls("UserBio", {open})}>
         <div className="UserBio__show">
-          <div className="UserBio__user-bio">{convert(user.bioHTML)}</div>
+          <HTML className="UserBio__user-bio" html={user.bioHTML} />
           <div className="UserBio__actions">
             <button
               className="btn"

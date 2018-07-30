@@ -6,20 +6,20 @@ import {
 import { get } from 'utils'
 import StudyPreview from './StudyPreview'
 
-class AppleablePreview extends Component {
+class CreateablePreview extends Component {
   render() {
-    const appleable = get(this.props, "appleable", {})
-    switch(appleable.__typename) {
+    const createable = get(this.props, "createable", {})
+    switch(createable.__typename) {
       case "Study":
-        return <StudyPreview study={appleable} />
+        return <StudyPreview study={createable} />
       default:
         return null
     }
   }
 }
 
-export default createFragmentContainer(AppleablePreview, graphql`
-  fragment AppleablePreview_appleable on Appleable {
+export default createFragmentContainer(CreateablePreview, graphql`
+  fragment CreateablePreview_createable on Createable {
     __typename
     ... on Study {
       ...StudyPreview_study

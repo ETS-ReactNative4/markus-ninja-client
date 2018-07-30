@@ -38,18 +38,18 @@ class SearchBarResults extends React.Component {
           />
         </form>
         <ul className="SearchBarResults__results">
-          <li className="SearchBarResults__item">
-            <Route path="/:owner/:name" render={({ match }) =>
-                <Link
-                  to={{
-                    pathname: match.url + "/search",
-                    search: queryString.stringify({ q }),
-                  }}
-                >
-                  Search this study...
-                </Link>}
-            />
-          </li>
+          <Route path="/:owner/:name" render={({ match }) =>
+            <li className="SearchBarResults__item">
+              <Link
+                to={{
+                  pathname: match.url + "/search",
+                  search: queryString.stringify({ q }),
+                }}
+              >
+                Search this study...
+              </Link>
+            </li>}
+          />
           {searchEdges.map(({node}) => (
             <li key={node.id} className="SearchBarResults__item">
               <SearchResultItemPreview item={node} />

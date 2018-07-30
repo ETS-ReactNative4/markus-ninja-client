@@ -9,6 +9,7 @@ import { get } from 'utils'
 import Counter from 'components/Counter'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import UserBio from 'components/UserBio'
+import UserActivity from 'components/UserActivity'
 
 import './User.css'
 
@@ -36,30 +37,31 @@ class User extends Component {
             to={user.resourcePath + "?tab=studies"}
           >
             Studies
-            <Counter>{user.studies.totalCount}</Counter>
+            <Counter>{get(user, "studies.totalCount", 0)}</Counter>
           </Link>
           <Link
             className="User__nav-item"
             to={user.resourcePath + "?tab=apples"}
           >
             Apples
-            <Counter>{user.appled.studyCount}</Counter>
+            <Counter>{get(user, "appled.studyCount", 0)}</Counter>
           </Link>
           <Link
             className="User__nav-item"
             to={user.resourcePath + "?tab=pupils"}
           >
             Pupils
-            <Counter>{user.enrollees.totalCount}</Counter>
+            <Counter>{get(user, "enrollees.totalCount", 0)}</Counter>
           </Link>
           <Link
             className="User__nav-item"
             to={user.resourcePath + "?tab=tutors"}
           >
             Tutors
-            <Counter>{user.enrolled.userCount}</Counter>
+            <Counter>{get(user, "enrolled.userCount", 0)}</Counter>
           </Link>
         </nav>
+        <UserActivity user={user} />
       </div>
     )
   }
@@ -90,5 +92,6 @@ export default withRouter(createFragmentContainer(User, graphql`
       totalCount
     }
     ...EnrollmentSelect_enrollable
+    ...UserActivity_user
   }
 `))

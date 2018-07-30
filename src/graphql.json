@@ -814,6 +814,92 @@
 				},
 				{
 					"kind": "OBJECT",
+					"name": "AppledEvent",
+					"description": "Represents an appled event on a given subject.",
+					"fields": [
+						{
+							"name": "appleable",
+							"description": "The appleable assocated with this `appled` event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "INTERFACE",
+									"name": "Appleable",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "createdAt",
+							"description": "Identifies the date and time when the object was created.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "user",
+							"description": "The user who performed the event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "User",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "UserActivityEvent",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Node",
+							"ofType": null
+						}
+					],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "OBJECT",
 					"name": "AppledStudyConnection",
 					"description": "A connection type for Study.",
 					"fields": [
@@ -1266,32 +1352,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "EnrolleeConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "StudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppledStudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "TopicConnection",
+							"name": "UserAssetConnection",
 							"ofType": null
 						},
 						{
@@ -1301,22 +1362,27 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAssetConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppleGiverConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "EmailConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EventConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppledStudyConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationConnection",
 							"ofType": null
 						},
 						{
@@ -1326,7 +1392,27 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "NotificationConnection",
+							"name": "TopicConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentConnection",
 							"ofType": null
 						}
 					]
@@ -1528,6 +1614,130 @@
 						}
 					],
 					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INTERFACE",
+					"name": "Createable",
+					"description": "Entities that can be created.",
+					"fields": [
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": [
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
+							"ofType": null
+						}
+					]
+				},
+				{
+					"kind": "OBJECT",
+					"name": "CreatedEvent",
+					"description": "Represents an created event on a given subject.",
+					"fields": [
+						{
+							"name": "createable",
+							"description": "The createable assocated with this `created` event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "INTERFACE",
+									"name": "Createable",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "createdAt",
+							"description": "Identifies the date and time when the object was created.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "user",
+							"description": "The user who performed the event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "User",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "UserActivityEvent",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Node",
+							"ofType": null
+						}
+					],
 					"enumValues": null,
 					"possibleTypes": null
 				},
@@ -2038,17 +2248,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "UserAsset",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -2142,32 +2352,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "EnrolleeEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "StudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppledStudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "TopicEdge",
+							"name": "UserAssetEdge",
 							"ofType": null
 						},
 						{
@@ -2177,22 +2362,27 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAssetEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppleGiverEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "EmailEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EventEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppledStudyEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationEdge",
 							"ofType": null
 						},
 						{
@@ -2202,7 +2392,27 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "NotificationEdge",
+							"name": "TopicEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentEdge",
 							"ofType": null
 						}
 					]
@@ -2493,6 +2703,22 @@
 					"description": "Things that can be enrolled in.",
 					"fields": [
 						{
+							"name": "enrolleeCount",
+							"description": "The number of users that have enrolled in this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "enrollmentStatus",
 							"description": "Is the viewer dismissed, enrolled, or ignoring this enrollable.",
 							"args": [],
@@ -2547,17 +2773,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "User",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
 							"ofType": null
 						}
 					]
@@ -3393,22 +3619,22 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "User",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -3441,17 +3667,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "User",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
 							"ofType": null
 						}
 					]
@@ -4047,12 +4273,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -4433,6 +4659,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "enrolleeCount",
+							"description": "The number of users that have enrolled in this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "enrollees",
 							"description": "Returns a list users who have enrolled in this enrollable.",
 							"args": [
@@ -4680,7 +4922,7 @@
 						},
 						{
 							"name": "timeline",
-							"description": "Returns a list of events, comments, etc. associated with the lesson.",
+							"description": "Returns a list of events associated with the lesson.",
 							"args": [
 								{
 									"name": "after",
@@ -4860,6 +5102,11 @@
 					],
 					"inputFields": null,
 					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "Createable",
+							"ofType": null
+						},
 						{
 							"kind": "INTERFACE",
 							"name": "Enrollable",
@@ -6841,7 +7088,22 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CreatedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Email",
 							"ofType": null
 						},
 						{
@@ -6856,37 +7118,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "User",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CommentedEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Email",
+							"name": "Notification",
 							"ofType": null
 						},
 						{
@@ -6896,7 +7128,32 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Notification",
+							"name": "Topic",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CommentedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppledEvent",
 							"ofType": null
 						}
 					]
@@ -8304,12 +8561,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -8319,12 +8571,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Topic",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
 							"ofType": null
 						}
 					]
@@ -8753,6 +9010,22 @@
 								"ofType": {
 									"kind": "SCALAR",
 									"name": "HTML",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "enrolleeCount",
+							"description": "The number of users that have enrolled in this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
 									"ofType": null
 								}
 							},
@@ -9329,6 +9602,11 @@
 						},
 						{
 							"kind": "INTERFACE",
+							"name": "Createable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
 							"name": "Enrollable",
 							"ofType": null
 						},
@@ -9520,12 +9798,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Label",
 							"ofType": null
 						},
 						{
@@ -9535,7 +9813,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -9824,12 +10102,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EVT",
+							"name": "AccessToken",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AccessToken",
+							"name": "EVT",
 							"ofType": null
 						}
 					]
@@ -10459,6 +10737,12 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "APPLE_COUNT",
+							"description": "Order topicables by apple count.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "CREATED_AT",
 							"description": "Order topicables by creation time.",
 							"isDeprecated": false,
@@ -10556,22 +10840,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "ReferencedEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -10581,7 +10850,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "ReferencedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Topic",
 							"ofType": null
 						},
 						{
@@ -10591,7 +10870,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -11146,12 +11430,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Label",
 							"ofType": null
 						},
 						{
@@ -11161,7 +11445,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -11181,6 +11465,73 @@
 								"ofType": {
 									"kind": "SCALAR",
 									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "activity",
+							"description": "Returns a list of activity associated with the user.",
+							"args": [
+								{
+									"name": "after",
+									"description": "Returns the elements in the list that come after the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "before",
+									"description": "Returns the elements in the list that come before the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "first",
+									"description": "Returns the first n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "last",
+									"description": "Returns the last n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "orderBy",
+									"description": "Ordering options for events returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "EventOrder",
+										"ofType": null
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "UserActivityConnection",
 									"ofType": null
 								}
 							},
@@ -11555,6 +11906,22 @@
 								"ofType": {
 									"kind": "OBJECT",
 									"name": "EnrollableConnection",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "enrolleeCount",
+							"description": "The number of users that have enrolled in this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
 									"ofType": null
 								}
 							},
@@ -12050,6 +12417,158 @@
 							"ofType": null
 						}
 					],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "OBJECT",
+					"name": "UserActivityConnection",
+					"description": "A connection type for UserActivityEvent.",
+					"fields": [
+						{
+							"name": "pageInfo",
+							"description": "Information to aid in pagination.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "PageInfo",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "edges",
+							"description": "A list of edges.",
+							"args": [],
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "UserActivityEventEdge",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "nodes",
+							"description": "A list of nodes.",
+							"args": [],
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "INTERFACE",
+									"name": "UserActivityEvent",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "totalCount",
+							"description": "The total count of items in the connection.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INTERFACE",
+					"name": "UserActivityEvent",
+					"description": "Events that can be a part of a user's activity.",
+					"fields": [
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": [
+						{
+							"kind": "OBJECT",
+							"name": "CreatedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppledEvent",
+							"ofType": null
+						}
+					]
+				},
+				{
+					"kind": "OBJECT",
+					"name": "UserActivityEventEdge",
+					"description": "An edge type for UserActivityEvent.",
+					"fields": [
+						{
+							"name": "cursor",
+							"description": "A cursor for use in pagination.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "node",
+							"description": "The event at the end of the edge.",
+							"args": [],
+							"type": {
+								"kind": "INTERFACE",
+								"name": "UserActivityEvent",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [],
 					"enumValues": null,
 					"possibleTypes": null
 				},
