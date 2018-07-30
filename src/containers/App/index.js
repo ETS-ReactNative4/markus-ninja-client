@@ -7,6 +7,7 @@ import CreateStudyPage from 'containers/CreateStudyPage'
 import Header from 'components/Header'
 import LoginPage from 'containers/LoginPage'
 import LogoutPage from 'containers/LogoutPage'
+import NotificationsPage from 'containers/NotificationsPage'
 import UserSettingsPage from 'containers/UserSettingsPage'
 import ResearchPage from 'containers/ResearchPage'
 import SearchPage from 'containers/SearchPage'
@@ -28,6 +29,7 @@ class App extends Component {
             <PrivateRoute exact path="/new" component={CreateStudyPage} />
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/logout" component={LogoutPage} />
+            <Route exact path="/notifications" component={NotificationsPage} />
             <Route exact path="/research" component={ResearchPage} />
             <Route exact path="/search" component={SearchPage} />
             <Route exact path="/signup" component={SignupPage} />

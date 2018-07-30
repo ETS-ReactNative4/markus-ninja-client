@@ -31,6 +31,9 @@ class AuthLinks extends Component {
             return (
               <ul>
                 <li>
+                  <Link className="AuthLinks__link" to="/notifications">Notifications</Link>
+                </li>
+                <li>
                   <Link className="AuthLinks__link" to="/new">New study</Link>
                 </li>
                 <li>
