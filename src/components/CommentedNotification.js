@@ -3,31 +3,19 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import LessonLink from 'components/LessonLink'
-import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
-import HTML from 'components/HTML'
 import { get, timeDifferenceForDate } from 'utils'
 
 class CommentedNotification extends Component {
   render() {
     const event = get(this.props, "event", {})
     return (
-      <div onClick={this.props.onClick} className="CommentedNotification">
+      <div className="CommentedNotification">
+        <span onClick={this.props.onClick} className="CommentedNotification__text">
+          {get(event, "comment.bodyText", "")}
+        </span>
         <UserLink user={get(event, "user", null)} />
-        <span>
-          commented on lesson
-          <LessonLink lesson={get(event, "commentable", null)} />
-        </span>
-        <span>
-          from
-          <StudyLink study={get(event, "commentable.study", null)} />
-          {timeDifferenceForDate(event.createdAt)}
-        </span>
-        <HTML
-          className="LessonCommentPreview__bodyHTML"
-          html={get(event, "comment.bodyHTML", "")}
-        />
+        {timeDifferenceForDate(event.createdAt)}
       </div>
     )
   }
@@ -39,17 +27,7 @@ export default createFragmentContainer(CommentedNotification, graphql`
     comment {
       id
       ...on LessonComment {
-        bodyHTML
-        resourcePath
-      }
-    }
-    commentable {
-      id
-      ... on Lesson {
-        ...LessonLink_lesson
-        study {
-          ...StudyLink_study
-        }
+        bodyText
       }
     }
     user {

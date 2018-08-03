@@ -18,7 +18,7 @@ const network = Network.create((operation, variables) => {
   if (!isEmpty(accessToken)) {
     headers.Authorization = accessToken
   }
-  return fetch("http://localhost:5000/graphql", {
+  return fetch(process.env.REACT_APP_API_URL + "/graphql", {
     method: "POST",
     headers,
     body: JSON.stringify({

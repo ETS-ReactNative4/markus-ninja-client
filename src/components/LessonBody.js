@@ -34,6 +34,7 @@ class LessonBody extends Component {
             onChange={this.handleChange}
             placeholder="Begin your lesson"
             initialValue={body}
+            study={get(lesson, "study", null)}
           />
           <button type="submit">Update lesson</button>
           <button onClick={this.handleToggleEdit}>Cancel</button>

@@ -4,19 +4,25 @@ import {
   graphql,
 } from 'react-relay'
 import Notification from './Notification.js'
-import { get } from 'utils'
+import { get, groupBy } from 'utils'
 
 import { NOTIFICATIONS_PER_PAGE } from 'consts'
 
 class ViewerNotifications extends Component {
   render() {
     const notificationEdges = get(this.props, "viewer.notifications.edges", [])
+    const notificationsByStudy = groupBy(notificationEdges, "node.study.id")
     return (
       <div>
         <div className="ViewerNotifications__notifications">
-          {notificationEdges.map(({node}) => (
-            <Notification key={node.id} notification={node} />
-          ))}
+          {Object.keys(notificationsByStudy).map(key =>
+            <div key={key}>
+              {get(notificationsByStudy[key][0], "node.study.nameWithOwner", "")}
+              {notificationsByStudy[key].map(({node}) => (
+                <Notification key={node.id} notification={node} />
+              ))}
+            </div>
+          )}
           <button
             className="ViewerNotifications__more"
             onClick={this._loadMore}
@@ -49,11 +55,15 @@ export default createPaginationContainer(ViewerNotifications,
         notifications(
           first: $count,
           after: $after,
-          orderBy:{direction: DESC field:CREATED_AT}
+          orderBy:{direction: ASC field:CREATED_AT}
         ) @connection(key: "ViewerNotifications_notifications") {
           edges {
             node {
               id
+              study {
+                id
+                nameWithOwner
+              }
               ...Notification_notification
             }
           }

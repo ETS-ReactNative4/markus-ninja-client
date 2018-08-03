@@ -3,16 +3,10 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import { isNil } from 'utils'
 
 const mutation = graphql`
   mutation MarkNotificationAsReadMutation($input: MarkNotificationAsReadInput!) {
-    markNotificationAsRead(input: $input) {
-      node {
-        id
-        lastReadAt
-      }
-    }
+    markNotificationAsRead(input: $input)
   }
 `
 
@@ -29,13 +23,7 @@ export default (notificationId, callback) => {
       mutation,
       variables,
       updater: proxyStore => {
-        const markNotificationAsReadField = proxyStore.getRootField('markNotificationAsRead')
-        if (!isNil(markNotificationAsReadField)) {
-          // const lastReadAt = markNotificationAsReadField.getValue('lastReadAt')
-//
-          // const notification = proxyStore.get(notificationId)
-          // notification.setValue(lastReadAt, 'lastReadAt')
-        }
+        // const markNotificationAsReadField = proxyStore.getRootField('markNotificationAsRead')
       },
       onCompleted: callback,
       onError: err => console.error(err),

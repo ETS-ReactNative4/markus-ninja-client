@@ -23,7 +23,13 @@ class Notification extends Component {
           />
         )
       case "CreatedEvent":
-        return <CreatedNotification onClick={this.handleClick} event={event} />
+        return (
+          <CreatedNotification
+            onClick={this.handleClick(get(this.props, "notification.id"))}
+            event={event}
+            value={get(this.props, "notification.id")}
+          />
+        )
       default:
         return null
     }
@@ -53,7 +59,6 @@ export default withRouter(createFragmentContainer(Notification, graphql`
       resourcePath
       url
     }
-    lastReadAt
     reason
     user {
       ...UserLink_user

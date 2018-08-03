@@ -37,6 +37,9 @@ export default createFragmentContainer(Lesson, graphql`
     hasNextLesson
     hasPrevLesson
     number
+    study {
+      ...RichTextEditor_study
+    }
     title
     publishedAt
     updatedAt

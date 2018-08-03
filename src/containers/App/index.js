@@ -29,7 +29,7 @@ class App extends Component {
             <PrivateRoute exact path="/new" component={CreateStudyPage} />
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/logout" component={LogoutPage} />
-            <Route exact path="/notifications" component={NotificationsPage} />
+            <PrivateRoute exact path="/notifications" component={NotificationsPage} />
             <Route exact path="/research" component={ResearchPage} />
             <Route exact path="/search" component={SearchPage} />
             <Route exact path="/signup" component={SignupPage} />

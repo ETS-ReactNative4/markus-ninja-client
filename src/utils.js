@@ -93,3 +93,13 @@ export function debounce(func, delay) {
     inDebounce = setTimeout(() => func.apply(context, args), delay)
   }
 }
+
+export function groupBy(array = [], field = "") {
+  return array.reduce(
+    (r, v, i, a, k = get(v, field, "")) => {
+      (r[k] || (r[k] = [])).push(v)
+      return r
+    },
+    {},
+  )
+}

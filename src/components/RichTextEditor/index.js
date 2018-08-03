@@ -4,8 +4,14 @@ import {
   ContentState,
   Editor,
   EditorState,
+  Modifier,
 } from 'draft-js'
-import { get } from 'utils'
+import {
+  createFragmentContainer,
+  graphql,
+} from 'react-relay'
+import { get, isNil } from 'utils'
+import { getAuthHeader } from 'auth'
 import './RichTextEditor.css'
 
 class RichTextEditor extends React.Component {
@@ -27,7 +33,8 @@ class RichTextEditor extends React.Component {
       editorState: EditorState.createWithContent(
         ContentState.createFromText(initialValue),
         compositeDecorator,
-      )
+      ),
+      loading: false,
     }
   }
 
@@ -39,7 +46,7 @@ class RichTextEditor extends React.Component {
   }
 
   render() {
-    const { editorState } = this.state
+    const { editorState, error, loading } = this.state
     const { placeholder } = this.props
     return (
       <div className="RichTextEditor">
@@ -49,8 +56,91 @@ class RichTextEditor extends React.Component {
           placeholder={placeholder || "Enter text"}
           ref="editor"
         />
+        <div className="RichTextEditor__attach-file">
+          <label
+            className="attach-file-label"
+            htmlFor="attach-file-input"
+          >
+            Attach files
+          </label>
+          <input
+            id="attach-file-input"
+            className="attach-file-input"
+            disabled={loading}
+            type="file"
+            onChange={this.handleAttachFile}
+          />
+        </div>
+        <span>{error}</span>
       </div>
     )
+  }
+
+  handleAttachFile = (e) => {
+    const Authorization = getAuthHeader()
+    if (isNil(Authorization)) { return }
+    const formData = new FormData()
+    const file = e.target.files[0]
+
+    formData.append("study_id", get(this.props, "study.id", ""))
+    formData.append("file", file)
+
+    const { editorState } = this.state
+    const selection = editorState.getSelection()
+    const contentState = editorState.getCurrentContent()
+    const loadingText = `![Uploading ${file.name}...]()`
+    const loadingLink = Modifier.insertText(
+      contentState,
+      selection,
+      loadingText,
+    )
+    const es = EditorState.push(editorState, loadingLink, 'insert-fragment')
+    this.setState({
+      editorState: es,
+      loading: true,
+    })
+    return fetch(process.env.REACT_APP_API_URL + "/upload/assets", {
+      method: "POST",
+      headers: {
+        Authorization,
+      },
+      body: formData
+    }).then((response) => {
+      return response.text()
+    }).then((responseBody) => {
+      try {
+        return JSON.parse(responseBody)
+      } catch (error) {
+        return responseBody
+      }
+    }).then((data) => {
+      if (!isNil(data.error)) {
+        this.setState({
+          error: data.error_description,
+          loading: false,
+        })
+        return
+      }
+      const updatedSelection = selection.merge({
+        focusKey: es.getSelection().getFocusKey(),
+        focusOffset: loadingText.length,
+      })
+      const contentState = es.getCurrentContent()
+      const fileLink = Modifier.replaceText(contentState, updatedSelection,
+        `![${get(data, "asset.name", "")}](${get(data, "asset.href", "")})`
+      )
+      this.setState({
+        editorState: EditorState.push(es, fileLink, 'insert-fragment'),
+        loading: false,
+      })
+      return
+    }).catch((error) => {
+      console.error(error)
+      this.setState({
+        error,
+        loading: false,
+      })
+    })
   }
 
   handleChange = (editorState) => {
@@ -103,4 +193,8 @@ const HashtagSpan = (props) => {
   )
 }
 
-export default RichTextEditor
+export default createFragmentContainer(RichTextEditor, graphql`
+  fragment RichTextEditor_study on Study {
+    id
+  }
+`)

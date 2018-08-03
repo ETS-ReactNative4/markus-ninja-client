@@ -6,7 +6,7 @@ import {
 import { Route, Link } from 'react-router-dom'
 import queryString from 'query-string'
 import SearchResultItemPreview from 'components/SearchResultItemPreview'
-import { debounce, get, isEmpty } from 'utils'
+import { debounce, get, isEmpty, isNil } from 'utils'
 
 class SearchBarResults extends React.Component {
   state = {
@@ -50,11 +50,16 @@ class SearchBarResults extends React.Component {
               </Link>
             </li>}
           />
-          {searchEdges.map(({node}) => (
-            <li key={node.id} className="SearchBarResults__item">
-              <SearchResultItemPreview item={node} />
-            </li>
-          ))}
+          {searchEdges.map(({node}) => {
+            if (!isNil(node)) {
+              return (
+                <li key={node.id} className="SearchBarResults__item">
+                  <SearchResultItemPreview item={node} />
+                </li>
+              )
+            }
+            return null
+          })}
         </ul>
       </div>
     )

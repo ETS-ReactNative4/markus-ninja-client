@@ -7,14 +7,14 @@ import queryString from 'query-string'
 import environment from 'Environment'
 import User from 'components/User'
 import UserApplesPage from 'containers/UserApplesPage'
+import UserOverviewPage from 'containers/UserOverviewPage'
 import UserPupilsPage from 'containers/UserPupilsPage'
-import UserTutorsPage from 'containers/UserTutorsPage'
 import UserStudiesPage from 'containers/UserStudiesPage'
+import UserTutorsPage from 'containers/UserTutorsPage'
 import { get } from 'utils'
-import { EVENTS_PER_PAGE } from 'consts'
 
 const UserPageQuery = graphql`
-  query UserPageQuery($login: String!, $count: Int!, $after: String) {
+  query UserPageQuery($login: String!) {
     user(login: $login) {
       id
       ...User_user
@@ -33,12 +33,12 @@ class UserPage extends Component {
           return <UserApplesPage {...props} />
         case "pupils":
           return <UserPupilsPage {...props} />
-        case "tutors":
-          return <UserTutorsPage {...props} />
         case "studies":
           return <UserStudiesPage {...props} />
+        case "tutors":
+          return <UserTutorsPage {...props} />
         default:
-          return null
+          return <UserOverviewPage {...props} />
       }
     }
     return (
@@ -46,7 +46,6 @@ class UserPage extends Component {
         environment={environment}
         query={UserPageQuery}
         variables={{
-          count: EVENTS_PER_PAGE,
           login: get(match.params, "login", ""),
         }}
         render={({error,  props}) => {

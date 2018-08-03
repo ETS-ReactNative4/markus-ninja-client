@@ -4,7 +4,6 @@ import {
   graphql,
 } from 'react-relay'
 import UserLink from 'components/UserLink'
-import CreateableLink from 'components/CreateableLink'
 import CreateablePreview from 'components/CreateablePreview'
 import { get, timeDifferenceForDate } from 'utils'
 
@@ -14,17 +13,9 @@ class CreatedNotification extends Component {
     const createable = get(event, "createable", null)
     return (
       <div className="CreatedNotification">
-        <div>
-          <UserLink user={get(event, "user", null)} />
-          <span>
-            created
-            <CreateableLink createable={createable} />
-            {timeDifferenceForDate(event.createdAt)}
-          </span>
-        </div>
-        <div>
-          <CreateablePreview createable={createable} />
-        </div>
+        <CreateablePreview onClick={this.props.onClick} createable={createable} />
+        <UserLink user={get(event, "user", null)} />
+        {timeDifferenceForDate(event.createdAt)}
       </div>
     )
   }
@@ -33,7 +24,6 @@ class CreatedNotification extends Component {
 export default createFragmentContainer(CreatedNotification, graphql`
   fragment CreatedNotification_event on CreatedEvent {
     createable {
-      ...CreateableLink_createable
       ...CreateablePreview_createable
     }
     createdAt

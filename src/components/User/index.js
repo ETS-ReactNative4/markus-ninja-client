@@ -9,7 +9,6 @@ import { get } from 'utils'
 import Counter from 'components/Counter'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import UserBio from 'components/UserBio'
-import UserActivity from 'components/UserActivity'
 
 import './User.css'
 
@@ -61,7 +60,6 @@ class User extends Component {
             <Counter>{get(user, "enrolled.userCount", 0)}</Counter>
           </Link>
         </nav>
-        <UserActivity user={user} />
       </div>
     )
   }
@@ -92,6 +90,5 @@ export default withRouter(createFragmentContainer(User, graphql`
       totalCount
     }
     ...EnrollmentSelect_enrollable
-    ...UserActivity_user
   }
 `))

@@ -16,4 +16,10 @@
   color: rgba(95, 184, 138, 1.0);
 }
 
+.RichTextEditor__attach-file .attach-file-label {
+  cursor: pointer;
+}
 
+.RichTextEditor__attach-file .attach-file-input {
+  visibility: hidden;
+}
