@@ -10,6 +10,7 @@ import AppleButton from 'components/AppleButton'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import UserLink from 'components/UserLink'
 import Counter from 'components/Counter'
+import { isNil } from 'utils'
 
 import './Study.css'
 
@@ -19,7 +20,10 @@ class Study extends Component {
   }
 
   render() {
-    const study = get(this.props, "study", {})
+    const study = get(this.props, "study", null)
+    if (isNil(study)) {
+      return null
+    }
     return (
       <div className="Study">
         <div className="Study__name">

@@ -3,15 +3,23 @@ import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
+import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import UserActivityEvent from './UserActivityEvent'
-import { get } from 'utils'
+import { get, isEmpty } from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
 
 class UserActivity extends Component {
   render() {
     const activityEdges = get(this.props, "user.activity.edges", [])
+    if (isEmpty(activityEdges)) {
+      return (
+        <div className="UserActivity">
+          <Link to="/new">Create a study to get started</Link>
+        </div>
+      )
+    }
     return (
       <div className="UserActivity">
         {activityEdges.map(({node}) => (

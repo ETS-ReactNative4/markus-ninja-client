@@ -3,16 +3,18 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
 import StudyPreview from 'components/StudyPreview.js'
-import { get } from 'utils'
+import { get, isEmpty } from 'utils'
 import { STUDIES_PER_PAGE } from 'consts'
 
 const UserStudiesPageQuery = graphql`
   query UserStudiesPageQuery($login: String!, $count: Int!) {
     user(login: $login) {
       id
+      isViewer
       studies(first: $count, orderBy:{direction: DESC field:CREATED_AT})
         @connection(key: "UserStudiesPage_studies", filters: []) {
         edges {
@@ -41,6 +43,15 @@ class UserStudiesPage extends Component {
             return <div>{error.message}</div>
           } else if (props) {
             const studyEdges = get(props, "user.studies.edges", [])
+            if (isEmpty(studyEdges)) {
+              return (
+                <div className="UserActivity">
+                  {props.user.isViewer
+                  ? <Link to="/new">Create a study to get started</Link>
+                  : <span>This user has not created and studies yet.</span>}
+                </div>
+              )
+            }
             return (
               <div>
                 {studyEdges.map(({node}) => (

@@ -17,12 +17,13 @@ class LessonTimeline extends Component {
         {timelineEdges.map(({node}) => (
           <LessonTimelineEvent key={node.id} item={node} />
         ))}
+        {this.props.relay.hasMore() &&
         <button
           className="LessonTimeline__more"
           onClick={this._loadMore}
         >
           More
-        </button>
+        </button>}
       </div>
     )
   }

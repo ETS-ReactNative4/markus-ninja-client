@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
+import * as React from 'react'
 import CreateStudyForm from 'components/CreateStudyForm'
 
-class CreateStudyFormPage extends Component {
+class CreateStudyPage extends React.Component {
   render() {
     return <CreateStudyForm />
   }
 }
 
-export default CreateStudyFormPage
+export default CreateStudyPage

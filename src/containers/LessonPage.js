@@ -5,6 +5,8 @@ import {
 } from 'react-relay'
 import environment from 'Environment'
 import Lesson from 'components/Lesson'
+import NotFound from 'components/NotFound'
+import { get, isNil } from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
 
@@ -34,6 +36,9 @@ class LessonPage extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            if (isNil(get(props, "study.lesson", null))) {
+              return <NotFound />
+            }
             return <Lesson lesson={props.study.lesson}></Lesson>
           }
           return <div>Loading</div>

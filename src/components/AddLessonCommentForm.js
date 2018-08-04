@@ -3,10 +3,12 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import AddLessonCommentMutation from 'mutations/AddLessonCommentMutation'
 import RichTextEditor from 'components/RichTextEditor'
 import { isNil } from 'utils'
+import { isAuthenticated } from 'auth'
 
 class AddLessonCommentForm extends Component {
   state = {
@@ -23,6 +25,13 @@ class AddLessonCommentForm extends Component {
 
   render() {
     const { error, submitted } = this.state
+    if (!isAuthenticated()) {
+      return (
+        <div className="AddLessonCommentForm">
+          <Link to="/login">Login to leave a comment</Link>
+        </div>
+      )
+    }
     return (
       <form onSubmit={this.handleSubmit}>
         <label htmlFor="AddLessonCommentForm__body">Body</label>

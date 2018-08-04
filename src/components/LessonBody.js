@@ -1,4 +1,8 @@
 import React, {Component} from 'react'
+import {
+  createFragmentContainer,
+  graphql,
+} from 'react-relay'
 import convert from 'htmr'
 import RichTextEditor from 'components/RichTextEditor'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
@@ -18,15 +22,16 @@ class LessonBody extends Component {
       return (
         <div className="LessonBody">
           <div className="LessonBody__bodyHTML">{convert(lesson.bodyHTML)}</div>
+          {lesson.viewerCanUpdate &&
           <button
             className="LessonBody__edit"
             onClick={this.handleToggleEdit}
           >
             Edit
-          </button>
+          </button>}
         </div>
       )
-    } else {
+    } else if (lesson.viewerCanUpdate) {
       return (
         <form onSubmit={this.handleSubmit}>
           <RichTextEditor
@@ -42,6 +47,7 @@ class LessonBody extends Component {
         </form>
       )
     }
+    return null
   }
 
   handleChange = (body) => {
@@ -69,4 +75,14 @@ class LessonBody extends Component {
   }
 }
 
-export default LessonBody
+export default createFragmentContainer(LessonBody, graphql`
+  fragment LessonBody_lesson on Lesson {
+    id
+    body
+    bodyHTML
+    study {
+      ...RichTextEditor_study
+    }
+    viewerCanUpdate
+  }
+`)

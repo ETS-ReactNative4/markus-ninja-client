@@ -6,7 +6,9 @@ import {
 import { Route, Link } from 'react-router-dom'
 import queryString from 'query-string'
 import SearchResultItemPreview from 'components/SearchResultItemPreview'
-import { debounce, get, isEmpty, isNil } from 'utils'
+import Edge from 'components/Edge'
+import { debounce, get, isEmpty } from 'utils'
+import { SEARCH_BAR_RESULTS_PER_PAGE } from 'consts'
 
 class SearchBarResults extends React.Component {
   state = {
@@ -50,16 +52,13 @@ class SearchBarResults extends React.Component {
               </Link>
             </li>}
           />
-          {searchEdges.map(({node}) => {
-            if (!isNil(node)) {
-              return (
-                <li key={node.id} className="SearchBarResults__item">
-                  <SearchResultItemPreview item={node} />
-                </li>
-              )
-            }
-            return null
-          })}
+          {searchEdges.map((edge) =>
+            <Edge key={get(edge, "node.id", "")} edge={edge} render={({ node }) =>
+              <li className="SearchBarResults__item">
+                <SearchResultItemPreview item={node} />
+              </li>
+            }/>
+          )}
         </ul>
       </div>
     )
@@ -76,6 +75,7 @@ class SearchBarResults extends React.Component {
   _refetch = debounce((query) => {
     this.props.relay.refetch(
       {
+        count: SEARCH_BAR_RESULTS_PER_PAGE,
         query: isEmpty(query) ? "*" : query,
         type: this.state.type.toUpperCase(),
       },
@@ -91,7 +91,7 @@ export default createRefetchContainer(SearchBarResults,
   {
     data: graphql`
       fragment SearchBarResults_data on Query {
-        search(first: 7, query: $query, type: $type)
+        search(first: $count, query: $query, type: $type)
           @connection(key:"SearchBarResults_search", filters: []) {
           edges {
             node {
@@ -120,6 +120,7 @@ export default createRefetchContainer(SearchBarResults,
   },
   graphql`
     query SearchBarResultsRefetchQuery(
+      $count: Int!
       $query: String!,
       $type: SearchType!
     ) {

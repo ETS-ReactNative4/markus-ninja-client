@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import environment from 'Environment'
 import StudySettings from 'components/StudySettings'
+import { isNil } from 'utils'
 
 const StudySettingsPageQuery = graphql`
   query StudySettingsPageQuery($owner: String!, $name: String!) {
@@ -29,6 +30,9 @@ class StudySettingsPage extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            if (isNil(props.study)) {
+              return null
+            }
             return <StudySettings study={props.study}></StudySettings>
           }
           return <div>Loading</div>

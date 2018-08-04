@@ -6,6 +6,7 @@ import {
 import { Link } from 'react-router-dom'
 import environment from 'Environment'
 import StudyLessons from 'components/StudyLessons'
+import { isNil } from 'utils'
 
 import { LESSONS_PER_PAGE } from 'consts'
 
@@ -39,8 +40,11 @@ class StudyLessonsPage extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            if (isNil(props.study)) {
+              return null
+            }
             return (
-              <div>
+              <div className="StudyLessonsPage">
                 <Link
                   className="StudyLessonsPage__new-lesson"
                   to={props.study.resourcePath + "/lessons/new"}

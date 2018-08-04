@@ -9,6 +9,7 @@ import SearchBarResults from './SearchBarResults'
 
 const SearchBarQuery = graphql`
   query SearchBarQuery(
+    $count: Int!,
     $query: String!,
     $type: SearchType!
   ){
@@ -23,6 +24,7 @@ class SearchBar extends React.Component {
         environment={environment}
         query={SearchBarQuery}
         variables={{
+          count: 0,
           query: "*",
           type: "STUDY"
         }}

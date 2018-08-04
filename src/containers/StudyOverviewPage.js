@@ -38,13 +38,16 @@ class StudyOverviewPage extends Component {
           count: TOPICS_PER_PAGE,
         }}
         render={({error,  props}) => {
-          const lesson = get(props, "study.lesson", null)
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            if (isNil(props.study)) {
+              return null
+            }
+            const lesson = get(props, "study.lesson", null)
             return (
-              <div>
-                <StudyMeta study={get(props, "study", {})}  />
+              <div className="StudyOverviewPage">
+                <StudyMeta study={props.study}  />
                 {isNil(lesson)
                 ? <Link
                     className="LessonList__new-lesson"
@@ -52,7 +55,7 @@ class StudyOverviewPage extends Component {
                   >
                     Create a lesson
                   </Link>
-                : <LessonPreview lesson={get(props, "study.lesson", null)} />}
+                : <LessonPreview lesson={lesson} />}
               </div>
             )
           }

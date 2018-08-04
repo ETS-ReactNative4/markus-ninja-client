@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import UserSettingsNav from 'components/UserSettingsNav'
 import UserSettingsProfilePage from 'containers/UserSettingsProfilePage'
 import UserSettingsAccountPage from 'containers/UserSettingsAccountPage'
@@ -8,6 +8,9 @@ import UserSettingsNotificationsPage from 'containers/UserSettingsNotificationsP
 
 class UserSettingsPage extends Component {
   render() {
+    if (this.props.match.isExact) {
+      return <Redirect to="/settings/profile" />
+    }
     return (
       <div className="UserSettingsPage">
         <UserSettingsNav />

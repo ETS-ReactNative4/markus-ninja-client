@@ -26,27 +26,29 @@ class LessonComment extends Component {
           id={`lesson_comment${moment(comment.createdAt).unix()}`}
           className="LessonComment"
         >
-          {comment.viewerDidAuthor &&
           <ul>
+            {comment.viewerDidAuthor &&
             <li>
               <span>Author</span>
-            </li>
+            </li>}
+            {comment.viewerCanDelete &&
             <li>
               <button className="btn" type="button" onClick={this.handleDelete}>
                 Delete
               </button>
-            </li>
-          </ul>}
+            </li>}
+          </ul>
           <HTML className="LessonComment__bodyHTML" html={comment.bodyHTML} />
+          {comment.viewerCanUpdate &&
           <button
             className="LessonComment__edit"
             onClick={this.handleToggleEdit}
           >
             Edit
-          </button>
+          </button>}
         </div>
       )
-    } else {
+    } else if (comment.viewerCanUpdate) {
       return (
         <form onSubmit={this.handleSubmit}>
           <RichTextEditor
@@ -61,6 +63,7 @@ class LessonComment extends Component {
         </form>
       )
     }
+    return null
   }
 
   handleChange = (body) => {

@@ -5,6 +5,8 @@ import {
 } from 'react-relay'
 import environment from 'Environment'
 import StudySearch from 'components/StudySearch'
+import NotFound from 'components/NotFound'
+import { isNil } from 'utils'
 
 const StudySearchPageQuery = graphql`
   query StudySearchPageQuery($owner: String!, $name: String!) {
@@ -28,6 +30,9 @@ class StudySearchPage extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            if (isNil(props.study)) {
+              return <NotFound />
+            }
             return <StudySearch study={props.study} />
           }
           return <div>Loading</div>

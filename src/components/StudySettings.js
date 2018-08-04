@@ -9,7 +9,7 @@ import StudyDangerZone from 'components/StudyDangerZone'
 
 class StudySettings extends Component {
   render() {
-    const study = get(this.props, "study", {})
+    const study = get(this.props, "study", null)
     return (
       <div className="StudySettings">
         <UpdateStudyNameForm study={study} />
@@ -21,7 +21,7 @@ class StudySettings extends Component {
 
 export default createFragmentContainer(StudySettings, graphql`
   fragment StudySettings_study on Study {
-    id
-    name
+    ...StudyDangerZone_study
+    ...UpdateStudyNameForm_study
   }
 `)

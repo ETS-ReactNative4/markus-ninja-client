@@ -1,4 +1,8 @@
 import React, {Component} from 'react'
+import {
+  createFragmentContainer,
+  graphql,
+} from 'react-relay'
 import { withRouter } from 'react-router'
 import DeleteStudyMutation from 'mutations/DeleteStudyMutation'
 import { isNil } from 'utils'
@@ -31,11 +35,16 @@ class StudyDangerZone extends Component {
       (response, error) => {
         if (!isNil(error)) {
           this.setState({ error: error.message })
+        } else {
+          this.props.history.push("/")
         }
-        this.props.history.push("/")
       },
     )
   }
 }
 
-export default withRouter(StudyDangerZone)
+export default withRouter(createFragmentContainer(StudyDangerZone, graphql`
+  fragment StudyDangerZone_study on Study {
+    id
+  }
+`))

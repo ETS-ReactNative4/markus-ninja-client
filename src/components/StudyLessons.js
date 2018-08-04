@@ -28,12 +28,13 @@ class StudyLessons extends Component {
               {lessonEdges.map(({node}) => (
                 <LessonPreview key={node.__id} lesson={node} />
               ))}
+              {this.props.relay.hasMore() &&
               <button
                 className="StudyLessons__more"
                 onClick={this._loadMore}
               >
                 More
-              </button>
+              </button>}
             </div>
           )
         }

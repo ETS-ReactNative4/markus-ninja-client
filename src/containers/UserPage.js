@@ -6,12 +6,13 @@ import {
 import queryString from 'query-string'
 import environment from 'Environment'
 import User from 'components/User'
-import UserApplesPage from 'containers/UserApplesPage'
-import UserOverviewPage from 'containers/UserOverviewPage'
-import UserPupilsPage from 'containers/UserPupilsPage'
-import UserStudiesPage from 'containers/UserStudiesPage'
-import UserTutorsPage from 'containers/UserTutorsPage'
-import { get } from 'utils'
+import UserApplesTab from 'containers/UserApplesTab'
+import UserOverviewTab from 'containers/UserOverviewTab'
+import UserPupilsTab from 'containers/UserPupilsTab'
+import UserStudiesTab from 'containers/UserStudiesTab'
+import UserTutorsTab from 'containers/UserTutorsTab'
+import { get, isNil } from 'utils'
+import NotFound from 'components/NotFound'
 
 const UserPageQuery = graphql`
   query UserPageQuery($login: String!) {
@@ -30,15 +31,15 @@ class UserPage extends Component {
       const tab = get(query, "tab", "")
       switch (tab.toLowerCase()) {
         case "apples":
-          return <UserApplesPage {...props} />
+          return <UserApplesTab {...props} />
         case "pupils":
-          return <UserPupilsPage {...props} />
+          return <UserPupilsTab {...props} />
         case "studies":
-          return <UserStudiesPage {...props} />
+          return <UserStudiesTab {...props} />
         case "tutors":
-          return <UserTutorsPage {...props} />
+          return <UserTutorsTab {...props} />
         default:
-          return <UserOverviewPage {...props} />
+          return <UserOverviewTab {...props} />
       }
     }
     return (
@@ -52,9 +53,12 @@ class UserPage extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            if (isNil(props.user)) {
+              return <NotFound />
+            }
             return (
               <div className="UserPage">
-                <User user={get(props, "user", null)}></User>
+                <User user={props.user}></User>
                 <Tab />
               </div>
             )

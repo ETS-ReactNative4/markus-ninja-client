@@ -9,7 +9,10 @@ import TakeAppleMutation from 'mutations/TakeAppleMutation'
 
 class AppleButton extends React.Component {
   render() {
-    const appleable = get(this.props, "appleable", {})
+    const appleable = get(this.props, "appleable", null)
+    if (isNil(appleable)) {
+      return null
+    }
     return (
       <span className="AppleButton">
         {appleable.viewerHasAppled

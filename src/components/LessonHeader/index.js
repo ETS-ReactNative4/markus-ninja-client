@@ -1,4 +1,8 @@
 import React, {Component} from 'react'
+import {
+  createFragmentContainer,
+  graphql,
+} from 'react-relay'
 import { withRouter } from 'react-router-dom';
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
 import { get, isNil } from 'utils'
@@ -20,19 +24,21 @@ class LessonHeader extends Component {
       <div className={cls("LessonHeader", {open})}>
         <div className="LessonHeader__show">
           <div className="LessonHeader__actions">
+            {lesson.viewerCanUpdate &&
             <button
               className="btn"
               type="button"
               onClick={this.handleToggleOpen}
             >
               Edit
-            </button>
+            </button>}
           </div>
           <h1 className="LessonHeader__title">
             <span className="LessonHeader__lesson-title">{lesson.title}</span>
             <span className="LessonHeader__number">#{lesson.number}</span>
           </h1>
         </div>
+        {lesson.viewerCanUpdate &&
         <div className="LessonHeader__edit">
           <form onSubmit={this.handleSubmit}>
             <input
@@ -60,7 +66,7 @@ class LessonHeader extends Component {
             </button>
             <span>{error}</span>
           </form>
-        </div>
+        </div>}
       </div>
     )
   }
@@ -92,4 +98,11 @@ class LessonHeader extends Component {
   }
 }
 
-export default withRouter(LessonHeader)
+export default withRouter(createFragmentContainer(LessonHeader, graphql`
+  fragment LessonHeader_lesson on Lesson {
+    id
+    number
+    title
+    viewerCanUpdate
+  }
+`))

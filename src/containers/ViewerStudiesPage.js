@@ -3,9 +3,10 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import { Link } from 'react-router-dom'
 import environment from 'Environment'
 import StudyPreview from 'components/StudyPreview.js'
-import { get } from 'utils'
+import { get, isEmpty } from 'utils'
 import { STUDIES_PER_PAGE } from 'consts'
 
 const ViewerStudiesPageQuery = graphql`
@@ -37,6 +38,13 @@ class ViewerStudiesPage extends Component {
             return <div>{error.message}</div>
           } else if (props) {
             const studyEdges = get(props, "viewer.studies.edges", [])
+            if (isEmpty(studyEdges)) {
+              return (
+                <div className="ViewerStudiesPage">
+                  <Link to="/new">Create a study to get started</Link>
+                </div>
+              )
+            }
             return (
               <div>
                 {studyEdges.map(({node}) => (

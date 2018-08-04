@@ -4,7 +4,7 @@ import {
   graphql,
 } from 'react-relay'
 import Notification from './Notification.js'
-import { get, groupBy } from 'utils'
+import { get, groupBy, isEmpty } from 'utils'
 
 import { NOTIFICATIONS_PER_PAGE } from 'consts'
 
@@ -12,8 +12,17 @@ class ViewerNotifications extends Component {
   render() {
     const notificationEdges = get(this.props, "viewer.notifications.edges", [])
     const notificationsByStudy = groupBy(notificationEdges, "node.study.id")
+    if (isEmpty(notificationEdges)) {
+      return (
+        <div className="ViewerNotifications">
+          <span>
+            No new notifications
+          </span>
+        </div>
+      )
+    }
     return (
-      <div>
+      <div className="ViewerNotifications">
         <div className="ViewerNotifications__notifications">
           {Object.keys(notificationsByStudy).map(key =>
             <div key={key}>

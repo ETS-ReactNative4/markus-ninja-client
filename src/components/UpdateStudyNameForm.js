@@ -1,4 +1,8 @@
 import React, {Component} from 'react'
+import {
+  createFragmentContainer,
+  graphql,
+} from 'react-relay'
 import UpdateStudyMutation from 'mutations/UpdateStudyMutation'
 import { isNil } from 'utils'
 
@@ -64,4 +68,9 @@ class UpdateStudyNameForm extends Component {
   }
 }
 
-export default UpdateStudyNameForm
+export default createFragmentContainer(UpdateStudyNameForm, graphql`
+  fragment UpdateStudyNameForm_study on Study {
+    id
+    name
+  }
+`)

@@ -9,7 +9,7 @@ import queryString from 'query-string'
 import environment from 'Environment'
 import SearchResultItemPreview from 'components/SearchResultItemPreview'
 import Counter from 'components/Counter'
-import { get } from 'utils'
+import { get, isEmpty } from 'utils'
 
 import { SEARCH_RESULTS_PER_PAGE } from 'consts'
 
@@ -115,7 +115,7 @@ class SearchPage extends Component {
             searchQuery.type = "user_asset"
             const searchUserAssets = queryString.stringify(searchQuery)
             return (
-              <div>
+              <div className="SearchPage">
                 <nav>
                   <Link to={{pathname, search: searchLessons}}>
                     Lessons
@@ -138,9 +138,13 @@ class SearchPage extends Component {
                     <Counter>{search.userAssetCount}</Counter>
                   </Link>
                 </nav>
-                {searchEdges.map(({node}) => (
-                  <SearchResultItemPreview key={node.id} item={node} />
-                ))}
+                <div className="SearchPage__results">
+                  {isEmpty(searchEdges)
+                  ? <span>0 results</span>
+                  : searchEdges.map(({node}) => (
+                      <SearchResultItemPreview key={node.id} item={node} />
+                    ))}
+                </div>
               </div>
             )
           }

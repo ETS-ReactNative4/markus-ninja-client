@@ -17,6 +17,7 @@ import StudySearchPage from 'containers/StudySearchPage'
 import TopicPage from 'containers/TopicPage'
 import ViewerStudiesPage from 'containers/ViewerStudiesPage'
 import UserPage from 'containers/UserPage'
+import NotFound from 'components/NotFound'
 
 class App extends Component {
   render() {
@@ -29,15 +30,16 @@ class App extends Component {
             <PrivateRoute exact path="/new" component={CreateStudyPage} />
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/logout" component={LogoutPage} />
-            <PrivateRoute exact path="/notifications" component={NotificationsPage} />
+            <PrivateRoute path="/notifications" component={NotificationsPage} />
             <Route exact path="/research" component={ResearchPage} />
             <Route exact path="/search" component={SearchPage} />
             <Route exact path="/signup" component={SignupPage} />
-            <PrivateRoute exact path="/settings" component={UserSettingsPage} />
+            <PrivateRoute path="/settings" component={UserSettingsPage} />
             <Route exact path="/topics/:name" component={TopicPage} />
             <Route exact path="/:owner/:name/search" component={StudySearchPage} />
             <Route exact path="/:login" component={UserPage} />
             <Route path="/:owner/:name" component={StudyPage} />
+            <Route component={NotFound} />
           </Switch>
         </div>
       </div>

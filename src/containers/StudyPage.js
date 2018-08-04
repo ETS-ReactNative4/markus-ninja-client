@@ -11,6 +11,8 @@ import LessonPage from 'containers/LessonPage'
 import StudyLessonsPage from 'containers/StudyLessonsPage'
 import StudyOverviewPage from 'containers/StudyOverviewPage'
 import StudySettingsPage from 'containers/StudySettingsPage'
+import NotFound from 'components/NotFound'
+import { isNil } from 'utils'
 
 const StudyPageQuery = graphql`
   query StudyPageQuery($owner: String!, $name: String!) {
@@ -34,6 +36,9 @@ class StudyPage extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            if (isNil(props.study)) {
+              return <NotFound />
+            }
             return (
               <div className="StudyPage">
                 <Study study={props.study}></Study>

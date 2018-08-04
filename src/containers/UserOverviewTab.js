@@ -9,8 +9,8 @@ import UserActivity from 'components/UserActivity'
 import { get } from 'utils'
 import { EVENTS_PER_PAGE } from 'consts'
 
-const UserOverviewPageQuery = graphql`
-  query UserOverviewPageQuery($login: String!, $count: Int!, $after: String) {
+const UserOverviewTabQuery = graphql`
+  query UserOverviewTabQuery($login: String!, $count: Int!, $after: String) {
     user(login: $login) {
       id
       ...UserActivity_user
@@ -18,13 +18,13 @@ const UserOverviewPageQuery = graphql`
   }
 `
 
-class UserOverviewPage extends Component {
+class UserOverviewTab extends Component {
   render() {
     const { match } = this.props
     return (
       <QueryRenderer
         environment={environment}
-        query={UserOverviewPageQuery}
+        query={UserOverviewTabQuery}
         variables={{
           count: EVENTS_PER_PAGE,
           login: get(match.params, "login", ""),
@@ -34,8 +34,8 @@ class UserOverviewPage extends Component {
             return <div>{error.message}</div>
           } else if (props) {
             return (
-              <div>
-                <UserActivity user={get(props, "user", null)} />
+              <div className="UserOverviewTab">
+                <UserActivity user={props.user} />
               </div>
             )
           }
@@ -46,4 +46,4 @@ class UserOverviewPage extends Component {
   }
 }
 
-export default withRouter(UserOverviewPage)
+export default withRouter(UserOverviewTab)

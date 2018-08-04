@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import * as React from 'react'
 import {
   QueryRenderer,
   graphql,
@@ -13,8 +13,8 @@ import { get } from 'utils'
 
 import { SEARCH_RESULTS_PER_PAGE } from 'consts'
 
-const TopicSearchPageQuery = graphql`
-  query TopicSearchPageQuery(
+const TopicSearchQuery = graphql`
+  query TopicSearchQuery(
     $count: Int!,
     $after: String,
     $orderBy: SearchOrder,
@@ -41,7 +41,7 @@ const TopicSearchPageQuery = graphql`
   }
 `
 
-class TopicSearchPage extends Component {
+class TopicSearch extends React.Component {
   render() {
     const searchQuery = queryString.parse(get(this.props, "location.search", ""))
     const query = get(searchQuery, "q", "*")
@@ -71,7 +71,7 @@ class TopicSearchPage extends Component {
     return (
       <QueryRenderer
         environment={environment}
-        query={TopicSearchPageQuery}
+        query={TopicSearchQuery}
         variables={{
           count: SEARCH_RESULTS_PER_PAGE,
           orderBy,
@@ -109,4 +109,4 @@ class TopicSearchPage extends Component {
   }
 }
 
-export default withRouter(TopicSearchPage)
+export default withRouter(TopicSearch)

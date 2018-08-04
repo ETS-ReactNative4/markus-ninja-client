@@ -4,7 +4,9 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import TopicSearchPage from 'containers/TopicSearchPage'
+import TopicSearch from 'components/TopicSearch'
+import NotFound from 'components/NotFound'
+import { isNil } from 'utils'
 
 const TopicPageQuery = graphql`
   query TopicPageQuery($name: String!) {
@@ -27,9 +29,12 @@ class TopicPage extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            if (isNil(props.topic)) {
+              return <NotFound />
+            }
             return (
               <div className="TopicPage">
-                <TopicSearchPage topic={props.topic} />
+                <TopicSearch topic={props.topic} />
               </div>
             )
           }

@@ -6,15 +6,16 @@ import {
 import { withRouter } from 'react-router'
 import environment from 'Environment'
 import AppleablePreview from 'components/AppleablePreview.js'
-import { get } from 'utils'
+import { get, isEmpty } from 'utils'
 import { APPLES_PER_PAGE } from 'consts'
 
-const UserApplesPageQuery = graphql`
-  query UserApplesPageQuery($login: String!, $count: Int!) {
+const UserApplesTabQuery = graphql`
+  query UserApplesTabQuery($login: String!, $count: Int!) {
     user(login: $login) {
       id
+      isViewer
       appled(first: $count, orderBy:{direction: DESC field:APPLED_AT}, type: STUDY)
-        @connection(key: "UserApplesPage_appled", filters: []) {
+        @connection(key: "UserApplesTab_appled", filters: []) {
         edges {
           node {
             __typename
@@ -28,13 +29,13 @@ const UserApplesPageQuery = graphql`
   }
 `
 
-class UserApplesPage extends Component {
+class UserApplesTab extends Component {
   render() {
     const { match } = this.props
     return (
       <QueryRenderer
         environment={environment}
-        query={UserApplesPageQuery}
+        query={UserApplesTabQuery}
         variables={{
           login: get(match.params, "login", ""),
           count: APPLES_PER_PAGE,
@@ -44,8 +45,23 @@ class UserApplesPage extends Component {
             return <div>{error.message}</div>
           } else if (props) {
             const appleEdges = get(props, "user.appled.edges", [])
+            if (isEmpty(appleEdges)) {
+              return (
+                <div className="UserApplesTab">
+                  {props.user.isViewer
+                  ? <span>
+                      You have not appled any studies yet.
+                      While you're researching different studies, you can give apples
+                      to those you like.
+                    </span>
+                  : <span>
+                      This user has not appled any studies yet.
+                    </span>}
+                </div>
+              )
+            }
             return (
-              <div>
+              <div className="UserApplesTab">
                 {appleEdges.map(({node}) => (
                   <AppleablePreview key={node.__id} apple={node} />
                 ))}
@@ -59,4 +75,4 @@ class UserApplesPage extends Component {
   }
 }
 
-export default withRouter(UserApplesPage)
+export default withRouter(UserApplesTab)

@@ -11,7 +11,11 @@ class EnrollmentSelect extends React.Component {
     status: get(this.props, "enrollable.enrollmentStatus"),
   }
   render() {
-    const enrollable = get(this.props, "enrollable", {})
+    const enrollable = get(this.props, "enrollable", null)
+    if (isNil(enrollable)) {
+      return null
+    }
+
     const enrolleeCount = get(enrollable, "enrolleeCount", 0)
     const { status } = this.state
     return (

@@ -21,7 +21,8 @@ class User extends Component {
         <div className="User__name">{user.name}</div>
         <div className="User__username">{user.login}</div>
         <UserBio user={user} />
-        <EnrollmentSelect enrollable={user} />
+        {!user.isViewer &&
+        <EnrollmentSelect enrollable={user} />}
         {email &&
         <div className="User__email">{email}</div>}
         <nav className="User__nav">
@@ -83,6 +84,7 @@ export default withRouter(createFragmentContainer(User, graphql`
     enrolled(first: 0 type: USER) {
       userCount
     }
+    isViewer
     login
     name
     resourcePath

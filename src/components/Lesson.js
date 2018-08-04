@@ -3,8 +3,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import { Link } from 'react-router-dom'
-import { get, nullOr } from 'utils'
+import { get } from 'utils'
 import LessonBody from 'components/LessonBody'
 import LessonHeader from 'components/LessonHeader'
 import LessonTimeline from 'components/LessonTimeline'
@@ -12,15 +11,11 @@ import AddLessonCommentForm from 'components/AddLessonCommentForm'
 
 class Lesson extends Component {
   render() {
-    const lesson = get(this.props, "lesson", {})
+    const lesson = get(this.props, "lesson", null)
     return (
       <div className="Lesson">
-        <LessonHeader lesson={nullOr(lesson)}/>
-        <LessonBody lesson={nullOr(lesson)}/>
-        {lesson.hasPrevLesson &&
-        <Link to={`./${lesson.number-1}`}>Previous</Link>}
-        {lesson.hasNextLesson &&
-        <Link to={`./${lesson.number+1}`}>Next</Link>}
+        <LessonHeader lesson={lesson}/>
+        <LessonBody lesson={lesson}/>
         <LessonTimeline lesson={lesson} />
         <AddLessonCommentForm lesson={lesson} />
       </div>
@@ -31,20 +26,8 @@ class Lesson extends Component {
 export default createFragmentContainer(Lesson, graphql`
   fragment Lesson_lesson on Lesson {
     id
-    createdAt
-    body
-    bodyHTML
-    hasNextLesson
-    hasPrevLesson
-    number
-    study {
-      ...RichTextEditor_study
-    }
-    title
-    publishedAt
-    updatedAt
-    viewerCanUpdate
-    viewerDidAuthor
+    ...LessonHeader_lesson
+    ...LessonBody_lesson
     ...LessonTimeline_lesson
     ...AddLessonCommentForm_lesson
   }
