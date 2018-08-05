@@ -6,7 +6,10 @@ import {
 import { Route, Switch } from 'react-router-dom'
 import environment from 'Environment'
 import Study from 'components/Study'
+import CreateCoursePage from 'containers/CreateCoursePage'
 import CreateLessonPage from 'containers/CreateLessonPage'
+import CoursePage from 'containers/CoursePage'
+import StudyCoursesPage from 'containers/StudyCoursesPage'
 import LessonPage from 'containers/LessonPage'
 import StudyLessonsPage from 'containers/StudyLessonsPage'
 import StudyOverviewPage from 'containers/StudyOverviewPage'
@@ -47,6 +50,21 @@ class StudyPage extends Component {
                     exact
                     path="/:owner/:name"
                     component={StudyOverviewPage}
+                  />
+                  <Route
+                    exact
+                    path="/:owner/:name/course/:number"
+                    component={CoursePage}
+                  />
+                  <Route
+                    exact
+                    path="/:owner/:name/courses"
+                    component={StudyCoursesPage}
+                  />
+                  <Route
+                    exact
+                    path="/:owner/:name/courses/new"
+                    component={CreateCoursePage}
                   />
                   <Route
                     exact

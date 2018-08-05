@@ -76,6 +76,88 @@
 				},
 				{
 					"kind": "INPUT_OBJECT",
+					"name": "AddCourseLessonInput",
+					"description": "Input type for AddCourseLesson.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "courseId",
+							"description": "The Node ID of the course.",
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "lessonId",
+							"description": "The Node ID of the lesson.",
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "OBJECT",
+					"name": "AddCourseLessonPayload",
+					"description": "Return type for AddCourseLesson.",
+					"fields": [
+						{
+							"name": "course",
+							"description": "The course added to.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Course",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "lessonEdge",
+							"description": "The edge from the course's lesson connection.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "LessonEdge",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
 					"name": "AddEmailInput",
 					"description": "Input type for AddEmail.",
 					"fields": null,
@@ -542,6 +624,73 @@
 					"description": "Things that can be appled.",
 					"fields": [
 						{
+							"name": "appleGivers",
+							"description": "Returns a list users who have appled this appleable.",
+							"args": [
+								{
+									"name": "after",
+									"description": "Returns the elements in the list that come after the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "before",
+									"description": "Returns the elements in the list that come before the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "first",
+									"description": "Returns the first n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "last",
+									"description": "Returns the last n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "orderBy",
+									"description": "Order for connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "AppleGiverOrder",
+										"ofType": null
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "AppleGiverConnection",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "id",
 							"description": null,
 							"args": [],
@@ -578,6 +727,11 @@
 					"interfaces": null,
 					"enumValues": null,
 					"possibleTypes": [
+						{
+							"kind": "OBJECT",
+							"name": "Course",
+							"ofType": null
+						},
 						{
 							"kind": "OBJECT",
 							"name": "Study",
@@ -936,152 +1090,6 @@
 					"possibleTypes": null
 				},
 				{
-					"kind": "OBJECT",
-					"name": "AppledStudyConnection",
-					"description": "A connection type for Study.",
-					"fields": [
-						{
-							"name": "pageInfo",
-							"description": "Information to aid in pagination.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "OBJECT",
-									"name": "PageInfo",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "edges",
-							"description": "A list of edges.",
-							"args": [],
-							"type": {
-								"kind": "LIST",
-								"name": null,
-								"ofType": {
-									"kind": "OBJECT",
-									"name": "AppledStudyEdge",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "nodes",
-							"description": "A list of nodes.",
-							"args": [],
-							"type": {
-								"kind": "LIST",
-								"name": null,
-								"ofType": {
-									"kind": "OBJECT",
-									"name": "Study",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "totalCount",
-							"description": "The total count of items in the connection.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						}
-					],
-					"inputFields": null,
-					"interfaces": [
-						{
-							"kind": "INTERFACE",
-							"name": "Connection",
-							"ofType": null
-						}
-					],
-					"enumValues": null,
-					"possibleTypes": null
-				},
-				{
-					"kind": "OBJECT",
-					"name": "AppledStudyEdge",
-					"description": "An edge type for Study.",
-					"fields": [
-						{
-							"name": "cursor",
-							"description": "A cursor for use in pagination.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "String",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "node",
-							"description": "The item at the end of the edge.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "OBJECT",
-									"name": "Study",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "appledAt",
-							"description": "When was the item appled?",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Time",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						}
-					],
-					"inputFields": null,
-					"interfaces": [
-						{
-							"kind": "INTERFACE",
-							"name": "Edge",
-							"ofType": null
-						}
-					],
-					"enumValues": null,
-					"possibleTypes": null
-				},
-				{
 					"kind": "SCALAR",
 					"name": "Boolean",
 					"description": "The `Boolean` scalar type represents `true` or `false`.",
@@ -1432,56 +1440,6 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LabelConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "StudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppledStudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppleGiverConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAssetConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "TopicConnection",
 							"ofType": null
 						},
@@ -1492,10 +1450,985 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "EventConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CourseConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAssetConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabelConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "EmailConnection",
 							"ofType": null
 						}
 					]
+				},
+				{
+					"kind": "OBJECT",
+					"name": "Course",
+					"description": "Represents a course.",
+					"fields": [
+						{
+							"name": "advancedAt",
+							"description": "Identifies when the course was advanced at.",
+							"args": [],
+							"type": {
+								"kind": "SCALAR",
+								"name": "Time",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "completedAt",
+							"description": "Identifies when the course was completed at.",
+							"args": [],
+							"type": {
+								"kind": "SCALAR",
+								"name": "Time",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "appleGivers",
+							"description": "Returns a list users who have appled this appleable.",
+							"args": [
+								{
+									"name": "after",
+									"description": "Returns the elements in the list that come after the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "before",
+									"description": "Returns the elements in the list that come before the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "first",
+									"description": "Returns the first n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "last",
+									"description": "Returns the last n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "orderBy",
+									"description": "Order for connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "AppleGiverOrder",
+										"ofType": null
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "AppleGiverConnection",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "createdAt",
+							"description": "Identifies the date and time when the object was created.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "description",
+							"description": "The description of the course.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "descriptionHTML",
+							"description": "The description of the course rendered to HTML.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "HTML",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "enrolleeCount",
+							"description": "The number of users that have enrolled in this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "enrollees",
+							"description": "Returns a list users who have enrolled in this enrollable.",
+							"args": [
+								{
+									"name": "after",
+									"description": "Returns the elements in the list that come after the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "before",
+									"description": "Returns the elements in the list that come before the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "first",
+									"description": "Returns the first n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "last",
+									"description": "Returns the last n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "orderBy",
+									"description": "Order for connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "EnrolleeOrder",
+										"ofType": null
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "EnrolleeConnection",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "enrollmentStatus",
+							"description": "Is the viewer dismissed, enrolled, or ignoring this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "ENUM",
+									"name": "EnrollmentStatus",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "lesson",
+							"description": "Returns a single lesson from the current course by number.",
+							"args": [
+								{
+									"name": "number",
+									"description": "The number for the lesson to be returned.",
+									"type": {
+										"kind": "NON_NULL",
+										"name": null,
+										"ofType": {
+											"kind": "SCALAR",
+											"name": "Int",
+											"ofType": null
+										}
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "OBJECT",
+								"name": "Lesson",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "lessons",
+							"description": "Returns a list of lessons from the current course.",
+							"args": [
+								{
+									"name": "after",
+									"description": "Returns the elements in the list that come after the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "before",
+									"description": "Returns the elements in the list that come before the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "first",
+									"description": "Returns the first n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "last",
+									"description": "Returns the last n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "orderBy",
+									"description": "Ordering options for lessons returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "LessonOrder",
+										"ofType": null
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "LessonConnection",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "lessonCount",
+							"description": "How many lessons there are in this course.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "name",
+							"description": "The name of the course.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "owner",
+							"description": "The owner of the course.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "User",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "resourcePath",
+							"description": "The HTTP path for this course.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "URI",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "status",
+							"description": "The status of the course.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "ENUM",
+									"name": "CourseStatus",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "study",
+							"description": "The study associated with this lesson.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Study",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "topics",
+							"description": "Returns a list of topics from the current course.",
+							"args": [
+								{
+									"name": "after",
+									"description": "Returns the elements in the list that come after the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "before",
+									"description": "Returns the elements in the list that come before the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "first",
+									"description": "Returns the first n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "last",
+									"description": "Returns the last n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "orderBy",
+									"description": "Ordering options for topics returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "TopicOrder",
+										"ofType": null
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "TopicConnection",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "updatedAt",
+							"description": "Identifies when the course was last updated.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "url",
+							"description": "The HTTP URL for this course.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "URI",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "viewerCanAdmin",
+							"description": "Can the viewer admin this object?",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Boolean",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "viewerCanEnroll",
+							"description": "Can the viewer enroll in this enrollable.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Boolean",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "viewerHasAppled",
+							"description": "Has the viewer appled this appleable?",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Boolean",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "Appleable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Createable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Enrollable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "EventSourceable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "EventTargetable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Node",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Searchable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "StudyNode",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Topicable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "UniformResourceLocatable",
+							"ofType": null
+						}
+					],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "OBJECT",
+					"name": "CourseConnection",
+					"description": "A connection type for Course.",
+					"fields": [
+						{
+							"name": "pageInfo",
+							"description": "Information to aid in pagination.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "PageInfo",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "edges",
+							"description": "A list of edges.",
+							"args": [],
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "CourseEdge",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "nodes",
+							"description": "A list of nodes.",
+							"args": [],
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Course",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "totalCount",
+							"description": "The total count of items in the connection.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "Connection",
+							"ofType": null
+						}
+					],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "OBJECT",
+					"name": "CourseEdge",
+					"description": "An edge type for Course.",
+					"fields": [
+						{
+							"name": "cursor",
+							"description": "A cursor for use in pagination.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "node",
+							"description": "The item at the end of the edge.",
+							"args": [],
+							"type": {
+								"kind": "OBJECT",
+								"name": "Course",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "Edge",
+							"ofType": null
+						}
+					],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
+					"name": "CourseOrder",
+					"description": "Ways in which courses can be ordered upon return.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "direction",
+							"description": "The direction in which to order courses by the specified field.",
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "ENUM",
+									"name": "OrderDirection",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "field",
+							"description": "The field in which to order courses by.",
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "ENUM",
+									"name": "CourseOrderField",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "ENUM",
+					"name": "CourseOrderField",
+					"description": "Properties by which course connections can be ordered.",
+					"fields": null,
+					"inputFields": null,
+					"interfaces": null,
+					"enumValues": [
+						{
+							"name": "ADVANCED_AT",
+							"description": "Order courses by advance time.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "CREATED_AT",
+							"description": "Order courses by creation time.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "NAME",
+							"description": "Order courses by name.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "UPDATED_AT",
+							"description": "Order courses by update time.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"possibleTypes": null
+				},
+				{
+					"kind": "ENUM",
+					"name": "CourseStatus",
+					"description": "The possible states of a course.",
+					"fields": null,
+					"inputFields": null,
+					"interfaces": null,
+					"enumValues": [
+						{
+							"name": "ADVANCING",
+							"description": "The Course is still advancing.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "COMPLETED",
+							"description": "The Course is completed.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
+					"name": "CreateCourseInput",
+					"description": "Input type for CreateCourse.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "description",
+							"description": "A brief description of the course.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "name",
+							"description": "The name of the course.",
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "studyId",
+							"description": "The ID of the study under which to create the course. ",
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
 				},
 				{
 					"kind": "INPUT_OBJECT",
@@ -1725,12 +2658,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "Course",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
 							"ofType": null
 						}
 					]
@@ -1855,6 +2793,74 @@
 							"ofType": null
 						}
 					],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
+					"name": "DeleteCourseInput",
+					"description": "Input type for DeleteCourse.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "courseId",
+							"description": "ID of the course.",
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "OBJECT",
+					"name": "DeleteCoursePayload",
+					"description": "Return type for DeleteCourse.",
+					"fields": [
+						{
+							"name": "deletedCourseId",
+							"description": "The deleted course id.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "study",
+							"description": "The parent study of the deleted course.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Study",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [],
 					"enumValues": null,
 					"possibleTypes": null
 				},
@@ -2365,17 +3371,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
 							"ofType": null
 						}
 					]
@@ -2469,42 +3475,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LabelEdge",
+							"name": "TopicEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "StudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppledStudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppleGiverEdge",
+							"name": "UserEdge",
 							"ofType": null
 						},
 						{
@@ -2514,17 +3490,47 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "CourseEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "UserAssetEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "TopicEdge",
+							"name": "AppleGiverEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserEdge",
+							"name": "LessonEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabelEdge",
 							"ofType": null
 						},
 						{
@@ -2890,7 +3896,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Course",
 							"ofType": null
 						},
 						{
@@ -2900,7 +3911,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Study",
 							"ofType": null
 						}
 					]
@@ -3736,12 +4747,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "User",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Course",
 							"ofType": null
 						},
 						{
@@ -3751,7 +4762,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
 							"ofType": null
 						}
 					]
@@ -3784,7 +4800,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Course",
 							"ofType": null
 						},
 						{
@@ -3794,7 +4815,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Study",
 							"ofType": null
 						}
 					]
@@ -4390,12 +5411,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -4776,6 +5797,30 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "course",
+							"description": "The course associated with the lesson, if any.",
+							"args": [],
+							"type": {
+								"kind": "OBJECT",
+								"name": "Course",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "courseNumber",
+							"description": "Identifies the lesson's number within its associated course, if any.",
+							"args": [],
+							"type": {
+								"kind": "SCALAR",
+								"name": "Int",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "enrolleeCount",
 							"description": "The number of users that have enrolled in this enrollable.",
 							"args": [],
@@ -4891,6 +5936,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "isCourseLesson",
+							"description": "Is this lesson part of a course?",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Boolean",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "labels",
 							"description": "Returns a list of labels for the current lesson.",
 							"args": [
@@ -4958,6 +6019,18 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "nextLesson",
+							"description": "The next lesson within this lesson's course, if any.",
+							"args": [],
+							"type": {
+								"kind": "OBJECT",
+								"name": "Lesson",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "number",
 							"description": "Identifies the lesson number.",
 							"args": [],
@@ -4969,6 +6042,18 @@
 									"name": "Int",
 									"ofType": null
 								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "previousLesson",
+							"description": "The previous lesson within this lesson's course, if any.",
+							"args": [],
+							"type": {
+								"kind": "OBJECT",
+								"name": "Lesson",
+								"ofType": null
 							},
 							"isDeprecated": false,
 							"deprecationReason": null
@@ -6082,12 +7167,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "ReferencedEvent",
+							"name": "CommentedEvent",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "CommentedEvent",
+							"name": "ReferencedEvent",
 							"ofType": null
 						}
 					]
@@ -6300,6 +7385,33 @@
 					"description": null,
 					"fields": [
 						{
+							"name": "addCourseLesson",
+							"description": "Adds a lesson to a course.",
+							"args": [
+								{
+									"name": "input",
+									"description": null,
+									"type": {
+										"kind": "NON_NULL",
+										"name": null,
+										"ofType": {
+											"kind": "INPUT_OBJECT",
+											"name": "AddCourseLessonInput",
+											"ofType": null
+										}
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "OBJECT",
+								"name": "AddCourseLessonPayload",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "addEmail",
 							"description": "Adds an email to the viewer's account.",
 							"args": [
@@ -6375,6 +7487,33 @@
 							"type": {
 								"kind": "OBJECT",
 								"name": "AddLessonCommentPayload",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "createCourse",
+							"description": "Creates a new course.",
+							"args": [
+								{
+									"name": "input",
+									"description": null,
+									"type": {
+										"kind": "NON_NULL",
+										"name": null,
+										"ofType": {
+											"kind": "INPUT_OBJECT",
+											"name": "CreateCourseInput",
+											"ofType": null
+										}
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "OBJECT",
+								"name": "Course",
 								"ofType": null
 							},
 							"isDeprecated": false,
@@ -6483,6 +7622,33 @@
 							"type": {
 								"kind": "OBJECT",
 								"name": "User",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "deleteCourse",
+							"description": "Deletes a course.",
+							"args": [
+								{
+									"name": "input",
+									"description": null,
+									"type": {
+										"kind": "NON_NULL",
+										"name": null,
+										"ofType": {
+											"kind": "INPUT_OBJECT",
+											"name": "DeleteCourseInput",
+											"ofType": null
+										}
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "OBJECT",
+								"name": "DeleteCoursePayload",
 								"ofType": null
 							},
 							"isDeprecated": false,
@@ -6806,8 +7972,8 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "moveLesson",
-							"description": "Moves a lesson to a new numbered position within a study.",
+							"name": "removeCourseLesson",
+							"description": "Removes a lesson from a course.",
 							"args": [
 								{
 									"name": "input",
@@ -6817,7 +7983,7 @@
 										"name": null,
 										"ofType": {
 											"kind": "INPUT_OBJECT",
-											"name": "MoveLessonInput",
+											"name": "RemoveCourseLessonInput",
 											"ofType": null
 										}
 									},
@@ -6826,7 +7992,7 @@
 							],
 							"type": {
 								"kind": "OBJECT",
-								"name": "LessonEdge",
+								"name": "RemoveCourseLessonPayload",
 								"ofType": null
 							},
 							"isDeprecated": false,
@@ -6972,6 +8138,33 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "updateCourse",
+							"description": "Updates the description and/or name of a course.",
+							"args": [
+								{
+									"name": "input",
+									"description": null,
+									"type": {
+										"kind": "NON_NULL",
+										"name": null,
+										"ofType": {
+											"kind": "INPUT_OBJECT",
+											"name": "UpdateCourseInput",
+											"ofType": null
+										}
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "OBJECT",
+								"name": "Course",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "updateEmail",
 							"description": "Updates an email's type.",
 							"args": [
@@ -7108,7 +8301,7 @@
 						},
 						{
 							"name": "updateStudy",
-							"description": "Updates the description of a study.",
+							"description": "Updates the description and/or name of a study.",
 							"args": [
 								{
 									"name": "input",
@@ -7302,17 +8495,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "Topic",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "User",
 							"ofType": null
 						},
 						{
@@ -7322,7 +8510,27 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "Event",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Course",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CommentedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "ReferencedEvent",
 							"ofType": null
 						},
 						{
@@ -7337,32 +8545,22 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "ReferencedEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CommentedEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Event",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "UserAsset",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Topic",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
 							"ofType": null
 						},
 						{
@@ -7671,12 +8869,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "CreatedEvent",
+							"name": "CommentedEvent",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "CommentedEvent",
+							"name": "CreatedEvent",
 							"ofType": null
 						}
 					]
@@ -8457,6 +9655,74 @@
 				},
 				{
 					"kind": "INPUT_OBJECT",
+					"name": "RemoveCourseLessonInput",
+					"description": "Input type for RemoveCourseLesson.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "lessonId",
+							"description": "The ID of the lesson to remove. ",
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "OBJECT",
+					"name": "RemoveCourseLessonPayload",
+					"description": "Return type for RemoveCourseLesson.",
+					"fields": [
+						{
+							"name": "course",
+							"description": "The course from which the lesson was removed.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Course",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "lessonEdge",
+							"description": "The edge from the course's lesson connection.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "LessonEdge",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
 					"name": "RemoveLabelInput",
 					"description": "Input type for RemoveLabel.",
 					"fields": null,
@@ -8813,12 +10079,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "Topic",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Course",
 							"ofType": null
 						},
 						{
@@ -8828,12 +10099,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Topic",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Study",
 							"ofType": null
 						}
 					]
@@ -9214,6 +10485,100 @@
 								"ofType": {
 									"kind": "OBJECT",
 									"name": "UserAssetConnection",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "course",
+							"description": "Returns a single course from the current study by number.",
+							"args": [
+								{
+									"name": "number",
+									"description": "The number for the course to be returned.",
+									"type": {
+										"kind": "NON_NULL",
+										"name": null,
+										"ofType": {
+											"kind": "SCALAR",
+											"name": "Int",
+											"ofType": null
+										}
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "OBJECT",
+								"name": "Course",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "courses",
+							"description": "Returns a list of courses from the current study.",
+							"args": [
+								{
+									"name": "after",
+									"description": "Returns the elements in the list that come after the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "before",
+									"description": "Returns the elements in the list that come before the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "first",
+									"description": "Returns the first n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "last",
+									"description": "Returns the last n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "orderBy",
+									"description": "Ordering options for courses returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "CourseOrder",
+										"ofType": null
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "CourseConnection",
 									"ofType": null
 								}
 							},
@@ -10050,12 +11415,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Course",
 							"ofType": null
 						},
 						{
@@ -10066,6 +11426,16 @@
 						{
 							"kind": "OBJECT",
 							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
 							"ofType": null
 						}
 					]
@@ -10349,17 +11719,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "EVT",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "PRT",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "AccessToken",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EVT",
 							"ofType": null
 						}
 					]
@@ -10800,6 +12170,11 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "Course",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Study",
 							"ofType": null
 						}
@@ -11092,22 +12467,22 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "Topic",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "User",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "AppledEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Course",
 							"ofType": null
 						},
 						{
@@ -11127,15 +12502,65 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Topic",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
 							"ofType": null
 						}
 					]
+				},
+				{
+					"kind": "INPUT_OBJECT",
+					"name": "UpdateCourseInput",
+					"description": "Input type for UpdateCourse.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "description",
+							"description": "The description of the course.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "name",
+							"description": "The name of the course.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "courseId",
+							"description": "ID of the course.",
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
 				},
 				{
 					"kind": "INPUT_OBJECT",
@@ -11687,7 +13112,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -11697,12 +13127,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Label",
 							"ofType": null
 						}
 					]

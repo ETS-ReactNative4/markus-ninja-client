@@ -10,13 +10,13 @@ import StudyPreview from 'components/StudyPreview.js'
 import { get, isEmpty } from 'utils'
 import { STUDIES_PER_PAGE } from 'consts'
 
-const UserStudiesPageQuery = graphql`
-  query UserStudiesPageQuery($login: String!, $count: Int!) {
+const UserStudiesTabQuery = graphql`
+  query UserStudiesTabQuery($login: String!, $count: Int!) {
     user(login: $login) {
       id
       isViewer
       studies(first: $count, orderBy:{direction: DESC field:CREATED_AT})
-        @connection(key: "UserStudiesPage_studies", filters: []) {
+        @connection(key: "UserStudiesTab_studies", filters: []) {
         edges {
           node {
             ...StudyPreview_study
@@ -27,13 +27,13 @@ const UserStudiesPageQuery = graphql`
   }
 `
 
-class UserStudiesPage extends Component {
+class UserStudiesTab extends Component {
   render() {
     const { match } = this.props
     return (
       <QueryRenderer
         environment={environment}
-        query={UserStudiesPageQuery}
+        query={UserStudiesTabQuery}
         variables={{
           login: get(match.params, "login", ""),
           count: STUDIES_PER_PAGE,
@@ -67,4 +67,4 @@ class UserStudiesPage extends Component {
   }
 }
 
-export default withRouter(UserStudiesPage)
+export default withRouter(UserStudiesTab)

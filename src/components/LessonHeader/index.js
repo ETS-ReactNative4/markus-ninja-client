@@ -3,7 +3,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
 import { get, isNil } from 'utils'
 import cls from 'classnames'
@@ -67,6 +67,19 @@ class LessonHeader extends Component {
             <span>{error}</span>
           </form>
         </div>}
+        {lesson.isCourseLesson &&
+        <div className="LessonHeader_course">
+          <span>
+            This lesson is part of course
+            <Link to={get(lesson, "course.resourcePath", "")}>
+              {get(lesson, "course.name", "")}
+            </Link>
+          </span>
+          {!isNil(get(lesson, "previousLesson.resourcePath", null)) &&
+          <Link to={get(lesson, "previousLesson.resourcePath", null)}>Previous</Link>}
+          {!isNil(get(lesson, "nextLesson.resourcePath", null)) &&
+          <Link to={get(lesson, "nextLesson.resourcePath", null)}>Next</Link>}
+        </div>}
       </div>
     )
   }
@@ -100,8 +113,20 @@ class LessonHeader extends Component {
 
 export default withRouter(createFragmentContainer(LessonHeader, graphql`
   fragment LessonHeader_lesson on Lesson {
+    course {
+      name
+      resourcePath
+    }
+    courseNumber
     id
+    isCourseLesson
+    nextLesson {
+      resourcePath
+    }
     number
+    previousLesson {
+      resourcePath
+    }
     title
     viewerCanUpdate
   }

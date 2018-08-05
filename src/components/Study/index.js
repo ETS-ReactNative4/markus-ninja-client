@@ -5,7 +5,7 @@ import {
 } from 'react-relay'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
-import { get, nullOr } from 'utils'
+import { get } from 'utils'
 import AppleButton from 'components/AppleButton'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import UserLink from 'components/UserLink'
@@ -27,7 +27,7 @@ class Study extends Component {
     return (
       <div className="Study">
         <div className="Study__name">
-          <UserLink user={nullOr(study.owner)} />
+          <UserLink user={get(study, "owner", null)} />
           <span className="Study__name-divider">/</span>
           <a href={study.url}>{study.name}</a>
         </div>
@@ -53,6 +53,13 @@ class Study extends Component {
             Lessons
             <Counter>{study.lessonCount}</Counter>
           </Link>
+          <Link
+            className="Study__nav-item"
+            to={study.resourcePath + "/courses"}
+          >
+            Courses
+            <Counter>{get(study, "courses.totalCount", 0)}</Counter>
+          </Link>
           {study.viewerCanAdmin &&
           <Link
             className="Study__nav-item"
@@ -71,6 +78,9 @@ export default withRouter(createFragmentContainer(Study, graphql`
     id
     advancedAt
     createdAt
+    courses(first: 0) {
+      totalCount
+    }
     lessonCount
     name
     owner {

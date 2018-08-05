@@ -60,12 +60,10 @@ class AppleButton extends React.Component {
 
 export default createFragmentContainer(AppleButton, graphql`
   fragment AppleButton_appleable on Appleable {
+    appleGivers(first: 0) {
+      totalCount
+    }
     id
     viewerHasAppled
-    ...on Study {
-      appleGivers(first: 0) {
-        totalCount
-      }
-    }
   }
 `)
