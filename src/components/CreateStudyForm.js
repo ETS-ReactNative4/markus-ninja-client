@@ -13,18 +13,18 @@ class CreateStudyForm extends Component {
     const { name, description, error } = this.state
     return (
       <form onSubmit={this.handleSubmit}>
-        <label htmlFor="CreateStudyForm__name">Study name</label>
+        <label htmlFor="study-name">Study name</label>
         <input
-          id="CreateStudyForm__name"
+          id="study-name"
           type="text"
           name="name"
           value={name}
           onChange={this.handleChange}
         />
-        <label htmlFor="CreateStudyForm__description">Description (optional)</label>
+        <label htmlFor="study-description">Description (optional)</label>
         <input
-          id="CreateStudyForm__description"
-          type="description"
+          id="study-description"
+          type="text"
           name="description"
           value={description}
           onChange={this.handleChange}

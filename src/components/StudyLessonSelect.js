@@ -3,43 +3,47 @@ import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import { Link } from 'react-router-dom'
-import CoursePreview from './CoursePreview.js'
 import { get } from 'utils'
+import Edge from 'components/Edge'
 
 import { LESSONS_PER_PAGE } from 'consts'
 
-class StudyCourses extends Component {
+class StudyLessonSelect extends Component {
+  state = {
+    lessonId: "",
+  }
+
   render() {
-    const courseEdges = get(this.props, "study.courses.edges", [])
-    const resourcePath = get(this.props, "study.resourcePath", "")
+    const { lessonId } = this.state
+    const lessonEdges = get(this.props, "study.lessons.edges", [])
     return (
-      <div>
-        {
-          courseEdges.length < 1 ? (
-            <Link
-              className="StudyCourses__new-course"
-              to={resourcePath + "/courses/new"}
-            >
-              Create a course
-            </Link>
-          ) : (
-            <div className="StudyCourses__courses">
-              {courseEdges.map(({node}) => (
-                <CoursePreview key={node.__id} course={node} />
-              ))}
-              {this.props.relay.hasMore() &&
-              <button
-                className="StudyCourses__more"
-                onClick={this._loadMore}
-              >
-                More
-              </button>}
-            </div>
-          )
-        }
+      <div className="StudyLessonSelect">
+        <select
+          value={lessonId}
+          onChange={this.handleChange}
+        >
+          <option>Select a lesson...</option>
+          {lessonEdges.map(edge =>
+            <Edge key={get(edge, "node.id", "")} edge={edge} render={({node}) =>
+              <option value={node.id}>{node.number}: {node.title}</option>
+            } />)}
+        </select>
+        {this.props.relay.hasMore() &&
+        <button
+          className="btn"
+          type="button"
+          onClick={this._loadMore}
+        >
+          More
+        </button>}
       </div>
     )
+  }
+
+  handleChange = (e) => {
+    const lessonId = e.target.value
+    this.setState({ lessonId })
+    this.props.onChange(lessonId)
   }
 
   _loadMore = () => {
@@ -56,19 +60,20 @@ class StudyCourses extends Component {
   }
 }
 
-export default createPaginationContainer(StudyCourses,
+export default createPaginationContainer(StudyLessonSelect,
   {
     study: graphql`
-      fragment StudyCourses_study on Study {
-        resourcePath
-        courses(
+      fragment StudyLessonSelect_study on Study {
+        lessons(
           first: $count,
           after: $after,
-          orderBy:{direction: ASC field:CREATED_AT}
-        ) @connection(key: "StudyCourses_courses", filters: []) {
+          orderBy:{direction: ASC field:NUMBER}
+        ) @connection(key: "StudyLessonSelect_lessons") {
           edges {
             node {
-              ...CoursePreview_course
+              id
+              number
+              title
             }
           }
           pageInfo {
@@ -82,19 +87,19 @@ export default createPaginationContainer(StudyCourses,
   {
     direction: 'forward',
     query: graphql`
-      query StudyCoursesForwardQuery(
+      query StudyLessonSelectForwardQuery(
         $owner: String!,
         $name: String!,
         $count: Int!,
         $after: String
       ) {
         study(owner: $owner, name: $name) {
-          ...StudyCourses_study
+          ...StudyLessonSelect_study
         }
       }
     `,
     getConnectionFromProps(props) {
-      return get(props, "study.courses")
+      return get(props, "study.lessons")
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {

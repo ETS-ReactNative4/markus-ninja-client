@@ -3,28 +3,37 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
+import { isNil } from 'utils'
 
 const mutation = graphql`
   mutation CreateLessonMutation($input: CreateLessonInput!) {
     createLesson(input: $input) {
-      id
-      body
-      createdAt
-      number
-      resourcePath
+      lessonEdge {
+        node {
+          id
+          body
+          createdAt
+          number
+          resourcePath
+          title
+          course {
+            lessonCount
+          }
+        }
+      }
       study {
         id
         advancedAt
       }
-      title
     }
   }
 `
 
-export default (studyId, title, body, callback) => {
+export default (studyId, title, body, courseId, callback) => {
   const variables = {
     input: {
       body,
+      courseId,
       studyId,
       title,
     },
@@ -42,6 +51,16 @@ export default (studyId, title, body, callback) => {
 
         const study = proxyStore.get(studyId)
         study.setValue(studyAdvancedAt, 'advancedAt')
+
+        if (!isNil(courseId)) {
+          const lessonEdge = createLessonField.getLinkedRecord('lessonEdge')
+          const lessonCount = lessonEdge
+            .getLinkedRecord('node')
+            .getLinkedRecord('course')
+            .getValue('lessonCount')
+          const course = proxyStore.get(courseId)
+          course.setValue(lessonCount, 'lessonCount')
+        }
       },
       onCompleted: callback,
       onError: err => console.error(err),

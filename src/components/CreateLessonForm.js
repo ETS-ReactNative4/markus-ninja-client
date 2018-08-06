@@ -6,11 +6,14 @@ import {
 import { withRouter } from 'react-router'
 import CreateLessonMutation from 'mutations/CreateLessonMutation'
 import RichTextEditor from 'components/RichTextEditor'
+import StudyCourseSelect from 'components/StudyCourseSelect'
+import { get } from 'utils'
 
 class CreateLessonForm extends Component {
   state = {
     error: null,
     body: "",
+    courseId: "",
     title: "",
   }
 
@@ -18,19 +21,25 @@ class CreateLessonForm extends Component {
     const { title, error } = this.state
     return (
       <form onSubmit={this.handleSubmit}>
-        <label htmlFor="CreateLessonForm__title">Lesson title (optional)</label>
+        <label htmlFor="lesson-title">Lesson title (optional)</label>
         <input
-          id="CreateLessonForm__title"
+          id="lesson-title"
           type="text"
           name="title"
           value={title}
           onChange={(e) => this.setState({title: e.target.value})}
         />
-        <label htmlFor="CreateLessonForm__body">Body</label>
+        <label htmlFor="lesson-course">Course (optional)</label>
+        <StudyCourseSelect
+          study={get(this.props, "study", null)}
+          onChange={(courseId) => this.setState({ courseId })}
+        />
+        <label htmlFor="lesson-body">Body</label>
         <RichTextEditor
-          id="CreateLessonForm__body"
+          id="lesson-body"
           onChange={this.handleChangeBody}
           placeholder="Begin your lesson"
+          study={get(this.props, "study", null)}
         />
         <button type="submit">Create lesson</button>
         <span>{error}</span>
@@ -44,11 +53,12 @@ class CreateLessonForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { body, title } = this.state
+    const { body, courseId, title } = this.state
     CreateLessonMutation(
       this.props.study.id,
       title,
       body,
+      courseId,
       (response, error) => {
         this.props.history.push(response.createLesson.resourcePath)
       }
@@ -59,5 +69,7 @@ class CreateLessonForm extends Component {
 export default withRouter(createFragmentContainer(CreateLessonForm, graphql`
   fragment CreateLessonForm_study on Study {
     id
+    ...RichTextEditor_study
+    ...StudyCourseSelect_study
   }
 `))

@@ -3,41 +3,36 @@ import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import { Link } from 'react-router-dom'
-import CoursePreview from './CoursePreview.js'
+import pluralize from 'pluralize'
+import Label from 'components/Label'
+import Counter from 'components/Counter'
 import { get } from 'utils'
 
 import { LESSONS_PER_PAGE } from 'consts'
 
-class StudyCourses extends Component {
+class StudyLabels extends Component {
   render() {
-    const courseEdges = get(this.props, "study.courses.edges", [])
-    const resourcePath = get(this.props, "study.resourcePath", "")
+    const study = get(this.props, "study", null)
+    const labelEdges = get(study, "labels.edges", [])
+    const labelCount = get(study, "labels.totalCount", 0)
     return (
-      <div>
-        {
-          courseEdges.length < 1 ? (
-            <Link
-              className="StudyCourses__new-course"
-              to={resourcePath + "/courses/new"}
-            >
-              Create a course
-            </Link>
-          ) : (
-            <div className="StudyCourses__courses">
-              {courseEdges.map(({node}) => (
-                <CoursePreview key={node.__id} course={node} />
-              ))}
-              {this.props.relay.hasMore() &&
-              <button
-                className="StudyCourses__more"
-                onClick={this._loadMore}
-              >
-                More
-              </button>}
-            </div>
-          )
-        }
+      <div className="StudyLabels">
+        <h3>
+          <Counter>{labelCount}</Counter>
+          {pluralize("Labels", labelCount)}
+        </h3>
+        <div className="StudyLabels__labels">
+          {labelEdges.map(({node}) => (
+            <Label key={node.__id} label={node} />
+          ))}
+          {this.props.relay.hasMore() &&
+          <button
+            className="StudyLabels__more"
+            onClick={this._loadMore}
+          >
+            More
+          </button>}
+        </div>
       </div>
     )
   }
@@ -56,25 +51,24 @@ class StudyCourses extends Component {
   }
 }
 
-export default createPaginationContainer(StudyCourses,
+export default createPaginationContainer(StudyLabels,
   {
     study: graphql`
-      fragment StudyCourses_study on Study {
-        resourcePath
-        courses(
+      fragment StudyLabels_study on Study {
+        labels(
           first: $count,
           after: $after,
-          orderBy:{direction: ASC field:CREATED_AT}
-        ) @connection(key: "StudyCourses_courses", filters: []) {
+        ) @connection(key: "StudyLabels_labels") {
           edges {
             node {
-              ...CoursePreview_course
+              ...Label_label
             }
           }
           pageInfo {
             hasNextPage
             endCursor
           }
+          totalCount
         }
       }
     `,
@@ -82,19 +76,19 @@ export default createPaginationContainer(StudyCourses,
   {
     direction: 'forward',
     query: graphql`
-      query StudyCoursesForwardQuery(
+      query StudyLabelsForwardQuery(
         $owner: String!,
         $name: String!,
         $count: Int!,
         $after: String
       ) {
         study(owner: $owner, name: $name) {
-          ...StudyCourses_study
+          ...StudyLabels_study
         }
       }
     `,
     getConnectionFromProps(props) {
-      return get(props, "study.courses")
+      return get(props, "study.labels")
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {

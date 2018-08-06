@@ -3,7 +3,7 @@ import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import { Link } from 'react-router-dom'
+import CreateLessonLink from 'components/CreateLessonLink'
 import CourseLessonPreview from './CourseLessonPreview'
 import { get } from 'utils'
 
@@ -11,18 +11,15 @@ import { LESSONS_PER_PAGE } from 'consts'
 
 class CourseLessons extends Component {
   render() {
-    const lessonEdges = get(this.props, "course.lessons.edges", [])
-    const resourcePath = get(this.props, "course.resourcePath", "")
+    const course = get(this.props, "course", null)
+    const lessonEdges = get(course, "lessons.edges", [])
     return (
       <div>
         {
           lessonEdges.length < 1 ? (
-            <Link
-              className="CourseLessons__new-lesson"
-              to={resourcePath + "/lessons/new"}
-            >
+            <CreateLessonLink study={course.study}>
               Create a lesson
-            </Link>
+            </CreateLessonLink>
           ) : (
             <div className="CourseLessons__lessons">
               {lessonEdges.map(({node}) => (
@@ -64,7 +61,7 @@ export default createPaginationContainer(CourseLessons,
           first: $count,
           after: $after,
           orderBy:{direction: ASC field:NUMBER}
-        ) @connection(key: "CourseLessons_lessons") {
+        ) @connection(key: "CourseLessons_lessons", filters: []) {
           edges {
             node {
               ...CourseLessonPreview_lesson
@@ -74,6 +71,9 @@ export default createPaginationContainer(CourseLessons,
             hasNextPage
             endCursor
           }
+        }
+        study {
+          ...CreateLessonLink_study
         }
       }
     `,

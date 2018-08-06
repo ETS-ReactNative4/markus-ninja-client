@@ -3,28 +3,29 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
+import { isNil } from 'utils'
 
 const mutation = graphql`
-  mutation CreateStudyMutation($input: CreateStudyInput!) {
-    createStudy(input: $input) {
-      studyEdge {
+  mutation CreateLabelMutation($input: CreateLabelInput!) {
+    createLabel(input: $input) {
+      labelEdge {
         node {
           id
-          createdAt
-          description
+          color
           name
-          resourcePath
         }
       }
     }
   }
 `
 
-export default (name, description, callback) => {
+export default (studyId, name, description, color, callback) => {
   const variables = {
     input: {
+      color,
       description,
       name,
+      studyId,
     },
   }
 
@@ -33,6 +34,11 @@ export default (name, description, callback) => {
     {
       mutation,
       variables,
+      updater: proxyStore => {
+        const createLabelField = proxyStore.getRootField('createLabel')
+        if (!isNil(createLabelField)) {
+        }
+      },
       onCompleted: callback,
       onError: err => console.error(err),
     },

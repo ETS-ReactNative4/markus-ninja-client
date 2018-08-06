@@ -10,6 +10,7 @@ import CreateCoursePage from 'containers/CreateCoursePage'
 import CreateLessonPage from 'containers/CreateLessonPage'
 import CoursePage from 'containers/CoursePage'
 import StudyCoursesPage from 'containers/StudyCoursesPage'
+import StudyLabelsPage from 'containers/StudyLabelsPage'
 import LessonPage from 'containers/LessonPage'
 import StudyLessonsPage from 'containers/StudyLessonsPage'
 import StudyOverviewPage from 'containers/StudyOverviewPage'
@@ -65,6 +66,11 @@ class StudyPage extends Component {
                     exact
                     path="/:owner/:name/courses/new"
                     component={CreateCoursePage}
+                  />
+                  <Route
+                    exact
+                    path="/:owner/:name/labels"
+                    component={StudyLabelsPage}
                   />
                   <Route
                     exact

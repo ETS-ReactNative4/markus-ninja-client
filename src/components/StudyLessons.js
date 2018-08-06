@@ -3,7 +3,8 @@ import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import { Link } from 'react-router-dom'
+import CreateLessonLink from 'components/CreateLessonLink'
+import StudyLabelsLink from 'components/StudyLabelsLink'
 import LessonPreview from './LessonPreview.js'
 import { get } from 'utils'
 
@@ -11,18 +12,18 @@ import { LESSONS_PER_PAGE } from 'consts'
 
 class StudyLessons extends Component {
   render() {
-    const lessonEdges = get(this.props, "study.lessons.edges", [])
-    const resourcePath = get(this.props, "study.resourcePath", "")
+    const study = get(this.props, "study", null)
+    const lessonEdges = get(study, "lessons.edges", [])
     return (
-      <div>
+      <div className="StudyLessons">
+        <StudyLabelsLink study={study}>
+          Labels
+        </StudyLabelsLink>
         {
           lessonEdges.length < 1 ? (
-            <Link
-              className="StudyLessons__new-lesson"
-              to={resourcePath + "/lessons/new"}
-            >
+            <CreateLessonLink study={study}>
               Create a lesson
-            </Link>
+            </CreateLessonLink>
           ) : (
             <div className="StudyLessons__lessons">
               {lessonEdges.map(({node}) => (
@@ -60,6 +61,8 @@ export default createPaginationContainer(StudyLessons,
   {
     study: graphql`
       fragment StudyLessons_study on Study {
+        ...CreateLessonLink_study
+        ...StudyLabelsLink_study
         lessons(
           first: $count,
           after: $after,

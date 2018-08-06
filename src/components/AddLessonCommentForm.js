@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import AddLessonCommentMutation from 'mutations/AddLessonCommentMutation'
 import RichTextEditor from 'components/RichTextEditor'
-import { isNil } from 'utils'
+import { get, isNil } from 'utils'
 import { isAuthenticated } from 'auth'
 
 class AddLessonCommentForm extends Component {
@@ -40,6 +40,7 @@ class AddLessonCommentForm extends Component {
           onChange={this.handleChangeBody}
           submit={submitted}
           placeholder="Leave a comment"
+          study={get(this.props, "lesson.study", null)}
         />
         <button type="submit">Comment</button>
         <span>{error}</span>
@@ -71,5 +72,8 @@ class AddLessonCommentForm extends Component {
 export default withRouter(createFragmentContainer(AddLessonCommentForm, graphql`
   fragment AddLessonCommentForm_lesson on Lesson {
     id
+    study {
+      ...RichTextEditor_study
+    }
   }
 `))

@@ -9,6 +9,8 @@ import AppleButton from 'components/AppleButton'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import Counter from 'components/Counter'
 import CourseLessons from 'components/CourseLessons'
+import AddCourseLessonForm from 'components/AddCourseLessonForm'
+import DeleteCourseMutation from 'mutations/DeleteCourseMutation'
 import { isNil, timeDifferenceForDate } from 'utils'
 
 import './Course.css'
@@ -27,7 +29,8 @@ class Course extends Component {
       <div className="Course">
         <div className="Course__name">
           <h3>{course.name}</h3>
-          <span>Advanced {timeDifferenceForDate(course.advancedAt)}</span>
+          {!isNil(course.advancedAt) &&
+          <span>Advanced {timeDifferenceForDate(course.advancedAt)}</span>}
         </div>
         <ul className="Course__actions">
           <li>
@@ -36,6 +39,15 @@ class Course extends Component {
           <li>
             <AppleButton appleable={course} />
           </li>
+          <li>
+            <button
+              className="btn"
+              type="button"
+              onClick={this.handleDelete}
+            >
+              Delete
+            </button>
+          </li>
         </ul>
         <div className="Course_lessons">
           <h3>
@@ -43,8 +55,23 @@ class Course extends Component {
             Lessons
           </h3>
           <CourseLessons course={course} />
+          <AddCourseLessonForm course={course} />
         </div>
       </div>
+    )
+  }
+
+  handleDelete = (e) => {
+    e.preventDefault()
+    DeleteCourseMutation(
+      this.props.course.id,
+      (response, error) => {
+        if (!isNil(error)) {
+          this.setState({ error: error.message })
+        } else {
+          this.props.history.replace(this.props.course.study.resourcePath)
+        }
+      },
     )
   }
 }
@@ -57,9 +84,13 @@ export default withRouter(createFragmentContainer(Course, graphql`
     lessonCount
     name
     resourcePath
+    study {
+      resourcePath
+    }
     updatedAt
     url
     viewerCanAdmin
+    ...AddCourseLessonForm_course
     ...CourseLessons_course
     ...AppleButton_appleable
     ...EnrollmentSelect_enrollable
