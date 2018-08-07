@@ -1,0 +1,36 @@
+.CourseMetaDetails {
+  display: block;
+}
+
+.CourseMetaDetails.open .CourseMetaDetails__content {
+  display: none;
+}
+
+.CourseMetaDetails__edit {
+  display: none;
+}
+
+.CourseMetaDetails.open .CourseMetaDetails__edit {
+  display: block;
+}
+
+.CourseMetaDetails__edit-toggle {
+  float: right;
+}
+
+.CourseMetaTopics {
+  display: block;
+}
+
+.CourseMetaTopics.open .CourseMetaTopics__content {
+  display: none;
+}
+
+.CourseMetaTopics__edit {
+  display: none;
+}
+
+.CourseMetaTopics.open .CourseMetaTopics__edit {
+  display: block;
+}
+

@@ -10,7 +10,7 @@ import Edge from 'components/Edge'
 import { debounce, get, isEmpty } from 'utils'
 import { SEARCH_BAR_RESULTS_PER_PAGE } from 'consts'
 
-class SearchBarResults extends React.Component {
+class SearchBarInput extends React.Component {
   state = {
     error: null,
     q: "",
@@ -19,9 +19,9 @@ class SearchBarResults extends React.Component {
 
   render() {
     const { q, type } = this.state
-    const searchEdges = get(this.props, "data.search.edges", [])
+    const searchEdges = get(this.props, "query.search.edges", [])
     return (
-      <div className="SearchBarResults">
+      <div className="SearchBarInput">
         <form action="/search" acceptCharset="utf8" method="get">
           <input
             id="search-query"
@@ -39,9 +39,9 @@ class SearchBarResults extends React.Component {
             value={type}
           />
         </form>
-        <ul className="SearchBarResults__results">
+        <ul className="SearchBarInput__results">
           <Route path="/:owner/:name" render={({ match }) =>
-            <li className="SearchBarResults__item">
+            <li className="SearchBarInput__item">
               <Link
                 to={{
                   pathname: match.url + "/search",
@@ -54,7 +54,7 @@ class SearchBarResults extends React.Component {
           />
           {searchEdges.map((edge) =>
             <Edge key={get(edge, "node.id", "")} edge={edge} render={({ node }) =>
-              <li className="SearchBarResults__item">
+              <li className="SearchBarInput__item">
                 <SearchResultItemPreview item={node} />
               </li>
             }/>
@@ -87,16 +87,19 @@ class SearchBarResults extends React.Component {
 
 }
 
-export default createRefetchContainer(SearchBarResults,
+export default createRefetchContainer(SearchBarInput,
   {
-    data: graphql`
-      fragment SearchBarResults_data on Query {
+    query: graphql`
+      fragment SearchBarInput_query on Query {
         search(first: $count, query: $query, type: $type)
-          @connection(key:"SearchBarResults_search", filters: []) {
+          @connection(key:"SearchBarInput_search", filters: []) {
           edges {
             node {
               __typename
               id
+              ...on Course {
+                ...CoursePreview_course
+              }
               ...on Lesson {
                 ...LessonPreview_lesson
               }
@@ -119,12 +122,12 @@ export default createRefetchContainer(SearchBarResults,
     `
   },
   graphql`
-    query SearchBarResultsRefetchQuery(
+    query SearchBarInputRefetchQuery(
       $count: Int!
       $query: String!,
       $type: SearchType!
     ) {
-      ...SearchBarResults_data
+      ...SearchBarInput_query
     }
   `,
 )

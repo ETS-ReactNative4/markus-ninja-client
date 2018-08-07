@@ -13,6 +13,9 @@ const mutation = graphql`
       message
       topicable {
         id
+        ...on Course {
+          ...CourseMetaTopics_course
+        }
         ...on Study {
           ...StudyMetaTopics_study
         }

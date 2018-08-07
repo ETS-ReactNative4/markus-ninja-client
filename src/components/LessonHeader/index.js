@@ -5,6 +5,10 @@ import {
 } from 'react-relay'
 import { Link, withRouter } from 'react-router-dom';
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
+import AddLabelMutation from 'mutations/AddLabelMutation'
+import StudyLabelSelect from 'components/StudyLabelSelect'
+import Edge from 'components/Edge'
+import Label from 'components/Label'
 import { get, isNil } from 'utils'
 import cls from 'classnames'
 
@@ -80,6 +84,16 @@ class LessonHeader extends Component {
           {!isNil(get(lesson, "nextLesson.resourcePath", null)) &&
           <Link to={get(lesson, "nextLesson.resourcePath", null)}>Next</Link>}
         </div>}
+        <div className="LessonHeader_labels">
+          {get(lesson, "labels.edges", []).map(edge =>
+          <Edge key={get(edge, "node.id", "")} edge={edge} render={({node}) =>
+              <Label label={node} />}
+          />)}
+        </div>
+        <StudyLabelSelect
+          study={get(this.props, "lesson.study", null)}
+          onChange={this.handleLabelSelect}
+        />
       </div>
     )
   }
@@ -88,6 +102,18 @@ class LessonHeader extends Component {
     this.setState({
       [e.target.name]: e.target.value,
     })
+  }
+
+  handleLabelSelect = (labelId) => {
+    AddLabelMutation(
+      labelId,
+      this.props.lesson.id,
+      (response, error) => {
+        if (!isNil(error)) {
+          this.setState({ error: error[0].message })
+        }
+      },
+    )
   }
 
   handleSubmit = (e) => {
@@ -99,7 +125,7 @@ class LessonHeader extends Component {
       null,
       (error) => {
         if (!isNil(error)) {
-          this.setState({ error: error.message })
+          this.setState({ error: error[0].message })
         }
         this.handleToggleOpen()
       },
@@ -120,12 +146,22 @@ export default withRouter(createFragmentContainer(LessonHeader, graphql`
     courseNumber
     id
     isCourseLesson
+    labels(first: 10) @connection(key: "LessonHeader_labels", filters: []) {
+      edges {
+        node {
+          ...Label_label
+        }
+      }
+    }
     nextLesson {
       resourcePath
     }
     number
     previousLesson {
       resourcePath
+    }
+    study {
+      ...StudyLabelSelect_study
     }
     title
     viewerCanUpdate

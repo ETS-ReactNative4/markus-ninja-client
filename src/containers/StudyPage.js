@@ -22,6 +22,7 @@ const StudyPageQuery = graphql`
   query StudyPageQuery($owner: String!, $name: String!) {
     study(owner: $owner, name: $name) {
       ...Study_study
+      ...StudyLabelsPage_study
     }
   }
 `
@@ -70,7 +71,7 @@ class StudyPage extends Component {
                   <Route
                     exact
                     path="/:owner/:name/labels"
-                    component={StudyLabelsPage}
+                    render={(routeProps) => <StudyLabelsPage {...routeProps} study={props.study} />}
                   />
                   <Route
                     exact

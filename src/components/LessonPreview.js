@@ -3,6 +3,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import { Link } from 'react-router-dom'
 import { get } from 'utils'
 
 class LessonPreview extends Component {
@@ -10,9 +11,9 @@ class LessonPreview extends Component {
     const lesson = get(this.props, "lesson", {})
     return (
       <div>
-        <a href={lesson.url}>
+        <Link to={lesson.resourcePath}>
           {lesson.number}: {lesson.title}
-        </a>
+        </Link>
       </div>
     )
   }
@@ -23,6 +24,6 @@ export default createFragmentContainer(LessonPreview, graphql`
     id
     number
     title
-    url
+    resourcePath
   }
 `)

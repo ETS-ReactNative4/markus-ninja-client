@@ -3,29 +3,47 @@ import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import { withRouter } from 'react-router'
-import LessonTimelineEvent from './LessonTimelineEvent'
 import { get } from 'utils'
+import Edge from 'components/Edge'
 
-import { EVENTS_PER_PAGE } from 'consts'
+import { LABELS_PER_PAGE } from 'consts'
 
-class LessonTimeline extends Component {
+class StudyLabelSelect extends Component {
+  state = {
+    labelId: "",
+  }
+
   render() {
-    const timelineEdges = get(this.props, "lesson.timeline.edges", [])
+    const { labelId } = this.state
+    const labelEdges = get(this.props, "study.labels.edges", [])
     return (
-      <div className="LessonTimeline">
-        {timelineEdges.map(({node}) => (
-          <LessonTimelineEvent key={node.id} item={node} />
-        ))}
+      <div className="StudyLabelSelect">
+        <select
+          value={labelId}
+          onChange={this.handleChange}
+        >
+          <option>Select a label...</option>
+          {labelEdges.map(edge =>
+            <Edge key={get(edge, "node.id", "")} edge={edge} render={({node}) =>
+              <option value={node.id}>{node.name}</option>
+            } />)}
+        </select>
         {this.props.relay.hasMore() &&
         <button
-          className="LessonTimeline__more"
+          className="btn"
+          type="button"
           onClick={this._loadMore}
         >
           More
         </button>}
       </div>
     )
+  }
+
+  handleChange = (e) => {
+    const labelId = e.target.value
+    this.setState({ labelId })
+    this.props.onChange(labelId)
   }
 
   _loadMore = () => {
@@ -38,29 +56,22 @@ class LessonTimeline extends Component {
       return
     }
 
-    relay.loadMore(EVENTS_PER_PAGE)
+    relay.loadMore(LABELS_PER_PAGE)
   }
 }
 
-export default withRouter(createPaginationContainer(LessonTimeline,
+export default createPaginationContainer(StudyLabelSelect,
   {
-    lesson: graphql`
-      fragment LessonTimeline_lesson on Lesson {
-        timeline(
+    study: graphql`
+      fragment StudyLabelSelect_study on Study {
+        labels(
           first: $count,
           after: $after,
-          orderBy: {direction: DESC, field: CREATED_AT}
-        ) @connection(key: "LessonTimeline_timeline", filters: []) {
+        ) @connection(key: "StudyLabelSelect_labels") {
           edges {
             node {
-              __typename
               id
-              ...on CommentedEvent {
-                ...CommentedEvent_event
-              }
-              ...on ReferencedEvent {
-                ...ReferencedEvent_event
-              }
+              name
             }
           }
           pageInfo {
@@ -74,22 +85,19 @@ export default withRouter(createPaginationContainer(LessonTimeline,
   {
     direction: 'forward',
     query: graphql`
-      query LessonTimelineForwardQuery(
+      query StudyLabelSelectForwardQuery(
         $owner: String!,
         $name: String!,
-        $number: Int!,
         $count: Int!,
         $after: String
       ) {
         study(owner: $owner, name: $name) {
-          lesson(number: $number) {
-            ...LessonTimeline_lesson
-          }
+          ...StudyLabelSelect_study
         }
       }
     `,
     getConnectionFromProps(props) {
-      return get(props, "lesson.timeline")
+      return get(props, "study.labels")
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {
@@ -101,10 +109,10 @@ export default withRouter(createPaginationContainer(LessonTimeline,
       return {
         owner: props.match.params.owner,
         name: props.match.params.name,
-        number: parseInt(props.match.params.number, 10),
         count: paginationInfo.count,
         after: paginationInfo.cursor,
+        isCourseLabel: props.isCourseLabel,
       }
     },
   },
-))
+)

@@ -4,26 +4,26 @@ import {
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router-dom';
-import UpdateStudyMutation from 'mutations/UpdateStudyMutation'
+import UpdateCourseMutation from 'mutations/UpdateCourseMutation'
 import { get, isNil } from 'utils'
 import cls from 'classnames'
 
-class StudyMetaDetails extends Component {
+class CourseMetaDetails extends Component {
   state = {
     error: null,
-    description: this.props.study.description,
+    description: this.props.course.description,
     open: false,
   }
 
   render() {
-    const study = get(this.props, "study", {})
+    const course = get(this.props, "course", {})
     const { description, error, open } = this.state
     return (
-      <div className={cls("StudyMetaDetails", {open})}>
-        <div className="StudyMetaDetails__content">
-          <span className="StudyMetaDetails__study-description">{study.description}</span>
+      <div className={cls("CourseMetaDetails", {open})}>
+        <div className="CourseMetaDetails__content">
+          <span className="CourseMetaDetails__course-description">{course.description}</span>
         </div>
-        <span className="StudyMetaDetails__edit-toggle">
+        <span className="CourseMetaDetails__edit-toggle">
           <button
             className="btn"
             type="button"
@@ -32,11 +32,11 @@ class StudyMetaDetails extends Component {
             Edit
           </button>
         </span>
-        <div className="StudyMetaDetails__edit">
+        <div className="CourseMetaDetails__edit">
           <form onSubmit={this.handleSubmit}>
             <input
-              id="study-description"
-              className={cls("form-control", "edit-study-description")}
+              id="course-description"
+              className={cls("form-control", "edit-course-description")}
               type="text"
               name="description"
               placeholder="Enter text"
@@ -73,8 +73,8 @@ class StudyMetaDetails extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { description } = this.state
-    UpdateStudyMutation(
-      this.props.study.id,
+    UpdateCourseMutation(
+      this.props.course.id,
       description,
       null,
       (error) => {
@@ -91,8 +91,8 @@ class StudyMetaDetails extends Component {
   }
 }
 
-export default withRouter(createFragmentContainer(StudyMetaDetails, graphql`
-  fragment StudyMetaDetails_study on Study {
+export default withRouter(createFragmentContainer(CourseMetaDetails, graphql`
+  fragment CourseMetaDetails_course on Course {
     description
     id
   }

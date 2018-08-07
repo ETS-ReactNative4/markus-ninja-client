@@ -23,6 +23,7 @@ class AddCourseLessonForm extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <StudyLessonSelect
+          isCourseLesson={false}
           study={get(course, "study", null)}
           onChange={this.handleChangeLesson}
         />

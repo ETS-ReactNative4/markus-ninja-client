@@ -3,15 +3,15 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import { withRouter } from 'react-router'
 import environment from 'Environment'
 import StudyLabels from 'components/StudyLabels'
-import CreateLabelForm from 'components/CreateLabelForm'
 import { isNil } from 'utils'
 
 import { LESSONS_PER_PAGE } from 'consts'
 
-const StudyLabelsPageQuery = graphql`
-  query StudyLabelsPageQuery(
+const AllStudyLabelsPageQuery = graphql`
+  query AllStudyLabelsPageQuery(
     $owner: String!,
     $name: String!,
     $count: Int!,
@@ -20,17 +20,16 @@ const StudyLabelsPageQuery = graphql`
     study(owner: $owner, name: $name) {
       id
       ...StudyLabels_study
-      ...CreateLabelForm_study
     }
   }
 `
 
-class StudyLabelsPage extends Component {
+class AllStudyLabelsPage extends Component {
   render() {
     return (
       <QueryRenderer
         environment={environment}
-        query={StudyLabelsPageQuery}
+        query={AllStudyLabelsPageQuery}
         variables={{
           owner: this.props.match.params.owner,
           name: this.props.match.params.name,
@@ -44,8 +43,7 @@ class StudyLabelsPage extends Component {
               return null
             }
             return (
-              <div className="StudyLabelsPage">
-                <CreateLabelForm study={props.study} />
+              <div className="AllStudyLabelsPage">
                 <StudyLabels study={props.study} />
               </div>
             )
@@ -57,4 +55,4 @@ class StudyLabelsPage extends Component {
   }
 }
 
-export default StudyLabelsPage
+export default withRouter(AllStudyLabelsPage)

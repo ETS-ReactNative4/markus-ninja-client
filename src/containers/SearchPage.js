@@ -26,6 +26,9 @@ const SearchPageQuery = graphql`
         node {
           __typename
           id
+          ...on Course {
+            ...CoursePreview_course
+          }
           ...on Lesson {
             ...LessonPreview_lesson
           }
@@ -47,6 +50,7 @@ const SearchPageQuery = graphql`
         hasNextPage
         endCursor
       }
+      courseCount
       lessonCount
       studyCount
       topicCount
@@ -104,6 +108,8 @@ class SearchPage extends Component {
             const pathname = get(props, "location.pathname")
             const search = get(props, "search", {})
             const searchEdges = get(props, "search.edges", [])
+            searchQuery.type = "course"
+            const searchCourses = queryString.stringify(searchQuery)
             searchQuery.type = "lesson"
             const searchLessons = queryString.stringify(searchQuery)
             searchQuery.type = "study"
@@ -117,6 +123,10 @@ class SearchPage extends Component {
             return (
               <div className="SearchPage">
                 <nav>
+                  <Link to={{pathname, search: searchCourses}}>
+                    Courses
+                    <Counter>{search.courseCount}</Counter>
+                  </Link>
                   <Link to={{pathname, search: searchLessons}}>
                     Lessons
                     <Counter>{search.lessonCount}</Counter>

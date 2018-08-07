@@ -3,6 +3,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import { Link } from 'react-router-dom'
 import pluralize from 'pluralize'
 import { get, isNil, timeDifferenceForDate } from 'utils'
 
@@ -12,9 +13,9 @@ class CoursePreview extends Component {
     return (
       <div className="CoursePreview">
         <div className="CoursePreview__info">
-          <a href={course.url}>
+          <Link to={course.resourcePath}>
             {course.name}
-          </a>
+          </Link>
           <span>({course.lessonCount} {pluralize("lesson", course.lessonCount)})</span>
           {!isNil(course.advancedAt) &&
           <span>Advanced {timeDifferenceForDate(course.advancedAt)}</span>}
@@ -32,6 +33,6 @@ export default createFragmentContainer(CoursePreview, graphql`
     description
     lessonCount
     name
-    url
+    resourcePath
   }
 `)

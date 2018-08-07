@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { withRouter } from 'react-router'
 import LoginUserMutation from 'mutations/LoginUserMutation'
+import { isNil } from 'utils'
 
 class LoginForm extends Component {
   state = {
@@ -44,13 +45,18 @@ class LoginForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { username, password } = this.state
-    LoginUserMutation(username, password, (token, error) => {
-      if (error !== null && error !== undefined) {
-        this.setState({ error: error.message })
-      }
-      window.sessionStorage.setItem("access_token", token.token)
-      this.props.history.replace("/")
-    })
+    LoginUserMutation(
+      username,
+      password,
+      (token, error) => {
+        if (!isNil(error)) {
+          this.setState({ error: error[0].message })
+          return
+        }
+        window.sessionStorage.setItem("access_token", token.token)
+        this.props.history.replace("/")
+      },
+    )
   }
 }
 

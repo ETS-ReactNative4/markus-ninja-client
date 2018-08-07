@@ -9,6 +9,7 @@ import AppleButton from 'components/AppleButton'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import Counter from 'components/Counter'
 import CourseLessons from 'components/CourseLessons'
+import CourseMeta from 'components/CourseMeta'
 import AddCourseLessonForm from 'components/AddCourseLessonForm'
 import DeleteCourseMutation from 'mutations/DeleteCourseMutation'
 import { isNil, timeDifferenceForDate } from 'utils'
@@ -49,6 +50,7 @@ class Course extends Component {
             </button>
           </li>
         </ul>
+        <CourseMeta course={course} />
         <div className="Course_lessons">
           <h3>
             <Counter>{course.lessonCount}</Counter>
@@ -69,7 +71,7 @@ class Course extends Component {
         if (!isNil(error)) {
           this.setState({ error: error.message })
         } else {
-          this.props.history.replace(this.props.course.study.resourcePath)
+          this.props.history.replace(this.props.course.study.resourcePath + "/courses")
         }
       },
     )
@@ -92,6 +94,7 @@ export default withRouter(createFragmentContainer(Course, graphql`
     viewerCanAdmin
     ...AddCourseLessonForm_course
     ...CourseLessons_course
+    ...CourseMeta_course
     ...AppleButton_appleable
     ...EnrollmentSelect_enrollable
   }

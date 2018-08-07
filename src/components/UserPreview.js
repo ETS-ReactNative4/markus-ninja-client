@@ -3,6 +3,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import { Link } from 'react-router-dom'
 import { get } from 'utils'
 
 class UserPreview extends Component {
@@ -10,11 +11,11 @@ class UserPreview extends Component {
     const user = get(this.props, "user", {})
     return (
       <div>
-        <a href={user.url}>
+        <Link to={user.resourcePath}>
           <span>{user.login}</span>
           <span>{user.name}</span>
           <div>{user.bio}</div>
-        </a>
+        </Link>
       </div>
     )
   }
@@ -25,6 +26,6 @@ export default createFragmentContainer(UserPreview, graphql`
     bio
     login
     name
-    url
+    resourcePath
   }
 `)

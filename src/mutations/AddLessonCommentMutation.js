@@ -48,7 +48,7 @@ export default (lessonId, body, callback) => {
           )
           const edge = addLessonCommentField.getLinkedRecord("lessonTimelineEdge")
 
-          ConnectionHandler.insertEdgeAfter(timeline, edge)
+          ConnectionHandler.insertEdgeBefore(timeline, edge)
         }
       },
       onCompleted: callback,

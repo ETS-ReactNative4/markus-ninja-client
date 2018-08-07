@@ -3,23 +3,23 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import { Link } from 'react-router-dom'
 import { get } from 'utils'
 
 class UserLink extends Component {
   render() {
     const user = get(this.props, "user", {})
     return (
-      <a href={user.url}>
+      <Link to={user.resourcePath}>
         {user.login}
-      </a>
+      </Link>
     )
   }
 }
 
 export default createFragmentContainer(UserLink, graphql`
   fragment UserLink_user on User {
-    id
     login
-    url
+    resourcePath
   }
 `)

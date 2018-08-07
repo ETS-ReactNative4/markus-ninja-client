@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router-dom';
 import CreateCourseMutation from 'mutations/CreateCourseMutation'
+import { isNil } from 'utils'
 
 class CreateCourseForm extends Component {
   state = {
@@ -52,7 +53,13 @@ class CreateCourseForm extends Component {
       this.props.study.id,
       name,
       description,
-      (response, error) => this.props.history.push(response.createCourse.resourcePath),
+      (course, error) => {
+        if (!isNil(error)) {
+          this.setState({ error: error[0].message })
+          return
+        }
+        this.props.history.push(course.resourcePath)
+      },
     )
   }
 }

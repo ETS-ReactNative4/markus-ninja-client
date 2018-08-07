@@ -29,7 +29,7 @@ class Study extends Component {
         <div className="Study__name">
           <UserLink user={get(study, "owner", null)} />
           <span className="Study__name-divider">/</span>
-          <a href={study.url}>{study.name}</a>
+          <Link to={study.resourcePath}>{study.name}</Link>
         </div>
         <ul className="Study__actions">
           <li>

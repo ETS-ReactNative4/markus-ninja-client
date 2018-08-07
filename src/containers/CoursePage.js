@@ -11,7 +11,14 @@ import { get, isNil } from 'utils'
 import { LESSONS_PER_PAGE } from 'consts'
 
 const CoursePageQuery = graphql`
-  query CoursePageQuery($owner: String!, $name: String!, $number: Int!, $count: Int!, $after: String) {
+  query CoursePageQuery(
+    $owner: String!,
+    $name: String!,
+    $number: Int!,
+    $count: Int!,
+    $after: String,
+    $isCourseLesson: Boolean
+  ) {
     study(owner: $owner, name: $name) {
       course(number: $number) {
         ...Course_course
@@ -31,6 +38,7 @@ class CoursePage extends Component {
           name: this.props.match.params.name,
           number: parseInt(this.props.match.params.number, 10),
           count: LESSONS_PER_PAGE,
+          isCourseLesson: false,
         }}
         render={({error,  props}) => {
           if (error) {

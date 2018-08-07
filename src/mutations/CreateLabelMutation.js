@@ -1,3 +1,4 @@
+import { ConnectionHandler } from 'relay-runtime'
 import {
   commitMutation,
   graphql,
@@ -10,9 +11,12 @@ const mutation = graphql`
     createLabel(input: $input) {
       labelEdge {
         node {
-          id
-          color
-          name
+          ...LabelPreview_label
+        }
+      }
+      study {
+        labels(first: 0) {
+          totalCount
         }
       }
     }
@@ -37,6 +41,22 @@ export default (studyId, name, description, color, callback) => {
       updater: proxyStore => {
         const createLabelField = proxyStore.getRootField('createLabel')
         if (!isNil(createLabelField)) {
+          const labelStudy = createLabelField.getLinkedRecord('study')
+          const labelStudyLabels = labelStudy.getLinkedRecord('labels', {first: 0})
+          const study = proxyStore.get(studyId)
+          study.setLinkedRecord(labelStudyLabels, 'labels', {first: 0})
+
+          const labelEdge = createLabelField.getLinkedRecord('labelEdge')
+          const studyLabels = ConnectionHandler.getConnection(
+            study,
+            "StudyLabels_labels",
+          )
+          studyLabels && ConnectionHandler.insertEdgeBefore(studyLabels, labelEdge)
+          const searchLabels = ConnectionHandler.getConnection(
+            proxyStore.getRoot(),
+            "SearchStudyLabels_search",
+          )
+          searchLabels && ConnectionHandler.insertEdgeBefore(searchLabels, labelEdge)
         }
       },
       onCompleted: callback,

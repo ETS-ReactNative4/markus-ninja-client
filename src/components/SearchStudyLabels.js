@@ -3,31 +3,36 @@ import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
+import { withRouter } from 'react-router'
+import queryString from 'query-string'
 import pluralize from 'pluralize'
+import Edge from 'components/Edge'
 import LabelPreview from 'components/LabelPreview'
 import Counter from 'components/Counter'
 import { get } from 'utils'
 
 import { LESSONS_PER_PAGE } from 'consts'
 
-class StudyLabels extends Component {
+class SearchStudyLabels extends Component {
   render() {
-    const study = get(this.props, "study", null)
-    const labelEdges = get(study, "labels.edges", [])
-    const labelCount = get(study, "labels.totalCount", 0)
+    const query = get(this.props, "query", null)
+    const labelEdges = get(query, "search.edges", [])
+    const labelCount = get(query, "search.labelCount", 0)
     return (
-      <div className="StudyLabels">
+      <div className="SearchStudyLabels">
         <h3>
           <Counter>{labelCount}</Counter>
           {pluralize("Labels", labelCount)}
         </h3>
-        <div className="StudyLabels__labels">
-          {labelEdges.map(({node}) => (
-            <LabelPreview key={node.__id} label={node} />
+        <div className="SearchStudyLabels__labels">
+          {labelEdges.map((edge) => (
+            <Edge key={get(edge, "node.id", "")} edge={edge} render={({node}) =>
+              <LabelPreview label={node} />}
+            />
           ))}
           {this.props.relay.hasMore() &&
           <button
-            className="StudyLabels__more"
+            className="SearchStudyLabels__more"
             onClick={this._loadMore}
           >
             More
@@ -51,24 +56,25 @@ class StudyLabels extends Component {
   }
 }
 
-export default createPaginationContainer(StudyLabels,
+export default withRouter(createPaginationContainer(SearchStudyLabels,
   {
-    study: graphql`
-      fragment StudyLabels_study on Study {
-        labels(
-          first: $count,
-          after: $after,
-        ) @connection(key: "StudyLabels_labels", filters: []) {
+    query: graphql`
+      fragment SearchStudyLabels_query on Query {
+        search(first: $count, after: $after, query: $query, type: LABEL, within: $within)
+          @connection(key: "SearchStudyLabels_search", filters: []) {
           edges {
             node {
-              ...LabelPreview_label
+              id
+              ...on Label {
+                ...LabelPreview_label
+              }
             }
           }
           pageInfo {
             hasNextPage
             endCursor
           }
-          totalCount
+          labelCount
         }
       }
     `,
@@ -76,19 +82,17 @@ export default createPaginationContainer(StudyLabels,
   {
     direction: 'forward',
     query: graphql`
-      query StudyLabelsForwardQuery(
-        $owner: String!,
-        $name: String!,
+      query SearchStudyLabelsQuery(
         $count: Int!,
-        $after: String
+        $after: String,
+        $query: String!,
+        $within: ID!
       ) {
-        study(owner: $owner, name: $name) {
-          ...StudyLabels_study
-        }
+        ...SearchStudyLabels_query
       }
     `,
     getConnectionFromProps(props) {
-      return get(props, "study.labels")
+      return get(props, "query.search")
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {
@@ -97,12 +101,14 @@ export default createPaginationContainer(StudyLabels,
       }
     },
     getVariables(props, paginationInfo, getFragmentVariables) {
+      const searchQuery = queryString.parse(get(props, "location.search", ""))
+      const query = get(searchQuery, "q", "*")
       return {
-        owner: props.match.params.owner,
-        name: props.match.params.name,
         count: paginationInfo.count,
         after: paginationInfo.cursor,
+        query,
+        within: props.studyId,
       }
     },
   },
-)
+))

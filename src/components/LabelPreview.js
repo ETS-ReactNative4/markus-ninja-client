@@ -6,22 +6,23 @@ import {
 import { Link } from 'react-router-dom'
 import { get } from 'utils'
 
-class TopicPreview extends Component {
+class LabelPreview extends Component {
   render() {
-    const topic = get(this.props, "topic", {})
+    const label = get(this.props, "label", {})
     return (
       <div>
-        <Link to={topic.resourcePath}>
-          <span>{topic.name}</span>
-          <div>{topic.description}</div>
+        <Link to={label.resourcePath}>
+          {label.name}
         </Link>
+        <span>{label.description}</span>
       </div>
     )
   }
 }
 
-export default createFragmentContainer(TopicPreview, graphql`
-  fragment TopicPreview_topic on Topic {
+export default createFragmentContainer(LabelPreview, graphql`
+  fragment LabelPreview_label on Label {
+    id
     description
     name
     resourcePath

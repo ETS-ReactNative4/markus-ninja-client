@@ -67,6 +67,7 @@ export default createPaginationContainer(StudyLessonSelect,
         lessons(
           first: $count,
           after: $after,
+          isCourseLesson: $isCourseLesson,
           orderBy:{direction: ASC field:NUMBER}
         ) @connection(key: "StudyLessonSelect_lessons") {
           edges {
@@ -92,6 +93,7 @@ export default createPaginationContainer(StudyLessonSelect,
         $name: String!,
         $count: Int!,
         $after: String
+        $isCourseLesson: Boolean
       ) {
         study(owner: $owner, name: $name) {
           ...StudyLessonSelect_study
@@ -113,6 +115,7 @@ export default createPaginationContainer(StudyLessonSelect,
         name: props.match.params.name,
         count: paginationInfo.count,
         after: paginationInfo.cursor,
+        isCourseLesson: props.isCourseLesson,
       }
     },
   },

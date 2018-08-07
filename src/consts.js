@@ -2,6 +2,7 @@ export const APPLES_PER_PAGE = 10
 export const COURSES_PER_PAGE = 10
 export const EMAILS_PER_PAGE = 10
 export const EVENTS_PER_PAGE = 10
+export const LABELS_PER_PAGE = 10
 export const LESSONS_PER_PAGE = 10
 export const NOTIFICATIONS_PER_PAGE = 10
 export const SEARCH_RESULTS_PER_PAGE = 10

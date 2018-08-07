@@ -3,7 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import { isNil } from 'utils'
+import { get, isNil } from 'utils'
 
 const mutation = graphql`
   mutation CreateCourseMutation($input: CreateCourseInput!) {
@@ -51,7 +51,9 @@ export default (studyId, name, description, callback) => {
           study.setLinkedRecord(courseStudyCourses, 'courses', {first: 0})
         }
       },
-      onCompleted: callback,
+      onCompleted: (response, error) => {
+        callback(get(response, "createCourse.courseEdge.node"), error)
+      },
       onError: err => console.error(err),
     },
   )

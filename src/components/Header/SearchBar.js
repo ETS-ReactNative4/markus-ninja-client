@@ -5,7 +5,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
-import SearchBarResults from './SearchBarResults'
+import SearchBarInput from './SearchBarInput'
 
 const SearchBarQuery = graphql`
   query SearchBarQuery(
@@ -13,7 +13,7 @@ const SearchBarQuery = graphql`
     $query: String!,
     $type: SearchType!
   ){
-    ...SearchBarResults_data
+    ...SearchBarInput_query
   }
 `
 
@@ -34,7 +34,7 @@ class SearchBar extends React.Component {
           } else if (props) {
             return (
               <div className="SearchBar">
-                <SearchBarResults data={props} />
+                <SearchBarInput query={props} />
               </div>
             )
           }

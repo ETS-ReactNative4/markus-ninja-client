@@ -3,16 +3,19 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import { Link } from 'react-router-dom'
 import { get } from 'utils'
 
 class StudyPreview extends Component {
   render() {
     const study = get(this.props, "study", {})
     return (
-      <div>
-        <a href={study.url}>
-          {study.description} ({study.nameWithOwner})
-        </a>
+      <div className="StudyPreview">
+        <Link to={study.resourcePath}>
+          {study.nameWithOwner}
+        </Link>
+        <span>{study.lessonCount} lessons</span>
+        <span>{study.description}</span>
       </div>
     )
   }
@@ -20,10 +23,9 @@ class StudyPreview extends Component {
 
 export default createFragmentContainer(StudyPreview, graphql`
   fragment StudyPreview_study on Study {
-    id
     description
     lessonCount
     nameWithOwner
-    url
+    resourcePath
   }
 `)

@@ -16,8 +16,8 @@ class Lesson extends Component {
       <div className="Lesson">
         <LessonHeader lesson={lesson}/>
         <LessonBody lesson={lesson}/>
-        <LessonTimeline lesson={lesson} />
         <AddLessonCommentForm lesson={lesson} />
+        <LessonTimeline lesson={lesson} />
       </div>
     )
   }

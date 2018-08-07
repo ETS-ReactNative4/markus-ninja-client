@@ -3,6 +3,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import { Link } from 'react-router-dom'
 import { get } from 'utils'
 
 class UserAssetPreview extends Component {
@@ -10,10 +11,10 @@ class UserAssetPreview extends Component {
     const asset = get(this.props, "asset", {})
     return (
       <div>
-        <a href={asset.url}>
+        <Link to={asset.resourcePath}>
           <span>{asset.name}</span>
           <span>{asset.type}</span>
-        </a>
+        </Link>
       </div>
     )
   }
@@ -22,6 +23,7 @@ class UserAssetPreview extends Component {
 export default createFragmentContainer(UserAssetPreview, graphql`
   fragment UserAssetPreview_asset on UserAsset {
     name
+    resourcePath
     type
   }
 `)

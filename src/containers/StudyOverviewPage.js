@@ -15,12 +15,11 @@ const StudyOverviewPageQuery = graphql`
   query StudyOverviewPageQuery($owner: String!, $name: String!, $count: Int!, $after: String) {
     study(owner: $owner, name: $name) {
       id
-      description
       lesson(number: 1) {
         ...LessonPreview_lesson
       }
       resourcePath
-      ...StudyMetaTopics_study
+      ...StudyMeta_study
     }
   }
 `

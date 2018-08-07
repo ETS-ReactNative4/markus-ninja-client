@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import queryString from 'query-string'
 import environment from 'Environment'
-import StudyPreview from 'components/StudyPreview'
+import SearchResultItemPreview from 'components/SearchResultItemPreview'
 import Counter from 'components/Counter'
 import { get } from 'utils'
 
@@ -27,6 +27,9 @@ const TopicSearchQuery = graphql`
         node {
           __typename
           id
+          ...on Course {
+            ...CoursePreview_course
+          }
           ...on Study {
             ...StudyPreview_study
           }
@@ -36,6 +39,7 @@ const TopicSearchQuery = graphql`
         hasNextPage
         endCursor
       }
+      courseCount
       studyCount
     }
   }
@@ -86,18 +90,24 @@ class TopicSearch extends React.Component {
             const pathname = get(props, "location.pathname")
             const search = get(props, "search", {})
             const searchEdges = get(props, "search.edges", [])
+            searchQuery.type = "course"
+            const searchCourses = queryString.stringify(searchQuery)
             searchQuery.type = "study"
             const searchStudies = queryString.stringify(searchQuery)
             return (
               <div>
                 <nav>
+                  <Link to={{pathname, search: searchCourses}}>
+                    Courses
+                    <Counter>{search.courseCount}</Counter>
+                  </Link>
                   <Link to={{pathname, search: searchStudies}}>
                     Studies
                     <Counter>{search.studyCount}</Counter>
                   </Link>
                 </nav>
                 {searchEdges.map(({node}) => (
-                  <StudyPreview key={node.id} study={node} />
+                  <SearchResultItemPreview key={node.id} item={node} />
                 ))}
               </div>
             )
