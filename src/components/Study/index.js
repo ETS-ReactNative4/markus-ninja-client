@@ -60,6 +60,13 @@ class Study extends Component {
             Courses
             <Counter>{get(study, "courses.totalCount", 0)}</Counter>
           </Link>
+          <Link
+            className="Study__nav-item"
+            to={study.resourcePath + "/assets"}
+          >
+            Assets
+            <Counter>{get(study, "assets.totalCount", 0)}</Counter>
+          </Link>
           {study.viewerCanAdmin &&
           <Link
             className="Study__nav-item"
@@ -77,6 +84,9 @@ export default withRouter(createFragmentContainer(Study, graphql`
   fragment Study_study on Study {
     id
     advancedAt
+    assets(first: 0) {
+      totalCount
+    }
     createdAt
     courses(first: 0) {
       totalCount

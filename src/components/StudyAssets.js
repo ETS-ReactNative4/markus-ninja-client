@@ -3,39 +3,38 @@ import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import pluralize from 'pluralize'
-import LabelPreview from 'components/LabelPreview'
-import Edge from 'components/Edge'
-import Counter from 'components/Counter'
+import UserAssetPreview from './UserAssetPreview.js'
 import { get } from 'utils'
 
-import { LESSONS_PER_PAGE } from 'consts'
+import { ASSETS_PER_PAGE } from 'consts'
 
-class StudyLabels extends Component {
+class StudyAssets extends Component {
   render() {
     const study = get(this.props, "study", null)
-    const labelEdges = get(study, "labels.edges", [])
-    const labelCount = get(study, "labels.totalCount", 0)
+    const assetEdges = get(study, "assets.edges", [])
     return (
-      <div className="StudyLabels">
-        <h3>
-          <Counter>{labelCount}</Counter>
-          {pluralize("Labels", labelCount)}
-        </h3>
-        <div className="StudyLabels__labels">
-          {labelEdges.map((edge) =>
-            <Edge key={get(edge, "node.id", "")} edge={edge} render={({node}) =>
-              <LabelPreview label={node} />}
-            />
-          )}
-          {this.props.relay.hasMore() &&
-          <button
-            className="StudyLabels__more"
-            onClick={this._loadMore}
-          >
-            More
-          </button>}
-        </div>
+      <div className="StudyAssets">
+        {assetEdges.length < 1
+        ? (
+            <div>
+              There are no assets in this study.
+            </div>
+          )
+        : (
+            <div className="StudyAssets__assets">
+              {assetEdges.map(({node}) => (
+                <UserAssetPreview key={node.__id} asset={node} />
+              ))}
+              {this.props.relay.hasMore() &&
+              <button
+                className="StudyAssets__more"
+                onClick={this._loadMore}
+              >
+                More
+              </button>}
+            </div>
+          )
+        }
       </div>
     )
   }
@@ -50,29 +49,28 @@ class StudyLabels extends Component {
       return
     }
 
-    relay.loadMore(LESSONS_PER_PAGE)
+    relay.loadMore(ASSETS_PER_PAGE)
   }
 }
 
-export default createPaginationContainer(StudyLabels,
+export default createPaginationContainer(StudyAssets,
   {
     study: graphql`
-      fragment StudyLabels_study on Study {
-        labels(
+      fragment StudyAssets_study on Study {
+        assets(
           first: $count,
           after: $after,
-        ) @connection(key: "StudyLabels_labels", filters: []) {
+          orderBy:{direction: ASC field:NAME}
+        ) @connection(key: "StudyAssets_assets") {
           edges {
             node {
-              id
-              ...LabelPreview_label
+              ...UserAssetPreview_asset
             }
           }
           pageInfo {
             hasNextPage
             endCursor
           }
-          totalCount
         }
       }
     `,
@@ -80,19 +78,19 @@ export default createPaginationContainer(StudyLabels,
   {
     direction: 'forward',
     query: graphql`
-      query StudyLabelsForwardQuery(
+      query StudyAssetsForwardQuery(
         $owner: String!,
         $name: String!,
         $count: Int!,
         $after: String
       ) {
         study(owner: $owner, name: $name) {
-          ...StudyLabels_study
+          ...StudyAssets_study
         }
       }
     `,
     getConnectionFromProps(props) {
-      return get(props, "study.labels")
+      return get(props, "study.assets")
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {

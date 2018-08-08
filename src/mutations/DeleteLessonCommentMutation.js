@@ -4,6 +4,7 @@ import {
 } from 'react-relay'
 import { ConnectionHandler } from 'relay-runtime'
 import environment from 'Environment'
+import { isNil } from 'utils'
 
 const mutation = graphql`
   mutation DeleteLessonCommentMutation($input: DeleteLessonCommentInput!) {
@@ -31,13 +32,15 @@ export default (lessonCommentId, callback) => {
       variables,
       updater: proxyStore => {
         const deleteLessonCommentField = proxyStore.getRootField('deleteLessonComment')
-        const deletedLessonCommentId = deleteLessonCommentField.getValue('deletedLessonCommentId')
-        const deletedLessonTimelineEventId = deleteLessonCommentField.getValue('deletedLessonTimelineEventId')
-        const lessonId = deleteLessonCommentField.getLinkedRecord('lesson').getValue('id')
-        const lesson = proxyStore.get(lessonId)
-        const timeline = ConnectionHandler.getConnection(lesson, 'LessonTimeline_timeline')
-        ConnectionHandler.deleteNode(timeline, deletedLessonTimelineEventId)
-        proxyStore.delete(deletedLessonCommentId)
+        if (!isNil(deleteLessonCommentField)) {
+          const deletedLessonCommentId = deleteLessonCommentField.getValue('deletedLessonCommentId')
+          const deletedLessonTimelineEventId = deleteLessonCommentField.getValue('deletedLessonTimelineEventId')
+          const lessonId = deleteLessonCommentField.getLinkedRecord('lesson').getValue('id')
+          const lesson = proxyStore.get(lessonId)
+          const timeline = ConnectionHandler.getConnection(lesson, 'LessonTimeline_timeline')
+          ConnectionHandler.deleteNode(timeline, deletedLessonTimelineEventId)
+          proxyStore.delete(deletedLessonCommentId)
+        }
       },
       onCompleted: callback,
       onError: err => console.error(err),

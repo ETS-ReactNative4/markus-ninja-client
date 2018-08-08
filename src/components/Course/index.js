@@ -63,8 +63,7 @@ class Course extends Component {
     )
   }
 
-  handleDelete = (e) => {
-    e.preventDefault()
+  handleDelete = () => {
     DeleteCourseMutation(
       this.props.course.id,
       (response, error) => {

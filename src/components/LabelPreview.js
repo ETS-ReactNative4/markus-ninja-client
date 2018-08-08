@@ -4,7 +4,8 @@ import {
   graphql,
 } from 'react-relay'
 import { Link } from 'react-router-dom'
-import { get } from 'utils'
+import DeleteLabelMutation from 'mutations/DeleteLabelMutation'
+import { get, isNil } from 'utils'
 
 class LabelPreview extends Component {
   render() {
@@ -15,7 +16,25 @@ class LabelPreview extends Component {
           {label.name}
         </Link>
         <span>{label.description}</span>
+        <button
+          className="btn"
+          type="button"
+          onClick={this.handleDelete}
+        >
+          Delete
+        </button>
       </div>
+    )
+  }
+
+  handleDelete = () => {
+    DeleteLabelMutation(
+      this.props.label.id,
+      (response, error) => {
+        if (!isNil(error)) {
+          this.setState({ error: error[0].message })
+        }
+      },
     )
   }
 }

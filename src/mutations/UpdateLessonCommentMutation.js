@@ -37,14 +37,16 @@ export default (lessonCommentId, body, callback) => {
       },
       updater: proxyStore => {
         const updateLessonCommentField = proxyStore.getRootField('updateLessonComment')
-        const newBody = updateLessonCommentField.getValue('body')
-        const newBodyHTML = updateLessonCommentField.getValue('bodyHTML')
-        const newUpdatedAt = updateLessonCommentField.getValue('updatedAt')
+        if (!isNil(updateLessonCommentField)) {
+          const newBody = updateLessonCommentField.getValue('body')
+          const newBodyHTML = updateLessonCommentField.getValue('bodyHTML')
+          const newUpdatedAt = updateLessonCommentField.getValue('updatedAt')
 
-        const lessonComment = proxyStore.get(lessonCommentId)
-        lessonComment.setValue(newBody, 'body')
-        lessonComment.setValue(newBodyHTML, 'bodyHTML')
-        lessonComment.setValue(newUpdatedAt, 'updatedAt')
+          const lessonComment = proxyStore.get(lessonCommentId)
+          lessonComment.setValue(newBody, 'body')
+          lessonComment.setValue(newBodyHTML, 'bodyHTML')
+          lessonComment.setValue(newUpdatedAt, 'updatedAt')
+        }
       },
       onCompleted: callback,
       onError: err => console.error(err),

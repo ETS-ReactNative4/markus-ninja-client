@@ -6,7 +6,8 @@ import {
 import { Link, withRouter } from 'react-router-dom';
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
 import AddLabelMutation from 'mutations/AddLabelMutation'
-import StudyLabelSelect from 'components/StudyLabelSelect'
+import RemoveLabelMutation from 'mutations/RemoveLabelMutation'
+import StudyLabelChecklist from 'components/StudyLabelChecklist'
 import Edge from 'components/Edge'
 import Label from 'components/Label'
 import { get, isNil } from 'utils'
@@ -90,9 +91,10 @@ class LessonHeader extends Component {
               <Label label={node} />}
           />)}
         </div>
-        <StudyLabelSelect
+        <StudyLabelChecklist
           study={get(this.props, "lesson.study", null)}
-          onChange={this.handleLabelSelect}
+          labelable={lesson}
+          onChange={this.handleLabelChecklist}
         />
       </div>
     )
@@ -104,16 +106,28 @@ class LessonHeader extends Component {
     })
   }
 
-  handleLabelSelect = (labelId) => {
-    AddLabelMutation(
-      labelId,
-      this.props.lesson.id,
-      (response, error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error[0].message })
-        }
-      },
-    )
+  handleLabelChecklist = (labelId, checked) => {
+    if (checked) {
+      AddLabelMutation(
+        labelId,
+        this.props.lesson.id,
+        (response, error) => {
+          if (!isNil(error)) {
+            this.setState({ error: error[0].message })
+          }
+        },
+      )
+    } else {
+      RemoveLabelMutation(
+        labelId,
+        this.props.lesson.id,
+        (response, error) => {
+          if (!isNil(error)) {
+            this.setState({ error: error[0].message })
+          }
+        },
+      )
+    }
   }
 
   handleSubmit = (e) => {
@@ -149,6 +163,7 @@ export default withRouter(createFragmentContainer(LessonHeader, graphql`
     labels(first: 10) @connection(key: "LessonHeader_labels", filters: []) {
       edges {
         node {
+          id
           ...Label_label
         }
       }
@@ -161,7 +176,7 @@ export default withRouter(createFragmentContainer(LessonHeader, graphql`
       resourcePath
     }
     study {
-      ...StudyLabelSelect_study
+      ...StudyLabelChecklist_study
     }
     title
     viewerCanUpdate

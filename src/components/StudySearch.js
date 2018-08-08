@@ -90,7 +90,7 @@ class StudySearch extends Component {
             searchQuery.type = "lesson"
             const searchLessons = queryString.stringify(searchQuery)
             searchQuery.type = "user_asset"
-            const searchUserAssets = queryString.stringify(searchQuery)
+            const searchAssets = queryString.stringify(searchQuery)
             return (
               <div>
                 <nav>
@@ -98,8 +98,8 @@ class StudySearch extends Component {
                     Lessons
                     <Counter>{search.lessonCount}</Counter>
                   </Link>
-                  <Link to={{pathname, search: searchUserAssets}}>
-                    UserAssets
+                  <Link to={{pathname, search: searchAssets}}>
+                    Assets
                     <Counter>{search.userAssetCount}</Counter>
                   </Link>
                 </nav>

@@ -11,10 +11,7 @@ class UserAssetPreview extends Component {
     const asset = get(this.props, "asset", {})
     return (
       <div>
-        <Link to={asset.resourcePath}>
-          <span>{asset.name}</span>
-          <span>{asset.type}</span>
-        </Link>
+        <Link to={asset.resourcePath}>{asset.name}</Link>
       </div>
     )
   }
@@ -24,6 +21,5 @@ export default createFragmentContainer(UserAssetPreview, graphql`
   fragment UserAssetPreview_asset on UserAsset {
     name
     resourcePath
-    type
   }
 `)

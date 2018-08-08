@@ -78,7 +78,6 @@ class CreateLabelForm extends Component {
       description,
       color,
       (response, error) => {
-        console.error(error)
         if (!isNil(error)) {
           this.setState({ error: error[0].message })
         }

@@ -8,26 +8,52 @@ import Edge from 'components/Edge'
 
 import { LABELS_PER_PAGE } from 'consts'
 
-class StudyLabelSelect extends Component {
-  state = {
-    labelId: "",
+class StudyLabelChecklist extends Component {
+  constructor(props) {
+    super(props)
+
+    const studyLabelEdges = get(this.props, "study.labels.edges", [])
+    const labelOptions = studyLabelEdges.reduce(
+      (r, v, i, a, k = get(v, "node.id", "")) => {
+        r[k] = false
+        return r
+      },
+      {},
+    )
+    const labelableLabelEdges = get(this.props, "labelable.labels.edges", [])
+    const labelableLabels = labelableLabelEdges.reduce(
+      (r, v, i, a, k = get(v, "node.id", "")) => {
+        r[k] = true
+        return r
+      },
+      {},
+    )
+
+    this.state = {
+      ...labelOptions,
+      ...labelableLabels,
+    }
   }
 
   render() {
-    const { labelId } = this.state
     const labelEdges = get(this.props, "study.labels.edges", [])
     return (
-      <div className="StudyLabelSelect">
-        <select
-          value={labelId}
-          onChange={this.handleChange}
-        >
-          <option>Select a label...</option>
+      <div className="StudyLabelChecklist">
+        <ul>
           {labelEdges.map(edge =>
             <Edge key={get(edge, "node.id", "")} edge={edge} render={({node}) =>
-              <option value={node.id}>{node.name}</option>
+              <li>
+                <input
+                  id={node.id}
+                  type="checkbox"
+                  name={node.id}
+                  checked={this.state[node.id]}
+                  onChange={this.handleChange}
+                />
+                <label htmlFor={node.id}>{node.name}</label>
+              </li>
             } />)}
-        </select>
+        </ul>
         {this.props.relay.hasMore() &&
         <button
           className="btn"
@@ -41,9 +67,10 @@ class StudyLabelSelect extends Component {
   }
 
   handleChange = (e) => {
-    const labelId = e.target.value
-    this.setState({ labelId })
-    this.props.onChange(labelId)
+    this.setState({
+      [e.target.name]: e.target.checked
+    })
+    this.props.onChange(e.target.name, e.target.checked)
   }
 
   _loadMore = () => {
@@ -60,14 +87,14 @@ class StudyLabelSelect extends Component {
   }
 }
 
-export default createPaginationContainer(StudyLabelSelect,
+export default createPaginationContainer(StudyLabelChecklist,
   {
     study: graphql`
-      fragment StudyLabelSelect_study on Study {
+      fragment StudyLabelChecklist_study on Study {
         labels(
           first: $count,
           after: $after,
-        ) @connection(key: "StudyLabelSelect_labels") {
+        ) @connection(key: "StudyLabelChecklist_labels") {
           edges {
             node {
               id
@@ -85,14 +112,14 @@ export default createPaginationContainer(StudyLabelSelect,
   {
     direction: 'forward',
     query: graphql`
-      query StudyLabelSelectForwardQuery(
+      query StudyLabelChecklistForwardQuery(
         $owner: String!,
         $name: String!,
         $count: Int!,
         $after: String
       ) {
         study(owner: $owner, name: $name) {
-          ...StudyLabelSelect_study
+          ...StudyLabelChecklist_study
         }
       }
     `,

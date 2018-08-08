@@ -4,43 +4,42 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import Lesson from 'components/Lesson'
+import UserAsset from 'components/UserAsset'
 import NotFound from 'components/NotFound'
 import { get, isNil } from 'utils'
 
-import { EVENTS_PER_PAGE } from 'consts'
+import { ASSETS_PER_PAGE } from 'consts'
 
-const LessonPageQuery = graphql`
-  query LessonPageQuery($owner: String!, $name: String!, $number: Int!, $count: Int!, $after: String, $filename: String!) {
+const AssetPageQuery = graphql`
+  query AssetPageQuery($owner: String!, $name: String!, $filename: String!) {
     study(owner: $owner, name: $name) {
-      lesson(number: $number) {
-        ...Lesson_lesson
+      asset(name: $filename) {
+        ...UserAsset_asset
       }
     }
   }
 `
 
-class LessonPage extends Component {
+class AssetPage extends Component {
   render() {
     return (
       <QueryRenderer
         environment={environment}
-        query={LessonPageQuery}
+        query={AssetPageQuery}
         variables={{
           owner: this.props.match.params.owner,
           name: this.props.match.params.name,
-          number: parseInt(this.props.match.params.number, 10),
-          count: EVENTS_PER_PAGE,
-          filename: "",
+          filename: this.props.match.params.filename,
+          count: ASSETS_PER_PAGE,
         }}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            if (isNil(get(props, "study.lesson", null))) {
+            if (isNil(get(props, "study.asset", null))) {
               return <NotFound />
             }
-            return <Lesson lesson={props.study.lesson}></Lesson>
+            return <UserAsset asset={props.study.asset} />
           }
           return <div>Loading</div>
         }}
@@ -49,4 +48,4 @@ class LessonPage extends Component {
   }
 }
 
-export default LessonPage
+export default AssetPage

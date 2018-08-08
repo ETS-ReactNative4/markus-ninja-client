@@ -97,13 +97,13 @@ class TopicSearch extends React.Component {
             return (
               <div>
                 <nav>
-                  <Link to={{pathname, search: searchCourses}}>
-                    Courses
-                    <Counter>{search.courseCount}</Counter>
-                  </Link>
                   <Link to={{pathname, search: searchStudies}}>
                     Studies
                     <Counter>{search.studyCount}</Counter>
+                  </Link>
+                  <Link to={{pathname, search: searchCourses}}>
+                    Courses
+                    <Counter>{search.courseCount}</Counter>
                   </Link>
                 </nav>
                 {searchEdges.map(({node}) => (

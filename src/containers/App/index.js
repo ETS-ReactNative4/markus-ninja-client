@@ -15,7 +15,7 @@ import SignupPage from 'containers/SignupPage'
 import StudyPage from 'containers/StudyPage'
 import StudySearchPage from 'containers/StudySearchPage'
 import TopicPage from 'containers/TopicPage'
-import ViewerStudiesPage from 'containers/ViewerStudiesPage'
+import HomePage from 'containers/HomePage'
 import UserPage from 'containers/UserPage'
 import NotFound from 'components/NotFound'
 
@@ -26,7 +26,7 @@ class App extends Component {
         <Header />
         <div className="App__content">
           <Switch>
-            <Route exact path="/" component={ViewerStudiesPage} />
+            <Route exact path="/" component={HomePage} />
             <PrivateRoute exact path="/new" component={CreateStudyPage} />
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/logout" component={LogoutPage} />

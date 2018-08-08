@@ -10,8 +10,10 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import cls from 'classnames'
 import { get, isNil } from 'utils'
 import { getAuthHeader } from 'auth'
+import UserAssetNameInput from 'components/UserAssetNameInput'
 import './RichTextEditor.css'
 
 class RichTextEditor extends React.Component {
@@ -35,6 +37,10 @@ class RichTextEditor extends React.Component {
         compositeDecorator,
       ),
       loading: false,
+      save: false,
+      name: "",
+      submittable: false,
+      file: null,
     }
   }
 
@@ -46,8 +52,11 @@ class RichTextEditor extends React.Component {
   }
 
   render() {
-    const { editorState, error, loading } = this.state
+    const { editorState, file, save, submittable } = this.state
     const { placeholder } = this.props
+
+    const filename = get(file, "name", "")
+
     return (
       <div className="RichTextEditor">
         <Editor
@@ -61,27 +70,63 @@ class RichTextEditor extends React.Component {
             className="attach-file-label"
             htmlFor="attach-file-input"
           >
-            Attach files
+            File
+            <input
+              id="attach-file-input"
+              className="attach-file-input"
+              type="file"
+              style={{display: "none"}}
+              onChange={this.handleChangeFile}
+            />
           </label>
           <input
-            id="attach-file-input"
-            className="attach-file-input"
-            disabled={loading}
-            type="file"
-            onChange={this.handleAttachFile}
+            id="attach-file-save"
+            type="checkbox"
+            name="save"
+            checked={this.state.save}
+            onChange={this.handleToggleSave}
           />
+          <label
+            className="attach-file-save"
+            htmlFor="attach-file-save"
+          >
+            Save
+          </label>
+          <UserAssetNameInput
+            className={cls("attach-file-name-input", {open: save})}
+            study={get(this.props, "study", null)}
+            disabled={!save}
+            value={filename}
+            onChange={this.handleChangeName}
+          />
+          <input
+            className={cls("attach-file-name", {open: !save})}
+            type="text"
+            value={filename}
+          />
+          <button
+            type="button"
+            onClick={this.handleAttachFile}
+            disabled={save && !submittable}
+          >
+            Attach
+          </button>
         </div>
-        <span>{error}</span>
       </div>
     )
+  }
+
+  handleChangeFile = (e) => {
+    this.setState({ file: e.target.files[0]})
   }
 
   handleAttachFile = (e) => {
     const Authorization = getAuthHeader()
     if (isNil(Authorization)) { return }
     const formData = new FormData()
-    const file = e.target.files[0]
+    const { file } = this.state
 
+    formData.append("save", this.state.save)
     formData.append("study_id", get(this.props, "study.id", ""))
     formData.append("file", file)
 
@@ -115,8 +160,15 @@ class RichTextEditor extends React.Component {
       }
     }).then((data) => {
       if (!isNil(data.error)) {
+        console.error(data.error_description)
+        const updatedSelection = selection.merge({
+          focusKey: es.getSelection().getFocusKey(),
+          focusOffset: loadingText.length,
+        })
+        const contentState = es.getCurrentContent()
+        const removeLoadingText = Modifier.replaceText(contentState, updatedSelection, "")
+        this.handleChange(EditorState.push(es, removeLoadingText, 'insert-fragment'))
         this.setState({
-          error: data.error_description,
           loading: false,
         })
         return
@@ -129,15 +181,21 @@ class RichTextEditor extends React.Component {
       const fileLink = Modifier.replaceText(contentState, updatedSelection,
         `![${get(data, "asset.name", "")}](${get(data, "asset.href", "")})`
       )
+      this.handleChange(EditorState.push(es, fileLink, 'insert-fragment'))
       this.setState({
-        editorState: EditorState.push(es, fileLink, 'insert-fragment'),
         loading: false,
       })
       return
     }).catch((error) => {
       console.error(error)
+      const updatedSelection = selection.merge({
+        focusKey: es.getSelection().getFocusKey(),
+        focusOffset: loadingText.length,
+      })
+      const contentState = es.getCurrentContent()
+      const removeLoadingText = Modifier.replaceText(contentState, updatedSelection, "")
+      this.handleChange(EditorState.push(es, removeLoadingText, 'insert-fragment'))
       this.setState({
-        error,
         loading: false,
       })
     })
@@ -146,6 +204,19 @@ class RichTextEditor extends React.Component {
   handleChange = (editorState) => {
     this.setState({editorState})
     this.props.onChange(editorState.getCurrentContent().getPlainText())
+  }
+
+  handleChangeName = (name, submittable) => {
+    this.setState({
+      name,
+      submittable,
+    })
+  }
+
+  handleToggleSave = (e) => {
+    this.setState({
+      [e.target.name]: e.target.checked
+    })
   }
 
   focus = () => this.refs.editor.focus()
@@ -196,5 +267,6 @@ const HashtagSpan = (props) => {
 export default createFragmentContainer(RichTextEditor, graphql`
   fragment RichTextEditor_study on Study {
     id
+    ...UserAssetNameInput_study
   }
 `)
