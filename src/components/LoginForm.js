@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import { withRouter } from 'react-router'
+import queryString from 'query-string'
 import LoginUserMutation from 'mutations/LoginUserMutation'
-import { isNil } from 'utils'
+import { get, isNil } from 'utils'
 
 class LoginForm extends Component {
   state = {
@@ -54,7 +55,9 @@ class LoginForm extends Component {
           return
         }
         window.sessionStorage.setItem("access_token", token.token)
-        this.props.history.replace("/")
+        const search = queryString.parse(get(this.props, "location.search", ""))
+        const returnTo = get(search, "return_to", undefined)
+        this.props.history.replace(returnTo || "/")
       },
     )
   }

@@ -1359,6 +1359,11 @@
 							"kind": "INTERFACE",
 							"name": "Node",
 							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "UserAssetTimelineEvent",
+							"ofType": null
 						}
 					],
 					"enumValues": null,
@@ -1440,17 +1445,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonConnection",
+							"name": "EventConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "NotificationConnection",
+							"name": "TopicConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonCommentConnection",
+							"name": "UserAssetConnection",
 							"ofType": null
 						},
 						{
@@ -1465,12 +1470,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AppleGiverConnection",
+							"name": "CourseConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "CourseConnection",
+							"name": "LessonCommentConnection",
 							"ofType": null
 						},
 						{
@@ -1485,22 +1490,22 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAssetConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "EnrolleeConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "TopicConnection",
+							"name": "LessonConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EventConnection",
+							"name": "AppleGiverConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationConnection",
 							"ofType": null
 						}
 					]
@@ -2783,6 +2788,16 @@
 				},
 				{
 					"kind": "INPUT_OBJECT",
+					"name": "CreateUserAssetInput",
+					"description": "Input type for CreateUserAsset.",
+					"fields": null,
+					"inputFields": [],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
 					"name": "CreateUserInput",
 					"description": "Input type for CreateUser.",
 					"fields": null,
@@ -2862,17 +2877,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Course",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -3575,7 +3590,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -3585,7 +3600,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -3679,17 +3694,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonEdge",
+							"name": "EventEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "NotificationEdge",
+							"name": "TopicEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonCommentEdge",
+							"name": "UserAssetEdge",
 							"ofType": null
 						},
 						{
@@ -3704,12 +3719,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AppleGiverEdge",
+							"name": "CourseEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "CourseEdge",
+							"name": "LessonCommentEdge",
 							"ofType": null
 						},
 						{
@@ -3724,22 +3739,22 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAssetEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "EnrolleeEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "TopicEdge",
+							"name": "LessonEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EventEdge",
+							"name": "AppleGiverEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationEdge",
 							"ofType": null
 						}
 					]
@@ -4100,11 +4115,6 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Course",
 							"ofType": null
 						},
@@ -4116,6 +4126,11 @@
 						{
 							"kind": "OBJECT",
 							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -4951,17 +4966,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Course",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Course",
 							"ofType": null
 						},
 						{
@@ -4972,6 +4982,11 @@
 						{
 							"kind": "OBJECT",
 							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -5004,11 +5019,6 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Course",
 							"ofType": null
 						},
@@ -5020,6 +5030,11 @@
 						{
 							"kind": "OBJECT",
 							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -5620,12 +5635,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -8704,22 +8719,27 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Event",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Notification",
+							"name": "Topic",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppledEvent",
 							"ofType": null
 						},
 						{
@@ -8739,6 +8759,21 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "ReferencedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CreatedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Study",
 							"ofType": null
 						},
@@ -8749,32 +8784,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AppledEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "ReferencedEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Event",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CreatedEvent",
+							"name": "Notification",
 							"ofType": null
 						}
 					]
@@ -9857,6 +9872,11 @@
 							"kind": "INTERFACE",
 							"name": "UniformResourceLocatable",
 							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "UserAssetTimelineEvent",
+							"ofType": null
 						}
 					],
 					"enumValues": null,
@@ -10300,7 +10320,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Topic",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -10325,12 +10350,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -11683,12 +11703,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -11703,7 +11718,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -11987,17 +12007,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "PRT",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "EVT",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "AccessToken",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "PRT",
 							"ofType": null
 						}
 					]
@@ -12735,12 +12755,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Topic",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -12750,7 +12770,22 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "AppledEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Course",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "ReferencedEvent",
 							"ofType": null
 						},
 						{
@@ -12765,22 +12800,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "AppledEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "ReferencedEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -13380,12 +13400,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -13395,7 +13410,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -14700,6 +14720,73 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "timeline",
+							"description": "Returns a list of events associated with the user asset.",
+							"args": [
+								{
+									"name": "after",
+									"description": "Returns the elements in the list that come after the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "before",
+									"description": "Returns the elements in the list that come before the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "first",
+									"description": "Returns the first n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "last",
+									"description": "Returns the last n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "orderBy",
+									"description": "Ordering options for events returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "EventOrder",
+										"ofType": null
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "UserAssetTimelineConnection",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "type",
 							"description": "The type of this asset.",
 							"args": [],
@@ -15008,6 +15095,158 @@
 							"deprecationReason": null
 						}
 					],
+					"possibleTypes": null
+				},
+				{
+					"kind": "OBJECT",
+					"name": "UserAssetTimelineConnection",
+					"description": "A connection type for UserAssetTimelineEvent.",
+					"fields": [
+						{
+							"name": "pageInfo",
+							"description": "Information to aid in pagination.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "PageInfo",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "edges",
+							"description": "A list of edges.",
+							"args": [],
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "UserAssetTimelineEventEdge",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "nodes",
+							"description": "A list of nodes.",
+							"args": [],
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "INTERFACE",
+									"name": "UserAssetTimelineEvent",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "totalCount",
+							"description": "The total count of items in the connection.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INTERFACE",
+					"name": "UserAssetTimelineEvent",
+					"description": "Events that can be a part of a user asset's timeline.",
+					"fields": [
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": [
+						{
+							"kind": "OBJECT",
+							"name": "CommentedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "ReferencedEvent",
+							"ofType": null
+						}
+					]
+				},
+				{
+					"kind": "OBJECT",
+					"name": "UserAssetTimelineEventEdge",
+					"description": "An edge type for UserAssetTimelineEvent.",
+					"fields": [
+						{
+							"name": "cursor",
+							"description": "A cursor for use in pagination.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "node",
+							"description": "The event at the end of the edge.",
+							"args": [],
+							"type": {
+								"kind": "INTERFACE",
+								"name": "UserAssetTimelineEvent",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [],
+					"enumValues": null,
 					"possibleTypes": null
 				},
 				{

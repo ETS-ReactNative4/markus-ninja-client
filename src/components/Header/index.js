@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { isAuthenticated } from 'auth'
+import LoginLink from 'components/LoginLink'
 import SearchBar from './SearchBar'
 import AuthLinks from './AuthLinks'
 
@@ -17,7 +18,7 @@ class Header extends Component {
           {!authenticated &&
           <ul>
             <li>
-              <Link className="Header__link" to="/login">Login</Link>
+              <LoginLink className="Header__link">Login</LoginLink>
             </li>
             <li>
               <Link className="Header__link" to="/signup">Signup</Link>

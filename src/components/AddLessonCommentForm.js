@@ -3,9 +3,9 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import AddLessonCommentMutation from 'mutations/AddLessonCommentMutation'
+import LoginLink from 'components/LoginLink'
 import RichTextEditor from 'components/RichTextEditor'
 import { get, isNil } from 'utils'
 import { isAuthenticated } from 'auth'
@@ -28,7 +28,7 @@ class AddLessonCommentForm extends Component {
     if (!isAuthenticated()) {
       return (
         <div className="AddLessonCommentForm">
-          <Link to="/login">Login to leave a comment</Link>
+          <LoginLink>Login to leave a comment</LoginLink>
         </div>
       )
     }

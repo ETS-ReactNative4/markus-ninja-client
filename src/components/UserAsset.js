@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
+import UserAssetTimeline from 'components/UserAssetTimeline'
 import { get } from 'utils'
 
 class UserAsset extends Component {
@@ -21,6 +22,7 @@ class UserAsset extends Component {
         <div>{asset.type}</div>
         <div>{asset.subtype}</div>
         <img src={asset.href} alt={asset.name} />
+        <UserAssetTimeline asset={asset} />
       </div>
     )
   }
@@ -42,5 +44,6 @@ export default createFragmentContainer(UserAsset, graphql`
     type
     viewerCanDelete
     viewerCanUpdate
+    ...UserAssetTimeline_asset
   }
 `)
