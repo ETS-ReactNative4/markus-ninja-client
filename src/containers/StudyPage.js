@@ -13,7 +13,7 @@ import StudyCoursesPage from 'containers/StudyCoursesPage'
 import StudyLabelsPage from 'containers/StudyLabelsPage'
 import LessonPage from 'containers/LessonPage'
 import StudyLessonsPage from 'containers/StudyLessonsPage'
-import AssetPage from 'containers/AssetPage'
+import UserAssetPage from 'containers/UserAssetPage'
 import StudyAssetsPage from 'containers/StudyAssetsPage'
 import StudyOverviewPage from 'containers/StudyOverviewPage'
 import StudySettingsPage from 'containers/StudySettingsPage'
@@ -93,7 +93,7 @@ class StudyPage extends Component {
                   <Route
                     exact
                     path="/:owner/:name/asset/:filename"
-                    component={AssetPage}
+                    component={UserAssetPage}
                   />
                   <Route
                     exact

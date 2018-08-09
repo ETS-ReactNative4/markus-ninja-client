@@ -4,6 +4,7 @@ import {
   graphql,
 } from 'react-relay'
 import { Link } from 'react-router-dom'
+import UserLink from 'components/UserLink'
 import { get, timeDifferenceForDate } from 'utils'
 
 class ReferencedEvent extends Component {
@@ -11,7 +12,7 @@ class ReferencedEvent extends Component {
     const event = get(this.props, "event", {})
     return (
       <div className="ReferencedEvent">
-        <Link to={get(event, "user.resourcePath", "")}>@{get(event, "user.login", "")}</Link>
+        <UserLink user={get(event, "user", null)} />
         <span>{event.isCrossStudy && "cross-"}referenced this {timeDifferenceForDate(event.createdAt)}</span>
         <div>
           from
@@ -30,8 +31,7 @@ export default createFragmentContainer(ReferencedEvent, graphql`
     resourcePath
     url
     user {
-      login
-      resourcePath
+      ...UserLink_user
     }
   }
 `)

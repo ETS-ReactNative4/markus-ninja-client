@@ -77,12 +77,12 @@ export default withRouter(createPaginationContainer(UserAssetTimeline,
       query UserAssetTimelineForwardQuery(
         $owner: String!,
         $name: String!,
-        $number: Int!,
+        $filename: String!,
         $count: Int!,
         $after: String
       ) {
         study(owner: $owner, name: $name) {
-          asset(number: $number) {
+          asset(name: $filename) {
             ...UserAssetTimeline_asset
           }
         }
@@ -101,7 +101,7 @@ export default withRouter(createPaginationContainer(UserAssetTimeline,
       return {
         owner: props.match.params.owner,
         name: props.match.params.name,
-        number: parseInt(props.match.params.number, 10),
+        filename: props.match.params.filename,
         count: paginationInfo.count,
         after: paginationInfo.cursor,
       }

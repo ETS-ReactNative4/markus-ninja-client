@@ -8,10 +8,10 @@ import UserAsset from 'components/UserAsset'
 import NotFound from 'components/NotFound'
 import { get, isNil } from 'utils'
 
-import { ASSETS_PER_PAGE } from 'consts'
+import { EVENTS_PER_PAGE } from 'consts'
 
-const AssetPageQuery = graphql`
-  query AssetPageQuery($owner: String!, $name: String!, $filename: String!) {
+const UserAssetPageQuery = graphql`
+  query UserAssetPageQuery($owner: String!, $name: String!, $filename: String!, $count: Int!, $after: String) {
     study(owner: $owner, name: $name) {
       asset(name: $filename) {
         ...UserAsset_asset
@@ -20,17 +20,17 @@ const AssetPageQuery = graphql`
   }
 `
 
-class AssetPage extends Component {
+class UserAssetPage extends Component {
   render() {
     return (
       <QueryRenderer
         environment={environment}
-        query={AssetPageQuery}
+        query={UserAssetPageQuery}
         variables={{
           owner: this.props.match.params.owner,
           name: this.props.match.params.name,
           filename: this.props.match.params.filename,
-          count: ASSETS_PER_PAGE,
+          count: EVENTS_PER_PAGE,
         }}
         render={({error,  props}) => {
           if (error) {
@@ -48,4 +48,4 @@ class AssetPage extends Component {
   }
 }
 
-export default AssetPage
+export default UserAssetPage
