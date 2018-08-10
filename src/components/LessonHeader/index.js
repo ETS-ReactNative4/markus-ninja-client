@@ -4,6 +4,7 @@ import {
   graphql,
 } from 'react-relay'
 import { Link, withRouter } from 'react-router-dom';
+import cls from 'classnames'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
 import AddLabelMutation from 'mutations/AddLabelMutation'
 import RemoveLabelMutation from 'mutations/RemoveLabelMutation'
@@ -11,7 +12,6 @@ import StudyLabelChecklist from 'components/StudyLabelChecklist'
 import Edge from 'components/Edge'
 import Label from 'components/Label'
 import { get, isNil } from 'utils'
-import cls from 'classnames'
 
 import './LessonHeader.css'
 

@@ -85,6 +85,9 @@ export function nullOr(value) {
 }
 
 export function nullString(str = "") {
+  if (typeof str !== 'string') {
+    return null
+  }
   return str === null
     ? null
     : str.trim() === "" ? null

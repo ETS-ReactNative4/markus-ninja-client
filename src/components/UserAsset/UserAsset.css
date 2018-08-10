@@ -1,0 +1,28 @@
+.UserAsset__show {
+  display: block;
+}
+
+.UserAsset.open .UserAsset__show {
+  display: none;
+}
+
+.UserAsset__edit {
+  display: none;
+}
+
+.UserAsset.open .UserAsset__edit {
+  display: block;
+}
+
+.UserAsset__edit .edit-asset-name {
+  width: 760px;
+  padding: 7px 10px;
+}
+
+.UserAsset__actions {
+  float: right;
+}
+
+.UserAsset__name {
+  word-wrap: break-word;
+}

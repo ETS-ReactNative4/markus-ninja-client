@@ -11,11 +11,11 @@ const mutation = graphql`
     createUserAsset(input: $input) {
       userAssetEdge {
         node {
-          ...UserAsset_asset
+          ...UserAssetPreview_asset
         }
       }
       study {
-        assets(first: 10) {
+        assets(first: 0) {
           totalCount
         }
       }
@@ -26,7 +26,7 @@ const mutation = graphql`
 export default (assetId, studyId, name, callback) => {
   const variables = {
     input: {
-      assetId: nullString(assetId),
+      assetId,
       studyId: nullString(studyId),
       name: nullString(name),
     },

@@ -9,9 +9,10 @@ import { get } from 'utils'
 class StudyLink extends Component {
   render() {
     const study = get(this.props, "study", {})
+    const { withOwner } = this.props
     return (
       <Link to={study.resourcePath}>
-        {study.nameWithOwner}
+        {withOwner ? study.nameWithOwner : study.name}
       </Link>
     )
   }
@@ -20,6 +21,7 @@ class StudyLink extends Component {
 export default createFragmentContainer(StudyLink, graphql`
   fragment StudyLink_study on Study {
     id
+    name
     nameWithOwner
     resourcePath
   }
