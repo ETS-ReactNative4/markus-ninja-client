@@ -7,7 +7,7 @@ import { withRouter } from 'react-router'
 import CreateLessonMutation from 'mutations/CreateLessonMutation'
 import RichTextEditor from 'components/RichTextEditor'
 import StudyCourseSelect from 'components/StudyCourseSelect'
-import { get } from 'utils'
+import { get, isNil } from 'utils'
 
 class CreateLessonForm extends Component {
   state = {
@@ -54,13 +54,17 @@ class CreateLessonForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { body, courseId, title } = this.state
+
     CreateLessonMutation(
       this.props.study.id,
       title,
       body,
       courseId,
-      (response, error) => {
-        this.props.history.push(response.createLesson.resourcePath)
+      (lesson, errors) => {
+        if (!isNil(errors)) {
+          this.setState({ error: errors[0].message })
+        }
+        this.props.history.push(lesson.resourcePath)
       }
     )
   }

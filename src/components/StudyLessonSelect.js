@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import { get } from 'utils'
 import Edge from 'components/Edge'
+import LessonSelectOption from 'components/LessonSelectOption'
 
 import { LESSONS_PER_PAGE } from 'consts'
 
@@ -25,7 +26,7 @@ class StudyLessonSelect extends Component {
           <option>Select a lesson...</option>
           {lessonEdges.map(edge =>
             <Edge key={get(edge, "node.id", "")} edge={edge} render={({node}) =>
-              <option value={node.id}>{node.number}: {node.title}</option>
+              <LessonSelectOption lesson={node} />
             } />)}
         </select>
         {this.props.relay.hasMore() &&
@@ -69,12 +70,11 @@ export default createPaginationContainer(StudyLessonSelect,
           after: $after,
           isCourseLesson: $isCourseLesson,
           orderBy:{direction: ASC field:NUMBER}
-        ) @connection(key: "StudyLessonSelect_lessons") {
+        ) @connection(key: "StudyLessonSelect_lessons", filters: []) {
           edges {
             node {
               id
-              number
-              title
+              ...LessonSelectOption_lesson
             }
           }
           pageInfo {

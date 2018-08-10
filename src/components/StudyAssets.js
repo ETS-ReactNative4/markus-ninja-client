@@ -61,7 +61,7 @@ export default createPaginationContainer(StudyAssets,
           first: $count,
           after: $after,
           orderBy:{direction: ASC field:NAME}
-        ) @connection(key: "StudyAssets_assets") {
+        ) @connection(key: "StudyAssets_assets", filters: []) {
           edges {
             node {
               ...UserAssetPreview_asset

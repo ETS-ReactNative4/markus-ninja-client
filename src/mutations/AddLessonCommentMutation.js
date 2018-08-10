@@ -4,7 +4,7 @@ import {
 } from 'react-relay'
 import { ConnectionHandler } from 'relay-runtime'
 import environment from 'Environment'
-import { isNil } from 'utils'
+import { get, isNil } from 'utils'
 
 const mutation = graphql`
   mutation AddLessonCommentMutation($input: AddLessonCommentInput!) {
@@ -51,7 +51,10 @@ export default (lessonId, body, callback) => {
           ConnectionHandler.insertEdgeBefore(timeline, edge)
         }
       },
-      onCompleted: callback,
+      onCompleted: (response, error) => {
+        const lessonComment = get(response, "addLessonComment.lessonCommentEdge.node")
+        callback(lessonComment, error)
+      },
       onError: err => console.error(err),
     },
   )

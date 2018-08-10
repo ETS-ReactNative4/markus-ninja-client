@@ -14,6 +14,12 @@ const mutation = graphql`
         lessonCount
       }
       removedLessonId
+      removedLessonEdge {
+        node {
+          id
+          ...LessonSelectOption_lesson
+        }
+      }
     }
   }
 `
@@ -38,9 +44,22 @@ export default (lessonId, callback) => {
           const lessonCount = lessonCourse.getValue('lessonCount')
           const course = proxyStore.get(lessonCourseId)
           course.setValue(lessonCount, 'lessonCount')
+
           const removedLessonId = removeCourseLessonField.getValue('removedLessonId')
-          const lessons = ConnectionHandler.getConnection(course, 'CourseLessons_lessons')
-          ConnectionHandler.deleteNode(lessons, removedLessonId)
+          const courseLessons = ConnectionHandler.getConnection(
+            course,
+            "CourseLessons_lessons",
+          )
+          courseLessons && ConnectionHandler.deleteNode(courseLessons, removedLessonId)
+
+          const studyId = course.getLinkedRecord('study').getValue('id')
+          const study = proxyStore.get(studyId)
+          const studyLessonsSelect = ConnectionHandler.getConnection(
+            study,
+            "StudyLessonSelect_lessons",
+          )
+          const edge = removeCourseLessonField.getLinkedRecord("removedLessonEdge")
+          studyLessonsSelect && ConnectionHandler.insertEdgeBefore(studyLessonsSelect, edge)
         }
       },
       onCompleted: callback,

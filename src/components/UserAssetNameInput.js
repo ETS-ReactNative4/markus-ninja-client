@@ -60,7 +60,7 @@ class UserAssetNameInput extends React.Component {
   }
 
   _refetch = debounce((name) => {
-    if (!this.props.disabled) {
+    if (!this.props.disabled && !isEmpty(name)) {
       this.setState({
         fetched: true,
         loading: true,

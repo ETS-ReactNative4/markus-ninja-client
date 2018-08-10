@@ -39,7 +39,9 @@ export default (appleableId, callback) => {
           appleable.setValue(viewerHasAppled, 'viewerHasAppled')
         }
       },
-      onCompleted: callback,
+      onCompleted: (response, error) => {
+        callback(error)
+      },
       onError: err => console.error(err),
     },
   )

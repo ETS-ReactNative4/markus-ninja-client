@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { withRouter } from 'react-router-dom';
 import CreateStudyMutation from 'mutations/CreateStudyMutation'
+import { get, isEmpty } from 'utils'
 
 class CreateStudyForm extends Component {
   state = {
@@ -47,7 +48,12 @@ class CreateStudyForm extends Component {
     CreateStudyMutation(
       name,
       description,
-      (response, error) => this.props.history.push(response.createStudy.resourcePath),
+      (study, errors) => {
+        if (!isEmpty(errors)) {
+          this.setState({ error: errors[0].message })
+        }
+        this.props.history.push(get(study, "resourcePath", ""))
+      }
     )
   }
 }

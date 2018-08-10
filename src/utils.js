@@ -84,6 +84,13 @@ export function nullOr(value) {
   return value
 }
 
+export function nullString(str = "") {
+  return str === null
+    ? null
+    : str.trim() === "" ? null
+    : str
+}
+
 export function debounce(func, delay) {
   let inDebounce
   return function() {

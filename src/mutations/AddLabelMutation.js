@@ -4,7 +4,7 @@ import {
 } from 'react-relay'
 import { ConnectionHandler } from 'relay-runtime'
 import environment from 'Environment'
-import { isNil } from 'utils'
+import { get, isNil } from 'utils'
 
 const mutation = graphql`
   mutation AddLabelMutation($input: AddLabelInput!) {
@@ -44,7 +44,10 @@ export default (labelId, labelableId, callback) => {
           ConnectionHandler.insertEdgeAfter(labels, edge)
         }
       },
-      onCompleted: callback,
+      onCompleted: (response, error) => {
+        const label = get(response, "addLabel.labelEdge.node")
+        callback(label, error)
+      },
       onError: err => console.error(err),
     },
   )

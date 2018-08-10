@@ -3,6 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
+import { get } from 'utils'
 
 const mutation = graphql`
   mutation CreateStudyMutation($input: CreateStudyInput!) {
@@ -33,7 +34,10 @@ export default (name, description, callback) => {
     {
       mutation,
       variables,
-      onCompleted: callback,
+      onCompleted: (response, error) => {
+        const study = get(response, "createStudy.studyEdge.node")
+        callback(study, error)
+      },
       onError: err => console.error(err),
     },
   )

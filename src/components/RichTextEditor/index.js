@@ -109,7 +109,7 @@ class RichTextEditor extends React.Component {
     }
     const contentState = editorState.getCurrentContent()
     const fileLink = Modifier.replaceText(contentState, loadingFileSelection,
-      `![${wasSaved && "$$"}${asset.name}](${asset.href})`
+      `![${wasSaved ? "$$" : ""}${asset.name}](${asset.href})`
     )
     this.handleChange(EditorState.push(editorState, fileLink, 'insert-fragment'))
     this.setState({

@@ -3,7 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import { isNil } from 'utils'
+import { isEmpty, isNil, nullString } from 'utils'
 
 const mutation = graphql`
   mutation UpdateLessonMutation($input: UpdateLessonInput!) {
@@ -21,8 +21,8 @@ export default (lessonId, title, body, callback) => {
   const variables = {
     input: {
       body,
-      lessonId,
-      title,
+      lessonId: nullString(lessonId),
+      title: nullString(title),
     },
   }
 
@@ -36,7 +36,7 @@ export default (lessonId, title, body, callback) => {
         if (!isNil(body)) {
           lesson.setValue(body, 'body')
         }
-        if (!isNil(title)) {
+        if (!isEmpty(title)) {
           lesson.setValue(title, 'title')
         }
       },
@@ -53,7 +53,9 @@ export default (lessonId, title, body, callback) => {
         lesson.setValue(newTitle, 'title')
         lesson.setValue(newUpdatedAt, 'updatedAt')
       },
-      onCompleted: callback,
+      onCompleted: (response, error) => {
+        callback(response.updateLesson, error)
+      },
       onError: err => console.error(err),
     },
   )

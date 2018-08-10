@@ -137,11 +137,14 @@ class LessonHeader extends Component {
       this.props.lesson.id,
       title,
       null,
-      (error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error[0].message })
+      (updatedLesson, errors) => {
+        if (!isNil(errors)) {
+          this.setState({ error: errors[0].message })
         }
         this.handleToggleOpen()
+        this.setState({
+          title: get(updatedLesson, "title", ""),
+        })
       },
     )
   }

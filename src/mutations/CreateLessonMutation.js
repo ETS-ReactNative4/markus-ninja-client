@@ -3,7 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import { isNil } from 'utils'
+import { get, isNil, nullString } from 'utils'
 
 const mutation = graphql`
   mutation CreateLessonMutation($input: CreateLessonInput!) {
@@ -33,9 +33,9 @@ export default (studyId, title, body, courseId, callback) => {
   const variables = {
     input: {
       body,
-      courseId,
-      studyId,
-      title,
+      courseId: nullString(courseId),
+      studyId: nullString(studyId),
+      title: nullString(title),
     },
   }
 
@@ -46,23 +46,28 @@ export default (studyId, title, body, courseId, callback) => {
       variables,
       updater: proxyStore => {
         const createLessonField = proxyStore.getRootField('createLesson')
-        const lessonStudy = createLessonField.getLinkedRecord('study')
-        const studyAdvancedAt = lessonStudy.getValue('advancedAt')
+        if (!isNil(createLessonField)) {
+          const lessonStudy = createLessonField.getLinkedRecord('study')
+          const studyAdvancedAt = lessonStudy.getValue('advancedAt')
 
-        const study = proxyStore.get(studyId)
-        study.setValue(studyAdvancedAt, 'advancedAt')
+          const study = proxyStore.get(studyId)
+          study.setValue(studyAdvancedAt, 'advancedAt')
 
-        if (!isNil(courseId)) {
-          const lessonEdge = createLessonField.getLinkedRecord('lessonEdge')
-          const lessonCount = lessonEdge
-            .getLinkedRecord('node')
-            .getLinkedRecord('course')
-            .getValue('lessonCount')
-          const course = proxyStore.get(courseId)
-          course.setValue(lessonCount, 'lessonCount')
+          if (!isNil(courseId)) {
+            const lessonEdge = createLessonField.getLinkedRecord('lessonEdge')
+            const lessonCount = lessonEdge
+              .getLinkedRecord('node')
+              .getLinkedRecord('course')
+              .getValue('lessonCount')
+            const course = proxyStore.get(courseId)
+            course.setValue(lessonCount, 'lessonCount')
+          }
         }
       },
-      onCompleted: callback,
+      onCompleted: (response, error) => {
+        const lesson = get(response, "createLesson.lessonEdge.node")
+        callback(lesson, error)
+      },
       onError: err => console.error(err),
     },
   )

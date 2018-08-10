@@ -40,7 +40,9 @@ export default (labelId, labelableId, callback) => {
           ConnectionHandler.deleteNode(labels, removedLabelId)
         }
       },
-      onCompleted: callback,
+      onCompleted: (response, error) => {
+        callback(error)
+      },
       onError: err => console.error(err),
     },
   )

@@ -5,12 +5,14 @@ import {
 } from 'react-relay'
 import cls from 'classnames'
 import UserAssetNameInput from 'components/UserAssetNameInput'
+import CreateUserAssetMutation from 'mutations/CreateUserAssetMutation'
 import { get, isNil } from 'utils'
 import { getAuthHeader } from 'auth'
 
 class AttachFile extends React.Component {
   state = {
     file: null,
+    name: "",
     save: false,
     submittable: false,
   }
@@ -109,12 +111,23 @@ class AttachFile extends React.Component {
           return responseBody
         }
       }).then((data) => {
-        this.props.onChangeComplete(data.asset, save, data.error)
-        this.setState({
-          loading: false,
-          file: null,
-          save: false,
-        })
+
+        CreateUserAssetMutation(
+          data.asset.id,
+          this.props.study.id,
+          this.state.name,
+          (userAsset, errors) => {
+            if (!isNil(errors)) {
+              this.setState({ error: errors[0].message })
+            }
+            this.props.onChangeComplete(data.asset, save, data.error)
+            this.setState({
+              loading: false,
+              file: null,
+              save: false,
+            })
+          }
+        )
         return
       }).catch((error) => {
         console.error(error)

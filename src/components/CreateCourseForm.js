@@ -53,9 +53,9 @@ class CreateCourseForm extends Component {
       this.props.study.id,
       name,
       description,
-      (course, error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error[0].message })
+      (course, errors) => {
+        if (!isNil(errors)) {
+          this.setState({ error: errors[0].message })
           return
         }
         this.props.history.push(course.resourcePath)

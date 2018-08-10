@@ -58,12 +58,11 @@ class AddLessonCommentForm extends Component {
     AddLessonCommentMutation(
       this.props.lesson.id,
       body,
-      (response, error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
-        } else {
-          this.setState({ submitted: true })
+      (response, errors) => {
+        if (!isNil(errors)) {
+          this.setState({ error: errors[0].message })
         }
+        this.setState({ submitted: true })
       }
     )
   }
