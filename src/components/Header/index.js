@@ -6,6 +6,8 @@ import LoginLink from 'components/LoginLink'
 import SearchBar from './SearchBar'
 import AuthLinks from './AuthLinks'
 
+import './Header.css'
+
 class Header extends Component {
   render() {
     const authenticated = isAuthenticated()

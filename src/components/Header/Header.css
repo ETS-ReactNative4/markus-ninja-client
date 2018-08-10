@@ -1,0 +1,7 @@
+.SearchBarInput__results {
+  display: none;
+}
+
+.SearchBarInput.open .SearchBarInput__results {
+  display: block;
+}

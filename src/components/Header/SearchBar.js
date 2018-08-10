@@ -12,6 +12,7 @@ const SearchBarQuery = graphql`
     $count: Int!,
     $query: String!,
     $type: SearchType!
+    $skip: Boolean!
   ){
     ...SearchBarInput_query
   }
@@ -26,7 +27,8 @@ class SearchBar extends React.Component {
         variables={{
           count: 0,
           query: "*",
-          type: "STUDY"
+          type: "STUDY",
+          skip: true,
         }}
         render={({error,  props}) => {
           if (error) {

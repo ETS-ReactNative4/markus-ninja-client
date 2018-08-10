@@ -4,6 +4,7 @@ import {
   graphql,
 } from 'react-relay'
 import cls from 'classnames'
+import { withUID } from 'components/UniqueId'
 import UserAssetNameInput from 'components/UserAssetNameInput'
 import CreateUserAssetMutation from 'mutations/CreateUserAssetMutation'
 import { get, isNil } from 'utils'
@@ -18,6 +19,7 @@ class AttachFile extends React.Component {
   }
 
   render() {
+    const { uid } = this.props
     const { save, submittable } = this.state
     const filename = get(this.state, "file.name", "")
 
@@ -25,11 +27,11 @@ class AttachFile extends React.Component {
       <div className="RichTextEditor__attach-file">
         <label
           className="attach-file-label"
-          htmlFor="attach-file-input"
+          htmlFor={`attach-file-input${uid}`}
         >
           File
           <input
-            id="attach-file-input"
+            id={`attach-file-input${uid}`}
             className="attach-file-input"
             type="file"
             style={{display: "none"}}
@@ -37,7 +39,7 @@ class AttachFile extends React.Component {
           />
         </label>
         <input
-          id="attach-file-save"
+          id={`attach-file-save${uid}`}
           type="checkbox"
           name="save"
           checked={this.state.save}
@@ -45,7 +47,7 @@ class AttachFile extends React.Component {
         />
         <label
           className="attach-file-save"
-          htmlFor="attach-file-save"
+          htmlFor={`attach-file-save${uid}`}
         >
           Save
         </label>
@@ -111,23 +113,31 @@ class AttachFile extends React.Component {
           return responseBody
         }
       }).then((data) => {
-
-        CreateUserAssetMutation(
-          data.asset.id,
-          this.props.study.id,
-          this.state.name,
-          (userAsset, errors) => {
-            if (!isNil(errors)) {
-              this.setState({ error: errors[0].message })
+        if (save) {
+          CreateUserAssetMutation(
+            data.asset.id,
+            this.props.study.id,
+            this.state.name,
+            (userAsset, errors) => {
+              if (!isNil(errors)) {
+                this.setState({ error: errors[0].message })
+              }
+              this.props.onChangeComplete(data.asset, save, data.error)
+              this.setState({
+                loading: false,
+                file: null,
+                save: false,
+              })
             }
-            this.props.onChangeComplete(data.asset, save, data.error)
-            this.setState({
-              loading: false,
-              file: null,
-              save: false,
-            })
-          }
-        )
+          )
+        } else {
+          this.props.onChangeComplete(data.asset, save, data.error)
+          this.setState({
+            loading: false,
+            file: null,
+            save: false,
+          })
+        }
         return
       }).catch((error) => {
         console.error(error)
@@ -149,9 +159,9 @@ class AttachFile extends React.Component {
   }
 }
 
-export default createFragmentContainer(AttachFile, graphql`
+export default withUID(getUID => ({uid: getUID() }))(createFragmentContainer(AttachFile, graphql`
   fragment AttachFile_study on Study {
     id
     ...UserAssetNameInput_study
   }
-`)
+`))
