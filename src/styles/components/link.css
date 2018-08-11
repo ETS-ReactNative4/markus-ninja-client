@@ -1,0 +1,17 @@
+@import "../colors.css";
+
+.link {
+  color: $primary-color;
+  display: inline-block;
+  text-decoration: none;
+  transition: color $transition-time;
+
+  &:visited {
+    /* color: get-swatch($primary-color, 200, true); */
+  }
+
+  &:hover {
+    /* color: get-color('text', $light-theme); */
+    text-decoration: underline;
+  }
+}

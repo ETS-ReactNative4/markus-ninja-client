@@ -1,0 +1,46 @@
+@import "colors.css";
+
+$primary-color: $indigo-500;
+
+$primary-hover-opacity: .9;
+
+$primary-background-text-color: $white-base;
+
+$secondary-color: $pink-a-200;
+
+$secondary-hover-opacity: .9;
+
+$secondary-background-text-color: $white-base;
+
+$error-color: $red-500;
+
+$transition-time: .15s;
+
+$mobile-min-width: 320px;
+
+$tablet-min-width: 768px;
+
+$desktop-min-width: 1025px;
+
+$portrait-media: '(max-aspect-ratio: 13/9)';
+
+$landscape-media: '(min-aspect-ratio: 13/9)';
+
+$mobile-media: 'screen and (min-width: #{$mobile-min-width})';
+
+$mobile-portrait-media: 'screen and (min-width: #{$mobile-min-width}) and #{$portrait-media}' !default;
+
+$mobile-landscape-media: 'screen and (min-width: #{$mobile-min-width}) and #{$landscape-media}' !default;
+
+$tablet-media: 'screen and (min-width: #{$tablet-min-width})' !default;
+
+$tablet-portrait-media: 'screen and (min-width: #{$tablet-min-width}) and #{$portrait-media}' !default;
+
+$tablet-landscape-media: 'screen and (min-width: #{$tablet-min-width}) and #{$landscape-media}' !default;
+
+$desktop-media: 'screen and (min-width: #{$desktop-min-width})' !default;
+
+$height: 48px !default;
+
+$default-padding: 16px !default;
+
