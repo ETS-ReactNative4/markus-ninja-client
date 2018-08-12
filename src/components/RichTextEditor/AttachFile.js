@@ -3,6 +3,12 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import {
+  Button,
+  FileInput,
+  SelectionControl,
+  TextField,
+} from 'react-md'
 import cls from 'classnames'
 import { withUID } from 'components/UniqueId'
 import UserAssetNameInput from 'components/UserAssetNameInput'
@@ -20,12 +26,28 @@ class AttachFile extends React.Component {
 
   render() {
     const { uid } = this.props
-    const { save, submittable } = this.state
+    const { file, save, submittable } = this.state
     const filename = get(this.state, "file.name", "")
 
     return (
       <div className="RichTextEditor__attach-file">
-        <label
+        <SelectionControl
+          id={`attach-file-save${uid}`}
+          type="switch"
+          name="save"
+          checked={this.state.save}
+          onChange={save => this.setState({ save })}
+          inline
+          label="Save"
+        />
+        <FileInput
+          id={`attach-file-input${uid}`}
+          accept="image/*"
+          name="images"
+          onChange={file => this.setState({ file })}
+          flat
+        />
+        {/*<label
           className="attach-file-label"
           htmlFor={`attach-file-input${uid}`}
         >
@@ -37,45 +59,34 @@ class AttachFile extends React.Component {
             style={{display: "none"}}
             onChange={this.handleChangeFile}
           />
-        </label>
-        <input
-          id={`attach-file-save${uid}`}
-          type="checkbox"
-          name="save"
-          checked={this.state.save}
-          onChange={this.handleToggleSave}
-        />
-        <label
-          className="attach-file-save"
-          htmlFor={`attach-file-save${uid}`}
-        >
-          Save
-        </label>
+        </label>*/}
         <UserAssetNameInput
           className={cls("attach-file-name-input", {open: save})}
           study={get(this.props, "study", null)}
           disabled={!save}
+          placeholder="No file chosen"
           value={filename}
           onChange={this.handleChangeName}
         />
-        <input
-          className={cls("attach-file-name", {open: !save})}
-          type="text"
+        <TextField
+          id={`attach-file-name${uid}`}
+          placeholder="No file chosen"
           value={filename}
+          className={cls("attach-file-name", {open: !save})}
+          readOnly
+          fullWidth={false}
         />
-        <button
-          type="button"
+        <Button
+          flat
           onClick={this.handleAttachFile}
-          disabled={save && !submittable}
+          disabled={isNil(file) || (save && !submittable)}
+          tooltipLabel={save ? "Saving the file will add it to the study's assets" : null }
+          tooltipPosition={save ? "top" : null}
         >
-          Attach
-        </button>
+          {save ? "Attach & Save" : "Attach"}
+        </Button>
       </div>
     )
-  }
-
-  handleChangeFile = (e) => {
-    this.setState({ file: e.target.files[0]})
   }
 
   handleChangeName = (name, submittable) => {
@@ -151,15 +162,9 @@ class AttachFile extends React.Component {
       })
     }
   }
-
-  handleToggleSave = (e) => {
-    this.setState({
-      [e.target.name]: e.target.checked
-    })
-  }
 }
 
-export default withUID(getUID => ({uid: getUID() }))(createFragmentContainer(AttachFile, graphql`
+export default withUID((getUID) => ({uid: getUID() }))(createFragmentContainer(AttachFile, graphql`
   fragment AttachFile_study on Study {
     id
     ...UserAssetNameInput_study

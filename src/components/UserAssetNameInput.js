@@ -3,7 +3,9 @@ import {
   createRefetchContainer,
   graphql,
 } from 'react-relay'
+import { FontIcon, TextField } from 'react-md'
 import cls from 'classnames'
+import { withUID } from 'components/UniqueId'
 import { withRouter } from 'react-router'
 import { debounce, get, isEmpty, isNil } from 'utils'
 
@@ -30,13 +32,24 @@ class UserAssetNameInput extends React.Component {
   }
 
   render() {
-    const { className, disabled } = this.props
+    const { className, disabled, uid } = this.props
     const { fetched, loading, name } = this.state
     const asset = get(this.props, "study.asset", undefined)
+
     return (
-      <div className={cls("UserAssetNameInput", className)}>
-        <input
-          id="search-query"
+      <div className={cls("md-inline-block", className)}>
+        <TextField
+          id={`user-asset-name-input${uid}`}
+          placeholder={get(this.props, "placeholder", "Enter name")}
+          autoComplete="off"
+          disabled={disabled}
+          name="name"
+          value={name}
+          fullWidth={false}
+          onChange={(name) => this.handleChange(name)}
+          error={asset}
+        />
+        {/*<input
           autoComplete="off"
           className="form-control"
           disabled={disabled}
@@ -45,10 +58,10 @@ class UserAssetNameInput extends React.Component {
           placeholder="Enter name"
           value={name}
           onChange={(e) => this.handleChange(e.target.value)}
-        />
+        />*/}
         {loading ?
-        <span>Loading...</span> : !isEmpty(name) && fetched ?
-        <span>Name {asset ? "taken" : "available"}</span> : null}
+        <FontIcon>autorenew</FontIcon> : !isEmpty(name) && fetched ?
+        <FontIcon>{asset ? "clear" : "done"}</FontIcon> : null}
       </div>
     )
   }
@@ -87,7 +100,7 @@ class UserAssetNameInput extends React.Component {
 
 }
 
-export default withRouter(createRefetchContainer(UserAssetNameInput,
+export default withUID((getUID) => ({uid: getUID() }))(withRouter(createRefetchContainer(UserAssetNameInput,
   {
     study: graphql`
       fragment UserAssetNameInput_study on Study {
@@ -108,4 +121,4 @@ export default withRouter(createRefetchContainer(UserAssetNameInput,
       }
     }
   `,
-))
+)))

@@ -29,7 +29,7 @@
 }
 
 .RichTextEditor__attach-file .attach-file-name-input.open {
-  display: block;
+  display: inline-block;
 }
 
 .RichTextEditor__attach-file .attach-file-name {
@@ -37,5 +37,5 @@
 }
 
 .RichTextEditor__attach-file .attach-file-name.open {
-  display: block;
+  display: inline-block;
 }

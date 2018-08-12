@@ -5,13 +5,12 @@ import {
 } from 'react-relay'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
-import { get } from 'utils'
 import AppleButton from 'components/AppleButton'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
 import Counter from 'components/Counter'
-import { isNil } from 'utils'
+import { get, isNil } from 'utils'
 
 import './Study.css'
 
