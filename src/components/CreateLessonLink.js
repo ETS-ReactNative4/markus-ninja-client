@@ -10,7 +10,7 @@ class CreateLessonLink extends Component {
   render() {
     const study = get(this.props, "study", {})
     return (
-      <Link to={study.resourcePath + "/lessons/new"}>
+      <Link className="link" to={study.resourcePath + "/lessons/new"}>
         {this.props.children}
       </Link>
     )

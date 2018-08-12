@@ -8,6 +8,7 @@ import { withRouter } from 'react-router'
 import { get } from 'utils'
 import AppleButton from 'components/AppleButton'
 import EnrollmentSelect from 'components/EnrollmentSelect'
+import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
 import Counter from 'components/Counter'
 import { isNil } from 'utils'
@@ -29,7 +30,7 @@ class Study extends Component {
         <div className="Study__name">
           <UserLink user={get(study, "owner", null)} />
           <span className="Study__name-divider">/</span>
-          <Link to={study.resourcePath}>{study.name}</Link>
+          <StudyLink study={study} />
         </div>
         <ul className="Study__actions">
           <li>
@@ -100,6 +101,7 @@ export default withRouter(createFragmentContainer(Study, graphql`
     updatedAt
     url
     viewerCanAdmin
+    ...StudyLink_study
     ...AppleButton_appleable
     ...EnrollmentSelect_enrollable
   }

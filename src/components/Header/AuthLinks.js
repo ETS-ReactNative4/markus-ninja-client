@@ -31,19 +31,19 @@ class AuthLinks extends Component {
             return (
               <ul>
                 <li>
-                  <Link className="AuthLinks__link" to="/notifications">Notifications</Link>
+                  <Link className="link" to="/notifications">Notifications</Link>
                 </li>
                 <li>
-                  <Link className="AuthLinks__link" to="/new">New study</Link>
+                  <Link className="link" to="/new">New study</Link>
                 </li>
                 <li>
-                  <Link className="AuthLinks__link" to={resourcePath}>Your profile</Link>
+                  <Link className="link" to={resourcePath}>Your profile</Link>
                 </li>
                 <li>
-                  <Link className="AuthLinks__link" to="/logout">Logout</Link>
+                  <Link className="link" to="/logout">Logout</Link>
                 </li>
                 <li>
-                  <Link className="AuthLinks__link" to="/settings">Settings</Link>
+                  <Link className="link" to="/settings">Settings</Link>
                 </li>
               </ul>
             )

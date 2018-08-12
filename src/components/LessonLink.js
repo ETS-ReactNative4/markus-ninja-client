@@ -10,7 +10,7 @@ class LessonLink extends Component {
   render() {
     const lesson = get(this.props, "lesson", {})
     return (
-      <Link to={lesson.resourcePath}>
+      <Link className="link" to={lesson.resourcePath}>
         #{lesson.number}
       </Link>
     )

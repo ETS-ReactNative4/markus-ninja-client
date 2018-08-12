@@ -10,7 +10,7 @@ class StudyLabelsLink extends Component {
   render() {
     const study = get(this.props, "study", {})
     return (
-      <Link to={study.resourcePath + "/labels"}>
+      <Link className="link" to={study.resourcePath + "/labels"}>
         {this.props.children}
       </Link>
     )

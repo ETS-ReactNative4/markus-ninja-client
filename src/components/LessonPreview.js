@@ -11,7 +11,7 @@ class LessonPreview extends Component {
     const lesson = get(this.props, "lesson", {})
     return (
       <div>
-        <Link to={lesson.resourcePath}>
+        <Link className="link" to={lesson.resourcePath}>
           {lesson.number}: {lesson.title}
         </Link>
       </div>

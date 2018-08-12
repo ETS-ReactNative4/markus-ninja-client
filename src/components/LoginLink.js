@@ -11,6 +11,7 @@ class LoginLink extends Component {
     const returnTo = queryString.stringify({ return_to: pathname })
     return (
       <Link
+        className="link"
         {...rest}
         to={{pathname: "/login", search: returnTo }}
       >

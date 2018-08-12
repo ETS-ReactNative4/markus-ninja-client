@@ -14,16 +14,16 @@ class Header extends Component {
     return (
       <div className="Header">
         <div className="Header__links">
-          <Link className="Header__link" to="/">Home</Link>
+          <Link className="link" to="/">Home</Link>
           <SearchBar />
-          <Link className="Header__link" to="/research">Research</Link>
+          <Link className="link" to="/research">Research</Link>
           {!authenticated &&
           <ul>
             <li>
-              <LoginLink className="Header__link">Login</LoginLink>
+              <LoginLink>Login</LoginLink>
             </li>
             <li>
-              <Link className="Header__link" to="/signup">Signup</Link>
+              <Link className="link" to="/signup">Signup</Link>
             </li>
           </ul>}
           {authenticated && <AuthLinks />}

@@ -9,9 +9,9 @@ import { get } from 'utils'
 class StudyLink extends Component {
   render() {
     const study = get(this.props, "study", {})
-    const { withOwner } = this.props
+    const { withOwner = false } = this.props
     return (
-      <Link to={study.resourcePath}>
+      <Link className="link" to={study.resourcePath}>
         {withOwner ? study.nameWithOwner : study.name}
       </Link>
     )

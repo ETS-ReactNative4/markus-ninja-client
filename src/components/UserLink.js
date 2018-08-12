@@ -10,7 +10,7 @@ class UserLink extends Component {
   render() {
     const user = get(this.props, "user", {})
     return (
-      <Link to={user.resourcePath}>
+      <Link className="link" to={user.resourcePath}>
         {user.login}
       </Link>
     )
