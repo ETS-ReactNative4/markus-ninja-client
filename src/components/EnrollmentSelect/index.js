@@ -3,8 +3,11 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import cls from 'classnames'
 import { get, isNil } from 'utils'
 import UpdateEnrollmentMutation from 'mutations/UpdateEnrollmentMutation'
+
+import './styles.css'
 
 class EnrollmentSelect extends React.Component {
   state = {
@@ -17,19 +20,29 @@ class EnrollmentSelect extends React.Component {
     }
 
     const enrolleeCount = get(enrollable, "enrolleeCount", 0)
+    const disabled = !enrollable.viewerCanEnroll
     const { status } = this.state
+
     return (
-      <div className="EnrollmentSelect">
+      <div
+        className={cls(
+          "EnrollmentSelect mdc-select mdc-select-box",
+          { "mdc-select-disabled": disabled },
+        )}
+      >
+        <div className="es-count mdc-chip">
+          <div className="mdc-chip__text">{enrolleeCount}</div>
+        </div>
         <select
+          className="mdc-select__native-control"
           value={status}
-          disabled={!enrollable.viewerCanEnroll}
+          disabled={disabled}
           onChange={this.handleChange}
         >
           <option value="ENROLLED">Enrolled</option>
           <option value="IGNORED">Ignored</option>
           <option value="UNENROLLED">Unenrolled</option>
         </select>
-        <span className="EnrollmentSelect__count">{enrolleeCount}</span>
       </div>
     )
   }

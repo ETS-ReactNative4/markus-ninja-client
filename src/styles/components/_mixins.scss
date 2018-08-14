@@ -1,0 +1,17 @@
+@import "./variables";
+
+@mixin rn-link-base() {
+  color: $mdc-theme-primary;
+  display: inline-block;
+  text-decoration: none;
+  transition: color $rn-link-transition-duration;
+
+  &:visited {
+    color: $mdc-theme-primary;
+  }
+
+  &:hover {
+    color: $mdc-theme-on-primary;
+    text-decoration: underline;
+  }
+}

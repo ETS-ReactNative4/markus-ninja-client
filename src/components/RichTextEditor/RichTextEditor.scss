@@ -3,30 +3,39 @@
   cursor: text;
   font-size: 16;
   min-height: 40px;
-  padding: 10px; }
+  padding: 10px;
+}
 
 .RichTextEditor__at {
-  color: #62b1fe;
+  color: rgba(98, 177, 254, 1.0);
   direction: ltr;
-  unicode-bidi: bidi-override; }
+  unicode-bidi: bidi-override;
+}
 
 .RichTextEditor__hashtag {
-  color: #5fb88a; }
+  color: rgba(95, 184, 138, 1.0);
+}
 
 .RichTextEditor__dollar-sign {
-  color: #b85f8a; }
+  color: rgba(184, 95, 138, 1.0);
+}
 
 .AttachFile .file-label {
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 .AttachFile .file-name-input {
-  display: none; }
+  display: none;
+}
 
 .AttachFile .file-name-input.open {
-  display: inline-block; }
+  display: inline-block;
+}
 
 .AttachFile .file-name {
-  display: none; }
+  display: none;
+}
 
 .AttachFile .file-name.open {
-  display: inline-block; }
+  display: inline-block;
+}

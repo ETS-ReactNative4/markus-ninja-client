@@ -4,6 +4,7 @@ import {
   graphql,
 } from 'react-relay'
 import cls from 'classnames'
+import { withUID } from 'components/UniqueId'
 import { withRouter } from 'react-router'
 import { debounce, get, isEmpty, isNil } from 'utils'
 
@@ -30,13 +31,14 @@ class UserAssetNameInput extends React.Component {
   }
 
   render() {
-    const { className, disabled } = this.props
+    const { className, disabled, uid } = this.props
     const { fetched, loading, name } = this.state
     const asset = get(this.props, "study.asset", undefined)
+
     return (
-      <div className={cls("UserAssetNameInput", className)}>
+      <div className={cls("", className)}>
         <input
-          id="search-query"
+          id={`asset-name-input${uid}`}
           autoComplete="off"
           className="form-control"
           disabled={disabled}
@@ -47,8 +49,8 @@ class UserAssetNameInput extends React.Component {
           onChange={(e) => this.handleChange(e.target.value)}
         />
         {loading ?
-        <span>Loading...</span> : !isEmpty(name) && fetched ?
-        <span>Name {asset ? "taken" : "available"}</span> : null}
+        <div>Loading</div>: !isEmpty(name) && fetched ?
+        <div>Asset {asset ? "taken" : "available"}</div> : null}
       </div>
     )
   }
@@ -87,7 +89,7 @@ class UserAssetNameInput extends React.Component {
 
 }
 
-export default withRouter(createRefetchContainer(UserAssetNameInput,
+export default withUID((getUID) => ({uid: getUID() }))(withRouter(createRefetchContainer(UserAssetNameInput,
   {
     study: graphql`
       fragment UserAssetNameInput_study on Study {
@@ -108,4 +110,4 @@ export default withRouter(createRefetchContainer(UserAssetNameInput,
       }
     }
   `,
-))
+)))

@@ -5,13 +5,12 @@ import {
 } from 'react-relay'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
-import { get } from 'utils'
 import AppleButton from 'components/AppleButton'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
 import Counter from 'components/Counter'
-import { isNil } from 'utils'
+import { get, isNil } from 'utils'
 
 import './Study.css'
 
@@ -27,17 +26,20 @@ class Study extends Component {
     }
     return (
       <div className="Study">
-        <div className="Study__name">
+        <div className="study-name">
           <UserLink user={get(study, "owner", null)} />
           <span className="Study__name-divider">/</span>
           <StudyLink study={study} />
         </div>
-        <ul className="Study__actions">
+        <ul className="study-actions">
           <li>
             <EnrollmentSelect enrollable={study} />
           </li>
           <li>
             <AppleButton appleable={study} />
+            <span className="study-apple-count">
+              {get(study, "appleGivers.totalCount", 0)}
+            </span>
           </li>
         </ul>
         <div className="Study__nav">
@@ -85,6 +87,9 @@ export default withRouter(createFragmentContainer(Study, graphql`
   fragment Study_study on Study {
     id
     advancedAt
+    appleGivers(first: 0) {
+      totalCount
+    }
     assets(first: 0) {
       totalCount
     }

@@ -1,4 +1,22 @@
-@import 'globals';
-@import 'components/link';
+@import "base";
 
-@include react-md-everything;
+$mdc-theme-primary: #fcb8ab;
+$mdc-theme-secondary: #feeae6;
+$mdc-theme-on-primary: #442b2d;
+$mdc-theme-on-secondary: #442b2d;
+
+@import "@material/button/mdc-button";
+@import "@material/card/mdc-card";
+@import "@material/checkbox/mdc-checkbox";
+@import "@material/chips/mdc-chips";
+@import "@material/form-field/mdc-form-field";
+@import "@material/icon-button/mdc-icon-button";
+@import "@material/layout-grid/mdc-layout-grid";
+@import "@material/select/mdc-select";
+@import "@material/textfield/mdc-text-field";
+@import "@material/theme/mdc-theme";
+@import "@material/typography/mdc-typography";
+
+// @import "~material-design-icons/iconfont/material-icons.css";
+
+@import "components/link"

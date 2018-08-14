@@ -17,8 +17,9 @@ class StudyCourseSelect extends Component {
     const { courseId } = this.state
     const courseEdges = get(this.props, "study.courses.edges", [])
     return (
-      <div className="StudyCourseSelect">
+      <div className="StudyCourseSelect mdc-select mdc-select-box">
         <select
+          className="mdc-select__native-control"
           value={courseId}
           onChange={this.handleChange}
         >

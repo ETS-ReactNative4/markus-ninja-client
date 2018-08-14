@@ -22,26 +22,30 @@ import NotFound from 'components/NotFound'
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <Header />
-        <div className="App__content">
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <PrivateRoute exact path="/new" component={CreateStudyPage} />
-            <Route exact path="/login" component={LoginPage} />
-            <Route exact path="/logout" component={LogoutPage} />
-            <PrivateRoute path="/notifications" component={NotificationsPage} />
-            <Route exact path="/research" component={ResearchPage} />
-            <Route exact path="/search" component={SearchPage} />
-            <Route exact path="/signup" component={SignupPage} />
-            <PrivateRoute path="/settings" component={UserSettingsPage} />
-            <Route exact path="/topics/:name" component={TopicPage} />
-            <Route exact path="/:owner/:name/search" component={StudySearchPage} />
-            <Route exact path="/:login" component={UserPage} />
-            <Route path="/:owner/:name" component={StudyPage} />
-            <Route component={NotFound} />
-          </Switch>
-        </div>
+      <div className="App mdc-typography">
+        <Switch>
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/logout" component={LogoutPage} />
+          <Route render={() =>
+            <div className="app-content">
+              <Header />
+              <Switch>
+                <Route exact path="/" component={HomePage} />
+                <PrivateRoute exact path="/new" component={CreateStudyPage} />
+                <PrivateRoute path="/notifications" component={NotificationsPage} />
+                <Route exact path="/research" component={ResearchPage} />
+                <Route exact path="/search" component={SearchPage} />
+                <PrivateRoute path="/settings" component={UserSettingsPage} />
+                <Route exact path="/signup" component={SignupPage} />
+                <Route exact path="/topics/:name" component={TopicPage} />
+                <Route exact path="/:owner/:name/search" component={StudySearchPage} />
+                <Route exact path="/:login" component={UserPage} />
+                <Route path="/:owner/:name" component={StudyPage} />
+                <Route component={NotFound} />
+              </Switch>
+            </div>}
+          />
+        </Switch>
       </div>
     )
   }
