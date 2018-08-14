@@ -3,6 +3,7 @@ import {
   createRefetchContainer,
   graphql,
 } from 'react-relay'
+import { FontIcon, TextField } from 'react-md'
 import cls from 'classnames'
 import { withUID } from 'components/UniqueId'
 import { withRouter } from 'react-router'
@@ -47,7 +48,7 @@ class UserAssetNameInput extends React.Component {
           placeholder="Enter name"
           value={name}
           onChange={(e) => this.handleChange(e.target.value)}
-        />
+        />*/}
         {loading ?
         <div>Loading</div>: !isEmpty(name) && fetched ?
         <div>Asset {asset ? "taken" : "available"}</div> : null}
