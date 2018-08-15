@@ -34,12 +34,15 @@ class Study extends Component {
         <ul className="study-actions">
           <li>
             <EnrollmentSelect enrollable={study} />
+            <button className="rn-count-button">
+              {get(study, "enrollees.totalCount", 0)}
+            </button>
           </li>
           <li>
             <AppleButton appleable={study} />
-            <span className="study-apple-count">
+            <button className="rn-count-button">
               {get(study, "appleGivers.totalCount", 0)}
-            </span>
+            </button>
           </li>
         </ul>
         <div className="Study__nav">
@@ -95,6 +98,9 @@ export default withRouter(createFragmentContainer(Study, graphql`
     }
     createdAt
     courses(first: 0) {
+      totalCount
+    }
+    enrollees(first: 0) {
       totalCount
     }
     lessonCount

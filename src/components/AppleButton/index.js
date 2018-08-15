@@ -3,6 +3,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import cls from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faApple } from '@fortawesome/free-brands-svg-icons'
 import { get, isNil } from 'utils'
@@ -11,64 +12,117 @@ import TakeAppleMutation from 'mutations/TakeAppleMutation'
 
 import './styles.css'
 
+const ARIA_PRESSED = "aria-pressed"
+const BUTTON_ON = "mdc-button--on"
+
 class AppleButton extends React.Component {
-  render() {
-    const appleable = get(this.props, "appleable", null)
-    if (isNil(appleable)) {
-      return null
-    } else if (appleable.viewerHasAppled) {
-      return (
-        <button
-          className="mdc-icon-button"
-          aria-label="Take apple"
-          aria-hidden="true"
-          aria-pressed="true"
-          onClick={this.handleTake}
-        >
-          <FontAwesomeIcon
-            className="mdc-icon-button__icon"
-            icon={faApple}
-          />
-        </button>
-      )
-    } else {
-      return (
-        <button
-          className="mdc-icon-button"
-          aria-label="Give apple"
-          aria-hidden="true"
-          aria-pressed="true"
-          onClick={this.handleGive}
-        >
-          <FontAwesomeIcon
-            className="mdc-icon-button__icon"
-            icon={faApple}
-            border
-          />
-        </button>
-      )
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      classList: new Set(),
+      attrs: {
+        [ARIA_PRESSED]: this.hasAppled(),
+      }
     }
   }
 
-  handleGive = (e) => {
-    GiveAppleMutation(
-      this.props.appleable.id,
-      (error) => {
-        if (!isNil(error)) {
-          console.error(error[0].message)
-        }
-      }
-    )
+  get classes() {
+    const {classList} = this.state
+    const {className} = this.props;
+    return cls('mdc-button mdc-button--outlined', Array.from(classList), className, {
+      [BUTTON_ON]: this.hasAppled(),
+    })
   }
 
-  handleTake = (e) => {
-    TakeAppleMutation(
-      this.props.appleable.id,
-      (error) => {
-        if (!isNil(error)) {
-          console.error(error[0].message)
+  get adapter() {
+    return {
+      addClass: (className) => {
+        const classList = new Set(this.state.classList)
+        classList.add(className)
+        this.setState({classList})
+      },
+      removeClass: (className) => {
+        const classList = new Set(this.state.classList)
+        classList.delete(className)
+        this.setState({classList})
+      },
+      hasClass: (className) => {
+        this.classes.split(' ').includes(className)
+      },
+      setAttr: (attr, value) => {
+        this.setState({[attr]: value})
+      },
+    }
+  }
+
+  handleClick = () => {
+    const hasAppled = this.hasAppled()
+    if (hasAppled) {
+      // optimistic update
+      this.adapter.removeClass(BUTTON_ON)
+
+      TakeAppleMutation(
+        this.props.appleable.id,
+        (viewerHasAppled, errors) => {
+          if (!isNil(errors)) {
+            console.error(errors[0].message)
+            this.adapter.addClass(BUTTON_ON)
+            return
+          } else if(viewerHasAppled) {
+            this.adapter.addClass(BUTTON_ON)
+          }
         }
-      }
+      )
+    } else {
+      // optimistic update
+      this.adapter.addClass(BUTTON_ON)
+
+      GiveAppleMutation(
+        this.props.appleable.id,
+        (viewerHasAppled, error) => {
+          if (!isNil(error)) {
+            console.error(error[0].message)
+            this.adapter.removeClass(BUTTON_ON)
+            return
+          } else if(viewerHasAppled) {
+            this.adapter.removeClass(BUTTON_ON)
+          }
+        }
+      )
+    }
+    this.adapter.setAttr(ARIA_PRESSED, `${hasAppled}`)
+  }
+
+  hasAppled = () => {
+    return get(this.props, "appleable.viewerHasAppled", false)
+  }
+
+  render() {
+    const appleable = get(this.props, "appleable", null)
+    const viewerHasAppled = this.hasAppled()
+    if (isNil(appleable)) {
+      return null
+    }
+    return (
+      <button
+        className={this.classes}
+        aria-label={viewerHasAppled ? "Take apple" : "Give apple"}
+        aria-hidden="true"
+        aria-pressed={this.state.attrs[ARIA_PRESSED]}
+        onClick={this.handleClick}
+      >
+        <FontAwesomeIcon
+          className="mdc-button__icon"
+          icon={faApple}
+        />
+        <FontAwesomeIcon
+          className="mdc-button__icon mdc-button__icon--on"
+          icon={faApple}
+          color="red"
+        />
+        {viewerHasAppled ? "Take" : "Give"}
+      </button>
     )
   }
 }

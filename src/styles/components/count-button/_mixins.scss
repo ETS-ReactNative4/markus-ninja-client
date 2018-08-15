@@ -1,0 +1,20 @@
+@import "@material/notched-outline/mixins";
+
+@mixin rn-count-button-outline-corner-radius($radius) {
+  .mdc-notched-outline {
+    @include mdc-notched-outline-corner-radius($radius);
+  }
+
+  @include mdc-notched-outline-idle-corner-radius($radius);
+}
+
+@mixin rn-count-button-outline-color($color) {
+  @include mdc-notched-outline-idle-color($color);
+  @include mdc-notched-outline-color($color);
+}
+
+@mixin rn-count-button-hover-outline-color($color) {
+  .mdc-notched-outline {
+    @include mdc-notched-outline-color($color);
+  }
+}

@@ -3,7 +3,6 @@ import {
   createRefetchContainer,
   graphql,
 } from 'react-relay'
-import { FontIcon, TextField } from 'react-md'
 import cls from 'classnames'
 import { withUID } from 'components/UniqueId'
 import { withRouter } from 'react-router'

@@ -3,12 +3,6 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import {
-  Button,
-  FileInput,
-  SelectionControl,
-  TextField,
-} from 'react-md'
 import cls from 'classnames'
 import { withUID } from 'components/UniqueId'
 import UserAssetNameInput from 'components/UserAssetNameInput'
@@ -64,7 +58,7 @@ class AttachFile extends React.Component {
           value={filename}
           className={cls("attach-file-name", {open: !save})}
         />
-        <Button
+        <button
           flat
           onClick={this.handleAttachFile}
           disabled={isNil(file) || (save && !submittable)}

@@ -19,20 +19,16 @@ class EnrollmentSelect extends React.Component {
       return null
     }
 
-    const enrolleeCount = get(enrollable, "enrolleeCount", 0)
     const disabled = !enrollable.viewerCanEnroll
     const { status } = this.state
 
     return (
       <div
         className={cls(
-          "EnrollmentSelect mdc-select mdc-select-box",
+          "EnrollmentSelect mdc-select mdc-select--outlined",
           { "mdc-select-disabled": disabled },
         )}
       >
-        <div className="es-count mdc-chip">
-          <div className="mdc-chip__text">{enrolleeCount}</div>
-        </div>
         <select
           className="mdc-select__native-control"
           value={status}
@@ -43,6 +39,12 @@ class EnrollmentSelect extends React.Component {
           <option value="IGNORED">Ignored</option>
           <option value="UNENROLLED">Unenrolled</option>
         </select>
+        <div className="mdc-notched-outline">
+         <svg>
+           <path className="mdc-notched-outline__path"></path>
+         </svg>
+       </div>
+       <div className="mdc-notched-outline__idle"></div>
       </div>
     )
   }
@@ -65,7 +67,6 @@ class EnrollmentSelect extends React.Component {
 
 export default createFragmentContainer(EnrollmentSelect, graphql`
   fragment EnrollmentSelect_enrollable on Enrollable {
-    enrolleeCount
     enrollmentStatus
     id
     viewerCanEnroll

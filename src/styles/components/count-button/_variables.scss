@@ -1,0 +1,9 @@
+@import "@material/theme/variables";
+
+$rn-count-button-border-radius: 5px;
+$rn-count-button-fill-color-default: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 12%);
+$rn-count-button-ink-color-default: rgba(mdc-theme-prop-value(on-surface), .87);
+$rn-count-button-horizontal-padding: 12px;
+$rn-count-button-vertical-padding: 7px;
+$rn-count-button-border: rgba(mdc-theme-prop-value(on-surface), .24);
+$rn-count-button-hover-border: rgba(mdc-theme-prop-value(on-surface), .87);

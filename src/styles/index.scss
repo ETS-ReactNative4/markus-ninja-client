@@ -1,9 +1,5 @@
 @import "base";
-
-$mdc-theme-primary: #fcb8ab;
-$mdc-theme-secondary: #feeae6;
-$mdc-theme-on-primary: #442b2d;
-$mdc-theme-on-secondary: #442b2d;
+@import "mdc";
 
 @import "@material/button/mdc-button";
 @import "@material/card/mdc-card";
@@ -19,4 +15,5 @@ $mdc-theme-on-secondary: #442b2d;
 
 // @import "~material-design-icons/iconfont/material-icons.css";
 
-@import "components/link"
+@import "components/count-button/rn-count-button.scss";
+@import "components/link/rn-link.scss";
