@@ -5,10 +5,11 @@ class WelcomePage extends React.Component {
   render() {
     return (
       <div className="WelcomePage">
-        Welcome
+        <h2>Welcome</h2>
         <Link to="/login">
           Already have an account?
         </Link>
+        {` `}
         <Link to="/signup">
           Need to create an account?
         </Link>

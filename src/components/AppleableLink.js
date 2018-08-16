@@ -11,7 +11,7 @@ class AppleableLink extends React.Component {
     const appleable = get(this.props, "appleable", {})
     switch(appleable.__typename) {
       case "Study":
-        return <StudyLink event={appleable} />
+        return <StudyLink study={appleable} />
       default:
         return null
     }

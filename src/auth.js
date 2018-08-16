@@ -43,6 +43,5 @@ export function getAuthHeader() {
 }
 
 export function removeAccessToken() {
-  console.log("removing access_token")
   window.sessionStorage.removeItem("access_token")
 }

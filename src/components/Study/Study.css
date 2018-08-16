@@ -1,7 +1,8 @@
-.Study__nav-item {
-  padding: 7px 10px;
-}
-
-.Study__actions > li {
-  list-style-type: none;
-}
+.Study .study-header {
+  display: flex; }
+  .Study .study-header .study-name {
+    flex: 1; }
+  .Study .study-header .study-actions {
+    display: inline-flex; }
+    .Study .study-header .study-actions .study-enroll {
+      margin-right: 1em; }

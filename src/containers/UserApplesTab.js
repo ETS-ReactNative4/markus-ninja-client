@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
+import Edge from 'components/Edge'
 import AppleablePreview from 'components/AppleablePreview.js'
 import { get, isEmpty } from 'utils'
 import { APPLES_PER_PAGE } from 'consts'
@@ -18,10 +19,8 @@ const UserApplesTabQuery = graphql`
         @connection(key: "UserApplesTab_appled", filters: []) {
         edges {
           node {
-            __typename
-            ...on Study {
-              ...StudyPreview_study
-            }
+            id
+            ...AppleablePreview_appleable
           }
         }
       }
@@ -62,9 +61,11 @@ class UserApplesTab extends Component {
             }
             return (
               <div className="UserApplesTab">
-                {appleEdges.map(({node}) => (
-                  <AppleablePreview key={node.__id} apple={node} />
-                ))}
+                {appleEdges.map((edge) =>
+                  <Edge key={get(edge, "node.id", "")} edge={edge} render={({node = null}) =>
+                    <AppleablePreview appleable={node} />}
+                  />
+                )}
               </div>
             )
           }

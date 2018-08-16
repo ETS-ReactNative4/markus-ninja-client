@@ -1,5 +1,4 @@
 @import "@material/button/mixins";
-@import "./mixins";
 @import "./variables";
 
 .rn-count-button {
@@ -17,6 +16,12 @@
 }
 
 .mdc-button {
+  + .rn-count-button {
+    border-left: none;
+  }
+}
+
+.rn-select-button {
   + .rn-count-button {
     border-left: none;
   }

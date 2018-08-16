@@ -1,0 +1,22 @@
+@import "@material/theme/variables";
+
+.SearchBarInput {
+  position: relative;
+}
+
+.search-results {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: $mdc-theme-background;
+  border: 1px solid $mdc-theme-primary;
+}
+
+.SearchBar__input {
+  &:focus {
+    + .search-results {
+      display: block;
+    }
+  }
+}

@@ -29,23 +29,25 @@ class AuthLinks extends Component {
           } else if (props) {
             const resourcePath = get(props, "viewer.resourcePath", "")
             return (
-              <ul>
-                <li>
-                  <Link className="link" to="/notifications">Notifications</Link>
-                </li>
-                <li>
-                  <Link className="link" to="/new">New study</Link>
-                </li>
-                <li>
-                  <Link className="link" to={resourcePath}>Your profile</Link>
-                </li>
-                <li>
-                  <Link className="link" to="/logout">Logout</Link>
-                </li>
-                <li>
-                  <Link className="link" to="/settings">Settings</Link>
-                </li>
-              </ul>
+              <div className="mdc-menu" tabindex="-1">
+                <ul className="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
+                  <li className="mdc-list-item" role="menuitem" tabindex="0">
+                    <Link className="link" to="/notifications">Notifications</Link>
+                  </li>
+                  <li className="mdc-list-item" role="menuitem" tabindex="0">
+                    <Link className="link" to="/new">New study</Link>
+                  </li>
+                  <li className="mdc-list-item" role="menuitem" tabindex="0">
+                    <Link className="link" to={resourcePath}>Your profile</Link>
+                  </li>
+                  <li className="mdc-list-item" role="menuitem" tabindex="0">
+                    <Link className="link" to="/logout">Logout</Link>
+                  </li>
+                  <li className="mdc-list-item" role="menuitem" tabindex="0">
+                    <Link className="link" to="/settings">Settings</Link>
+                  </li>
+                </ul>
+              </div>
             )
           }
           return <div>Loading</div>

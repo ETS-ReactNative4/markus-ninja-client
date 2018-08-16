@@ -25,12 +25,12 @@ class EnrollmentSelect extends React.Component {
     return (
       <div
         className={cls(
-          "EnrollmentSelect mdc-select mdc-select--outlined",
-          { "mdc-select-disabled": disabled },
+          "EnrollmentSelect rn-select-button",
+          { "select-button-disabled": disabled },
         )}
       >
         <select
-          className="mdc-select__native-control"
+          className="rn-select-button__native-control"
           value={status}
           disabled={disabled}
           onChange={this.handleChange}
@@ -39,12 +39,6 @@ class EnrollmentSelect extends React.Component {
           <option value="IGNORED">Ignored</option>
           <option value="UNENROLLED">Unenrolled</option>
         </select>
-        <div className="mdc-notched-outline">
-         <svg>
-           <path className="mdc-notched-outline__path"></path>
-         </svg>
-       </div>
-       <div className="mdc-notched-outline__idle"></div>
       </div>
     )
   }

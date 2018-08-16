@@ -4,7 +4,6 @@ import {
   graphql,
 } from 'react-relay'
 import { Route, Link } from 'react-router-dom'
-import cls from 'classnames'
 import queryString from 'query-string'
 import SearchResultItemPreview from 'components/SearchResultItemPreview'
 import Edge from 'components/Edge'
@@ -16,7 +15,6 @@ class SearchBarInput extends React.Component {
     error: null,
     loading: false,
     q: "",
-    open: false,
     skip: true,
     type: "study",
   }
@@ -28,54 +26,55 @@ class SearchBarInput extends React.Component {
   }
 
   render() {
-    const { q, loading, open, type } = this.state
+    const { q, loading, type } = this.state
     const searchEdges = get(this.props, "query.search.edges", [])
     return (
-      <div className={cls("SearchBarInput", {open})}>
+      <div className="SearchBarInput">
         <form action="/search" acceptCharset="utf8" method="get">
           <input
             id="search-query"
             autoComplete="off"
-            className="form-control"
+            className="SearchBar__input"
             type="text"
             name="q"
             placeholder="Search..."
             value={q}
             onChange={this.handleChange}
-            onFocus={() => this.setState({ open: true, skip: false })}
-            onBlur={() => this.setState({ open: false })}
+            onFocus={() => this.setState({ skip: false })}
           />
+          <div className="search-results">
+            {loading && searchEdges.length < 1
+            ? <ul className="mdc-list">
+                <li className="mdc-list-item">Loading...</li>
+              </ul>
+            : <ul className="mdc-list">
+                <Route path="/:owner/:name" render={({ match }) =>
+                  <li className="mdc-list-item">
+                    <Link
+                      to={{
+                        pathname: match.url + "/search",
+                        search: queryString.stringify({ q }),
+                      }}
+                    >
+                      Search this study...
+                    </Link>
+                  </li>}
+                />
+                {searchEdges.map((edge) =>
+                  <Edge key={get(edge, "node.id", "")} edge={edge} render={({ node }) =>
+                    <li className="mdc-list-item">
+                      <SearchResultItemPreview item={node} />
+                    </li>
+                  }/>
+                )}
+              </ul>}
+          </div>
           <input
             name="type"
             type="hidden"
             value={type}
           />
         </form>
-        <div className="SearchBarInput__results">
-          {loading && searchEdges.length < 1
-          ? <ul><li>Loading...</li></ul>
-          : <ul>
-              <Route path="/:owner/:name" render={({ match }) =>
-                <li className="SearchBarInput__item">
-                  <Link
-                    to={{
-                      pathname: match.url + "/search",
-                      search: queryString.stringify({ q }),
-                    }}
-                  >
-                    Search this study...
-                  </Link>
-                </li>}
-              />
-              {searchEdges.map((edge) =>
-                <Edge key={get(edge, "node.id", "")} edge={edge} render={({ node }) =>
-                  <li className="SearchBarInput__item">
-                    <SearchResultItemPreview item={node} />
-                  </li>
-                }/>
-              )}
-            </ul>}
-        </div>
       </div>
     )
   }

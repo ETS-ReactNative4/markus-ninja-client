@@ -1,3 +1,5 @@
+@import "@material/theme/variables";
+
 // Fixes size of FontAwesomeIcon within mdc-icon-button
 .mdc-icon-button svg {
   &.svg-inline--fa {
@@ -63,4 +65,19 @@
       }
     }
   }
+}
+
+@function mdc-theme-background-url-prop-value($style) {
+  @if type-of($style) == "color" {
+    $string: inspect($style); 
+    @return str-slice($string, 2, -1);
+  }
+
+  @if not map-has-key($mdc-theme-property-values, $style) {
+    @error "Invalid theme property: '#{$style}'. Choose one of: #{map-keys($mdc-theme-property-values)}";
+  }
+
+  $string: inspect(map-get($mdc-theme-property-values, $style));
+
+  @return str-slice($string, 2, -1);
 }

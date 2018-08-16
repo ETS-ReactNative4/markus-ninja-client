@@ -8,8 +8,8 @@ import StudyPreview from './StudyPreview'
 
 class AppleablePreview extends Component {
   render() {
-    const appleable = get(this.props, "appleable", {})
-    switch(appleable.__typename) {
+    const { appleable } = this.props
+    switch(get(appleable, "__typename", "")) {
       case "Study":
         return <StudyPreview study={appleable} />
       default:
