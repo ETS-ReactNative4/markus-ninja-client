@@ -3,16 +3,18 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import cls from 'classnames'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
+import UserPopularStudies from 'components/UserPopularStudies'
 import UserActivity from 'components/UserActivity'
 import { get } from 'utils'
 import { EVENTS_PER_PAGE } from 'consts'
 
 const UserOverviewTabQuery = graphql`
   query UserOverviewTabQuery($login: String!, $count: Int!, $after: String) {
+    ...UserPopularStudies_query
     user(login: $login) {
-      id
       ...UserActivity_user
     }
   }
@@ -33,8 +35,11 @@ class UserOverviewTab extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            const { className } = this.props
+
             return (
-              <div className="UserOverviewTab">
+              <div className={cls("UserOverviewTab", className)}>
+                <UserPopularStudies query={props} />
                 <UserActivity user={props.user} />
               </div>
             )

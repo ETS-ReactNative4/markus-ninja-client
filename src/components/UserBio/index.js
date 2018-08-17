@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import { withRouter } from 'react-router-dom';
 import UpdateViewerProfileMutation from 'mutations/UpdateViewerProfileMutation'
-import { get, isNil } from 'utils'
 import cls from 'classnames'
 import HTML from 'components/HTML'
+import { get, isEmpty, isNil } from 'utils'
 
-import './UserBio.css'
+import './styles.css'
 
 class UserBio extends Component {
   state = {
@@ -15,19 +15,20 @@ class UserBio extends Component {
   }
 
   render() {
+    const { className } = this.props
     const user = get(this.props, "user", {})
     const { error, open, bio } = this.state
     return (
-      <div className={cls("UserBio", {open})}>
+      <div className={cls("UserBio", className, {open})}>
         <div className="UserBio__show">
           <HTML className="UserBio__user-bio" html={user.bioHTML} />
           <div className="UserBio__actions">
             <button
-              className="btn"
+              className="mdc-button mdc-button--unelevated"
               type="button"
               onClick={this.handleToggleOpen}
             >
-              Edit bio
+              {isEmpty(user.bio) ? "Add a bio" : "Edit bio"}
             </button>
           </div>
         </div>

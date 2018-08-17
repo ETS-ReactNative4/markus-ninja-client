@@ -3,6 +3,7 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import cls from 'classnames'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
@@ -42,10 +43,11 @@ class UserStudiesTab extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            const { className } = this.props
             const studyEdges = get(props, "user.studies.edges", [])
             if (isEmpty(studyEdges)) {
               return (
-                <div className="UserActivity">
+                <div className={cls("UserStudiesTab", className)}>
                   {props.user.isViewer
                   ? <Link to="/new">Create a study to get started</Link>
                   : <span>This user has not created and studies yet.</span>}
@@ -53,7 +55,7 @@ class UserStudiesTab extends Component {
               )
             }
             return (
-              <div>
+              <div className={cls("UserStudiesTab", className)}>
                 {studyEdges.map(({node}) => (
                   <StudyPreview key={node.__id} study={node} />
                 ))}

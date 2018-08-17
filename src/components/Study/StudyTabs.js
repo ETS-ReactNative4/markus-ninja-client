@@ -13,7 +13,7 @@ import { get } from 'utils'
 class StudyTabs extends React.Component {
   render() {
     const { className, study } = this.props
-    const { pathname } = get(this.props, "location")
+    const pathname = get(this.props, "location.pathname", "")
     const studyPath = "/:owner/:name"
 
     return (

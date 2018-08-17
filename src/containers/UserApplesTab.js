@@ -3,6 +3,7 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import cls from 'classnames'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
 import Edge from 'components/Edge'
@@ -43,10 +44,11 @@ class UserApplesTab extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            const { className } = this.props
             const appleEdges = get(props, "user.appled.edges", [])
             if (isEmpty(appleEdges)) {
               return (
-                <div className="UserApplesTab">
+                <div className={cls("UserApplesTab", className)}>
                   {props.user.isViewer
                   ? <span>
                       You have not appled any studies yet.
@@ -60,7 +62,7 @@ class UserApplesTab extends Component {
               )
             }
             return (
-              <div className="UserApplesTab">
+              <div className={cls("UserApplesTab", className)}>
                 {appleEdges.map((edge) =>
                   <Edge key={get(edge, "node.id", "")} edge={edge} render={({node = null}) =>
                     <AppleablePreview appleable={node} />}

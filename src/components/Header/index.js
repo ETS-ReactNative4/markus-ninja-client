@@ -17,7 +17,7 @@ class Header extends Component {
     const authenticated = isAuthenticated()
     return (
       <header className="Header mdc-top-app-bar mdc-top-app-bar--fixed">
-        <div className="mdc-top-app-bar__row">
+        <div className="Header__content mdc-top-app-bar__row">
           <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
             <Link className="mdc-top-app-bar__title" to="/">Home</Link>
             <SearchBar />

@@ -3,6 +3,7 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import cls from 'classnames'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
 import UserPreview from 'components/UserPreview'
@@ -42,10 +43,11 @@ class UserTutorsTab extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            const { className } = this.props
             const enrolledEdges = get(props, "user.enrolled.edges", [])
             if (isEmpty(enrolledEdges)) {
               return (
-                <div className="UserTutorsTab">
+                <div className={cls("UserTutorsTab", className)}>
                   {props.user.isViewer
                   ? <span>
                       You have not enrolled in any users yet.
@@ -60,7 +62,7 @@ class UserTutorsTab extends Component {
               )
             }
             return (
-              <div>
+              <div className={cls("UserTutorsTab", className)}>
                 {enrolledEdges.map(({node}) => (
                   <UserPreview key={node.__id} user={node} />
                 ))}

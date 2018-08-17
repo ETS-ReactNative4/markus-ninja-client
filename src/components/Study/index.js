@@ -35,7 +35,7 @@ class Study extends React.Component {
             <div className="study-enroll">
               <EnrollmentSelect enrollable={study} />
               <button className="rn-count-button">
-                {get(study, "enrollees.totalCount", 0)}
+                {get(study, "enrolleeCount", 0)}
               </button>
             </div>
             <div className="study-apple">
@@ -60,9 +60,7 @@ export default withRouter(createFragmentContainer(Study, graphql`
       totalCount
     }
     createdAt
-    enrollees(first: 0) {
-      totalCount
-    }
+    enrolleeCount
     name
     owner {
       ...UserLink_user

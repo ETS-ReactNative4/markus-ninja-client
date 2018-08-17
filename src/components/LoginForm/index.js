@@ -20,7 +20,7 @@ class LoginForm extends Component {
     const { username, password, error } = this.state
     return (
       <form
-        className={cls("LoginForm mdc-layout-grid", className)}
+        className={cls("LoginForm", "mdc-layout-grid", className)}
         onSubmit={this.handleSubmit}
       >
         <div className="mdc-layout-grid__inner">
@@ -52,7 +52,7 @@ class LoginForm extends Component {
           </div>
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             <button
-              className="mdc-button lf-submit"
+              className="mdc-button mdc-button--unelevated lf-submit"
               type="submit"
             >
               Sign in

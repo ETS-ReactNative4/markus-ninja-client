@@ -1,11 +1,15 @@
 @import "base";
 
+@import "~tachyons-flexbox/css/tachyons-flexbox.css";
+@import "~tachyons-spacing/css/tachyons-spacing.css";
+
 @import "mdc";
 
 @import "@material/button/mdc-button";
 @import "@material/card/mdc-card";
 @import "@material/checkbox/mdc-checkbox";
 @import "@material/chips/mdc-chips";
+@import "@material/drawer/mdc-drawer";
 @import "@material/form-field/mdc-form-field";
 @import "@material/icon-button/mdc-icon-button";
 @import "@material/layout-grid/mdc-layout-grid";

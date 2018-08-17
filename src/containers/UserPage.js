@@ -3,9 +3,11 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import cls from 'classnames'
 import queryString from 'query-string'
 import environment from 'Environment'
 import User from 'components/User'
+import UserTabs from 'components/User/UserTabs'
 import UserApplesTab from 'containers/UserApplesTab'
 import UserOverviewTab from 'containers/UserOverviewTab'
 import UserPupilsTab from 'containers/UserPupilsTab'
@@ -19,6 +21,7 @@ const UserPageQuery = graphql`
     user(login: $login) {
       id
       ...User_user
+      ...UserTabs_user
     }
   }
 `
@@ -57,9 +60,40 @@ class UserPage extends Component {
               return <NotFound />
             }
             return (
-              <div className="UserPage">
-                <User user={props.user}></User>
-                <Tab />
+              <div className="UserPage mdc-layout-grid">
+                <div className="mdc-layout-grid__inner">
+                  <User
+                    className={cls(
+                      "mdc-layout-grid__cell",
+                      "mdc-layout-grid__cell--span-3-desktop",
+                      "mdc-layout-grid__cell--span-2-tablet",
+                      "mdc-layout-grid__cell--span-1-phone",
+                    )}
+                    user={props.user}
+                  />
+                  <div
+                    className={cls(
+                      "mdc-layout-grid__inner",
+                      "mdc-layout-grid__cell--span-9-desktop",
+                      "mdc-layout-grid__cell--span-10-tablet",
+                      "mdc-layout-grid__cell--span-11-phone",
+                    )}
+                  >
+                    <UserTabs
+                      className={cls(
+                        "mdc-layout-grid__cell",
+                        "mdc-layout-grid__cell--span-12",
+                      )}
+                      user={props.user}
+                    />
+                    <Tab
+                      className={cls(
+                        "mdc-layout-grid__cell",
+                        "mdc-layout-grid__cell--span-12",
+                      )}
+                    />
+                  </div>
+                </div>
               </div>
             )
           }

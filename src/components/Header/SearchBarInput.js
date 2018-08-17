@@ -44,10 +44,12 @@ class SearchBarInput extends React.Component {
           />
           <div className="search-results">
             {loading && searchEdges.length < 1
-            ? <ul className="mdc-list">
+            // eslint-disable-next-line jsx-a11y/role-supports-aria-props
+            ? <ul className="mdc-list" aria-orientation="vertical">
                 <li className="mdc-list-item">Loading...</li>
               </ul>
-            : <ul className="mdc-list">
+            // eslint-disable-next-line jsx-a11y/role-supports-aria-props
+            : <ul className="mdc-list" aria-orientation="vertical">
                 <Route path="/:owner/:name" render={({ match }) =>
                   <li className="mdc-list-item">
                     <Link

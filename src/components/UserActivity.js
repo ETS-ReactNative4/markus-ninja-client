@@ -22,15 +22,17 @@ class UserActivity extends Component {
     }
     return (
       <div className="UserActivity">
+        <h3>Recent activity</h3>
         {activityEdges.map(({node}) => (
           <UserActivityEvent key={node.id} event={node} />
         ))}
+        {this.props.relay.hasMore() &&
         <button
-          className="UserActivity__more"
+          className="mdc-button mdc-button--unelevated"
           onClick={this._loadMore}
         >
-          More
-        </button>
+          Load more activity
+        </button>}
       </div>
     )
   }

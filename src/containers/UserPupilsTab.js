@@ -3,6 +3,7 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import cls from 'classnames'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
 import UserPreview from 'components/UserPreview'
@@ -42,10 +43,11 @@ class UserPupilsTab extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            const { className } = this.props
             const enrolleeEdges = get(props, "user.enrollees.edges", [])
             if (isEmpty(enrolleeEdges)) {
               return (
-                <div className="UserPupilsTab">
+                <div className={cls("UserPupilsTab", className)}>
                   {props.user.isViewer
                   ? <span>
                       You do not have any pupils yet.
@@ -57,7 +59,7 @@ class UserPupilsTab extends Component {
               )
             }
             return (
-              <div>
+              <div className={cls("UserPupilsTab", className)}>
                 {enrolleeEdges.map(({node}) => (
                   <UserPreview key={node.__id} user={node} />
                 ))}

@@ -1,5 +1,14 @@
 @import "@material/theme/variables";
 
+.Header__content {
+  align-self: center;
+  max-width: 980px;
+}
+
+.SearchBar {
+  margin-left: 1em;
+}
+
 .SearchBarInput {
   position: relative;
 }

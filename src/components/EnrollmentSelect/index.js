@@ -50,9 +50,9 @@ class EnrollmentSelect extends React.Component {
     UpdateEnrollmentMutation(
       this.props.enrollable.id,
       e.target.value,
-      (error) => {
-        if (!isNil(error)) {
-          console.error(error.message)
+      (errors) => {
+        if (!isNil(errors)) {
+          console.error(errors[0].message)
         }
       }
     )
