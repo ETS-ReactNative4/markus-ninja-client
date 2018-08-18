@@ -51,9 +51,9 @@ class App extends Component {
                   <Route exact path="/login" component={LoginPage} />
                   <Route exact path="/logout" component={LogoutPage} />
                   <Route render={() =>
-                    <div className="app-content">
+                    <div>
                       <Header viewer={props.viewer} />
-                      <div className="app-page mdc-top-app-bar--fixed-adjust">
+                      <div className="mdc-top-app-bar--fixed-adjust">
                         <Switch>
                           <Route exact path="/" component={HomePage} />
                           <PrivateRoute exact path="/new" component={CreateStudyPage} />

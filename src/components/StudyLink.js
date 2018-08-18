@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import {
   createFragmentContainer,
   graphql,
@@ -6,12 +6,12 @@ import {
 import { Link } from 'react-router-dom'
 import { get } from 'utils'
 
-class StudyLink extends Component {
+class StudyLink extends React.Component {
   render() {
     const study = get(this.props, "study", {})
-    const { withOwner = false } = this.props
+    const { className, innerRef, withOwner = false, ...props } = this.props
     return (
-      <Link className="link" to={study.resourcePath}>
+      <Link innerRef={innerRef} className={className} to={study.resourcePath} {...props}>
         {withOwner ? study.nameWithOwner : study.name}
       </Link>
     )

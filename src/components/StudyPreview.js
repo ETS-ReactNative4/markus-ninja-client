@@ -3,14 +3,16 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import cls from 'classnames'
 import { Link } from 'react-router-dom'
 import { get } from 'utils'
 
 class StudyPreview extends Component {
   render() {
+    const { className } = this.props
     const study = get(this.props, "study", {})
     return (
-      <div className="StudyPreview">
+      <div className={cls("StudyPreview", className)}>
         <Link to={study.resourcePath}>
           {study.nameWithOwner}
         </Link>

@@ -11,7 +11,6 @@ const SearchBarQuery = graphql`
   query SearchBarQuery(
     $count: Int!,
     $query: String!,
-    $type: SearchType!
     $skip: Boolean!
   ){
     ...SearchBarInput_query
@@ -35,7 +34,7 @@ class SearchBar extends React.Component {
             return <div>{error.message}</div>
           } else if (props) {
             return (
-              <div className="SearchBar">
+              <div className="SearchBar relative ml3">
                 <SearchBarInput query={props} />
               </div>
             )

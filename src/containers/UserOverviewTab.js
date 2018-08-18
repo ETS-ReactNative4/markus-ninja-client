@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {
   QueryRenderer,
+  createFragmentContainer,
   graphql,
 } from 'react-relay'
 import cls from 'classnames'
@@ -12,7 +13,7 @@ import { get } from 'utils'
 import { EVENTS_PER_PAGE } from 'consts'
 
 const UserOverviewTabQuery = graphql`
-  query UserOverviewTabQuery($login: String!, $count: Int!, $after: String) {
+  query UserOverviewTabQuery($login: String!, $count: Int!, $after: String, $within: ID!) {
     ...UserPopularStudies_query
     user(login: $login) {
       ...UserActivity_user
@@ -30,6 +31,7 @@ class UserOverviewTab extends Component {
         variables={{
           count: EVENTS_PER_PAGE,
           login: get(match.params, "login", ""),
+          within: get(this.props, "user.id", ""),
         }}
         render={({error,  props}) => {
           if (error) {
@@ -51,4 +53,8 @@ class UserOverviewTab extends Component {
   }
 }
 
-export default withRouter(UserOverviewTab)
+export default withRouter(createFragmentContainer(UserOverviewTab, graphql`
+  fragment UserOverviewTab_user on User {
+    id
+  }
+`))

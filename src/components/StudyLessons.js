@@ -3,6 +3,7 @@ import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
+import Edge from 'components/Edge'
 import CreateLessonLink from 'components/CreateLessonLink'
 import StudyLabelsLink from 'components/StudyLabelsLink'
 import LessonPreview from './LessonPreview.js'
@@ -26,8 +27,10 @@ class StudyLessons extends Component {
             </CreateLessonLink>
           ) : (
             <div className="StudyLessons__lessons">
-              {lessonEdges.map(({node}) => (
-                <LessonPreview key={node.__id} lesson={node} />
+              {lessonEdges.map((edge) => (
+                <Edge key={get(edge, "node.id", "")} edge={edge} render={({node}) =>
+                  <LessonPreview lesson={node} />}
+                />
               ))}
               {this.props.relay.hasMore() &&
               <button
@@ -70,6 +73,7 @@ export default createPaginationContainer(StudyLessons,
         ) @connection(key: "StudyLessons_lessons") {
           edges {
             node {
+              id
               ...LessonPreview_lesson
             }
           }

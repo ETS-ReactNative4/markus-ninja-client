@@ -1,7 +1,15 @@
 @import "base";
+@import "helpers";
 
+@import "~tachyons-box-sizing/css/tachyons-box-sizing.css";
+@import "~tachyons-display/css/tachyons-display.css";
 @import "~tachyons-flexbox/css/tachyons-flexbox.css";
+@import "~tachyons-overflow/css/tachyons-overflow.css";
+@import "~tachyons-position/css/tachyons-position.css";
 @import "~tachyons-spacing/css/tachyons-spacing.css";
+@import "~tachyons-utilities/css/tachyons-utilities.css";
+@import "~tachyons-vertical-align/css/tachyons-vertical-align.css";
+@import "~tachyons-widths/css/tachyons-widths.css";
 
 @import "mdc";
 

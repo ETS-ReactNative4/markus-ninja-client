@@ -7362,13 +7362,41 @@ table@^4.0.1:
     slice-ansi "1.0.0"
     string-width "^2.1.1"
 
+tachyons-box-sizing@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/tachyons-box-sizing/-/tachyons-box-sizing-3.2.2.tgz#0468bad0c6509d2d78078ec1e684efff0fc93687"
+
+tachyons-display@^5.0.4:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/tachyons-display/-/tachyons-display-5.0.4.tgz#9ec6918b0695753b7c296c0a1275c8b214b25b9a"
+
 tachyons-flexbox@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/tachyons-flexbox/-/tachyons-flexbox-2.1.0.tgz#cc12e9bd79653996cc8bd1b5fa2f6d6200bc2e77"
 
+tachyons-overflow@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/tachyons-overflow/-/tachyons-overflow-4.0.5.tgz#b385e73ee42f5d3c1730ad87f30ee727c829d8a5"
+
+tachyons-position@^6.0.6:
+  version "6.0.6"
+  resolved "https://registry.yarnpkg.com/tachyons-position/-/tachyons-position-6.0.6.tgz#18d3af38ec0ced3bed8367b202313e0fa34fc0e2"
+
 tachyons-spacing@^6.0.4:
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/tachyons-spacing/-/tachyons-spacing-6.0.4.tgz#54cbd6d902b2a36ab864110754ec9924e09935aa"
+
+tachyons-utilities@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tachyons-utilities/-/tachyons-utilities-2.1.0.tgz#5a5762532b0e5c4550e96e3c08a93e17723b6376"
+
+tachyons-vertical-align@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/tachyons-vertical-align/-/tachyons-vertical-align-4.0.5.tgz#32868184bebba42cc3d3bdfb51084bc5f172d77d"
+
+tachyons-widths@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/tachyons-widths/-/tachyons-widths-5.2.1.tgz#4e148086734f9aaad377a2f580c679561f0c0155"
 
 tapable@^0.2.7:
   version "0.2.8"

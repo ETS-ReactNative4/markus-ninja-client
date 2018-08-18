@@ -58,7 +58,14 @@
   "devDependencies": {
     "babel-plugin-relay": "^1.6.2",
     "relay-compiler": "^1.6.2",
+    "tachyons-box-sizing": "^3.2.2",
+    "tachyons-display": "^5.0.4",
     "tachyons-flexbox": "^2.1.0",
-    "tachyons-spacing": "^6.0.4"
+    "tachyons-overflow": "^4.0.5",
+    "tachyons-position": "^6.0.6",
+    "tachyons-spacing": "^6.0.4",
+    "tachyons-utilities": "^2.1.0",
+    "tachyons-vertical-align": "^4.0.5",
+    "tachyons-widths": "^5.2.1"
   }
 }

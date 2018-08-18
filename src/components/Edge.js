@@ -1,10 +1,14 @@
+import * as React from 'react'
 import { get } from 'utils'
 
-const Edge = ({ edge, render }) => {
-  if (!get(edge, "node", null)) {
-    return null
+class Edge extends React.Component {
+  render() {
+    const { edge, render } = this.props
+    if (!get(edge, "node", null)) {
+      return null
+    }
+    return render(edge)
   }
-  return render(edge)
 }
 
 export default Edge

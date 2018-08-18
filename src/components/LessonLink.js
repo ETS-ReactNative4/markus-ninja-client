@@ -8,9 +8,10 @@ import { get } from 'utils'
 
 class LessonLink extends Component {
   render() {
+    const { className } = this.props
     const lesson = get(this.props, "lesson", {})
     return (
-      <Link className="link" to={lesson.resourcePath}>
+      <Link className={className} to={lesson.resourcePath}>
         #{lesson.number}
       </Link>
     )

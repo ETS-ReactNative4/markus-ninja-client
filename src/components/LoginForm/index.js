@@ -52,7 +52,7 @@ class LoginForm extends Component {
           </div>
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             <button
-              className="mdc-button mdc-button--unelevated lf-submit"
+              className="mdc-button mdc-button--unelevated w-100"
               type="submit"
             >
               Sign in

@@ -16,7 +16,7 @@ class UserSettingsPage extends Component {
     return (
       <div className="UserSettingsPage inline-flex">
         <UserSettingsNav />
-        <div className="UserSettingsPage__page">
+        <div className="pl3">
           <Switch>
             <Route
               exact

@@ -22,6 +22,7 @@ const UserPageQuery = graphql`
       id
       ...User_user
       ...UserTabs_user
+      ...UserOverviewTab_user
     }
   }
 `
@@ -91,6 +92,7 @@ class UserPage extends Component {
                         "mdc-layout-grid__cell",
                         "mdc-layout-grid__cell--span-12",
                       )}
+                      user={props.user}
                     />
                   </div>
                 </div>

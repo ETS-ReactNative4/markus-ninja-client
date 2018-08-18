@@ -42,7 +42,7 @@ class UserPopularStudies extends React.Component {
 
 export default createFragmentContainer(UserPopularStudies, graphql`
   fragment UserPopularStudies_query on Query {
-    search(first: 6, query: "*", type: STUDY, orderBy:{direction: DESC, field: APPLE_COUNT})
+    search(first: 6, query: "*", type: STUDY, orderBy:{direction: DESC, field: APPLE_COUNT} within: $within)
       @connection(key: "UserPopularStudies_search", filters: []) {
       edges {
         node {
