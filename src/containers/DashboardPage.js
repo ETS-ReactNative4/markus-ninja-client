@@ -45,7 +45,9 @@ class DashboardPage extends Component {
                   <nav className="mdc-drawer__drawer">
                     <nav className="mdc-drawer__content">
                       <div className="mdc-list mdc-list--non-interactive">
-                        <UserLink className="mdc-list-item" user={props.viewer} />
+                        <div className="mdc-list-item">
+                          <UserLink className="mdc-typography--headline5" user={props.viewer} />
+                        </div>
                         <SearchViewerStudies query={props} />
                       </div>
                     </nav>

@@ -8,10 +8,10 @@ import { get } from 'utils'
 
 class UserLink extends Component {
   render() {
-    const { className } = this.props
+    const { className, innerRef, ...props } = this.props
     const user = get(this.props, "user", {})
     return (
-      <Link className={className} to={user.resourcePath}>
+      <Link innerRef={innerRef} className={className} to={user.resourcePath} {...props}>
         {user.login}
       </Link>
     )

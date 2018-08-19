@@ -7374,6 +7374,10 @@ tachyons-flexbox@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/tachyons-flexbox/-/tachyons-flexbox-2.1.0.tgz#cc12e9bd79653996cc8bd1b5fa2f6d6200bc2e77"
 
+tachyons-max-widths@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/tachyons-max-widths/-/tachyons-max-widths-4.0.5.tgz#07243992827c21771f1579510b8a7a7784eccd01"
+
 tachyons-overflow@^4.0.5:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/tachyons-overflow/-/tachyons-overflow-4.0.5.tgz#b385e73ee42f5d3c1730ad87f30ee727c829d8a5"

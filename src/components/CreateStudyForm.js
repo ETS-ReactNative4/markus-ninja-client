@@ -1,9 +1,14 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import {
+  createFragmentContainer,
+  graphql,
+} from 'react-relay'
+import cls from 'classnames'
 import { withRouter } from 'react-router-dom';
 import CreateStudyMutation from 'mutations/CreateStudyMutation'
 import { get, isEmpty } from 'utils'
 
-class CreateStudyForm extends Component {
+class CreateStudyForm extends React.Component {
   state = {
     error: null,
     description: "",
@@ -11,26 +16,46 @@ class CreateStudyForm extends Component {
   }
 
   render() {
+    const owner = get(this.props, "user.login", "")
     const { name, description, error } = this.state
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label htmlFor="study-name">Study name</label>
-        <input
-          id="study-name"
-          type="text"
-          name="name"
-          value={name}
-          onChange={this.handleChange}
-        />
-        <label htmlFor="study-description">Description (optional)</label>
-        <input
-          id="study-description"
-          type="text"
-          name="description"
-          value={description}
-          onChange={this.handleChange}
-        />
-        <button type="submit">Create study</button>
+      <form
+        className={cls("CreateStudyForm", "flex flex-column items-start")}
+        onSubmit={this.handleSubmit}
+      >
+        <div className="inline-flex">
+          <div className="inline-block relative mb2">
+            <div className="mdc-typography--headline6">Owner</div>
+            <div className="pt3">{owner}</div>
+          </div>
+          <div className="mdc-typography--headline6 self-end mh2">/</div>
+          <div className="mdc-text-field">
+            <label className="db mdc-typography--headline6" htmlFor="study-name">Study name</label>
+            <input
+              id="study-name"
+              className="mdc-text-field__input"
+              type="text"
+              name="name"
+              value={name}
+              onChange={this.handleChange}
+            />
+          </div>
+        </div>
+        <div className="mdc-text-field w-100">
+          <label htmlFor="study-description">
+            <span className="mdc-typography--headline6">Description</span>
+            <span className="mdc-typography--subtitle1 ml1">(optional)</span>
+          </label>
+          <input
+            id="study-description"
+            className="mdc-text-field__input"
+            type="text"
+            name="description"
+            value={description}
+            onChange={this.handleChange}
+          />
+        </div>
+        <button className="mdc-button mdc-button--unelevated" type="submit">Create study</button>
         <span>{error}</span>
       </form>
     )
@@ -58,4 +83,8 @@ class CreateStudyForm extends Component {
   }
 }
 
-export default withRouter(CreateStudyForm)
+export default withRouter(createFragmentContainer(CreateStudyForm, graphql`
+  fragment CreateStudyForm_user on User {
+    login
+  }
+`))

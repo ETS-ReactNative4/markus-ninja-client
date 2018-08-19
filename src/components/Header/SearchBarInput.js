@@ -29,10 +29,12 @@ class SearchBarInput extends React.Component {
 
   componentWillMount() {
     document.addEventListener('mousedown', this.handleClick, false);
+    document.addEventListener('keydown', this.handleKeyDown, false);
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleClick, false);
+    document.removeEventListener('keydown', this.handleKeyDown, false);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -54,8 +56,17 @@ class SearchBarInput extends React.Component {
   }
 
   handleKeyDown = (e) => {
-    const { cursor } = this.state
+    const { cursor, focus } = this.state
     const searchEdges = get(this.props, "query.search.edges", [])
+    if (e.keyCode === 191) {
+      e.preventDefault()
+      const element = document.getElementById("search-bar-input")
+      element.focus()
+      this.setState({ focus: true })
+    }
+
+    if (!focus) { return }
+
     if (e.keyCode === 38 && cursor > 0) {
       this.setState({ cursor: cursor - 1 })
     } else if (e.keyCode === 40 && cursor < searchEdges.length) {
@@ -70,12 +81,6 @@ class SearchBarInput extends React.Component {
   handleClick = (e) => {
     if (!this.node.contains(e.target)) {
       this.setState({ focus: false })
-    } else {
-      e.target.focus()
-      this.setState({
-        cursor: this.state.cursors.get(e.target.id),
-        focus: false,
-      })
     }
   }
 
@@ -131,7 +136,6 @@ class SearchBarInput extends React.Component {
       <div
         ref={node => this.node = node}
         className="SearchBarInput relative"
-        onKeyDown={this.handleKeyDown}
         onBlur={this.handleBlur}
       >
         <form action="/search" acceptCharset="utf8" method="get">
@@ -140,9 +144,8 @@ class SearchBarInput extends React.Component {
             className="relative"
           >
             <input
-              id="search-query"
+              id="search-bar-input"
               autoComplete="off"
-              className="SearchBar__input"
               type="text"
               name="q"
               placeholder="Search..."
@@ -157,23 +160,24 @@ class SearchBarInput extends React.Component {
                   <div className="mdc-list-item">Loading...</div>
                 </div>
               // eslint-disable-next-line jsx-a11y/role-supports-aria-props
-              : <div className="mdc-list" aria-orientation="vertical">
-                  <Route path="/:owner/:name" render={({ match }) =>
-                    <ListItem
-                      id="search-bar-this-study"
-                      active={cursor === 0}
-                      as={Link}
-                      to={{
-                        pathname: match.url + "/search",
-                        search: queryString.stringify({ q }),
-                      }}
-                      onMouseEnter={this.handleMouseEnter}
-                    >
-                      Search this study...
-                    </ListItem>}
-                  />
-                  {searchEdges.length > 0
-                  ? searchEdges.map((edge, i) =>
+              : searchEdges.length > 0
+                ? <div className="mdc-list" aria-orientation="vertical">
+                    <Route path="/:owner/:name" render={({ match }) =>
+                      <ListItem
+                        id="search-bar-this-study"
+                        active={cursor === 0}
+                        as={Link}
+                        to={{
+                          pathname: match.url + "/search",
+                          search: queryString.stringify({ q }),
+                        }}
+                        onMouseEnter={this.handleMouseEnter}
+                        onClick={() => this.setState({ focus: false })}
+                      >
+                        Search this study...
+                      </ListItem>}
+                    />
+                    {searchEdges.map((edge, i) =>
                       <Edge key={get(edge, "node.id", "")} edge={edge} render={({ node }) =>
                         <ListItem
                           id={node.id}
@@ -182,10 +186,13 @@ class SearchBarInput extends React.Component {
                           withOwner
                           study={node}
                           onMouseEnter={this.handleMouseEnter}
+                          onClick={() => this.setState({ focus: false })}
                         />
-                      }/>)
-                  : <div className="mdc-list-item">No results found...</div>}
-                </div>}
+                      }/>)}
+                  </div>
+                : <div className="mdc-list mdc-list--non-interactive" aria-orientation="vertical">
+                    <div className="mdc-list-item">No results found...</div>
+                  </div>}
             </div>
           </label>
         </form>

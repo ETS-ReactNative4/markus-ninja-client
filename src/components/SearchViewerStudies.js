@@ -73,7 +73,7 @@ class SearchViewerStudies extends React.Component {
         <div role="separator" className="mdc-list-divider"></div>
         <div className="mdc-list-item">
           <div className="flex justify-between items-center w-100">
-            <span className="mdc-typography--headline6">Studies</span>
+            <span className="mdc-typography--subtitle1">Studies</span>
             <Link className="mdc-button mdc-button--unelevated" to="/new">New</Link>
           </div>
         </div>

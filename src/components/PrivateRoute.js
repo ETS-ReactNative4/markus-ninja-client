@@ -6,21 +6,14 @@ import { get } from 'utils'
 
 class PrivateRoute extends React.Component {
   render() {
-    const { component: Component, ...rest } = this.props
     const pathname = get(this.props, "location.pathname", "")
     const returnTo = queryString.stringify({ return_to: pathname })
-    return (
-      <Route
-        {...rest}
-        render={props => {
-          if (isAuthenticated()) {
-            return <Component {...props} />
-          } else {
-            return <Redirect to={{pathname: "/login", search: returnTo }} />
-          }
-        }}
-      />
-    )
+
+    if (isAuthenticated()) {
+      return <Route {...this.props} />
+    } else {
+      return <Redirect to={{pathname: "/login", search: returnTo }} />
+    }
   }
 }
 
