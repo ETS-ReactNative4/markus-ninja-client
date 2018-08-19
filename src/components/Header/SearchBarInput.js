@@ -15,7 +15,9 @@ import { SEARCH_BAR_RESULTS_PER_PAGE } from 'consts'
 class SearchBarInput extends React.Component {
   state = {
     cursor: 0,
+    cursors: new Map(),
     error: null,
+    ids: new Map(),
     loading: true,
     focus: false,
     q: "",
@@ -47,19 +49,33 @@ class SearchBarInput extends React.Component {
     }, 0);
   }
 
+  handleMouseEnter = (e) => {
+    this.setState({ cursor: this.state.cursors.get(e.target.id) })
+  }
+
   handleKeyDown = (e) => {
     const { cursor } = this.state
     const searchEdges = get(this.props, "query.search.edges", [])
     if (e.keyCode === 38 && cursor > 0) {
       this.setState({ cursor: cursor - 1 })
     } else if (e.keyCode === 40 && cursor < searchEdges.length) {
-      this.setState({ cursor: cursor + 1 })
+      this.setState({ cursor: cursor + 1})
+    } else if (e.keyCode === 13) {
+      const element = document.getElementById(this.state.ids.get(cursor))
+      element.focus()
+      this.setState({ focus: false })
     }
   }
 
   handleClick = (e) => {
     if (!this.node.contains(e.target)) {
       this.setState({ focus: false })
+    } else {
+      e.target.focus()
+      this.setState({
+        cursor: this.state.cursors.get(e.target.id),
+        focus: false,
+      })
     }
   }
 
@@ -86,7 +102,22 @@ class SearchBarInput extends React.Component {
         if (!isNil(error)) {
           console.log(error)
         }
-        this.setState({ loading: false })
+        const cursors = new Map([
+          ["search-bar-this-study", 0],
+        ])
+        const ids = new Map([
+          [0, "search-bar-this-study"],
+        ])
+        get(this.props, "query.search.edges", []).map((edge, i) => {
+          cursors.set(get(edge, "node.id", ""), i+1)
+          ids.set(i+1, get(edge, "node.id", ""))
+          return null
+        })
+        this.setState({
+          cursors,
+          ids,
+          loading: false
+        })
       },
       {force: true},
     )
@@ -129,12 +160,14 @@ class SearchBarInput extends React.Component {
               : <div className="mdc-list" aria-orientation="vertical">
                   <Route path="/:owner/:name" render={({ match }) =>
                     <ListItem
+                      id="search-bar-this-study"
                       active={cursor === 0}
                       as={Link}
                       to={{
                         pathname: match.url + "/search",
                         search: queryString.stringify({ q }),
                       }}
+                      onMouseEnter={this.handleMouseEnter}
                     >
                       Search this study...
                     </ListItem>}
@@ -143,10 +176,12 @@ class SearchBarInput extends React.Component {
                   ? searchEdges.map((edge, i) =>
                       <Edge key={get(edge, "node.id", "")} edge={edge} render={({ node }) =>
                         <ListItem
+                          id={node.id}
                           active={cursor === i+1}
                           as={StudyLink}
                           withOwner
                           study={node}
+                          onMouseEnter={this.handleMouseEnter}
                         />
                       }/>)
                   : <div className="mdc-list-item">No results found...</div>}

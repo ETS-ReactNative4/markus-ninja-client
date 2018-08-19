@@ -10,7 +10,7 @@ class ListItem extends React.PureComponent {
 
   componentDidUpdate(prevProps) {
     if (!prevProps.active && this.props.active) {
-      this.listItem.focus()
+      // this.listItem.focus()
     }
   }
 
