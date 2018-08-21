@@ -13,6 +13,9 @@ import { debounce, get, isNil, isEmpty } from 'utils'
 import { SEARCH_BAR_RESULTS_PER_PAGE } from 'consts'
 
 class SearchBarInput extends React.Component {
+
+  node = null
+
   state = {
     cursor: 0,
     cursors: new Map(),
@@ -24,8 +27,6 @@ class SearchBarInput extends React.Component {
     results: [],
     skip: true,
   }
-
-  node = null
 
   componentWillMount() {
     document.addEventListener('mousedown', this.handleClick, false);

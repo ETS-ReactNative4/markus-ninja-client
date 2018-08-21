@@ -27,7 +27,7 @@ class Header extends Component {
             {!authenticated &&
             <div className="mdc-top-app-bar__title">
               <LoginLink>Sign in</LoginLink>
-              <span> or </span>
+              <span className="mdc-theme--text-hint-on-dark"> or </span>
               <Link to="/signup">Sign up</Link>
             </div>}
             {authenticated &&

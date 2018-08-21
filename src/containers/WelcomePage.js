@@ -1,5 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
+import List from 'components/List'
+import ListItem from 'components/ListItem/ListItem'
 
 class WelcomePage extends React.Component {
   render() {
@@ -13,6 +15,11 @@ class WelcomePage extends React.Component {
         <Link to="/signup">
           Need to create an account?
         </Link>
+        <List singleSelection={true}>
+          <ListItem>One</ListItem>
+          <ListItem>Two</ListItem>
+          <ListItem>Three</ListItem>
+        </List>
       </div>
     )
   }

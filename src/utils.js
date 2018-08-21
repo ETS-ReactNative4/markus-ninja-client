@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 function timeDifference(current, previous) {
   const milliSecondsPerMinute = 60 * 1000
   const milliSecondsPerHour = milliSecondsPerMinute * 60
@@ -112,4 +114,20 @@ export function groupBy(array = [], field = "") {
     },
     {},
   )
+}
+
+export function recursiveReactChildrenMap(children, f) {
+  return React.Children.map(children, (child) => {
+    if (!React.isValidElement(child)) {
+      return child
+    }
+
+    if (child.props.children) {
+      child = React.cloneElement(child, {
+        childre: recursiveReactChildrenMap(child.props.children, f)
+      })
+    }
+
+    return f(child)
+  })
 }

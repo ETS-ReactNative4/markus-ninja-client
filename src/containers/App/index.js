@@ -54,7 +54,7 @@ class App extends Component {
                   <Route render={() =>
                     <div>
                       <Header viewer={props.viewer} />
-                      <div className="mdc-top-app-bar--fixed-adjust">
+                      <div className="mdc-top-app-bar--fixed-adjust mdc-theme--text-primary-on-light">
                         <Switch>
                           <Route exact path="/" component={HomePage} />
                           <PrivateRoute
