@@ -1,48 +1,38 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
+import shortid from 'shortid'
 import {MDCListFoundation} from '@material/list/dist/mdc.list'
+import {debounce, throttle, recursiveReactChildrenMap} from 'utils'
 
 class List extends React.Component {
 
+  root_ = null
   foundation_ = null
 
   constructor(props) {
     super(props)
 
-    const items = React.Children.toArray(this.props.children).reduce((items, child) => {
-      if (child.type.name === 'ListItem') {
-        items.push({
-          element: child,
-          propMap: new Map(),
-        })
-      }
-      return items
-    }, [])
-
-
-    this.root_ = React.createRef()
-    this.listElements_ = items.map(() => React.createRef())
-
     this.state = {
       classList: new Set(),
-      items,
+      items: [],
     }
   }
 
   destroy() {
-    this.root_.current.removeEventListener('keydown', this.handleKeydown_)
-    this.root_.current.removeEventListener('click', this.handleClick_)
+    this.root_.removeEventListener('keydown', this.handleKeydown_)
+    this.root_.removeEventListener('click', this.handleClick_)
     this.foundation_.destroy()
   }
 
   init() {
     this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_)
     this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_)
-    this.root_.current.addEventListener('keydown', this.handleKeydown_)
-    this.root_.current.addEventListener('click', this.handleClick_)
+    this.root_.addEventListener('keydown', this.handleKeydown_)
+    this.root_.addEventListener('click', this.handleClick_)
     this.layout()
     this.singleSelection = this.props.singleSelection
+    this.items = this.props.items
   }
 
   layout() {
@@ -56,13 +46,40 @@ class List extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('previous children', prevProps.children)
-    console.log('current children', this.props.children)
+    // this.checkForNewItems(prevProps, this.props)
+    if (prevProps.items !== this.props.items) {
+      this.items = this.props.items
+    }
   }
 
   componentWillUnmount() {
     this.destroy()
   }
+
+  checkForNewItems = debounce(throttle((prevProps, newProps) => {
+    const oldIds = [],
+          newIds = []
+    recursiveReactChildrenMap(newProps.children, (child) => {
+      if (child.type.name === 'ListItem') {
+        oldIds.push(child.props.id)
+      }
+      return null
+    })
+    recursiveReactChildrenMap(prevProps.children, (child) => {
+      if (child.type.name === 'ListItem') {
+        newIds.push(child.props.id)
+      }
+      return null
+    })
+
+    oldIds.some((id1) => newIds.some((id2) => {
+      const newChildren = id1 !== id2
+      if (newChildren) {
+        this.items = newProps.children
+      }
+      return newChildren
+    }))
+  }, 1000), 500)
 
   getItemElement(item) {
     const props = {}
@@ -70,11 +87,29 @@ class List extends React.Component {
     return React.cloneElement(item.element, props)
   }
 
+  set items(propItems) {
+    const items = []
+    propItems.map((item) => {
+      if (item.type.name === 'ListItem') {
+        items.push({
+          element: item,
+          propMap: new Map(),
+          id: shortid.generate(),
+        })
+      }
+      return null
+    })
+
+    this.listElements_ = items.map(() => React.createRef())
+
+    this.setState({items})
+  }
+
   set singleSelection(isSingleSelectionList) {
     if (isSingleSelectionList) {
-      this.root_.current.addEventListener('click', this.handleClick_)
+      this.root_.addEventListener('click', this.handleClick_)
     } else {
-      this.root_.current.removeEventListener('click', this.handleClick_)
+      this.root_.removeEventListener('click', this.handleClick_)
     }
 
     this.foundation_.setSingleSelection(isSingleSelectionList)
@@ -116,6 +151,7 @@ class List extends React.Component {
       avatarList,
       className,
       dense,
+      innerRef,
       nonInteractive,
       singleSelection,
       twoLine,
@@ -141,7 +177,6 @@ class List extends React.Component {
           }
           return null
         })
-        console.log(index)
         return index
       },
       getListItemIndex: (node) => {
@@ -209,13 +244,17 @@ class List extends React.Component {
   }
 
   render() {
+    const {innerRef} = this.props
     return (
       // eslint-disable-next-line jsx-a11y/role-supports-aria-props
       <ul
         {...this.otherProps}
         className={this.classes}
         aria-orientation={this.orientation}
-        ref={this.root_}
+        ref={node => {
+          this.root_ = node
+          innerRef(node)
+        }}
       >
         {this.renderItems()}
       </ul>
@@ -228,7 +267,7 @@ class List extends React.Component {
       const element = this.getItemElement(item)
       return React.cloneElement(
         element,
-        {key: index, innerRef: this.listElements_[index]},
+        {key: item.id, innerRef: this.listElements_[index]},
       )
     })
   }
@@ -238,6 +277,7 @@ List.propTypes = {
   avatarList: PropTypes.bool,
   className: PropTypes.string,
   dense: PropTypes.bool,
+  innerRef: PropTypes.func,
   nonInteractive: PropTypes.bool,
   singleSelection: PropTypes.bool,
   twoLine: PropTypes.bool,
@@ -249,6 +289,7 @@ List.defaultProps = {
   avatarList: false,
   className: '',
   dense: false,
+  innerRef: () => {},
   nonInteractive: false,
   singleSelection: false,
   twoLine: false,

@@ -1,12 +1,24 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
-import { recursiveReactChildrenMap } from 'utils'
+import {recursiveReactChildrenMap} from 'utils'
 
 class ListItem extends React.Component {
 
   state = {
     classList: new Set(),
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.focusables_ = new Map()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.tabIndex !== this.props.tabIndex) {
+      this.focusables_.forEach((v, k) => v.setAttribute('tabindex', this.props.tabIndex))
+    }
   }
 
   get classes() {
@@ -37,6 +49,7 @@ class ListItem extends React.Component {
       disabled,
       innerRef,
       selected,
+      tabIndex,
       ...otherProps,
     } = this.props
 
@@ -49,7 +62,8 @@ class ListItem extends React.Component {
   }
 
   render() {
-    const {children, innerRef, tabIndex} = this.props
+    const tabIndex = this.tabIndex
+    const {children, innerRef} = this.props
     return (
       // eslint-disable-next-line jsx-a11y/role-supports-aria-props
       <li
@@ -59,15 +73,16 @@ class ListItem extends React.Component {
         tabIndex={tabIndex}
         ref={innerRef}
       >
-        {recursiveReactChildrenMap(children, (child) => {
-          if (child.type === 'a' || child.type === 'button') {
-            const updatedProps = {
-              ...child.props,
-              tabIndex,
-            }
-
-            return React.cloneElement(child, updatedProps)
+        {recursiveReactChildrenMap(children, (child, i) => {
+          if (!React.isValidElement(child)) {
+            return child
           }
+
+          return React.cloneElement(child, {innerRef: (node) => {
+            if (node && (node.localName === 'a' || node.localName === 'button')) {
+              this.focusables_.set(i, node)
+            }
+          }}, child.props.children)
         })}
       </li>
     )

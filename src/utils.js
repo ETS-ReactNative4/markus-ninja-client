@@ -106,6 +106,19 @@ export function debounce(func, delay) {
   }
 }
 
+export function throttle(func, limit) {
+  let inThrottle
+  return function() {
+    const args = arguments
+    const context = this
+    if (!inThrottle) {
+      func.apply(context, args)
+      inThrottle = true
+      setTimeout(() => inThrottle = false, limit)
+    }
+  }
+}
+
 export function groupBy(array = [], field = "") {
   return array.reduce(
     (r, v, i, a, k = get(v, field, "")) => {
@@ -124,7 +137,7 @@ export function recursiveReactChildrenMap(children, f) {
 
     if (child.props.children) {
       child = React.cloneElement(child, {
-        childre: recursiveReactChildrenMap(child.props.children, f)
+        children: recursiveReactChildrenMap(child.props.children, f)
       })
     }
 
