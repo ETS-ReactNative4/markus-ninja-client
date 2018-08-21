@@ -7,7 +7,7 @@ import cls from 'classnames'
 import { Route, Link } from 'react-router-dom'
 import queryString from 'query-string'
 import Edge from 'components/Edge'
-import ListItem from 'components/ListItem'
+import SearchBarResult from './SearchBarResult'
 import StudyLink from 'components/StudyLink'
 import { debounce, get, isNil, isEmpty } from 'utils'
 import { SEARCH_BAR_RESULTS_PER_PAGE } from 'consts'
@@ -57,22 +57,32 @@ class SearchBarInput extends React.Component {
   }
 
   handleKeyDown = (e) => {
+    const forwardSlash = e.key === 'Slash' || e.keyCode === 191
+    const arrowUp = e.key === 'ArrowUp' || e.keyCode === 38
+    const arrowDown = e.key === 'ArrowDown' || e.keyCode === 40
+    const isEnter = e.key === 'Enter' || e.keyCode === 13
+    const isEscape = e.key === 'Escape' || e.keyCode === 27
+
     const { cursor, focus } = this.state
     const searchEdges = get(this.props, "query.search.edges", [])
-    if (e.keyCode === 191) {
+    if (forwardSlash) {
       e.preventDefault()
       const element = document.getElementById("search-bar-input")
       element.focus()
       this.setState({ focus: true })
+    } else if (isEscape) {
+      const element = document.getElementById("search-bar-input")
+      element.blur()
+      this.setState({ focus: false })
     }
 
     if (!focus) { return }
 
-    if (e.keyCode === 38 && cursor > 0) {
+    if (arrowUp && cursor > 0) {
       this.setState({ cursor: cursor - 1 })
-    } else if (e.keyCode === 40 && cursor < searchEdges.length) {
+    } else if (arrowDown && cursor < searchEdges.length) {
       this.setState({ cursor: cursor + 1})
-    } else if (e.keyCode === 13) {
+    } else if (isEnter) {
       const element = document.getElementById(this.state.ids.get(cursor))
       element.focus()
       this.setState({ focus: false })
@@ -133,6 +143,7 @@ class SearchBarInput extends React.Component {
   render() {
     const { cursor, q, loading, focus } = this.state
     const searchEdges = get(this.props, "query.search.edges", [])
+    console.log(this.node)
     return (
       <div
         ref={node => this.node = node}
@@ -164,9 +175,9 @@ class SearchBarInput extends React.Component {
               : searchEdges.length > 0
                 ? <div className="mdc-list" aria-orientation="vertical">
                     <Route path="/:owner/:name" render={({ match }) =>
-                      <ListItem
+                      <SearchBarResult
                         id="search-bar-this-study"
-                        active={cursor === 0}
+                        selected={cursor === 0}
                         as={Link}
                         to={{
                           pathname: match.url + "/search",
@@ -176,13 +187,13 @@ class SearchBarInput extends React.Component {
                         onClick={() => this.setState({ focus: false })}
                       >
                         Search this study...
-                      </ListItem>}
+                      </SearchBarResult>}
                     />
                     {searchEdges.map((edge, i) =>
                       <Edge key={get(edge, "node.id", "")} edge={edge} render={({ node }) =>
-                        <ListItem
+                        <SearchBarResult
                           id={node.id}
-                          active={cursor === i+1}
+                          selected={cursor === i+1}
                           as={StudyLink}
                           withOwner
                           study={node}

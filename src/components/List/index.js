@@ -14,7 +14,6 @@ class List extends React.Component {
     super(props)
 
     this.state = {
-      classList: new Set(),
       items: [],
     }
   }
@@ -124,7 +123,6 @@ class List extends React.Component {
   }
 
   get classes() {
-    const {classList} = this.state
     const {
       avatarList,
       className,
@@ -133,7 +131,7 @@ class List extends React.Component {
       twoLine,
     } = this.props
 
-    return cls('mdc-list', Array.from(classList), className, {
+    return cls('mdc-list', className, {
       'mdc-list--non-interactive': nonInteractive,
       'mdc-list--two-line': twoLine,
       'mdc-list--dense': dense,
