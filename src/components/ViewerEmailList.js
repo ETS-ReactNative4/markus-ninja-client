@@ -15,46 +15,6 @@ class ViewerEmailList extends Component {
     error: null,
   }
 
-  render() {
-    const emailEdges = get(this.props, "viewer.allEmails.edges", [])
-    const { addEmail } = this.state
-    return (
-      <div className="ViewerEmailList">
-        <div className="ViewerEmailList__emails">
-          {emailEdges.map(({node}) => (
-            <ViewerEmail key={node.__id} email={node} />
-          ))}
-          <button
-            className="ViewerEmailList__more"
-            onClick={this._loadMore}
-          >
-            More
-          </button>
-        </div>
-        <div className="ViewerEmailList__add">
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="viewer_add_email">Add email address</label>
-            <input
-              id="viewer_add_email"
-              className="form-control"
-              type="text"
-              name="addEmail"
-              value={addEmail}
-              onChange={this.handleChange}
-            />
-            <button
-              className="btn"
-              type="submit"
-              onClick={this.handleSubmit}
-            >
-              Add
-            </button>
-          </form>
-        </div>
-      </div>
-    )
-  }
-
   _loadMore = () => {
     const relay = get(this.props, "relay")
     if (!relay.hasMore()) {
@@ -84,6 +44,48 @@ class ViewerEmailList extends Component {
           this.setState({ error: error.message })
         }
       },
+    )
+  }
+
+  render() {
+    const {relay} = this.props
+    const emailEdges = get(this.props, "viewer.allEmails.edges", [])
+    const { addEmail } = this.state
+    return (
+      <div className="ViewerEmailList">
+        <div className="ViewerEmailList__emails">
+          {emailEdges.map(({node}) => (
+            <ViewerEmail key={node.__id} email={node} />
+          ))}
+          {relay.hasMore() &&
+          <button
+            className="ViewerEmailList__more"
+            onClick={this._loadMore}
+          >
+            More
+          </button>}
+        </div>
+        <div className="ViewerEmailList__add">
+          <form onSubmit={this.handleSubmit}>
+            <label htmlFor="viewer_add_email">Add email address</label>
+            <input
+              id="viewer_add_email"
+              className="form-control"
+              type="text"
+              name="addEmail"
+              value={addEmail}
+              onChange={this.handleChange}
+            />
+            <button
+              className="btn"
+              type="submit"
+              onClick={this.handleSubmit}
+            >
+              Add
+            </button>
+          </form>
+        </div>
+      </div>
     )
   }
 }

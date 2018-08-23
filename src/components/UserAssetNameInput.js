@@ -30,13 +30,23 @@ class UserAssetNameInput extends React.Component {
     }
   }
 
+  get classes() {
+    const {className} = this.props
+    return cls("UserAssetNameInput", className)
+  }
+
+  get placeholder() {
+    const {placeholder} = this.props
+    return placeholder ? placeholder : 'Enter name'
+  }
+
   render() {
-    const { className, disabled, uid } = this.props
+    const { disabled, uid } = this.props
     const { fetched, loading, name } = this.state
     const asset = get(this.props, "study.asset", undefined)
 
     return (
-      <div className={cls("", className)}>
+      <div className={this.classes}>
         <input
           id={`asset-name-input${uid}`}
           autoComplete="off"
@@ -44,10 +54,10 @@ class UserAssetNameInput extends React.Component {
           disabled={disabled}
           type="text"
           name="name"
-          placeholder="Enter name"
+          placeholder={this.placeholder}
           value={name}
           onChange={(e) => this.handleChange(e.target.value)}
-        />*/}
+        />
         {loading ?
         <div>Loading</div>: !isEmpty(name) && fetched ?
         <div>Asset {asset ? "taken" : "available"}</div> : null}

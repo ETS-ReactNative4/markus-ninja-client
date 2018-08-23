@@ -5,7 +5,7 @@ import {
 } from 'react-relay'
 import { Route, Switch } from 'react-router-dom'
 import environment from 'Environment'
-import Study from 'components/Study'
+import StudyHeader from './StudyHeader'
 import CreateCoursePage from 'containers/CreateCoursePage'
 import CreateLessonPage from 'containers/CreateLessonPage'
 import CoursePage from 'containers/CoursePage'
@@ -23,7 +23,7 @@ import { isNil } from 'utils'
 const StudyPageQuery = graphql`
   query StudyPageQuery($owner: String!, $name: String!) {
     study(owner: $owner, name: $name) {
-      ...Study_study
+      ...StudyHeader_study
       ...StudyLabelsPage_study
     }
   }
@@ -47,8 +47,8 @@ class StudyPage extends Component {
               return <NotFound />
             }
             return (
-              <div className="StudyPage">
-                <Study study={props.study}></Study>
+              <div className="StudyPage mt3">
+                <StudyHeader study={props.study} />
                 <Switch>
                   <Route
                     exact

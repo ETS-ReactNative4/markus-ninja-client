@@ -1,8 +1,0 @@
-.Study .study-header {
-  display: flex; }
-  .Study .study-header .study-name {
-    flex: 1; }
-  .Study .study-header .study-actions {
-    display: inline-flex; }
-    .Study .study-header .study-actions .study-enroll {
-      margin-right: 1em; }

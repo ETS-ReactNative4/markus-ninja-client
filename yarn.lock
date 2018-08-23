@@ -197,6 +197,45 @@
     "@material/base" "^0.35.0"
     "@material/theme" "^0.38.0"
 
+"@material/react-floating-label@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@material/react-floating-label/-/react-floating-label-0.4.1.tgz#a17f1eb74b53b860c385c1bc15378022d2628841"
+  dependencies:
+    "@material/floating-label" "^0.38.0"
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+    react "^16.3.0"
+
+"@material/react-line-ripple@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@material/react-line-ripple/-/react-line-ripple-0.4.1.tgz#4e07014c980f45a4c7212cd04f835b5ef4823c93"
+  dependencies:
+    "@material/line-ripple" "^0.38.0"
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+    react "^16.3.2"
+
+"@material/react-notched-outline@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@material/react-notched-outline/-/react-notched-outline-0.4.1.tgz#3da419cb89e68fea8ca30ff2dba901657e974c97"
+  dependencies:
+    "@material/notched-outline" "^0.38.0"
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+    react "^16.3.2"
+
+"@material/react-text-field@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@material/react-text-field/-/react-text-field-0.4.2.tgz#909bb34054cc9c35468fde222ea81ec07032ed3a"
+  dependencies:
+    "@material/react-floating-label" "^0.4.1"
+    "@material/react-line-ripple" "^0.4.1"
+    "@material/react-notched-outline" "^0.4.1"
+    "@material/textfield" "^0.38.1"
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+    react "^16.3.2"
+
 "@material/ripple@^0.38.0", "@material/ripple@^0.38.1":
   version "0.38.1"
   resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-0.38.1.tgz#74e61ed28e7680e0fd990fa50fa1949da456b3cb"
@@ -281,6 +320,20 @@
     "@material/line-ripple" "^0.38.0"
     "@material/notched-outline" "^0.38.0"
     "@material/ripple" "^0.38.0"
+    "@material/rtl" "^0.36.0"
+    "@material/theme" "^0.38.0"
+    "@material/typography" "^0.38.0"
+
+"@material/textfield@^0.38.1":
+  version "0.38.1"
+  resolved "https://registry.yarnpkg.com/@material/textfield/-/textfield-0.38.1.tgz#f0dc2d7b534a51845a84f71fbd8199b6cc0b5130"
+  dependencies:
+    "@material/animation" "^0.34.0"
+    "@material/base" "^0.35.0"
+    "@material/floating-label" "^0.38.0"
+    "@material/line-ripple" "^0.38.0"
+    "@material/notched-outline" "^0.38.0"
+    "@material/ripple" "^0.38.1"
     "@material/rtl" "^0.36.0"
     "@material/theme" "^0.38.0"
     "@material/typography" "^0.38.0"
@@ -1821,7 +1874,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.6:
+classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
 
@@ -6377,7 +6430,7 @@ react-scripts@1.1.4:
   optionalDependencies:
     fsevents "^1.1.3"
 
-react@^16.4.2:
+react@^16.3.0, react@^16.3.2, react@^16.4.2:
   version "16.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-16.4.2.tgz#2cd90154e3a9d9dd8da2991149fdca3c260e129f"
   dependencies:
@@ -7372,10 +7425,6 @@ table@^4.0.1:
     slice-ansi "1.0.0"
     string-width "^2.1.1"
 
-tachyons-box-sizing@^3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/tachyons-box-sizing/-/tachyons-box-sizing-3.2.2.tgz#0468bad0c6509d2d78078ec1e684efff0fc93687"
-
 tachyons-display@^5.0.4:
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/tachyons-display/-/tachyons-display-5.0.4.tgz#9ec6918b0695753b7c296c0a1275c8b214b25b9a"
@@ -7383,6 +7432,10 @@ tachyons-display@^5.0.4:
 tachyons-flexbox@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/tachyons-flexbox/-/tachyons-flexbox-2.1.0.tgz#cc12e9bd79653996cc8bd1b5fa2f6d6200bc2e77"
+
+tachyons-hovers@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/tachyons-hovers/-/tachyons-hovers-2.5.1.tgz#dabea2935231c102c78fdeb7e384112b51e54ae4"
 
 tachyons-max-widths@^4.0.5:
   version "4.0.5"

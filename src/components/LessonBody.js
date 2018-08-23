@@ -20,15 +20,18 @@ class LessonBody extends Component {
     const { edit, error, body } = this.state
     if (!edit) {
       return (
-        <div className="LessonBody">
-          <div className="LessonBody__bodyHTML">{convert(lesson.bodyHTML)}</div>
+        <div className="LessonBody mdc-card mdc-card--outlined">
+          <div className="ph3">
+            {convert(lesson.bodyHTML)}
+          </div>
           {lesson.viewerCanUpdate &&
-          <button
-            className="LessonBody__edit"
-            onClick={this.handleToggleEdit}
-          >
-            Edit
-          </button>}
+          <div className="mdc-card__actions">
+            <div className="mdc-card__actions-icons">
+              <button className="material-icons mdc-icon-button mdc-card__action--icon" onClick={this.handleToggleEdit}>
+                edit
+              </button>
+            </div>
+          </div>}
         </div>
       )
     } else if (lesson.viewerCanUpdate) {

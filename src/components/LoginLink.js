@@ -1,17 +1,17 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { withRouter } from 'react-router'
 import queryString from 'query-string'
 import { Link } from 'react-router-dom'
 import { get } from 'utils'
 
-class LoginLink extends Component {
+class LoginLink extends React.Component {
   render() {
-    const { staticContext, ...rest } = this.props
+    const { staticContext, ...props } = this.props
     const pathname = get(this.props, "location.pathname", "")
     const returnTo = queryString.stringify({ return_to: pathname })
     return (
       <Link
-        {...rest}
+        {...props}
         to={{pathname: "/login", search: returnTo }}
       >
         {this.props.children || "Login"}

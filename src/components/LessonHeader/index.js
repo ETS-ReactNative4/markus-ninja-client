@@ -1,10 +1,11 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
 import { Link, withRouter } from 'react-router-dom';
-import cls from 'classnames'
+import TextField, {Input} from '@material/react-text-field'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
 import AddLabelMutation from 'mutations/AddLabelMutation'
 import RemoveLabelMutation from 'mutations/RemoveLabelMutation'
@@ -15,65 +16,72 @@ import { get, isNil } from 'utils'
 
 import './LessonHeader.css'
 
-class LessonHeader extends Component {
+class LessonHeader extends React.Component {
   state = {
     error: null,
     open: false,
     title: this.props.lesson.title,
   }
 
+  get classes() {
+    const {className} = this.props
+    const {open} = this.state
+
+    return cls("LessonHeader", className, {
+      "LessonHeader__open": open,
+    })
+  }
+
   render() {
     const lesson = get(this.props, "lesson", {})
-    const { error, open, title } = this.state
+    const { error, title } = this.state
     return (
-      <div className={cls("LessonHeader", {open})}>
+      <div className={this.classes}>
         <div className="LessonHeader__show">
-          <div className="LessonHeader__actions">
+          <div className="mdc-typography--headline5 flex-auto">
+            <span>{lesson.title}</span>
+            <span className="mdc-theme--text-hint-on-light ml2">#{lesson.number}</span>
+          </div>
+          <div className="inline-flex">
             {lesson.viewerCanUpdate &&
             <button
-              className="btn"
+              className="material-icons mdc-icon-button"
               type="button"
               onClick={this.handleToggleOpen}
             >
-              Edit
+              edit
             </button>}
           </div>
-          <h1 className="LessonHeader__title">
-            <span className="LessonHeader__lesson-title">{lesson.title}</span>
-            <span className="LessonHeader__number">#{lesson.number}</span>
-          </h1>
         </div>
         {lesson.viewerCanUpdate &&
-        <div className="LessonHeader__edit">
-          <form onSubmit={this.handleSubmit}>
-            <input
-              id="lesson-title"
-              className={cls("form-control", "edit-lesson-title")}
-              type="text"
+        <form className="LessonHeader__edit" onSubmit={this.handleSubmit}>
+          <TextField className="flex-auto" label="Title">
+            <Input
               name="title"
-              placeholder="Enter text"
               value={title}
               onChange={this.handleChange}
             />
+          </TextField>
+          <div className="inline-flex items-center pa2">
             <button
-              className="btn"
+              className="mdc-button mdc-button--unelevated"
               type="submit"
               onClick={this.handleSubmit}
             >
               Save
             </button>
-            <button
-              className="btn-link"
-              type="button"
+            <span
+              className="pointer pa2"
+              role="button"
               onClick={this.handleToggleOpen}
             >
               Cancel
-            </button>
-            <span>{error}</span>
-          </form>
-        </div>}
+            </span>
+          </div>
+          <span>{error}</span>
+        </form>}
         {lesson.isCourseLesson &&
-        <div className="LessonHeader_course">
+        <div className="LessonHeader__course">
           <span>
             This lesson is part of course
             <Link to={get(lesson, "course.resourcePath", "")}>

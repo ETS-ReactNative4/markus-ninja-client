@@ -20,22 +20,18 @@
   color: rgba(184, 95, 138, 1.0);
 }
 
-.AttachFile .file-label {
-  cursor: pointer;
-}
-
-.AttachFile .file-name-input {
+.AttachFile .AttachFile__name-input {
   display: none;
 }
 
-.AttachFile .file-name-input.open {
+.AttachFile .AttachFile__name-input.open {
   display: inline-block;
 }
 
-.AttachFile .file-name {
+.AttachFile .AttachFile__name {
   display: none;
 }
 
-.AttachFile .file-name.open {
+.AttachFile .AttachFile__name.open {
   display: inline-block;
 }

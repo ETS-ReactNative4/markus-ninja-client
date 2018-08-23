@@ -32,14 +32,12 @@ class SearchBar extends React.Component {
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
-          } else if (props) {
-            return (
-              <div className="SearchBar relative ml3">
-                <SearchBarInput query={props} />
-              </div>
-            )
           }
-          return <div>Loading</div>
+          return (
+            <div className="SearchBar relative mh3">
+              <SearchBarInput query={props} />
+            </div>
+          )
         }}
       />
     )

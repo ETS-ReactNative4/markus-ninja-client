@@ -55,24 +55,26 @@ class App extends Component {
                     <div>
                       <Header viewer={props.viewer} />
                       <div className="mdc-top-app-bar--fixed-adjust mdc-theme--text-primary-on-light">
-                        <Switch>
-                          <Route exact path="/" component={HomePage} />
-                          <PrivateRoute
-                            exact
-                            path="/new"
-                            render={(routeProps) => <CreateStudyPage user={props.viewer} {...routeProps} />}
-                          />
-                          <PrivateRoute path="/notifications" component={NotificationsPage} />
-                          <Route exact path="/research" component={ResearchPage} />
-                          <Route exact path="/search" component={SearchPage} />
-                          <PrivateRoute path="/settings" component={UserSettingsPage} />
-                          <Route exact path="/signup" component={SignupPage} />
-                          <Route exact path="/topics/:name" component={TopicPage} />
-                          <Route exact path="/:owner/:name/search" component={StudySearchPage} />
-                          <Route exact path="/:login" component={UserPage} />
-                          <Route path="/:owner/:name" component={StudyPage} />
-                          <Route component={NotFound} />
-                        </Switch>
+                        <div className="rn-page">
+                          <Switch>
+                            <Route exact path="/" component={HomePage} />
+                            <PrivateRoute
+                              exact
+                              path="/new"
+                              render={(routeProps) => <CreateStudyPage user={props.viewer} {...routeProps} />}
+                            />
+                            <PrivateRoute path="/notifications" component={NotificationsPage} />
+                            <Route exact path="/research" component={ResearchPage} />
+                            <Route exact path="/search" component={SearchPage} />
+                            <PrivateRoute path="/settings" component={UserSettingsPage} />
+                            <Route exact path="/signup" component={SignupPage} />
+                            <Route exact path="/topics/:name" component={TopicPage} />
+                            <Route exact path="/:owner/:name/search" component={StudySearchPage} />
+                            <Route exact path="/:login" component={UserPage} />
+                            <Route path="/:owner/:name" component={StudyPage} />
+                            <Route component={NotFound} />
+                          </Switch>
+                        </div>
                       </div>
                     </div>}
                   />

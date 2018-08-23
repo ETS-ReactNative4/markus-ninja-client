@@ -1,8 +1,13 @@
-.StudyMetaDetails {
-  display: block;
+.StudyMeta {
+  height: 100px;
 }
 
-.StudyMetaDetails.open .StudyMetaDetails__content {
+.StudyMetaDetails__show {
+  display: flex;
+  align-items: center;
+}
+
+.StudyMetaDetails.StudyMetaDetails__open .StudyMetaDetails__show {
   display: none;
 }
 
@@ -10,19 +15,17 @@
   display: none;
 }
 
-.StudyMetaDetails.open .StudyMetaDetails__edit {
-  display: block;
+.StudyMetaDetails.StudyMetaDetails__open .StudyMetaDetails__edit {
+  display: flex;
+  align-items: end;
 }
 
-.StudyMetaDetails__edit-toggle {
-  float: right;
+.StudyMetaTopics__show {
+  display: flex;
+  align-items: center;
 }
 
-.StudyMetaTopics {
-  display: block;
-}
-
-.StudyMetaTopics.open .StudyMetaTopics__content {
+.StudyMetaTopics.StudyMetaTopics__open .StudyMetaTopics__show {
   display: none;
 }
 
@@ -30,7 +33,7 @@
   display: none;
 }
 
-.StudyMetaTopics.open .StudyMetaTopics__edit {
-  display: block;
+.StudyMetaTopics.StudyMetaTopics__open .StudyMetaTopics__edit {
+  display: flex;
+  align-items: end;
 }
-

@@ -11,13 +11,18 @@ import TabBar from 'components/TabBar'
 import { get } from 'utils'
 
 class StudyTabs extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("StudyTabs mt3", className)
+  }
+
   render() {
-    const { className, study } = this.props
+    const { study } = this.props
     const pathname = get(this.props, "location.pathname", "")
     const studyPath = "/:owner/:name"
 
     return (
-      <TabBar className={cls("StudyTabs", className)}>
+      <TabBar className={this.classes}>
         <Tab
           active={matchPath(pathname, { path: studyPath, exact: true })}
           as={Link}

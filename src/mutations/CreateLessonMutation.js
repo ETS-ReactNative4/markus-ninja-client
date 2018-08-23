@@ -55,12 +55,11 @@ export default (studyId, title, body, courseId, callback) => {
 
           if (!isNil(courseId)) {
             const lessonEdge = createLessonField.getLinkedRecord('lessonEdge')
-            const lessonCount = lessonEdge
-              .getLinkedRecord('node')
-              .getLinkedRecord('course')
-              .getValue('lessonCount')
+            const node = lessonEdge.getLinkedRecord('node')
+            const lessonCourse = node && node.getLinkedRecord('course')
+            const lessonCount = lessonCourse && lessonCourse.getValue('lessonCount')
             const course = proxyStore.get(courseId)
-            course.setValue(lessonCount, 'lessonCount')
+            course && course.setValue(lessonCount, 'lessonCount')
           }
         }
       },

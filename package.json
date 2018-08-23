@@ -17,6 +17,7 @@
     "@material/layout-grid": "^0.34.0",
     "@material/list": "^0.38.1",
     "@material/menu": "^0.38.0",
+    "@material/react-text-field": "^0.4.2",
     "@material/select": "^0.38.1",
     "@material/tab-bar": "^0.38.1",
     "@material/textfield": "^0.38.0",
@@ -40,6 +41,7 @@
     "react-scripts": "1.1.4",
     "relay-runtime": "^1.6.2",
     "shortid": "^2.2.13",
+    "tachyons-hovers": "^2.5.1",
     "webfontloader": "^1.6.28"
   },
   "scripts": {
@@ -59,7 +61,6 @@
   "devDependencies": {
     "babel-plugin-relay": "^1.6.2",
     "relay-compiler": "^1.6.2",
-    "tachyons-box-sizing": "^3.2.2",
     "tachyons-display": "^5.0.4",
     "tachyons-flexbox": "^2.1.0",
     "tachyons-max-widths": "^4.0.5",

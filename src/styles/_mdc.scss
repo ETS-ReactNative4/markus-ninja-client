@@ -67,6 +67,15 @@
   }
 }
 
+.mdc-list-item {
+  .mdc-list-item__fill {
+    width: 100%;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+  }
+}
+
 @function mdc-theme-background-url-prop-value($style) {
   @if type-of($style) == "color" {
     $string: inspect($style); 

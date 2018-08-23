@@ -45,7 +45,7 @@ class StudyOverviewPage extends Component {
             }
             const lesson = get(props, "study.lesson", null)
             return (
-              <div className="StudyOverviewPage">
+              <div className="StudyOverviewPage mt2">
                 <StudyMeta study={props.study}  />
                 {isNil(lesson)
                 ? <Link

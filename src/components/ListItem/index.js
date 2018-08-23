@@ -45,6 +45,7 @@ class ListItem extends React.Component {
   get otherProps() {
     const {
       activated,
+      as,
       className,
       disabled,
       innerRef,
@@ -63,10 +64,10 @@ class ListItem extends React.Component {
 
   render() {
     const tabIndex = this.tabIndex
-    const {children, innerRef} = this.props
+    const {as: Component, children, innerRef} = this.props
     return (
       // eslint-disable-next-line jsx-a11y/role-supports-aria-props
-      <li
+      <Component
         {...this.otherProps}
         className={this.classes}
         aria-selected={this.isSelected}
@@ -84,13 +85,14 @@ class ListItem extends React.Component {
             }
           }}, child.props.children)
         })}
-      </li>
+      </Component>
     )
   }
 }
 
 ListItem.propTypes = {
   activated: PropTypes.bool,
+  as: PropTypes.func,
   className: PropTypes.string,
   disabled: PropTypes.bool,
   selected: PropTypes.bool,
@@ -99,6 +101,7 @@ ListItem.propTypes = {
 
 ListItem.defaultProps = {
   activated: false,
+  as: 'li',
   className: '',
   disabled: false,
   selected: false,

@@ -25,7 +25,11 @@ class AttachFile extends React.Component {
 
     return (
       <div className="AttachFile">
-        <label htmlFor={`file-save${uid}`}>
+        <label
+          htmlFor={`file-save${uid}`}
+          title="Save file to study assets"
+          aria-label="Save file to study assets"
+        >
           <input
             id={`file-save${uid}`}
             type="checkbox"
@@ -38,14 +42,13 @@ class AttachFile extends React.Component {
           File
           <input
             id={`file-input${uid}`}
-            className="attach-file-input"
+            className="dn"
             type="file"
-            style={{display: "none"}}
-            onChange={this.handleChangeFile}
+            onChange={(e) => this.setState({file: e.target.files[0]})}
           />
         </label>
         <UserAssetNameInput
-          className={cls("file-name-input", {open: save})}
+          className={cls("AttachFile__name-input", {open: save})}
           study={get(this.props, "study", null)}
           disabled={!save}
           placeholder="No file chosen"
@@ -54,12 +57,13 @@ class AttachFile extends React.Component {
         />
         <input
           id={`file-name${uid}`}
+          className={cls("AttachFile__name", {open: !save})}
           placeholder="No file chosen"
+          disabled
           value={filename}
-          className={cls("attach-file-name", {open: !save})}
         />
         <button
-          flat
+          className="mdc-button mdc-button--unelevated"
           onClick={this.handleAttachFile}
           disabled={isNil(file) || (save && !submittable)}
         >

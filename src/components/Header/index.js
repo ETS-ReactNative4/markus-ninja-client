@@ -3,8 +3,8 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import { Link } from 'react-router-dom'
-import { withRouter } from 'react-router'
+import { Link, withRouter } from 'react-router-dom'
+import IconLink from 'components/IconLink'
 import { isAuthenticated } from 'auth'
 import LoginLink from 'components/LoginLink'
 import SearchBar from './SearchBar'
@@ -19,24 +19,73 @@ class Header extends Component {
       <header className="Header mdc-top-app-bar mdc-top-app-bar--fixed">
         <div className="mdc-top-app-bar__row">
           <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-            <Link className="mdc-top-app-bar__title" to="/">Home</Link>
+            <IconLink
+              className="mdc-top-app-bar__navigation-icon"
+              to="/"
+              aria-label="Home"
+              title="Home"
+            >
+              home
+            </IconLink>
             <SearchBar />
-            <Link className="mdc-top-app-bar__title" to="/research">Research</Link>
+            <IconLink
+              className="mdc-top-app-bar__action-item"
+              to="/research"
+              aria-label="Research"
+              title="Research"
+            >
+              library_books
+            </IconLink>
           </section>
           <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
             {!authenticated &&
             <div className="mdc-top-app-bar__title">
-              <LoginLink>Sign in</LoginLink>
+              <LoginLink className="rn-link rn-link__on-primary" aria-label="Sign in">Sign in</LoginLink>
               <span className="mdc-theme--text-hint-on-dark"> or </span>
-              <Link to="/signup">Sign up</Link>
+              <Link className="rn-link rn-link__on-primary" to="/signup" aria-label="Sign up">Sign up</Link>
             </div>}
             {authenticated &&
             <div className="mdc-top-app-bar__title">
-              <Link to="/notifications">Notifications</Link>
-              <Link to="/new">New study</Link>
-              <Link to={get(this.props, "viewer.resourcePath", "")}>Your profile</Link>
-              <Link to="/logout">Logout</Link>
-              <Link to="/settings">Settings</Link>
+              <IconLink
+                className="mdc-top-app-bar__navigation-icon"
+                to="/notifications"
+                aria-label="Notifications"
+                title="Notifcations"
+              >
+                notifications
+              </IconLink>
+              <IconLink
+                className="mdc-top-app-bar__navigation-icon"
+                to="/new"
+                aria-label="New study"
+                title="New study"
+              >
+                add
+              </IconLink>
+              <IconLink
+                className="mdc-top-app-bar__navigation-icon"
+                to={get(this.props, "viewer.resourcePath", "")}
+                aria-label="Account"
+                title="Account"
+              >
+                account_box
+              </IconLink>
+              <IconLink
+                className="mdc-top-app-bar__navigation-icon"
+                to="/logout"
+                aria-label="Logout"
+                title="Logout"
+              >
+                power_settings_new
+              </IconLink>
+              <IconLink
+                className="mdc-top-app-bar__navigation-icon"
+                to="/settings"
+                aria-label="Settings"
+                title="Settings"
+              >
+                settings
+              </IconLink>
             </div>}
           </section>
         </div>

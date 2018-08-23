@@ -7,7 +7,7 @@ import environment from 'Environment'
 import { get, isNil } from 'utils'
 
 const mutation = graphql`
-  mutation AddLessonCommentMutation($input: AddLessonCommentInput!) {
+  mutation AddLessonCommentMutation($input: AddLessonCommentInput!, $filename: String!) {
     addLessonComment(input: $input) {
       lessonTimelineEdge {
         node {
@@ -30,6 +30,7 @@ export default (lessonId, body, callback) => {
     input: {
       body,
       lessonId,
+      filename: "",
     },
   }
 

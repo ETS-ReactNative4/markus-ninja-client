@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
 import { Link, withRouter } from 'react-router-dom';
+import TextField, {HelperText, Input} from '@material/react-text-field'
 import UpdateTopicsMutation from 'mutations/UpdateTopicsMutation'
-import { get, isNil } from 'utils'
+import { get, isEmpty } from 'utils'
 import cls from 'classnames'
 import { TOPICS_PER_PAGE } from 'consts'
 
@@ -15,79 +17,16 @@ class StudyMetaTopics extends Component {
     const topicEdges = get(props, "study.topics.edges", [])
     this.state = {
       error: null,
+      invalidTopicNames: null,
       topics: topicEdges.map(edge => get(edge, "node.name")).join(" "),
       open: false,
     }
   }
 
-  render() {
-    const study = get(this.props, "study", {})
-    const topicEdges = get(study, "topics.edges", [])
-    const pageInfo = get(study, "topics.pageInfo", {})
-    const { error, open, topics } = this.state
-    return (
-      <div className={cls("StudyMetaTopics", {open})}>
-        <div className="StudyMetaTopics__list">
-          {topicEdges.map(({ node = {} }) =>
-            <Link key={node.id} to={node.resourcePath}>{node.name}</Link>)}
-        </div>
-        {pageInfo.hasNextPage &&
-        <button
-          className="StudyMetaTopics__more"
-          onClick={this._loadMore}
-        >
-          More
-        </button>}
-        {study.viewerCanAdmin &&
-        <span className="StudyMetaTopics__edit-toggle">
-          <button
-            className="btn"
-            type="button"
-            onClick={this.handleToggleOpen}
-          >
-            Manage topics
-          </button>
-        </span>}
-        {study.viewerCanAdmin &&
-        <div className="StudyMetaTopics__edit">
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="study-topics">
-              Topics
-              <span>(separate with spaces)</span>
-            </label>
-            <div>Add topics to categorize your study and make it more discoverable.</div>
-            <input
-              id="study-topics"
-              className={cls("form-control", "edit-study-topics")}
-              type="text"
-              name="topics"
-              value={topics}
-              onChange={this.handleChange}
-            />
-            <button
-              className="btn"
-              type="submit"
-              onClick={this.handleSubmit}
-            >
-              Save
-            </button>
-            <button
-              className="btn-link"
-              type="button"
-              onClick={this.handleToggleOpen}
-            >
-              Cancel
-            </button>
-            <span>{error}</span>
-          </form>
-        </div>}
-      </div>
-    )
-  }
-
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
+      error: null,
     })
   }
 
@@ -97,17 +36,21 @@ class StudyMetaTopics extends Component {
     UpdateTopicsMutation(
       this.props.study.id,
       topics.split(" "),
-      (error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
+      (error, invalidTopicNames) => {
+        if (!isEmpty(invalidTopicNames)) {
+          this.setState({ error, invalidTopicNames })
+        } else {
+          this.handleToggleOpen()
         }
-        this.handleToggleOpen()
       },
     )
   }
 
   handleToggleOpen = () => {
-    this.setState({ open: !this.state.open })
+    const open = !this.state.open
+
+    this.setState({ open, error: null })
+    this.props.onOpen(open)
   }
 
   _loadMore = () => {
@@ -122,6 +65,100 @@ class StudyMetaTopics extends Component {
 
     relay.loadMore(TOPICS_PER_PAGE)
   }
+
+  get classes() {
+    const {className} = this.props
+    const {open} = this.state
+
+    return cls("StudyMetaTopics", className, {
+      "StudyMetaTopics__open": open,
+    })
+  }
+
+  render() {
+    const study = get(this.props, "study", {})
+    const topicEdges = get(study, "topics.edges", [])
+    const pageInfo = get(study, "topics.pageInfo", {})
+    const { error, topics } = this.state
+    return (
+      <div className={this.classes}>
+        <div className="StudyMetaTopics__show">
+          {topicEdges.map(({ node = {} }) =>
+          <Link
+            className="mdc-button mdc-button--outlined mr1 mb1"
+            key={node.id}
+            to={node.resourcePath}
+          >
+            {node.name}
+          </Link>)}
+          {pageInfo.hasNextPage &&
+          <button
+            className="material-icons mdc-icon-button mr1 mb1"
+            onClick={this._loadMore}
+          >
+            more
+          </button>}
+          {study.viewerCanAdmin &&
+          <button
+            className="mdc-button mdc-button--unelevated mr1 mb1"
+            type="button"
+            onClick={this.handleToggleOpen}
+          >
+            Manage topics
+          </button>}
+        </div>
+        {study.viewerCanAdmin &&
+        <form className="StudyMetaTopics__edit" onSubmit={this.handleSubmit}>
+          <div className="inline-flex flex-column flex-auto">
+            <TextField
+              label="Topics (separate with spaces)"
+              helperText={this.renderHelperText()}
+            >
+              <Input
+                name="topics"
+                value={topics}
+                onChange={this.handleChange}
+                invalid
+              />
+            </TextField>
+          </div>
+          <div className="inline-flex items-center pa2 mb4">
+            <button
+              className="mdc-button mdc-button--unelevated"
+              type="submit"
+              onClick={this.handleSubmit}
+            >
+              Save
+            </button>
+            <span
+              className="pointer pa2 underline-hover"
+              role="button"
+              onClick={this.handleToggleOpen}
+            >
+              Cancel
+            </span>
+          </div>
+        </form>}
+        <p>{error}</p>
+      </div>
+    )
+  }
+
+  renderHelperText() {
+    return (
+      <HelperText>
+        Add topics to categorize your study and make it more discoverable.
+      </HelperText>
+    )
+  }
+}
+
+StudyMetaTopics.propTypes = {
+  onOpen: PropTypes.func,
+}
+
+StudyMetaTopics.defaulProps = {
+  onOpen: () => {}
 }
 
 export default withRouter(createPaginationContainer(StudyMetaTopics,

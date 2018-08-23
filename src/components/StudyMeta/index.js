@@ -10,12 +10,20 @@ import StudyMetaTopics from './StudyMetaTopics'
 import './StudyMeta.css'
 
 class StudyMeta extends Component {
+  state = {
+    detailsOpen: false,
+    topicsOpen: false,
+  }
+
   render() {
-    const study = get(this.props, "study", {})
+    const study = get(this.props, "study", null)
+    const {detailsOpen, topicsOpen} = this.state
     return (
       <div className="StudyMeta">
-        <StudyMetaDetails study={study} />
-        <StudyMetaTopics study={study} />
+        {!topicsOpen &&
+        <StudyMetaDetails onOpen={(open) => this.setState({ detailsOpen: open })} study={study} />}
+        {!detailsOpen &&
+        <StudyMetaTopics onOpen={(open) => this.setState({ topicsOpen: open })} study={study} />}
       </div>
     )
   }

@@ -11,8 +11,6 @@ import UserLink from 'components/UserLink'
 import StudyTabs from './StudyTabs'
 import { get, isNil } from 'utils'
 
-import './Study.css'
-
 class Study extends React.Component {
   state = {
     edit: false,
@@ -24,21 +22,21 @@ class Study extends React.Component {
       return null
     }
     return (
-      <div className="Study">
-        <div className="study-header">
-          <div className="study-name mdc-typography--headline5">
+      <div className="StudyHeader">
+        <div className="flex">
+          <div className="flex-auto mdc-typography--headline5">
             <UserLink user={get(study, "owner", null)} />
             <span>/</span>
             <StudyLink study={study} />
           </div>
-          <div className="study-actions">
-            <div className="study-enroll">
+          <div className="inline-flex">
+            <div className="mr1">
               <EnrollmentSelect enrollable={study} />
               <button className="rn-count-button">
                 {get(study, "enrolleeCount", 0)}
               </button>
             </div>
-            <div className="study-apple">
+            <div>
               <AppleButton appleable={study} />
               <button className="rn-count-button">
                 {get(study, "appleGivers.totalCount", 0)}
@@ -53,7 +51,7 @@ class Study extends React.Component {
 }
 
 export default withRouter(createFragmentContainer(Study, graphql`
-  fragment Study_study on Study {
+  fragment StudyHeader_study on Study {
     id
     advancedAt
     appleGivers(first: 0) {

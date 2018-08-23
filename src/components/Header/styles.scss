@@ -1,6 +1,9 @@
 @import "@material/theme/variables";
 
 .SearchBarInput {
+  .search-bar-label {
+    cursor: text;
+  }
   .search-results {
     top: 30px;
     left: 0;

@@ -18,34 +18,40 @@ class LessonComment extends Component {
   }
 
   render() {
+    const study = get (this.props, "comment.study", null)
     const comment = get(this.props, "comment", {})
     const { edit, error, body } = this.state
     if (!edit) {
       return (
         <div
           id={`lesson_comment${moment(comment.createdAt).unix()}`}
-          className="LessonComment"
+          className="LessonComment mdc-card"
         >
-          <ul>
-            {comment.viewerDidAuthor &&
-            <li>
-              <span>Author</span>
-            </li>}
+          <HTML className="ph3" html={comment.bodyHTML} />
+          <div className="mdc-card__actions">
+            <div className="mdc-card__actions-buttons">
+              {comment.viewerDidAuthor &&
+                <button className="mdc-button mdc-button--outlined" disabled>Author</button>}
+            </div>
             {comment.viewerCanDelete &&
-            <li>
-              <button className="btn" type="button" onClick={this.handleDelete}>
-                Delete
+            <div className="mdc-card__actions-icons">
+              <button
+                className="material-icons mdc-icon-button mdc-card__action--icon"
+                type="button"
+                onClick={this.handleDelete}
+              >
+                delete
               </button>
-            </li>}
-          </ul>
-          <HTML className="LessonComment__bodyHTML" html={comment.bodyHTML} />
-          {comment.viewerCanUpdate &&
-          <button
-            className="LessonComment__edit"
-            onClick={this.handleToggleEdit}
-          >
-            Edit
-          </button>}
+            </div>}
+            {comment.viewerCanUpdate &&
+            <button
+              className="material-icons mdc-icon-button mdc-card__action--icon"
+              type="button"
+              onClick={this.handleToggleEdit}
+            >
+              edit
+            </button>}
+          </div>
         </div>
       )
     } else if (comment.viewerCanUpdate) {
@@ -53,9 +59,10 @@ class LessonComment extends Component {
         <form onSubmit={this.handleSubmit}>
           <RichTextEditor
             id="LessonComment__body"
-            onChange={this.handleChange}
             placeholder="Leave a comment"
             initialValue={body}
+            study={study}
+            onChange={this.handleChange}
           />
           <button type="submit">Update comment</button>
           <button onClick={this.handleToggleEdit}>Cancel</button>
@@ -103,6 +110,9 @@ export default createFragmentContainer(LessonComment, graphql`
     body
     bodyHTML
     publishedAt
+    study {
+      ...RichTextEditor_study
+    }
     updatedAt
     viewerCanDelete
     viewerCanUpdate

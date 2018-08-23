@@ -1,8 +1,10 @@
 .LessonHeader__show {
-  display: block;
+  display: flex;
+  align-items: center;
+  height: 72px;
 }
 
-.LessonHeader.open .LessonHeader__show {
+.LessonHeader.LessonHeader__open .LessonHeader__show {
   display: none;
 }
 
@@ -10,19 +12,7 @@
   display: none;
 }
 
-.LessonHeader.open .LessonHeader__edit {
-  display: block;
-}
-
-.LessonHeader__edit .edit-lesson-title {
-  width: 760px;
-  padding: 7px 10px;
-}
-
-.LessonHeader__actions {
-  float: right;
-}
-
-.LessonHeader__title {
-  word-wrap: break-word;
+.LessonHeader.LessonHeader__open .LessonHeader__edit {
+  display: flex;
+  align-items: end;
 }

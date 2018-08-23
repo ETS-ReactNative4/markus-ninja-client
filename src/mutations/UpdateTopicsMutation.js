@@ -3,7 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import { isNil } from 'utils'
+import { get, isNil } from 'utils'
 import { TOPICS_PER_PAGE } from 'consts'
 
 const mutation = graphql`
@@ -39,7 +39,9 @@ export default (topicableId, topicNames, callback) => {
       mutation,
       variables,
       onCompleted: (response, error) => {
-        callback(error)
+        const message = get(response, "updateTopics.message", null)
+        const invalidTopicNames = get(response, "updateTopics.invalidTopicNames", null)
+        callback(message, invalidTopicNames)
       },
       updater: proxyStore => {
         const updateTopicsField = proxyStore.getRootField("updateTopics")

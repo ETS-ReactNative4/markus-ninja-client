@@ -4,9 +4,12 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import Lesson from 'components/Lesson'
 import NotFound from 'components/NotFound'
-import { get, isNil } from 'utils'
+import LessonBody from 'components/LessonBody'
+import LessonHeader from 'components/LessonHeader'
+import LessonTimeline from 'components/LessonTimeline'
+import AddLessonCommentForm from 'components/AddLessonCommentForm'
+import { get } from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
 
@@ -14,7 +17,11 @@ const LessonPageQuery = graphql`
   query LessonPageQuery($owner: String!, $name: String!, $number: Int!, $count: Int!, $after: String, $filename: String!) {
     study(owner: $owner, name: $name) {
       lesson(number: $number) {
-        ...Lesson_lesson
+        id
+        ...LessonHeader_lesson
+        ...LessonBody_lesson
+        ...LessonTimeline_lesson
+        ...AddLessonCommentForm_lesson
       }
     }
   }
@@ -37,10 +44,20 @@ class LessonPage extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            if (isNil(get(props, "study.lesson", null))) {
+            const lesson = get(props, "study.lesson", null)
+
+            if (!lesson) {
               return <NotFound />
             }
-            return <Lesson lesson={props.study.lesson}></Lesson>
+
+            return (
+              <div className="LessonPage">
+                <LessonHeader lesson={lesson}/>
+                <LessonBody lesson={lesson}/>
+                <AddLessonCommentForm lesson={lesson} />
+                <LessonTimeline lesson={lesson} />
+              </div>
+            )
           }
           return <div>Loading</div>
         }}
