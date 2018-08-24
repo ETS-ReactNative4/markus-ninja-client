@@ -7425,6 +7425,10 @@ table@^4.0.1:
     slice-ansi "1.0.0"
     string-width "^2.1.1"
 
+tachyons-borders@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/tachyons-borders/-/tachyons-borders-3.0.4.tgz#4d52c19ad3bcb7817a5c1078a2eb9dfb0b3dc40f"
+
 tachyons-display@^5.0.4:
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/tachyons-display/-/tachyons-display-5.0.4.tgz#9ec6918b0695753b7c296c0a1275c8b214b25b9a"

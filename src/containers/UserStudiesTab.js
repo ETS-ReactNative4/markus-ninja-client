@@ -7,7 +7,7 @@ import cls from 'classnames'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
-import StudyPreview from 'components/StudyPreview.js'
+import UserStudyPreview from 'components/UserStudyPreview'
 import { get, isEmpty } from 'utils'
 import { STUDIES_PER_PAGE } from 'consts'
 
@@ -20,7 +20,8 @@ const UserStudiesTabQuery = graphql`
         @connection(key: "UserStudiesTab_studies", filters: []) {
         edges {
           node {
-            ...StudyPreview_study
+            id
+            ...UserStudyPreview_study
           }
         }
       }
@@ -29,6 +30,11 @@ const UserStudiesTabQuery = graphql`
 `
 
 class UserStudiesTab extends Component {
+  get classes() {
+    const {className} = this.props
+    return cls("UserStudiesTab", className)
+  }
+
   render() {
     const { match } = this.props
     return (
@@ -43,11 +49,10 @@ class UserStudiesTab extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            const { className } = this.props
             const studyEdges = get(props, "user.studies.edges", [])
             if (isEmpty(studyEdges)) {
               return (
-                <div className={cls("UserStudiesTab", className)}>
+                <div className={this.classes}>
                   {props.user.isViewer
                   ? <Link to="/new">Create a study to get started</Link>
                   : <span>This user has not created and studies yet.</span>}
@@ -55,9 +60,9 @@ class UserStudiesTab extends Component {
               )
             }
             return (
-              <div className={cls("UserStudiesTab", className)}>
+              <div className={this.classes}>
                 {studyEdges.map(({node}) => (
-                  <StudyPreview key={node.__id} study={node} />
+                  <UserStudyPreview className="bb pv2" key={node.id} study={node} />
                 ))}
               </div>
             )

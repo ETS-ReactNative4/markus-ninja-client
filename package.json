@@ -41,6 +41,7 @@
     "react-scripts": "1.1.4",
     "relay-runtime": "^1.6.2",
     "shortid": "^2.2.13",
+    "tachyons-borders": "^3.0.4",
     "tachyons-hovers": "^2.5.1",
     "webfontloader": "^1.6.28"
   },
