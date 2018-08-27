@@ -5,7 +5,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
-import StudyPreview from 'components/StudyPreview'
+import ResearchStudyPreview from 'components/ResearchStudyPreview'
 import TopicPreview from 'components/TopicPreview'
 import { get } from 'utils'
 
@@ -16,7 +16,7 @@ const ResearchPageQuery = graphql`
         node {
           id
           ...on Study {
-            ...StudyPreview_study
+            ...ResearchStudyPreview_study
           }
         }
       }
@@ -49,12 +49,18 @@ class ResearchPage extends Component {
             return (
               <div>
                 <h2>Popular studies</h2>
-                {popularStudyEdges.map(({node}) => (
-                  <StudyPreview key={node.__id} study={node} />
-                ))}
+                <div className="mdc-layout-grid">
+                  <div className="mdc-layout-grid__inner">
+                    {popularStudyEdges.map(({node}) => (
+                      <div key={node.id} className="mdc-layout-grid__cell">
+                        <ResearchStudyPreview className="mdc-card pa3 h-100" study={node} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 <h2>Popular topics</h2>
                 {popularTopicEdges.map(({node}) => (
-                  <TopicPreview key={node.__id} topic={node} />
+                  <TopicPreview key={node.id} topic={node} />
                 ))}
               </div>
             )

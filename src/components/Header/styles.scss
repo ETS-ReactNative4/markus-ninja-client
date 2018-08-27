@@ -1,12 +1,19 @@
 @import "@material/theme/variables";
 
+.SearchBar {
+  height: 100%;
+}
+
 .SearchBarInput {
-  .search-bar-label {
-    cursor: text;
-  }
-  .search-results {
-    top: 30px;
+  position: relative;
+  height: 100%;
+
+  .SearchBarInput__results {
+    position: absolute;
+    top: 100%;
     left: 0;
+    width: 100%;
+    overflow: hidden;
     background-color: $mdc-theme-background;
     border: 1px solid $mdc-theme-primary;
   }

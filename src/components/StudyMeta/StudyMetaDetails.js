@@ -11,10 +11,19 @@ import { get, isNil } from 'utils'
 import cls from 'classnames'
 
 class StudyMetaDetails extends Component {
-  state = {
-    error: null,
-    description: this.props.study.description,
-    open: false,
+  constructor(props) {
+    super(props)
+
+    const description = get(this.props, "study.description", "")
+
+    this.state = {
+      error: null,
+      description,
+      initialValues: {
+        description,
+      },
+      open: false,
+    }
   }
 
   handleChange = (e) => {
@@ -44,6 +53,15 @@ class StudyMetaDetails extends Component {
 
     this.setState({ open })
     this.props.onOpen(open)
+
+    this.reset_()
+  }
+
+  reset_ = () => {
+    this.setState({
+      error: null,
+      ...this.state.initialValues,
+    })
   }
 
   get classes() {

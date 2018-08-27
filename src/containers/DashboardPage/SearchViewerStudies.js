@@ -1,11 +1,11 @@
 import * as React from 'react'
 import {
-  createRefetchContainer,
+  createFragmentContainer,
   graphql,
 } from 'react-relay'
-import Edge from 'components/Edge'
 import { Link } from 'react-router-dom'
-import StudyLink from './StudyLink.js'
+import StudyLink from 'components/StudyLink.js'
+import SearchUserStudiesInput from 'components/SearchUserStudiesInput'
 import { debounce, get, isNil, isEmpty } from 'utils'
 import { SEARCH_BAR_RESULTS_PER_PAGE } from 'consts'
 
@@ -14,6 +14,7 @@ class SearchViewerStudies extends React.Component {
     error: null,
     loading: false,
     q: "",
+    studyEdges: [],
   }
 
   handleChange = (e) => {
@@ -52,6 +53,7 @@ class SearchViewerStudies extends React.Component {
         count: SEARCH_BAR_RESULTS_PER_PAGE,
         after,
         query: isEmpty(query) ? "*" : query,
+        within: get(this.props, "viewer.id"),
       },
       null,
       (error) => {
@@ -65,8 +67,7 @@ class SearchViewerStudies extends React.Component {
   }, 300)
 
   render() {
-    const { q } = this.state
-    const studyEdges = get(this.props, "query.search.edges", [])
+    const {studyEdges} = this.state
 
     return (
       <div className="SearchViewerStudies mdc-list mdc-list--non-interactive">
@@ -78,22 +79,22 @@ class SearchViewerStudies extends React.Component {
           </div>
         </div>
         <div className="mdc-list-item">
-          <input
-            id="studies-query"
-            className="w-100"
-            autoComplete="off"
-            type="text"
-            name="q"
-            placeholder="Find a study..."
-            value={q}
-            onChange={this.handleChange}
+          <SearchUserStudiesInput
+            query={this.props.query}
+            user={get(this.props, "viewer", null)}
+            onQueryComplete={(studyEdges) => this.setState({ studyEdges })}
           />
         </div>
         <div className="mdc-list">
           {studyEdges.map((edge) => (
-            <Edge key={get(edge, "node.id", "")} edge={edge} render={({node}) =>
-              <StudyLink withOwner className="mdc-list-item" study={node} />}
-            />
+            edge
+            ? <StudyLink
+                key={get(edge, "node.id", "")}
+                withOwner
+                className="mdc-list-item"
+                study={get(edge, "node", null)}
+              />
+            : null
           ))}
         </div>
         {this._hasMore() &&
@@ -108,33 +109,8 @@ class SearchViewerStudies extends React.Component {
   }
 }
 
-export default createRefetchContainer(SearchViewerStudies,
-  {
-    query: graphql`
-      fragment SearchViewerStudies_query on Query
-      @argumentDefinitions(count: {type: "Int!"}, after: {type: "String"}, query: {type: "String!"}) {
-        search(first: $count, after: $after, query: $query, type: STUDY)
-        @connection(key: "SearchViewerStudies_search", filters: []) {
-          edges {
-            cursor
-            node {
-              id
-              ...on Study {
-                ...StudyLink_study
-              }
-            }
-          }
-          pageInfo {
-            hasNextPage
-            endCursor
-          }
-        }
-      }
-    `,
-  },
-  graphql`
-    query SearchViewerStudiesRefetchQuery ($count: Int!, $after: String, $query: String!) {
-      ...SearchViewerStudies_query @arguments(count: $count, after: $after, query: $query)
-    }
-  `,
-)
+export default createFragmentContainer(SearchViewerStudies, graphql`
+  fragment SearchViewerStudies_viewer on User {
+    ...SearchUserStudiesInput_user
+  }
+`)

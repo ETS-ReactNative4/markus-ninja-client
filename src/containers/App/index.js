@@ -31,6 +31,7 @@ const AppQuery = graphql`
     viewer {
       id
       ...Header_viewer
+      ...HomePage_viewer
       ...CreateStudyPage_user
     }
   }
@@ -57,7 +58,7 @@ class App extends Component {
                       <div className="mdc-top-app-bar--fixed-adjust mdc-theme--text-primary-on-light">
                         <div className="rn-page">
                           <Switch>
-                            <Route exact path="/" component={HomePage} />
+                            <Route exact path="/" render={(routeProps) => <HomePage viewer={props.viewer} {...routeProps} />} />
                             <PrivateRoute
                               exact
                               path="/new"

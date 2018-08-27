@@ -6,27 +6,36 @@
   text-decoration: none;
   transition: color $rn-link-transition-duration;
 
-  &.rn-link__on-primary {
+  &.rn-link--on-primary {
     color: $mdc-theme-on-primary;
 
     &:hover {
       color: var(--mdc-theme-text-secondary-on-dark);
+      text-decoration: underline;
     }
   }
 
-  &.rn-link__on-secondary {
+  &.rn-link--on-secondary {
     color: $mdc-theme-on-secondary;
 
     &:hover {
       color: var(--mdc-theme-text-secondary-on-dark);
+      text-decoration: underline;
     }
   }
 
-  &.rn-link__on-surface {
+  &.rn-link--on-surface {
     color: $mdc-theme-on-surface;
 
     &:hover {
       color: var(--mdc-theme-text-secondary-on-light);
+      text-decoration: underline;
+    }
+  }
+
+  &.rn-link--undecorated {
+    &:hover {
+      text-decoration: none;
     }
   }
 }

@@ -32,9 +32,9 @@ class UserStudyPreview extends Component {
     const topicNodes = get(study, "topics.nodes", [])
     return (
       <div className={this.classes}>
-        <StudyLink className="mdc-typography--headline5" study={study} />
+        <StudyLink className="rn-link rn-link--on-surface mdc-typography--headline5" study={study} />
         <HTML html={study.descriptionHTML} />
-        <div className="flex">
+        <div className="flex mv2">
           {topicNodes.map((node = {}) =>
           <Link
             className="mdc-button mdc-button--outlined mr1 mb1"

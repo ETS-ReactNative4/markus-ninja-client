@@ -14,11 +14,17 @@ import { TOPICS_PER_PAGE } from 'consts'
 class StudyMetaTopics extends Component {
   constructor(props) {
     super(props)
+
     const topicEdges = get(props, "study.topics.edges", [])
+    const topics = topicEdges.map(edge => get(edge, "node.name")).join(" ")
+
     this.state = {
       error: null,
       invalidTopicNames: null,
-      topics: topicEdges.map(edge => get(edge, "node.name")).join(" "),
+      initialValues: {
+        topics,
+      },
+      topics,
       open: false,
     }
   }
@@ -51,6 +57,8 @@ class StudyMetaTopics extends Component {
 
     this.setState({ open, error: null })
     this.props.onOpen(open)
+
+    this.reset_()
   }
 
   _loadMore = () => {
@@ -64,6 +72,14 @@ class StudyMetaTopics extends Component {
     }
 
     relay.loadMore(TOPICS_PER_PAGE)
+  }
+
+  reset_ = () => {
+    this.setState({
+      error: null,
+      invalidTopicNames: null,
+      ...this.state.initialValues,
+    })
   }
 
   get classes() {
@@ -118,7 +134,6 @@ class StudyMetaTopics extends Component {
                 name="topics"
                 value={topics}
                 onChange={this.handleChange}
-                invalid
               />
             </TextField>
           </div>

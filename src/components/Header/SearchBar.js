@@ -1,4 +1,5 @@
 import * as React from 'react'
+import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
@@ -18,6 +19,11 @@ const SearchBarQuery = graphql`
 `
 
 class SearchBar extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("SearchBar", className)
+  }
+
   render() {
     return (
       <QueryRenderer
@@ -34,7 +40,7 @@ class SearchBar extends React.Component {
             return <div>{error.message}</div>
           }
           return (
-            <div className="SearchBar relative mh3">
+            <div className={this.classes}>
               <SearchBarInput query={props} />
             </div>
           )

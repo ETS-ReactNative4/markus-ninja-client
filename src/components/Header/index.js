@@ -27,7 +27,7 @@ class Header extends Component {
             >
               home
             </IconLink>
-            <SearchBar />
+            <SearchBar className="mh2" />
             <IconLink
               className="mdc-top-app-bar__action-item"
               to="/research"
@@ -40,9 +40,9 @@ class Header extends Component {
           <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
             {!authenticated &&
             <div className="mdc-top-app-bar__title">
-              <LoginLink className="rn-link rn-link__on-primary" aria-label="Sign in">Sign in</LoginLink>
+              <LoginLink className="rn-link rn-link--undecorated rn-link--on-primary" aria-label="Sign in">Sign in</LoginLink>
               <span className="mdc-theme--text-hint-on-dark"> or </span>
-              <Link className="rn-link rn-link__on-primary" to="/signup" aria-label="Sign up">Sign up</Link>
+              <Link className="rn-link rn-link--undecorated rn-link--on-primary" to="/signup" aria-label="Sign up">Sign up</Link>
             </div>}
             {authenticated &&
             <div className="mdc-top-app-bar__title">

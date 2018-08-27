@@ -149,6 +149,10 @@ class SearchBarInput extends React.Component {
     )
   }, 300)
 
+  get classes() {
+    const {className} = this.props
+    return cls("SearchBarInput", className)
+  }
 
   render() {
     const { cursor, q, loading, focus } = this.state
@@ -160,81 +164,79 @@ class SearchBarInput extends React.Component {
     return (
       <div
         ref={node => this.node = node}
-        className="SearchBarInput"
+        className={this.classes}
         onBlur={this.handleBlur}
       >
         <form ref={node => this.form_ = node} action="/search" acceptCharset="utf8" method="get">
-          <label htmlFor="search-bar-input" className="search-bar-label relative">
-            <div className="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon mt2">
-              <input
-                id="search-bar-input"
-                className="mdc-text-field__input"
-                autoComplete="off"
-                type="text"
-                name="q"
-                placeholder="Search..."
-                value={q}
-                onChange={this.handleChange}
-                onFocus={() => this.setState({ focus: true, skip: false })}
-              />
-              <div className="mdc-notched-outline mdc-theme--background z-behind">
-                <svg>
-                  <path className="mdc-notched-outline__path"></path>
-                </svg>
-              </div>
-              <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
-              <i
-                className="material-icons mdc-text-field__icon"
-                tabIndex="0"
-                role="button"
-                onClick={() => this.form_.submit()}
-                onKeyDown={this.handleSearchIconKeyDown}
-              >
-                search
-              </i>
+          <div className="mdc-text-field mdc-text-field--outlined mdc-text-field--inline mdc-text-field--with-trailing-icon">
+            <input
+              id="search-bar-input"
+              className="mdc-text-field__input"
+              autoComplete="off"
+              type="text"
+              name="q"
+              placeholder="Search..."
+              value={q}
+              onChange={this.handleChange}
+              onFocus={() => this.setState({ focus: true, skip: false })}
+            />
+            <div className="mdc-notched-outline mdc-theme--background z-behind">
+              <svg>
+                <path className="mdc-notched-outline__path"></path>
+              </svg>
             </div>
-            <div className={cls("search-results absolute overflow-hidden w-100", {dn: !focus})}>
-              {loading && searchEdges.length < 1
-              // eslint-disable-next-line jsx-a11y/role-supports-aria-props
-              ? <div className="mdc-list mdc-list--non-interactive" aria-orientation="vertical">
-                  <div className="mdc-list-item">Loading...</div>
-                </div>
-              // eslint-disable-next-line jsx-a11y/role-supports-aria-props
-              : searchEdges.length > 0
-                ? <div className="mdc-list" aria-orientation="vertical">
-                    {isStudyPath &&
-                      <SearchBarResult
-                        id="search-bar-this-study"
-                        selected={cursor === 0}
-                        as={Link}
-                        to={{
-                          pathname: studyPath.url + "/search",
-                          search: queryString.stringify({ q }),
-                        }}
-                        onMouseEnter={this.handleMouseEnter}
-                        onClick={() => this.setState({ focus: false })}
-                      >
-                        Search this study...
-                      </SearchBarResult>}
-                    {searchEdges.map((edge, i) =>
-                      <Edge key={get(edge, "node.id", "")} edge={edge} render={({ node }) =>
-                        <SearchBarResult
-                          id={node.id}
-                          selected={cursor === i+1}
-                          as={StudyLink}
-                          withOwner
-                          study={node}
-                          onMouseEnter={this.handleMouseEnter}
-                          onClick={() => this.setState({ focus: false })}
-                        />
-                      }/>)}
-                  </div>
-                : <div className="mdc-list mdc-list--non-interactive" aria-orientation="vertical">
-                    <div className="mdc-list-item">No results found...</div>
-                  </div>}
-            </div>
-          </label>
+            <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
+            <i
+              className="material-icons mdc-text-field__icon"
+              tabIndex="0"
+              role="button"
+              onClick={() => this.form_.submit()}
+              onKeyDown={this.handleSearchIconKeyDown}
+            >
+              search
+            </i>
+          </div>
         </form>
+        <div className={cls("SearchBarInput__results", {dn: !focus})}>
+          {loading && searchEdges.length < 1
+          // eslint-disable-next-line jsx-a11y/role-supports-aria-props
+          ? <div className="mdc-list mdc-list--non-interactive" aria-orientation="vertical">
+              <div className="mdc-list-item">Loading...</div>
+            </div>
+          // eslint-disable-next-line jsx-a11y/role-supports-aria-props
+          : searchEdges.length > 0
+            ? <div className="mdc-list" aria-orientation="vertical">
+                {isStudyPath &&
+                  <SearchBarResult
+                    id="search-bar-this-study"
+                    selected={cursor === 0}
+                    as={Link}
+                    to={{
+                      pathname: studyPath.url + "/search",
+                      search: queryString.stringify({ q }),
+                    }}
+                    onMouseEnter={this.handleMouseEnter}
+                    onClick={() => this.setState({ focus: false })}
+                  >
+                    Search this study...
+                  </SearchBarResult>}
+                {searchEdges.map((edge, i) =>
+                  <Edge key={get(edge, "node.id", "")} edge={edge} render={({ node }) =>
+                    <SearchBarResult
+                      id={node.id}
+                      selected={cursor === i+1}
+                      as={StudyLink}
+                      withOwner
+                      study={node}
+                      onMouseEnter={this.handleMouseEnter}
+                      onClick={() => this.setState({ focus: false })}
+                    />
+                  }/>)}
+              </div>
+            : <div className="mdc-list mdc-list--non-interactive" aria-orientation="vertical">
+                <div className="mdc-list-item">No results found...</div>
+              </div>}
+        </div>
       </div>
     )
   }

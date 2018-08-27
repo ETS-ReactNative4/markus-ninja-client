@@ -23,6 +23,7 @@ const UserPageQuery = graphql`
       ...User_user
       ...UserTabs_user
       ...UserOverviewTab_user
+      ...UserStudiesTab_user
     }
   }
 `

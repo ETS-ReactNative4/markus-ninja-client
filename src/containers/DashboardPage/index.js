@@ -1,24 +1,20 @@
 import React, {Component} from 'react'
 import {
+  createFragmentContainer,
   QueryRenderer,
   graphql,
 } from 'react-relay'
 import cls from 'classnames'
 import environment from 'Environment'
-import { isNil } from 'utils'
 import UserLink from 'components/UserLink'
-import NotFound from 'components/NotFound'
-import SearchViewerStudies from 'components/SearchViewerStudies'
+import SearchViewerStudies from './SearchViewerStudies'
+import { get } from 'utils'
 
 import { SEARCH_BAR_RESULTS_PER_PAGE } from 'consts'
 
 const DashboardPageQuery = graphql`
-  query DashboardPageQuery($count: Int!, $after: String, $query: String!) {
-    ...SearchViewerStudies_query @arguments(count: $count, after: $after, query: $query)
-    viewer {
-      id
-      ...UserLink_user
-    }
+  query DashboardPageQuery($count: Int!, $after: String, $query: String!, $within: ID!) {
+    ...SearchUserStudiesInput_query @arguments(count: $count, after: $after, query: $query, within: $within)
   }
 `
 
@@ -31,14 +27,12 @@ class DashboardPage extends Component {
         variables={{
           count: SEARCH_BAR_RESULTS_PER_PAGE,
           query: "*",
+          within: get(this.props, "viewer.id"),
         }}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            if (isNil(props.viewer)) {
-              return <NotFound />
-            }
             return (
               <div className="DashboardPage inline-flex">
                 <aside className="mdc-drawer mdc-drawer--permanent">
@@ -46,9 +40,9 @@ class DashboardPage extends Component {
                     <nav className="mdc-drawer__content">
                       <div className="mdc-list mdc-list--non-interactive">
                         <div className="mdc-list-item">
-                          <UserLink className="mdc-typography--headline5" user={props.viewer} />
+                          <UserLink className="mdc-typography--headline5" user={this.props.viewer} />
                         </div>
-                        <SearchViewerStudies query={props} />
+                        <SearchViewerStudies query={props} viewer={this.props.viewer} />
                       </div>
                     </nav>
                   </nav>
@@ -87,4 +81,10 @@ class DashboardPage extends Component {
   }
 }
 
-export default DashboardPage
+export default createFragmentContainer(DashboardPage, graphql`
+  fragment DashboardPage_viewer on User {
+    id
+    ...UserLink_user
+    ...SearchViewerStudies_viewer
+  }
+`)
