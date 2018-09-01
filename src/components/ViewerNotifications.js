@@ -9,6 +9,19 @@ import { get, groupBy, isEmpty } from 'utils'
 import { NOTIFICATIONS_PER_PAGE } from 'consts'
 
 class ViewerNotifications extends Component {
+  _loadMore = () => {
+    const relay = get(this.props, "relay")
+    if (!relay.hasMore()) {
+      console.log("Nothing more to load")
+      return
+    } else if (relay.isLoading()){
+      console.log("Request is already pending")
+      return
+    }
+
+    relay.loadMore(NOTIFICATIONS_PER_PAGE)
+  }
+
   render() {
     const notificationEdges = get(this.props, "viewer.notifications.edges", [])
     const notificationsByStudy = groupBy(notificationEdges, "node.study.id")
@@ -25,35 +38,27 @@ class ViewerNotifications extends Component {
       <div className="ViewerNotifications">
         <div className="ViewerNotifications__notifications">
           {Object.keys(notificationsByStudy).map(key =>
-            <div key={key}>
-              {get(notificationsByStudy[key][0], "node.study.nameWithOwner", "")}
-              {notificationsByStudy[key].map(({node}) => (
-                <Notification key={node.id} notification={node} />
-              ))}
+            <div className="mdc-card">
+              <div className="mdc-typography--headline5 pa3">
+                {get(notificationsByStudy[key][0], "node.study.nameWithOwner", "")}
+              </div>
+              <div key={key} className="mdc-list">
+                {notificationsByStudy[key].map(({node}) => (
+                  <Notification key={node.id} className="mdc-list-item" notification={node} />
+                ))}
+              </div>
             </div>
           )}
+          {this.props.relay.hasMore() &&
           <button
             className="ViewerNotifications__more"
             onClick={this._loadMore}
           >
             More
-          </button>
+          </button>}
         </div>
       </div>
     )
-  }
-
-  _loadMore = () => {
-    const relay = get(this.props, "relay")
-    if (!relay.hasMore()) {
-      console.log("Nothing more to load")
-      return
-    } else if (relay.isLoading()){
-      console.log("Request is already pending")
-      return
-    }
-
-    relay.loadMore(NOTIFICATIONS_PER_PAGE)
   }
 }
 

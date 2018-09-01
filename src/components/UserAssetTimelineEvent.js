@@ -1,14 +1,11 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { get } from 'utils'
-import CommentedEvent from './CommentedEvent'
-import ReferencedEvent from './ReferencedEvent'
+import ReferencedEvent from 'components/ReferencedEvent'
 
-class UserAssetTimelineEvent extends Component {
+class UserAssetTimelineEvent extends React.Component {
   render() {
     const item = get(this.props, "item", {})
     switch(item.__typename) {
-      case "CommentedEvent":
-        return <CommentedEvent event={item} />
       case "ReferencedEvent":
         return <ReferencedEvent event={item} />
       default:

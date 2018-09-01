@@ -159,7 +159,10 @@ class SearchBarInput extends React.Component {
     const pathname = get(this.props, "location.pathname", "")
     const searchEdges = get(this.props, "query.search.edges", [])
     const studyPath = matchPath(pathname, { path: '/:owner/:name' })
-    const isStudyPath = studyPath && studyPath.params.owner !== 'topics'
+    const isStudyPath =
+      studyPath &&
+      studyPath.params.owner !== 'topics' &&
+      studyPath.params.owner !== 'settings'
 
     return (
       <div

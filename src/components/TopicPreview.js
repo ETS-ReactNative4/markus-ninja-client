@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -7,15 +8,18 @@ import { Link } from 'react-router-dom'
 import { get } from 'utils'
 
 class TopicPreview extends Component {
+  get classes() {
+    const {className} = this.props
+    return cls("TopicPreview flex flex-column items-center", className)
+  }
+
   render() {
     const topic = get(this.props, "topic", {})
     return (
-      <div>
-        <Link to={topic.resourcePath}>
-          <span>{topic.name}</span>
-          <div>{topic.description}</div>
-        </Link>
-      </div>
+      <Link className={this.classes} to={topic.resourcePath}>
+        <div className="mdc-typography--headline5">{topic.name}</div>
+        <div>{topic.description}</div>
+      </Link>
     )
   }
 }

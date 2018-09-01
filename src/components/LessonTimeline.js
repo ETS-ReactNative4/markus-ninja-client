@@ -55,8 +55,8 @@ export default withRouter(createPaginationContainer(LessonTimeline,
             node {
               __typename
               id
-              ...on CommentedEvent {
-                ...CommentedEvent_event
+              ...on LessonComment {
+                ...LessonComment_comment
               }
               ...on ReferencedEvent {
                 ...ReferencedEvent_event

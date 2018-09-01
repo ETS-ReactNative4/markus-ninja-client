@@ -24,7 +24,9 @@ class UserActivity extends Component {
       <div className="UserActivity">
         <h3>Recent activity</h3>
         {activityEdges.map(({node}) => (
-          <UserActivityEvent key={node.id} event={node} />
+          node
+          ? <UserActivityEvent key={node.id} event={node} />
+          : null
         ))}
         {this.props.relay.hasMore() &&
         <button

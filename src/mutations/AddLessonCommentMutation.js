@@ -9,16 +9,10 @@ import { get, isNil } from 'utils'
 const mutation = graphql`
   mutation AddLessonCommentMutation($input: AddLessonCommentInput!, $filename: String!) {
     addLessonComment(input: $input) {
-      lessonTimelineEdge {
+      commentEdge {
         node {
-          __typename
           id
-          ...on CommentedEvent {
-            ...CommentedEvent_event
-          }
-          ...on ReferencedEvent {
-            ...ReferencedEvent_event
-          }
+          ...LessonComment_comment
         }
       }
     }
@@ -27,10 +21,10 @@ const mutation = graphql`
 
 export default (lessonId, body, callback) => {
   const variables = {
+    filename: "",
     input: {
       body,
       lessonId,
-      filename: "",
     },
   }
 
@@ -47,13 +41,13 @@ export default (lessonId, body, callback) => {
             lesson,
             "LessonTimeline_timeline",
           )
-          const edge = addLessonCommentField.getLinkedRecord("lessonTimelineEdge")
+          const edge = addLessonCommentField.getLinkedRecord("commentEdge")
 
           ConnectionHandler.insertEdgeBefore(timeline, edge)
         }
       },
       onCompleted: (response, error) => {
-        const lessonComment = get(response, "addLessonComment.lessonCommentEdge.node")
+        const lessonComment = get(response, "addLessonComment.commentEdge.node")
         callback(lessonComment, error)
       },
       onError: err => console.error(err),

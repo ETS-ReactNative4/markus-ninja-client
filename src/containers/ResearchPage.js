@@ -59,9 +59,17 @@ class ResearchPage extends Component {
                   </div>
                 </div>
                 <h2>Popular topics</h2>
-                {popularTopicEdges.map(({node}) => (
-                  <TopicPreview key={node.id} topic={node} />
-                ))}
+                <div className="mdc-layout-grid">
+                  <div className="mdc-layout-grid__inner">
+                    {popularTopicEdges.map(({node}) => (
+                      <div key={node.id} className="mdc-layout-grid__cell">
+                        <div className="mdc-card">
+                          <TopicPreview className="mdc-card__primary-action pa3 h-100" key={node.id} topic={node} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             )
           }

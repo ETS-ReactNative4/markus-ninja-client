@@ -55,9 +55,6 @@ export default withRouter(createPaginationContainer(UserAssetTimeline,
             node {
               __typename
               id
-              ...on CommentedEvent {
-                ...CommentedEvent_event
-              }
               ...on ReferencedEvent {
                 ...ReferencedEvent_event
               }

@@ -1,40 +1,15 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import { get } from 'utils'
-import CommentedNotification from './CommentedNotification'
-import CreatedNotification from './CreatedNotification'
 import MarkNotificationAsReadMutation from 'mutations/MarkNotificationAsReadMutation'
-import { isNil } from 'utils'
+import { isNil, timeDifferenceForDate } from 'utils'
 
-class Notification extends Component {
-  render() {
-    const event = get(this.props, "notification.event", null)
-    switch(event.__typename) {
-      case "CommentedEvent":
-        return (
-          <CommentedNotification
-            onClick={this.handleClick(get(this.props, "notification.id"))}
-            event={event}
-            value={get(this.props, "notification.id")}
-          />
-        )
-      case "CreatedEvent":
-        return (
-          <CreatedNotification
-            onClick={this.handleClick(get(this.props, "notification.id"))}
-            event={event}
-            value={get(this.props, "notification.id")}
-          />
-        )
-      default:
-        return null
-    }
-  }
-
+class Notification extends React.Component {
   handleClick = (notificationId) => (e) => {
     MarkNotificationAsReadMutation(
       notificationId,
@@ -42,8 +17,25 @@ class Notification extends Component {
         if (!isNil(error)) {
           console.error(error)
         }
-        this.props.history.push(get(this.props, "notification.event.resourcePath", "."))
+        this.props.history.push(get(this.props, "notification.subject.resourcePath", "."))
       },
+    )
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("Notification", className)
+  }
+
+  render() {
+    const notification = get(this.props, "notification", {})
+    const subject = get(this.props, "notification.subject", {})
+
+    return (
+      <div className={this.classes} onClick={this.handleClick}>
+        {subject.title}
+        {timeDifferenceForDate(notification.createdAt)}
+      </div>
     )
   }
 }
@@ -52,16 +44,9 @@ export default withRouter(createFragmentContainer(Notification, graphql`
   fragment Notification_notification on Notification {
     id
     createdAt
-    event {
-      __typename
-      ...CommentedNotification_event
-      ...CreatedNotification_event
+    subject {
+      title
       resourcePath
-      url
-    }
-    reason
-    user {
-      ...UserLink_user
     }
   }
 `))

@@ -24,6 +24,7 @@ const mutation = graphql`
       study {
         id
         advancedAt
+        lessonCount
       }
     }
   }
@@ -49,9 +50,11 @@ export default (studyId, title, body, courseId, callback) => {
         if (!isNil(createLessonField)) {
           const lessonStudy = createLessonField.getLinkedRecord('study')
           const studyAdvancedAt = lessonStudy.getValue('advancedAt')
+          const studyLessonCount = lessonStudy.getValue('lessonCount')
 
           const study = proxyStore.get(studyId)
           study.setValue(studyAdvancedAt, 'advancedAt')
+          study.setValue(studyLessonCount, 'lessonCount')
 
           if (!isNil(courseId)) {
             const lessonEdge = createLessonField.getLinkedRecord('lessonEdge')
