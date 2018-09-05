@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
 import { Link, withRouter } from 'react-router-dom'
+import MediaQuery from 'react-responsive'
 import IconLink from 'components/IconLink'
 import { isAuthenticated } from 'auth'
 import LoginLink from 'components/LoginLink'
@@ -13,10 +15,23 @@ import { get } from 'utils'
 import './styles.css'
 
 class Header extends Component {
+  state = {
+    open: false,
+  }
+
+  get classes() {
+    const {className} = this.props
+    const {open} = this.state
+    return cls("Header mdc-top-app-bar mdc-top-app-bar--fixed", className, {
+      open,
+    })
+  }
+
   render() {
     const authenticated = isAuthenticated()
+    const {open} = this.state
     return (
-      <header className="Header mdc-top-app-bar mdc-top-app-bar--fixed">
+      <header className={this.classes}>
         <div className="mdc-top-app-bar__row">
           <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
             <IconLink
@@ -27,7 +42,19 @@ class Header extends Component {
             >
               home
             </IconLink>
-            <SearchBar className="mh2" />
+            <MediaQuery query="(max-width: 674px)">
+              <div
+                className="material-icons mdc-top-app-bar__action-item"
+                aria-label="Search"
+                title="Search"
+                onClick={() => this.setState({open: !open})}
+              >
+                search
+              </div>
+            </MediaQuery>
+            <MediaQuery query="(min-width: 675px)">
+              <SearchBar className="mh2" />
+            </MediaQuery>
             <IconLink
               className="mdc-top-app-bar__action-item"
               to="/research"
@@ -89,6 +116,13 @@ class Header extends Component {
             </div>}
           </section>
         </div>
+        <MediaQuery query="(max-width: 479px)">
+          <div className="Header__search-row">
+            <div className="mdc-top-app-bar__row">
+              <SearchBar className="w-100 mh2" />
+            </div>
+          </div>
+        </MediaQuery>
       </header>
     )
   }

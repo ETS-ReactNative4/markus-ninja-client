@@ -1,0 +1,12 @@
+@import "./variables";
+
+.rn-divider {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+  border: none;
+  border-top-color: $rn-divider-border-color;
+  border-top-style: $rn-divider-border-style;
+  border-top-width: $rn-divider-border-width;
+  margin: 0;
+}

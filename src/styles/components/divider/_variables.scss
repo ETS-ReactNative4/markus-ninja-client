@@ -1,0 +1,5 @@
+@import "@material/theme/variables";
+
+$rn-divider-border-color: rgba(mdc-theme-prop-value(on-surface), .12); 
+$rn-divider-border-style: solid; 
+$rn-divider-border-width: 1px !default;

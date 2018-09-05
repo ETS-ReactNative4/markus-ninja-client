@@ -1,28 +1,41 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import { Link } from 'react-router-dom'
-import CoursePreview from './CoursePreview.js'
+import CoursePreview from 'components/CoursePreview.js'
+import StudyCoursesLanding from './StudyCoursesLanding'
 import { get } from 'utils'
 
 import { LESSONS_PER_PAGE } from 'consts'
 
-class StudyCourses extends Component {
+class StudyCourses extends React.Component {
+  _loadMore = () => {
+    const relay = get(this.props, "relay")
+    if (!relay.hasMore()) {
+      console.log("Nothing more to load")
+      return
+    } else if (relay.isLoading()){
+      console.log("Request is already pending")
+      return
+    }
+
+    relay.loadMore(LESSONS_PER_PAGE)
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("StudyCourse", className)
+  }
+
   render() {
     const courseEdges = get(this.props, "study.courses.edges", [])
-    const resourcePath = get(this.props, "study.resourcePath", "")
     return (
-      <div>
+      <div className={this.classes}>
         {
           courseEdges.length < 1 ? (
-            <Link
-              className="StudyCourses__new-course"
-              to={resourcePath + "/courses/new"}
-            >
-              Create a course
-            </Link>
+            <StudyCoursesLanding study={get(this.props, "study", null)} />
           ) : (
             <div className="StudyCourses__courses">
               {courseEdges.map(({node}) => (
@@ -41,26 +54,13 @@ class StudyCourses extends Component {
       </div>
     )
   }
-
-  _loadMore = () => {
-    const relay = get(this.props, "relay")
-    if (!relay.hasMore()) {
-      console.log("Nothing more to load")
-      return
-    } else if (relay.isLoading()){
-      console.log("Request is already pending")
-      return
-    }
-
-    relay.loadMore(LESSONS_PER_PAGE)
-  }
 }
 
 export default createPaginationContainer(StudyCourses,
   {
     study: graphql`
       fragment StudyCourses_study on Study {
-        resourcePath
+        ...StudyCoursesLanding_study
         courses(
           first: $count,
           after: $after,

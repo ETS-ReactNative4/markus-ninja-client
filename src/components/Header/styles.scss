@@ -1,5 +1,15 @@
 @import "@material/theme/variables";
 
+.Header__search-row {
+  display: none;
+}
+
+.Header.open {
+  .Header__search-row {
+    display: block;
+  }
+}
+
 .SearchBar {
   height: 100%;
 }

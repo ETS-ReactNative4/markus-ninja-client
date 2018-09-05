@@ -26,7 +26,7 @@ class EnrollmentSelect extends React.Component {
       <div
         className={cls(
           "EnrollmentSelect rn-select-button",
-          { "select-button-disabled": disabled },
+          { "rn-select-button--disabled": disabled },
         )}
       >
         <select

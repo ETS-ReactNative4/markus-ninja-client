@@ -171,7 +171,7 @@ class SearchBarInput extends React.Component {
         onBlur={this.handleBlur}
       >
         <form ref={node => this.form_ = node} action="/search" acceptCharset="utf8" method="get">
-          <div className="mdc-text-field mdc-text-field--outlined mdc-text-field--inline mdc-text-field--with-trailing-icon">
+          <div className="mdc-text-field mdc-text-field--outlined mdc-text-field--inline mdc-text-field--with-trailing-icon w-100">
             <input
               id="search-bar-input"
               className="mdc-text-field__input"

@@ -1,50 +1,23 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import { get } from 'utils'
-import Edge from 'components/Edge'
+import Select from '@material/react-select'
+import { get, isEmpty } from 'utils'
 
 import { COURSES_PER_PAGE } from 'consts'
 
-class StudyCourseSelect extends Component {
+class StudyCourseSelect extends React.Component {
   state = {
-    courseId: "",
-  }
-
-  render() {
-    const { courseId } = this.state
-    const courseEdges = get(this.props, "study.courses.edges", [])
-    return (
-      <div className="StudyCourseSelect mdc-select mdc-select-box">
-        <select
-          className="mdc-select__native-control"
-          value={courseId}
-          onChange={this.handleChange}
-        >
-          <option>Select a course...</option>
-          {courseEdges.map(edge =>
-            <Edge key={get(edge, "node.id", "")} edge={edge} render={({node}) =>
-              <option value={node.id}>{node.number}: {node.name}</option>
-            } />)}
-        </select>
-        {this.props.relay.hasMore() &&
-        <button
-          className="btn"
-          type="button"
-          onClick={this._loadMore}
-        >
-          More
-        </button>}
-      </div>
-    )
+    value: "",
   }
 
   handleChange = (e) => {
-    const courseId = e.target.value
-    this.setState({ courseId })
-    this.props.onChange(courseId)
+    const value = e.target.value
+    this.setState({value})
+    this.props.onChange(value)
   }
 
   _loadMore = () => {
@@ -58,6 +31,42 @@ class StudyCourseSelect extends Component {
     }
 
     relay.loadMore(COURSES_PER_PAGE)
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("StudyCourseSelect rn-select", className)
+  }
+
+  get options() {
+    const courseEdges = get(this.props, "study.courses.edges", [])
+    const options = [{
+      label: "",
+      value: "",
+    }]
+    courseEdges.map(({node}) => node && options.push({
+      label: `${node.number}: ${node.name}`,
+      value: node.id,
+    }))
+
+    return options
+  }
+
+  render() {
+    const courseEdges = get(this.props, "study.courses.edges", [])
+    const {value} = this.state
+
+    return (
+      <Select
+        className={this.classes}
+        outlined
+        label="Select a course"
+        value={value}
+        onChange={this.handleChange}
+        disabled={isEmpty(courseEdges)}
+        options={this.options}
+      />
+    )
   }
 }
 

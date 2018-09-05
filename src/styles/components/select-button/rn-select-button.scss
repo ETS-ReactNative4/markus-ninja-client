@@ -58,7 +58,15 @@
     appearance: none;
   }
 
-  .rn-select-button--disabled {
-    @include mdc-select-dd-arrow-svg-bg_($rn-select-button-disabled-arrow-color);
+}
+
+.rn-select-button--disabled {
+  @include mdc-select-dd-arrow-svg-bg_($rn-select-button-disabled-arrow-color);
+
+  .mdc-select-button__native-control {
   }
+
+  opacity: .38;
+  cursor: default;
+  pointer-events: none;
 }

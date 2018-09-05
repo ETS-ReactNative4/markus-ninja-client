@@ -76,21 +76,10 @@
   }
 }
 
-// Adding changes from latest unpublished version of @material/textfield
 .mdc-text-field {
-  margin-top: 0;
-  overflow: hidden;
-
   &.mdc-text-field--inline {
     height: 100%;
   }
-}
-
-.mdc-text-field__input {
-  align-self: flex-end;
-  box-sizing: border-box;
-  height: 100%;
-  padding: 20px 12px 6px;
 }
 
 @function mdc-theme-background-url-prop-value($style) {

@@ -20,11 +20,14 @@ import StudySettingsPage from 'containers/StudySettingsPage'
 import NotFound from 'components/NotFound'
 import { isNil } from 'utils'
 
+import "./styles.css"
+
 const StudyPageQuery = graphql`
   query StudyPageQuery($owner: String!, $name: String!) {
     study(owner: $owner, name: $name) {
       ...StudyHeader_study
       ...StudyLabelsPage_study
+      ...StudyLessonsPage_study
     }
   }
 `
@@ -83,7 +86,7 @@ class StudyPage extends Component {
                   <Route
                     exact
                     path="/:owner/:name/lessons"
-                    component={StudyLessonsPage}
+                    render={(routeProps) => <StudyLessonsPage {...routeProps} study={props.study} />}
                   />
                   <Route
                     exact

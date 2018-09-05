@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -6,11 +7,16 @@ import {
 import { Link } from 'react-router-dom'
 import { get } from 'utils'
 
-class CreateLessonLink extends Component {
+class CreateLessonLink extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("CreateLessonLink", className)
+  }
+
   render() {
     const study = get(this.props, "study", {})
     return (
-      <Link className="link" to={study.resourcePath + "/lessons/new"}>
+      <Link className={this.classes} to={study.resourcePath + "/lessons/new"}>
         {this.props.children}
       </Link>
     )

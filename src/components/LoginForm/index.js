@@ -9,10 +9,16 @@ import { get, isNil } from 'utils'
 import './styles.css'
 
 class LoginForm extends Component {
+  userNameInput_ = null
+
   state = {
     error: null,
     username: "",
     password: "",
+  }
+
+  componentDidMount() {
+    this.userNameInput_.focus()
   }
 
   render() {
@@ -29,6 +35,7 @@ class LoginForm extends Component {
               <input type="text"
                 className="mdc-text-field__input"
                 id={`username-${uid}`}
+                ref={(node) => this.userNameInput_ = node}
                 name="username"
                 placeholder="Username or email"
                 value={username}

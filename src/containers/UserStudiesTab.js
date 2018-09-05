@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   QueryRenderer,
   graphql,
 } from 'react-relay'
-import cls from 'classnames'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
@@ -24,7 +24,7 @@ const UserStudiesTabQuery = graphql`
   }
 `
 
-class UserStudiesTab extends Component {
+class UserStudiesTab extends React.Component {
   state = {
     studyEdges: []
   }
@@ -63,9 +63,8 @@ class UserStudiesTab extends Component {
                   <Link className="mdc-button mdc-button--unelevated ml3" to="/new">New</Link>
                 </div>
                 {isEmpty(studyEdges)
-                ? (props.user.isViewer
-                  ? <Link to="/new">Create a study to get started</Link>
-                  : <span>This user has not created any studies yet.</span>)
+                ? (props.user.isViewer &&
+                  <span>No studies found</span>)
                 : studyEdges.map(({node}) => (
                     <UserStudyPreview className="bb pv4 b--black-20" key={node.id} study={node} />
                   ))}

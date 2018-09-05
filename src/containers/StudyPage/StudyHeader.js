@@ -1,4 +1,5 @@
 import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -11,9 +12,14 @@ import UserLink from 'components/UserLink'
 import StudyTabs from './StudyTabs'
 import { get, isNil } from 'utils'
 
-class Study extends React.Component {
+class StudyHeader extends React.Component {
   state = {
     edit: false,
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("StudyHeader", className)
   }
 
   render() {
@@ -22,25 +28,46 @@ class Study extends React.Component {
       return null
     }
     return (
-      <div className="StudyHeader">
-        <div className="flex">
-          <div className="flex-auto mdc-typography--headline5">
-            <UserLink user={get(study, "owner", null)} />
-            <span>/</span>
-            <StudyLink study={study} />
-          </div>
-          <div className="inline-flex">
-            <div className="mr1">
-              <EnrollmentSelect enrollable={study} />
-              <button className="rn-count-button">
-                {get(study, "enrolleeCount", 0)}
-              </button>
+      <div className={this.classes}>
+        <div className="mdc-layout-grid">
+          <div className="mdc-layout-grid__inner">
+            <div className={cls(
+              "mdc-layout-grid__cell",
+              "mdc-layout-grid__cell--span-7-desktop",
+              "mdc-layout-grid__cell--span-4-tablet",
+              "mdc-layout-grid__cell--span-4-phone",
+              "mdc-typography--headline5",
+            )}>
+              <UserLink user={get(study, "owner", null)} />
+              <span>/</span>
+              <StudyLink study={study} />
             </div>
-            <div>
-              <AppleButton appleable={study} />
-              <button className="rn-count-button">
-                {get(study, "appleGivers.totalCount", 0)}
-              </button>
+            <div className={cls(
+              "mdc-layout-grid__cell",
+              "mdc-layout-grid__cell--span-5-desktop",
+              "mdc-layout-grid__cell--span-4-tablet",
+              "mdc-layout-grid__cell--span-4-phone",
+            )}>
+              <div className="StudyHeader__actions">
+                <div className={cls(
+                  "StudyHeader__action",
+                  "StudyHeader__action--enroll",
+                )}>
+                  <EnrollmentSelect enrollable={study} />
+                  <button className="rn-count-button">
+                    {get(study, "enrolleeCount", 0)}
+                  </button>
+                </div>
+                <div className={cls(
+                  "StudyHeader__action",
+                  "StudyHeader__action--apple",
+                )}>
+                  <AppleButton appleable={study} />
+                  <button className="rn-count-button">
+                    {get(study, "appleGivers.totalCount", 0)}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -50,7 +77,7 @@ class Study extends React.Component {
   }
 }
 
-export default withRouter(createFragmentContainer(Study, graphql`
+export default withRouter(createFragmentContainer(StudyHeader, graphql`
   fragment StudyHeader_study on Study {
     id
     advancedAt

@@ -16,8 +16,8 @@ class CreatedEvent extends Component {
       <div className="CreatedEvent">
         <div>
           <UserLink user={get(event, "user", null)} />
-          <span>
-            created
+          <span className="inline-flex">
+            created a {createable.__typename.toLowerCase()}
             <CreateableLink createable={createable} />
             {timeDifferenceForDate(event.createdAt)}
           </span>
@@ -33,6 +33,7 @@ class CreatedEvent extends Component {
 export default createFragmentContainer(CreatedEvent, graphql`
   fragment CreatedEvent_event on CreatedEvent {
     createable {
+      __typename
       ...CreateableLink_createable
       ...CreateablePreview_createable
     }

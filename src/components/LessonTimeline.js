@@ -13,9 +13,11 @@ class LessonTimeline extends Component {
   render() {
     const timelineEdges = get(this.props, "lesson.timeline.edges", [])
     return (
-      <div className="LessonTimeline">
+      <div className="LessonTimeline flex flex-column">
         {timelineEdges.map(({node}) => (
-          <LessonTimelineEvent key={node.id} item={node} />
+          <div key={node.id} className="mt3">
+            <LessonTimelineEvent item={node} />
+          </div>
         ))}
         {this.props.relay.hasMore() &&
         <button

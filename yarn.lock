@@ -147,15 +147,6 @@
     "@material/theme" "^0.38.0"
     "@material/typography" "^0.38.0"
 
-"@material/floating-label@^0.39.0":
-  version "0.39.0"
-  resolved "https://registry.yarnpkg.com/@material/floating-label/-/floating-label-0.39.0.tgz#7dedf6cab6c629202904e2c2adcf098de4068b8a"
-  dependencies:
-    "@material/base" "^0.39.0"
-    "@material/rtl" "^0.39.0"
-    "@material/theme" "^0.39.0"
-    "@material/typography" "^0.39.0"
-
 "@material/floating-label@^0.39.0-0":
   version "0.39.0-0"
   resolved "https://registry.yarnpkg.com/@material/floating-label/-/floating-label-0.39.0-0.tgz#fa403d6fd9a5e24f30d147b77a9c1a2a07d0a7f2"
@@ -164,6 +155,15 @@
     "@material/rtl" "^0.36.0"
     "@material/theme" "^0.38.0"
     "@material/typography" "^0.39.0-0"
+
+"@material/floating-label@^0.39.1":
+  version "0.39.1"
+  resolved "https://registry.yarnpkg.com/@material/floating-label/-/floating-label-0.39.1.tgz#8e5f2144460086ee8d586d6715cf0ed1707d3406"
+  dependencies:
+    "@material/base" "^0.39.0"
+    "@material/rtl" "^0.39.1"
+    "@material/theme" "^0.39.1"
+    "@material/typography" "^0.39.0"
 
 "@material/form-field@^0.38.0":
   version "0.38.0"
@@ -195,13 +195,13 @@
     "@material/base" "^0.35.0"
     "@material/theme" "^0.38.0"
 
-"@material/line-ripple@^0.39.0":
-  version "0.39.0"
-  resolved "https://registry.yarnpkg.com/@material/line-ripple/-/line-ripple-0.39.0.tgz#b576767a4cdaba883fdc51df59a366147315b0b3"
+"@material/line-ripple@^0.39.1":
+  version "0.39.1"
+  resolved "https://registry.yarnpkg.com/@material/line-ripple/-/line-ripple-0.39.1.tgz#1caab8dcd2dbec21a96060abd3f1cb85b8b63335"
   dependencies:
     "@material/animation" "^0.39.0"
     "@material/base" "^0.39.0"
-    "@material/theme" "^0.39.0"
+    "@material/theme" "^0.39.1"
 
 "@material/list@^0.38.1":
   version "0.38.1"
@@ -231,14 +231,14 @@
     "@material/base" "^0.35.0"
     "@material/theme" "^0.38.0"
 
-"@material/notched-outline@^0.39.0":
-  version "0.39.0"
-  resolved "https://registry.yarnpkg.com/@material/notched-outline/-/notched-outline-0.39.0.tgz#487cceba21e09285e6477bee2c55d3ac0b611a00"
+"@material/notched-outline@^0.39.1":
+  version "0.39.1"
+  resolved "https://registry.yarnpkg.com/@material/notched-outline/-/notched-outline-0.39.1.tgz#bd6d5adc2a0c5f63bb1ab4e1db7d43f37e488fa9"
   dependencies:
     "@material/animation" "^0.39.0"
     "@material/base" "^0.39.0"
-    "@material/rtl" "^0.39.0"
-    "@material/theme" "^0.39.0"
+    "@material/rtl" "^0.39.1"
+    "@material/theme" "^0.39.1"
 
 "@material/react-floating-label@^0.4.1":
   version "0.4.1"
@@ -267,6 +267,18 @@
     prop-types "^15.6.1"
     react "^16.3.2"
 
+"@material/react-select@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@material/react-select/-/react-select-0.4.2.tgz#1a33be24a4adf13c0a21563b07022af3b861865e"
+  dependencies:
+    "@material/react-floating-label" "^0.4.1"
+    "@material/react-line-ripple" "^0.4.1"
+    "@material/react-notched-outline" "^0.4.1"
+    "@material/select" "^0.38.1"
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+    react "^16.3.2"
+
 "@material/react-text-field@^0.4.2":
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/@material/react-text-field/-/react-text-field-0.4.2.tgz#909bb34054cc9c35468fde222ea81ec07032ed3a"
@@ -287,21 +299,21 @@
     "@material/base" "^0.35.0"
     "@material/theme" "^0.38.0"
 
-"@material/ripple@^0.39.0":
-  version "0.39.0"
-  resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-0.39.0.tgz#0fe86415f6e78a7315f0fd5369b321eaa10d180d"
+"@material/ripple@^0.39.1":
+  version "0.39.1"
+  resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-0.39.1.tgz#3f9ecac87f4552ab63dd543d01b882a7e04a8f75"
   dependencies:
     "@material/animation" "^0.39.0"
     "@material/base" "^0.39.0"
-    "@material/theme" "^0.39.0"
+    "@material/theme" "^0.39.1"
 
 "@material/rtl@^0.36.0":
   version "0.36.0"
   resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.36.0.tgz#a81b587981dc6e09f51e26da8a7447f89358ccd5"
 
-"@material/rtl@^0.39.0":
-  version "0.39.0"
-  resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.39.0.tgz#f7f9fe4f11934efb7d5a8c06a2f2860de81743b4"
+"@material/rtl@^0.39.1":
+  version "0.39.1"
+  resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.39.1.tgz#dcaf6f93fc6cd540137edb352139dc8139bca436"
 
 "@material/select@^0.38.1":
   version "0.38.1"
@@ -316,6 +328,20 @@
     "@material/rtl" "^0.36.0"
     "@material/theme" "^0.38.0"
     "@material/typography" "^0.38.0"
+
+"@material/select@^0.39.1":
+  version "0.39.1"
+  resolved "https://registry.yarnpkg.com/@material/select/-/select-0.39.1.tgz#ef57f158a8cf06c21eff69779edea8431480a5f1"
+  dependencies:
+    "@material/animation" "^0.39.0"
+    "@material/base" "^0.39.0"
+    "@material/floating-label" "^0.39.1"
+    "@material/line-ripple" "^0.39.1"
+    "@material/notched-outline" "^0.39.1"
+    "@material/ripple" "^0.39.1"
+    "@material/rtl" "^0.39.1"
+    "@material/theme" "^0.39.1"
+    "@material/typography" "^0.39.0"
 
 "@material/selection-control@^0.38.0":
   version "0.38.0"
@@ -379,27 +405,27 @@
     "@material/theme" "^0.38.0"
     "@material/typography" "^0.38.0"
 
-"@material/textfield@^0.39.0-0":
-  version "0.39.0"
-  resolved "https://registry.yarnpkg.com/@material/textfield/-/textfield-0.39.0.tgz#9ec024410d1f7ff62e814c576902ac960d4449df"
+"@material/textfield@^0.39.1":
+  version "0.39.1"
+  resolved "https://registry.yarnpkg.com/@material/textfield/-/textfield-0.39.1.tgz#53ef33a0c973d0ec090cea4690c7b95cafd02e9c"
   dependencies:
     "@material/animation" "^0.39.0"
     "@material/base" "^0.39.0"
-    "@material/floating-label" "^0.39.0"
-    "@material/line-ripple" "^0.39.0"
-    "@material/notched-outline" "^0.39.0"
-    "@material/ripple" "^0.39.0"
-    "@material/rtl" "^0.39.0"
-    "@material/theme" "^0.39.0"
+    "@material/floating-label" "^0.39.1"
+    "@material/line-ripple" "^0.39.1"
+    "@material/notched-outline" "^0.39.1"
+    "@material/ripple" "^0.39.1"
+    "@material/rtl" "^0.39.1"
+    "@material/theme" "^0.39.1"
     "@material/typography" "^0.39.0"
 
 "@material/theme@^0.38.0":
   version "0.38.0"
   resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.38.0.tgz#c1a2247eba4af2ba47da4456921ab420869fda55"
 
-"@material/theme@^0.39.0":
-  version "0.39.0"
-  resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.39.0.tgz#2c7a2167b59e5757737ec3dea43790eeb85778ce"
+"@material/theme@^0.39.1":
+  version "0.39.1"
+  resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.39.1.tgz#5fb160222e2b213628b285af26ca65c6f4327fe5"
 
 "@material/top-app-bar@^0.38.1":
   version "0.38.1"
@@ -2290,6 +2316,10 @@ css-loader@0.28.7:
     postcss-value-parser "^3.3.0"
     source-list-map "^2.0.0"
 
+css-mediaquery@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/css-mediaquery/-/css-mediaquery-0.1.2.tgz#6a2c37344928618631c54bd33cedd301da18bea0"
+
 css-select@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/css-select/-/css-select-1.2.0.tgz#2b3a110539c5355f1cd8d314623e870b121ec858"
@@ -3928,6 +3958,10 @@ humps@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/humps/-/humps-2.0.1.tgz#dd02ea6081bd0568dc5d073184463957ba9ef9aa"
 
+hyphenate-style-name@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.2.tgz#31160a36930adaf1fc04c6074f7eb41465d4ec4b"
+
 iconv-lite@0.4.19:
   version "0.4.19"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
@@ -5033,6 +5067,12 @@ map-visit@^1.0.0:
   resolved "https://registry.yarnpkg.com/map-visit/-/map-visit-1.0.0.tgz#ecdca8f13144e660f1b5bd41f12f3479d98dfb8f"
   dependencies:
     object-visit "^1.0.0"
+
+matchmediaquery@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/matchmediaquery/-/matchmediaquery-0.3.0.tgz#6f672bcdbc44de16825c6917fbcdcfb9b82607b1"
+  dependencies:
+    css-mediaquery "^0.1.2"
 
 material-colors@^1.2.1:
   version "1.2.6"
@@ -6428,6 +6468,14 @@ react-relay@^1.6.2:
     fbjs "0.8.17"
     prop-types "^15.5.8"
     relay-runtime "1.6.2"
+
+react-responsive@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-responsive/-/react-responsive-5.0.0.tgz#b6e559b2ce8c4d82b0d47a7a78a74645b977e4af"
+  dependencies:
+    hyphenate-style-name "^1.0.0"
+    matchmediaquery "^0.3.0"
+    prop-types "^15.6.1"
 
 react-router-dom@^4.3.1:
   version "4.3.1"

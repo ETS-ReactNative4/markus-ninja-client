@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -23,18 +24,22 @@ class AddLessonCommentForm extends Component {
     }
   }
 
+  get classes() {
+    const {className} = this.props
+    return cls("AddLessonCommentForm", className)
+  }
+
   render() {
     const { error, submitted } = this.state
     if (!isAuthenticated()) {
       return (
-        <div className="AddLessonCommentForm">
+        <div className={this.classes}>
           <LoginLink>Login to leave a comment</LoginLink>
         </div>
       )
     }
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label htmlFor="AddLessonCommentForm__body">Body</label>
+      <form className={this.classes} onSubmit={this.handleSubmit}>
         <RichTextEditor
           id="AddLessonCommentForm__body"
           onChange={this.handleChangeBody}
@@ -42,7 +47,7 @@ class AddLessonCommentForm extends Component {
           placeholder="Leave a comment"
           study={get(this.props, "lesson.study", null)}
         />
-        <button type="submit">Comment</button>
+        <button className="mdc-button mdc-button--unelevated" type="submit">Comment</button>
         <span>{error}</span>
       </form>
     )

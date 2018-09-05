@@ -1,10 +1,12 @@
 import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import cls from 'classnames'
 import { withRouter } from 'react-router-dom';
+import TextField, {Input, HelperText} from '@material/react-text-field'
+import Textarea from 'components/mdc/Textarea'
 import CreateStudyMutation from 'mutations/CreateStudyMutation'
 import { get, isEmpty } from 'utils'
 
@@ -13,52 +15,6 @@ class CreateStudyForm extends React.Component {
     error: null,
     description: "",
     name: "",
-  }
-
-  render() {
-    const owner = get(this.props, "user.login", "")
-    const { name, description, error } = this.state
-    return (
-      <form
-        className={cls("CreateStudyForm", "flex flex-column items-start")}
-        onSubmit={this.handleSubmit}
-      >
-        <div className="inline-flex">
-          <div className="inline-block relative mb2">
-            <div className="mdc-typography--headline6">Owner</div>
-            <div className="pt3">{owner}</div>
-          </div>
-          <div className="mdc-typography--headline6 self-end mh2">/</div>
-          <div className="mdc-text-field">
-            <label className="db mdc-typography--headline6" htmlFor="study-name">Study name</label>
-            <input
-              id="study-name"
-              className="mdc-text-field__input"
-              type="text"
-              name="name"
-              value={name}
-              onChange={this.handleChange}
-            />
-          </div>
-        </div>
-        <div className="mdc-text-field w-100">
-          <label htmlFor="study-description">
-            <span className="mdc-typography--headline6">Description</span>
-            <span className="mdc-typography--subtitle1 ml1">(optional)</span>
-          </label>
-          <input
-            id="study-description"
-            className="mdc-text-field__input"
-            type="text"
-            name="description"
-            value={description}
-            onChange={this.handleChange}
-          />
-        </div>
-        <button className="mdc-button mdc-button--unelevated" type="submit">Create study</button>
-        <span>{error}</span>
-      </form>
-    )
   }
 
   handleChange = (e) => {
@@ -79,6 +35,61 @@ class CreateStudyForm extends React.Component {
         }
         this.props.history.push(get(study, "resourcePath", ""))
       }
+    )
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("CreateStudyForm", className)
+  }
+
+  render() {
+    const owner = get(this.props, "user.login", "")
+    const { name, description, error } = this.state
+    return (
+      <form className={this.classes} onSubmit={this.handleSubmit}>
+        <div className="mdc-layout-grid__inner">
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet">
+            <div className="inline-flex items-center">
+              <TextField
+                outlined
+                label="Owner"
+                floatingLabelClassName="mdc-floating-label--float-above"
+              >
+                <Input
+                  value={owner}
+                  disabled
+                />
+              </TextField>
+              <span className="mdc-typography--headline6 mh2">/</span>
+              <TextField outlined label="Study name">
+                <Input
+                  name="name"
+                  value={name}
+                  onChange={this.handleChange}
+                />
+              </TextField>
+            </div>
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <TextField
+              textarea
+              label="Description (optional)"
+              helperText={<HelperText>Give a brief description of the study.</HelperText>}
+            >
+              <Textarea
+                name="description"
+                value={description}
+                onChange={this.handleChange}
+              />
+            </TextField>
+          </div>
+          <div className="mdc-layout-grid__cell">
+            <button className="mdc-button mdc-button--unelevated" type="submit">Create study</button>
+          </div>
+          <span>{error}</span>
+        </div>
+      </form>
     )
   }
 }

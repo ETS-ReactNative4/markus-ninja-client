@@ -51,10 +51,10 @@ class LessonPage extends Component {
             }
 
             return (
-              <div className="LessonPage">
+              <div className="LessonPage flex flex-column">
                 <LessonHeader lesson={lesson}/>
                 <LessonBody lesson={lesson}/>
-                <AddLessonCommentForm lesson={lesson} />
+                <AddLessonCommentForm className="mt3" lesson={lesson} />
                 <LessonTimeline lesson={lesson} />
               </div>
             )
