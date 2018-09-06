@@ -3,7 +3,7 @@ import cls from 'classnames'
 
 class Tab extends React.PureComponent {
   render() {
-    const { active, as: Component, children, className, ...props } = this.props
+    const { active, as: Component = 'div', children, className, ...props } = this.props
 
     return (
       <Component

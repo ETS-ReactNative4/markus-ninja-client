@@ -21,7 +21,7 @@ class StudyDangerZone extends Component {
     const { confirmation, error, open } = this.state
     return (
       <div className={cls("StudyDangerZone", {open})}>
-        <h4 className="StudyDangerZone__header">Delete this study</h4>
+        <h6>Delete this study</h6>
         <div className="StudyDangerZone__info">
           <div className="info-description">
             Once you delete a study, there is no going back. Please be certain.

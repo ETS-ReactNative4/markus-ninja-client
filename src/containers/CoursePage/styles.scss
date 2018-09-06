@@ -1,0 +1,40 @@
+@import "@material/layout-grid/mixins";
+
+.CourseHeader__actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: end;
+  flex-wrap: wrap;
+  width: 100%;
+
+  .CourseHeader__action {
+    display: inline-flex;
+    flex-wrap: no-wrap;
+
+    &.CourseHeader__action--apple {
+      min-width: 125.5px;
+      margin-bottom: 1em;
+      margin-left: 1em;
+    }
+    &.CourseHeader__action--delete {
+      margin-bottom: 1em;
+      margin-left: 1em;
+    }
+  }
+
+  @include mdc-layout-grid-media-query_(phone) {
+    flex-direction: column;
+    align-items: start;
+
+    .CourseHeader__action {
+      &.CourseHeader__action--apple {
+        margin-bottom: 0;
+        margin-left: 0;
+      }
+      &.CourseHeader__action--delete {
+        margin-bottom: 0;
+        margin-left: 0;
+      }
+    }
+  }
+}

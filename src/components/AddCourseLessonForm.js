@@ -15,7 +15,6 @@ class AddCourseLessonForm extends Component {
   }
 
   render() {
-    const { error } = this.state
     const course = get(this.props, "course", {})
     if (!course.viewerCanAdmin) {
       return null
@@ -27,8 +26,9 @@ class AddCourseLessonForm extends Component {
           study={get(course, "study", null)}
           onChange={this.handleChangeLesson}
         />
-        <button type="submit">Add lesson</button>
-        <span>{error}</span>
+        <button className="mdc-button mdc-button--unelevated" type="submit">
+          Add lesson
+        </button>
       </form>
     )
   }
@@ -43,9 +43,9 @@ class AddCourseLessonForm extends Component {
     AddCourseLessonMutation(
       this.props.course.id,
       lessonId,
-      (response, error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
+      (response, errors) => {
+        if (!isNil(errors)) {
+          this.setState({ error: errors[0].message })
         }
       }
     )

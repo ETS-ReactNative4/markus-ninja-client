@@ -19,7 +19,7 @@ const CreateLessonPageQuery = graphql`
 class CreateLessonPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("CreateLessonPage", className)
+    return cls("CreateLessonPage mdc-layout-grid", className)
   }
 
   render() {
@@ -40,7 +40,18 @@ class CreateLessonPage extends React.Component {
           } else if (props) {
             return (
               <div className={this.classes}>
-                <CreateLessonForm study={props.study}></CreateLessonForm>
+                <div className="mdc-layout-grid__inner">
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <div className="mdc-typography--headline4">Create a new lesson</div>
+                    <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light">
+                      Teach us
+                    </div>
+                  </div>
+                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <CreateLessonForm study={props.study} />
+                  </div>
+                </div>
               </div>
             )
           }

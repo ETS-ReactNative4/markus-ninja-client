@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
@@ -15,7 +16,12 @@ const StudySettingsPageQuery = graphql`
   }
 `
 
-class StudySettingsPage extends Component {
+class StudySettingsPage extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("StudySettingsPage", className)
+  }
+
   render() {
     const { match } = this.props
     return (
@@ -33,7 +39,11 @@ class StudySettingsPage extends Component {
             if (isNil(props.study)) {
               return null
             }
-            return <StudySettings study={props.study}></StudySettings>
+            return (
+              <div className={this.classe}>
+                <StudySettings study={props.study}></StudySettings>
+              </div>
+            )
           }
           return <div>Loading</div>
         }}

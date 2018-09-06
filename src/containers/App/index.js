@@ -9,6 +9,7 @@ import PrivateRoute from 'components/PrivateRoute'
 import Header from 'components/Header'
 
 import CreateStudyPage from 'containers/CreateStudyPage'
+import CoursePage from 'containers/CoursePage'
 import LoginPage from 'containers/LoginPage'
 import LogoutPage from 'containers/LogoutPage'
 import NotificationsPage from 'containers/NotificationsPage'
@@ -72,6 +73,11 @@ class App extends Component {
                             <Route exact path="/topics/:name" component={TopicPage} />
                             <Route exact path="/:owner/:name/search" component={StudySearchPage} />
                             <Route exact path="/:login" component={UserPage} />
+                            <Route
+                              exact
+                              path="/:owner/:name/course/:number"
+                              component={CoursePage}
+                            />
                             <Route path="/:owner/:name" component={StudyPage} />
                             <Route component={NotFound} />
                           </Switch>

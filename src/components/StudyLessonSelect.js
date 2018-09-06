@@ -1,51 +1,23 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import { get } from 'utils'
-import Edge from 'components/Edge'
-import LessonSelectOption from 'components/LessonSelectOption'
+import Select from '@material/react-select'
+import { get, isEmpty } from 'utils'
 
 import { LESSONS_PER_PAGE } from 'consts'
 
-class StudyLessonSelect extends Component {
+class StudyLessonSelect extends React.Component {
   state = {
-    lessonId: "",
-  }
-
-  render() {
-    const { lessonId } = this.state
-    const lessonEdges = get(this.props, "study.lessons.edges", [])
-    return (
-      <div className="StudyLessonSelect mdc-select mdc-select-box">
-        <select
-          className="mdc-select__native-control"
-          value={lessonId}
-          onChange={this.handleChange}
-        >
-          <option>Select a lesson...</option>
-          {lessonEdges.map(edge =>
-            <Edge key={get(edge, "node.id", "")} edge={edge} render={({node}) =>
-              <LessonSelectOption lesson={node} />
-            } />)}
-        </select>
-        {this.props.relay.hasMore() &&
-        <button
-          className="btn"
-          type="button"
-          onClick={this._loadMore}
-        >
-          More
-        </button>}
-      </div>
-    )
+    value: "",
   }
 
   handleChange = (e) => {
-    const lessonId = e.target.value
-    this.setState({ lessonId })
-    this.props.onChange(lessonId)
+    const value = e.target.value
+    this.setState({ value })
+    this.props.onChange(value)
   }
 
   _loadMore = () => {
@@ -59,6 +31,50 @@ class StudyLessonSelect extends Component {
     }
 
     relay.loadMore(LESSONS_PER_PAGE)
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("StudyLessonSelect rn-select", className)
+  }
+
+  get options() {
+    const lessonEdges = get(this.props, "study.lessons.edges", [])
+    const options = [{
+      label: "",
+      value: "",
+    }]
+    lessonEdges.map(({node}) => node && options.push({
+      label: `${node.number}: ${node.title}`,
+      value: node.id,
+    }))
+
+    return options
+  }
+
+  render() {
+    const { value } = this.state
+    const lessonEdges = get(this.props, "study.lessons.edges", [])
+    return (
+      <div className={this.classes}>
+        <Select
+          outlined
+          label="Select a lesson"
+          value={value}
+          onChange={this.handleChange}
+          disabled={isEmpty(lessonEdges)}
+          options={this.options}
+        />
+        {this.props.relay.hasMore() &&
+        <button
+          className="btn"
+          type="button"
+          onClick={this._loadMore}
+        >
+          More
+        </button>}
+      </div>
+    )
   }
 }
 
@@ -75,7 +91,8 @@ export default createPaginationContainer(StudyLessonSelect,
           edges {
             node {
               id
-              ...LessonSelectOption_lesson
+              number
+              title
             }
           }
           pageInfo {

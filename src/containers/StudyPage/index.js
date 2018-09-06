@@ -8,7 +8,6 @@ import environment from 'Environment'
 import StudyHeader from './StudyHeader'
 import CreateCoursePage from 'containers/CreateCoursePage'
 import CreateLessonPage from 'containers/CreateLessonPage'
-import CoursePage from 'containers/CoursePage'
 import StudyCoursesPage from 'containers/StudyCoursesPage'
 import StudyLabelsPage from 'containers/StudyLabelsPage'
 import LessonPage from 'containers/LessonPage'
@@ -28,6 +27,7 @@ const StudyPageQuery = graphql`
       ...StudyHeader_study
       ...StudyLabelsPage_study
       ...StudyLessonsPage_study
+      ...StudyCoursesPage_study
     }
   }
 `
@@ -60,13 +60,8 @@ class StudyPage extends Component {
                   />
                   <Route
                     exact
-                    path="/:owner/:name/course/:number"
-                    component={CoursePage}
-                  />
-                  <Route
-                    exact
                     path="/:owner/:name/courses"
-                    component={StudyCoursesPage}
+                    render={(routeProps) => <StudyCoursesPage {...routeProps} study={props.study} />}
                   />
                   <Route
                     exact

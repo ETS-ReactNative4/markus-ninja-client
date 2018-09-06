@@ -17,7 +17,8 @@ const mutation = graphql`
       removedLessonEdge {
         node {
           id
-          ...LessonSelectOption_lesson
+          number
+          title
         }
       }
     }

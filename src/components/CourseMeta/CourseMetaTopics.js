@@ -1,93 +1,38 @@
 import React, {Component} from 'react'
+import cls from 'classnames'
+import PropTypes from 'prop-types'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
 import { Link, withRouter } from 'react-router-dom';
+import TextField, {HelperText, Input} from '@material/react-text-field'
 import UpdateTopicsMutation from 'mutations/UpdateTopicsMutation'
-import { get, isNil } from 'utils'
-import cls from 'classnames'
+import { get, isEmpty } from 'utils'
 import { TOPICS_PER_PAGE } from 'consts'
 
 class CourseMetaTopics extends Component {
   constructor(props) {
     super(props)
+
     const topicEdges = get(props, "course.topics.edges", [])
+    const topics = topicEdges.map(edge => get(edge, "node.name")).join(" ")
+
     this.state = {
       error: null,
-      topics: topicEdges.map(edge => get(edge, "node.name")).join(" "),
+      invalidTopicNames: null,
+      initialValues: {
+        topics,
+      },
+      topics,
       open: false,
     }
-  }
-
-  render() {
-    const course = get(this.props, "course", {})
-    const topicEdges = get(course, "topics.edges", [])
-    const pageInfo = get(course, "topics.pageInfo", {})
-    const { error, open, topics } = this.state
-    return (
-      <div className={cls("CourseMetaTopics", {open})}>
-        <div className="CourseMetaTopics__list">
-          {topicEdges.map(({ node = {} }) =>
-            <Link key={node.id} to={node.resourcePath}>{node.name}</Link>)}
-        </div>
-        {pageInfo.hasNextPage &&
-        <button
-          className="CourseMetaTopics__more"
-          onClick={this._loadMore}
-        >
-          More
-        </button>}
-        {course.viewerCanAdmin &&
-        <span className="CourseMetaTopics__edit-toggle">
-          <button
-            className="btn"
-            type="button"
-            onClick={this.handleToggleOpen}
-          >
-            Manage topics
-          </button>
-        </span>}
-        {course.viewerCanAdmin &&
-        <div className="CourseMetaTopics__edit">
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="course-topics">
-              Topics
-              <span>(separate with spaces)</span>
-            </label>
-            <div>Add topics to categorize your course and make it more discoverable.</div>
-            <input
-              id="course-topics"
-              className={cls("form-control", "edit-course-topics")}
-              type="text"
-              name="topics"
-              value={topics}
-              onChange={this.handleChange}
-            />
-            <button
-              className="btn"
-              type="submit"
-              onClick={this.handleSubmit}
-            >
-              Save
-            </button>
-            <button
-              className="btn-link"
-              type="button"
-              onClick={this.handleToggleOpen}
-            >
-              Cancel
-            </button>
-            <span>{error}</span>
-          </form>
-        </div>}
-      </div>
-    )
   }
 
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
+      error: null,
     })
   }
 
@@ -97,17 +42,23 @@ class CourseMetaTopics extends Component {
     UpdateTopicsMutation(
       this.props.course.id,
       topics.split(" "),
-      (error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
+      (error, invalidTopicNames) => {
+        if (!isEmpty(invalidTopicNames)) {
+          this.setState({ error, invalidTopicNames })
+        } else {
+          this.handleToggleOpen()
         }
-        this.handleToggleOpen()
       },
     )
   }
 
   handleToggleOpen = () => {
-    this.setState({ open: !this.state.open })
+    const open = !this.state.open
+
+    this.setState({ open, error: null })
+    this.props.onOpen(open)
+
+    this.reset_()
   }
 
   _loadMore = () => {
@@ -122,6 +73,107 @@ class CourseMetaTopics extends Component {
 
     relay.loadMore(TOPICS_PER_PAGE)
   }
+
+  reset_ = () => {
+    this.setState({
+      error: null,
+      invalidTopicNames: null,
+      ...this.state.initialValues,
+    })
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("CourseMetaTopics mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+  }
+
+  render() {
+    const course = get(this.props, "course", {})
+    const topicEdges = get(course, "topics.edges", [])
+    const pageInfo = get(course, "topics.pageInfo", {})
+    const {open, topics} = this.state
+    return (
+      <div className={this.classes}>
+        {open
+        ? course.viewerCanAdmin &&
+          <form className="CourseMeta__form inline-flex w-100" onSubmit={this.handleSubmit}>
+            <div className="flex-auto">
+              <TextField
+                className="w-100"
+                outlined
+                label="Topics (separate with spaces)"
+                helperText={this.renderHelperText()}
+                floatingLabelClassName={!isEmpty(topicEdges) ? "mdc-floating-label--float-above" : ""}
+              >
+                <Input
+                  name="topics"
+                  value={topics}
+                  onChange={this.handleChange}
+                />
+              </TextField>
+            </div>
+            <div className="inline-flex items-center pa2 mb4">
+              <button
+                className="mdc-button mdc-button--unelevated"
+                type="submit"
+                onClick={this.handleSubmit}
+              >
+                Save
+              </button>
+              <span
+                className="pointer pa2 underline-hover"
+                role="button"
+                onClick={this.handleToggleOpen}
+              >
+                Cancel
+              </span>
+            </div>
+          </form>
+        : <div className="inline-flex items-center w-100">
+            {topicEdges.map(({node}) => node
+            ? <Link
+                className="mdc-button mdc-button--outlined mr1 mb1"
+                key={node.id}
+                to={node.resourcePath}
+              >
+                {node.name}
+              </Link>
+            : null)}
+            {pageInfo.hasNextPage &&
+            <button
+              className="material-icons mdc-icon-button mr1 mb1"
+              onClick={this._loadMore}
+            >
+              more
+            </button>}
+            {course.viewerCanAdmin &&
+            <button
+              className="mdc-button mdc-button--unelevated mr1 mb1"
+              type="button"
+              onClick={this.handleToggleOpen}
+            >
+              Manage topics
+            </button>}
+          </div>}
+      </div>
+    )
+  }
+
+  renderHelperText() {
+    return (
+      <HelperText>
+        Add topics to categorize your course and make it more discoverable.
+      </HelperText>
+    )
+  }
+}
+
+CourseMetaTopics.propTypes = {
+  onOpen: PropTypes.func,
+}
+
+CourseMetaTopics.defaulProps = {
+  onOpen: () => {}
 }
 
 export default withRouter(createPaginationContainer(CourseMetaTopics,
@@ -179,7 +231,7 @@ export default withRouter(createPaginationContainer(CourseMetaTopics,
       return {
         owner: props.match.params.owner,
         name: props.match.params.name,
-        number: parseInt(props.match.params.number, 10),
+        number: props.match.params.number,
         count: paginationInfo.count,
         after: paginationInfo.cursor,
       }

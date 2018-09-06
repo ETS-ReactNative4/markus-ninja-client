@@ -8,7 +8,7 @@ import {
 } from 'react-relay'
 import { debounce, get, isNil, isEmpty } from 'utils'
 
-class SearchStudyLessonsInput extends React.Component {
+class SearchStudyCoursesInput extends React.Component {
   state = {
     error: null,
     loading: false,
@@ -85,7 +85,7 @@ class SearchStudyLessonsInput extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("SearchStudyLessonsInput h-100", className)
+    return cls("SearchStudyCoursesInput h-100", className)
   }
 
   render() {
@@ -95,12 +95,12 @@ class SearchStudyLessonsInput extends React.Component {
       <div className={this.classes}>
         <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
           <input
-            id="lessons-query"
+            id="courses-query"
             className="mdc-text-field__input"
             autoComplete="off"
             type="text"
             name="q"
-            placeholder="Find a lesson..."
+            placeholder="Find a course..."
             value={q}
             onChange={this.handleChange}
           />
@@ -119,33 +119,33 @@ class SearchStudyLessonsInput extends React.Component {
   }
 }
 
-SearchStudyLessonsInput.propTypes = {
+SearchStudyCoursesInput.propTypes = {
   onQuery: PropTypes.func,
   onQueryComplete: PropTypes.func.isRequired,
 }
 
-SearchStudyLessonsInput.defaultProps = {
+SearchStudyCoursesInput.defaultProps = {
   onQuery: () => {},
   onQueryComplete: () => {},
 }
 
-const refetchContainer = createRefetchContainer(SearchStudyLessonsInput,
+const refetchContainer = createRefetchContainer(SearchStudyCoursesInput,
   {
     query: graphql`
-      fragment SearchStudyLessonsInput_query on Query @argumentDefinitions(
+      fragment SearchStudyCoursesInput_query on Query @argumentDefinitions(
         count: {type: "Int!"},
         after: {type: "String"},
         query: {type: "String!"},
         within: {type: "ID!"}
       ) {
-        search(first: $count, after: $after, query: $query, type: LESSON, within: $within)
-        @connection(key: "SearchStudyLessonsInput_search", filters: []) {
+        search(first: $count, after: $after, query: $query, type: COURSE, within: $within)
+        @connection(key: "SearchStudyCoursesInput_search", filters: []) {
           edges {
             cursor
             node {
               id
-              ...on Lesson {
-                ...LessonPreview_lesson
+              ...on Course {
+                ...CoursePreview_course
               }
             }
           }
@@ -158,19 +158,19 @@ const refetchContainer = createRefetchContainer(SearchStudyLessonsInput,
     `,
   },
   graphql`
-    query SearchStudyLessonsInputRefetchQuery(
+    query SearchStudyCoursesInputRefetchQuery(
       $count: Int!,
       $after: String,
       $query: String!,
       $within: ID!
     ) {
-      ...SearchStudyLessonsInput_query @arguments(count: $count, after: $after, query: $query, within: $within)
+      ...SearchStudyCoursesInput_query @arguments(count: $count, after: $after, query: $query, within: $within)
     }
   `,
 )
 
 export default createFragmentContainer(refetchContainer, graphql`
-  fragment SearchStudyLessonsInput_study on Study {
+  fragment SearchStudyCoursesInput_study on Study {
     id
   }
 `)

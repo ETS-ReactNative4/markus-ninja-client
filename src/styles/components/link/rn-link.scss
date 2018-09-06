@@ -5,6 +5,12 @@
   display: inline-block;
   text-decoration: none;
   transition: color $rn-link-transition-duration;
+  color: $mdc-theme-on-surface;
+
+  &:hover {
+    color: var(--mdc-theme-text-secondary-on-light);
+    text-decoration: underline;
+  }
 
   &.rn-link--on-primary {
     color: $mdc-theme-on-primary;
@@ -20,15 +26,6 @@
 
     &:hover {
       color: var(--mdc-theme-text-secondary-on-dark);
-      text-decoration: underline;
-    }
-  }
-
-  &.rn-link--on-surface {
-    color: $mdc-theme-on-surface;
-
-    &:hover {
-      color: var(--mdc-theme-text-secondary-on-light);
       text-decoration: underline;
     }
   }

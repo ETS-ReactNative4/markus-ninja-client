@@ -23,7 +23,7 @@ class ResearchStudyPreview extends React.Component {
       <div className={this.classes}>
         <StudyLink
           withOwner
-          className="rn-link rn-link--on-surface mdc-typography--headline6"
+          className="rn-link mdc-typography--headline6"
           study={study}
         />
         <HTML html={study.descriptionHTML} />

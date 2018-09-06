@@ -1,21 +1,33 @@
 import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import cls from 'classnames'
 import { withUID } from 'components/UniqueId'
 import UserAssetNameInput from 'components/UserAssetNameInput'
 import CreateUserAssetMutation from 'mutations/CreateUserAssetMutation'
-import { get, isNil } from 'utils'
+import { get, isNil, makeCancelable } from 'utils'
 import { getAuthHeader } from 'auth'
 
 class AttachFile extends React.Component {
   state = {
+    request: {
+      cancel() {}
+    },
     file: null,
     name: "",
     save: false,
     submittable: false,
+  }
+
+  componentWillUnmount() {
+    this.state.request.cancel()
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("AttachFile", className)
   }
 
   render() {
@@ -24,7 +36,7 @@ class AttachFile extends React.Component {
     const filename = get(this.state, "file.name", "")
 
     return (
-      <div className="AttachFile">
+      <div className={this.classes}>
         <label
           htmlFor={`file-save${uid}`}
           title="Save file to study assets"
@@ -64,6 +76,7 @@ class AttachFile extends React.Component {
         />
         <button
           className="mdc-button mdc-button--unelevated"
+          type="button"
           onClick={this.handleAttachFile}
           disabled={isNil(file) || (save && !submittable)}
         >
@@ -92,13 +105,17 @@ class AttachFile extends React.Component {
       formData.append("file", file)
 
       this.props.onChange(file)
-      return fetch(process.env.REACT_APP_API_URL + "/upload/assets", {
+
+      const request = makeCancelable(fetch(process.env.REACT_APP_API_URL + "/upload/assets", {
         method: "POST",
         headers: {
           Authorization,
         },
         body: formData
-      }).then((response) => {
+      }))
+      this.setState({request})
+
+      request.promise.then((response) => {
         return response.text()
       }).then((responseBody) => {
         try {
@@ -117,31 +134,26 @@ class AttachFile extends React.Component {
               if (!isNil(errors)) {
                 this.setState({ error: errors[0].message })
               }
-              this.props.onChangeComplete(data.asset, save, data.error)
               this.setState({
                 loading: false,
                 file: null,
                 save: false,
               })
+              this.props.onChangeComplete(data.asset, save, data.error)
             }
           )
         } else {
-          this.props.onChangeComplete(data.asset, save, data.error)
           this.setState({
             loading: false,
             file: null,
             save: false,
           })
+          this.props.onChangeComplete(data.asset, save, data.error)
         }
         return
       }).catch((error) => {
         console.error(error)
         this.props.onChangeComplete(null, save, error)
-        this.setState({
-          loading: false,
-          file: null,
-          save: false,
-        })
         return
       })
     }

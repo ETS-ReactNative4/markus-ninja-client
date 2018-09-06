@@ -1,14 +1,19 @@
 import React, {Component} from 'react'
+import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import Course from 'components/Course'
+import Course from './Course'
+import CourseHeader from './CourseHeader'
+import CourseMeta from 'components/CourseMeta'
 import NotFound from 'components/NotFound'
 import { get, isNil } from 'utils'
 
 import { LESSONS_PER_PAGE } from 'consts'
+
+import "./styles.css"
 
 const CoursePageQuery = graphql`
   query CoursePageQuery(
@@ -21,6 +26,9 @@ const CoursePageQuery = graphql`
   ) {
     study(owner: $owner, name: $name) {
       course(number: $number) {
+        id
+        ...CourseHeader_course
+        ...CourseMeta_course
         ...Course_course
       }
     }
@@ -28,6 +36,11 @@ const CoursePageQuery = graphql`
 `
 
 class CoursePage extends Component {
+  get classes() {
+    const {className} = this.props
+    return cls("CoursePage mdc-layout-grid", className)
+  }
+
   render() {
     return (
       <QueryRenderer
@@ -44,12 +57,15 @@ class CoursePage extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            if (isNil(get(props, "study.course", null))) {
+            const course = get(props, "study.course", null)
+            if (isNil(course)) {
               return <NotFound />
             }
             return (
-              <div className="CoursePage">
-                <Course course={props.study.course} />
+              <div className={this.classes}>
+                <CourseHeader course={course} />
+                <CourseMeta course={course} />
+                <Course course={course} />
               </div>
             )
           }

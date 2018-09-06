@@ -1,0 +1,23 @@
+.CreateLessonForm {
+  .CreateLessonForm__tabs {
+    width: 360px;
+    margin-bottom: 1em;
+  }
+
+  .CreateLessonForm__input {
+    display: block;
+  }
+
+  .CreateLessonForm__preview {
+    display: none;
+  }
+
+  &.CreateLessonForm__preview--selected {
+    .CreateLessonForm__input {
+      display: none;
+    }
+    .CreateLessonForm__preview {
+      display: block;
+    }
+  }
+}
