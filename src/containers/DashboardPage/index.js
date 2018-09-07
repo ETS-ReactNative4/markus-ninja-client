@@ -1,22 +1,39 @@
 import * as React from 'react'
 import cls from 'classnames'
 import {
-  createFragmentContainer,
   QueryRenderer,
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
 import UserLink from 'components/UserLink'
 import SearchViewerStudies from './SearchViewerStudies'
-import { get } from 'utils'
-
-import { SEARCH_BAR_RESULTS_PER_PAGE } from 'consts'
+import ViewerReceivedActivity from './ViewerReceivedActivity'
+import StudyPreview from 'components/StudyPreview'
+import {get} from 'utils'
+import { EVENTS_PER_PAGE } from 'consts'
 
 import "./styles.css"
 
 const DashboardPageQuery = graphql`
-  query DashboardPageQuery($count: Int!, $after: String, $query: String!, $within: ID!) {
-    ...SearchUserStudiesInput_query @arguments(count: $count, after: $after, query: $query, within: $within)
+  query DashboardPageQuery($count: Int!, $after: String) {
+    researchStudies: search(first: 3, query: "*", type: STUDY, orderBy:{direction:DESC, field:APPLE_COUNT}) {
+      edges {
+        node {
+          id
+          ...on Study {
+            ...StudyPreview_study
+          }
+        }
+      }
+    }
+    viewer {
+      ...UserLink_user
+      ...SearchViewerStudies_viewer
+      ...ViewerReceivedActivity_viewer @arguments(
+        count: $count,
+        after: $after
+      )
+    }
   }
 `
 
@@ -32,14 +49,14 @@ class DashboardPage extends React.Component {
         environment={environment}
         query={DashboardPageQuery}
         variables={{
-          count: SEARCH_BAR_RESULTS_PER_PAGE,
-          query: "*",
-          within: get(this.props, "viewer.id"),
+          count: EVENTS_PER_PAGE,
         }}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            const researchStudyEdges = get(props, "researchStudies.edges", [])
+
             return (
               <div className={this.classes}>
                 <aside className="DashboardPage__nav mdc-drawer mdc-drawer--permanent">
@@ -47,9 +64,9 @@ class DashboardPage extends React.Component {
                     <nav className="mdc-drawer__content">
                       <div className="mdc-list mdc-list--non-interactive">
                         <div className="mdc-list-item">
-                          <UserLink className="mdc-typography--headline5" user={this.props.viewer} />
+                          <UserLink className="mdc-typography--headline5" user={props.viewer} />
                         </div>
-                        <SearchViewerStudies query={props} viewer={this.props.viewer} />
+                        <SearchViewerStudies viewer={props.viewer} />
                       </div>
                     </nav>
                   </nav>
@@ -58,23 +75,26 @@ class DashboardPage extends React.Component {
                   <div className="mdc-layout-grid__inner">
                     <div
                       className={cls(
-                        "mdc-layout-grid__inner",
                         "mdc-layout-grid__cell--span-8-desktop",
                         "mdc-layout-grid__cell--span-5-tablet",
                         "mdc-layout-grid__cell--span-4-phone",
                       )}
                     >
-                      Activity
+                      <ViewerReceivedActivity viewer={props.viewer} />
                     </div>
                     <div
                       className={cls(
-                        "mdc-layout-grid__inner",
                         "mdc-layout-grid__cell--span-4-desktop",
                         "mdc-layout-grid__cell--span-3-tablet",
                         "mdc-layout-grid__cell--span-4-phone",
                       )}
                     >
-                      Research studies
+                      <h5>Research studies</h5>
+                      {researchStudyEdges.map(({node}) => (
+                        <div key={node.id}>
+                          <StudyPreview study={node} />
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -88,10 +108,4 @@ class DashboardPage extends React.Component {
   }
 }
 
-export default createFragmentContainer(DashboardPage, graphql`
-  fragment DashboardPage_viewer on User {
-    id
-    ...UserLink_user
-    ...SearchViewerStudies_viewer
-  }
-`)
+export default DashboardPage

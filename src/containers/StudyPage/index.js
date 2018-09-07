@@ -11,7 +11,6 @@ import CreateCoursePage from 'containers/CreateCoursePage'
 import CreateLessonPage from 'containers/CreateLessonPage'
 import StudyCoursesPage from 'containers/StudyCoursesPage'
 import StudyLabelsPage from 'containers/StudyLabelsPage'
-import LessonPage from 'containers/LessonPage'
 import StudyLessonsPage from 'containers/StudyLessonsPage'
 import UserAssetPage from 'containers/UserAssetPage'
 import StudyAssetsPage from 'containers/StudyAssetsPage'
@@ -82,11 +81,6 @@ class StudyPage extends React.Component {
                         exact
                         path="/:owner/:name/labels"
                         render={(routeProps) => <StudyLabelsPage {...routeProps} study={props.study} />}
-                      />
-                      <Route
-                        exact
-                        path="/:owner/:name/lesson/:number"
-                        component={LessonPage}
                       />
                       <Route
                         exact

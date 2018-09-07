@@ -11,8 +11,8 @@ import ViewerBackupEmail from 'components/ViewerBackupEmail'
 
 import { EMAILS_PER_PAGE } from 'consts'
 
-const UserSettingsEmailsPageQuery = graphql`
-  query UserSettingsEmailsPageQuery(
+const EmailSettingsQuery = graphql`
+  query EmailSettingsQuery(
       $count: Int!
       $after: String
     ) {
@@ -25,17 +25,17 @@ const UserSettingsEmailsPageQuery = graphql`
   }
 `
 
-class UserSettingsEmailsPage extends React.Component {
+class EmailSettings extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("UserSettingsEmailsPage mdc-layout-grid", className)
+    return cls("EmailSettings mdc-layout-grid", className)
   }
 
   render() {
     return (
       <QueryRenderer
         environment={environment}
-        query={UserSettingsEmailsPageQuery}
+        query={EmailSettingsQuery}
         variables={{
           count: EMAILS_PER_PAGE,
         }}
@@ -47,7 +47,7 @@ class UserSettingsEmailsPage extends React.Component {
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
                   <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    Emails
+                    Email
                   </h4>
                   <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
@@ -72,4 +72,4 @@ class UserSettingsEmailsPage extends React.Component {
   }
 }
 
-export default UserSettingsEmailsPage
+export default EmailSettings

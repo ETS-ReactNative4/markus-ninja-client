@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import UserSettingsNav from 'components/UserSettingsNav'
-import UserSettingsProfilePage from 'containers/UserSettingsProfilePage'
-import UserSettingsAccountPage from 'containers/UserSettingsAccountPage'
-import UserSettingsEmailsPage from 'containers/UserSettingsEmailsPage'
-import UserSettingsNotificationsPage from 'containers/UserSettingsNotificationsPage'
+import UserSettingsNav from './UserSettingsNav'
+import ProfileSettings from './ProfileSettings'
+import AccountSettings from './AccountSettings'
+import EmailSettings from './EmailSettings'
+// import NotificationSettings from './NotificationSettings'
 
 import './styles.css'
 
@@ -14,30 +14,30 @@ class UserSettingsPage extends Component {
       return <Redirect to="/settings/profile" />
     }
     return (
-      <div className="UserSettingsPage inline-flex w-100">
+      <div className="UserSettingsPage flex w-100">
         <UserSettingsNav />
         <div className="flex-auto">
           <Switch>
             <Route
               exact
               path="/settings/profile"
-              component={UserSettingsProfilePage}
+              component={ProfileSettings}
             />
             <Route
               exact
               path="/settings/account"
-              component={UserSettingsAccountPage}
+              component={AccountSettings}
             />
             <Route
               exact
               path="/settings/emails"
-              component={UserSettingsEmailsPage}
+              component={EmailSettings}
             />
-            <Route
+            {/*<Route
               exact
               path="/settings/notifications"
-              component={UserSettingsNotificationsPage}
-            />
+              component={NotificationSettings}
+            />*/}
           </Switch>
         </div>
       </div>

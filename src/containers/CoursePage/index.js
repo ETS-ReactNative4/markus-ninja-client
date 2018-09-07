@@ -63,9 +63,17 @@ class CoursePage extends Component {
             }
             return (
               <div className={this.classes}>
-                <CourseHeader course={course} />
-                <CourseMeta course={course} />
-                <Course course={course} />
+                <div className="mdc-layout-grid__inner">
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <CourseHeader course={course} />
+                  </div>
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <CourseMeta course={course} />
+                  </div>
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <Course course={course} />
+                  </div>
+                </div>
               </div>
             )
           }

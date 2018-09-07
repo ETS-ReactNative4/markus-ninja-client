@@ -1,50 +1,19 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
+import Select from '@material/react-select'
 import UpdateEmailMutation from 'mutations/UpdateEmailMutation'
 import { get, isNil } from 'utils'
 
 import { EMAILS_PER_PAGE } from 'consts'
 
-class ViewerPrimaryEmail extends Component {
+class ViewerPrimaryEmail extends React.Component {
   state = {
-    emailId: "",
+    value: "",
     error: null,
-  }
-
-  render() {
-    const emailEdges = get(this.props, "viewer.primaryEmailOptions.edges", [])
-    const { emailId } = this.state
-    return (
-      <div className="ViewerPrimaryEmail">
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="user_primary_email">Primary email address</label>
-          <div>
-            Your primary email address, in addition to authentication, will be used for account-related notifications.
-          </div>
-          <select
-            id="user_primary_email"
-            name="primaryEmailId"
-            value={emailId}
-            onChange={this.handleChange}
-          >
-            {emailEdges.map(e => {
-              const node = get(e, "node", {})
-              return <option key={node.id} value={node.id}>{node.value}</option>
-            })}
-          </select>
-          <button
-            className="btn"
-            type="submit"
-            onClick={this.handleSubmit}
-          >
-            Save
-          </button>
-        </form>
-      </div>
-    )
   }
 
   _loadMore = () => {
@@ -68,15 +37,60 @@ class ViewerPrimaryEmail extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { emailId } = this.state
+    const { value } = this.state
     UpdateEmailMutation(
-      emailId,
+      value,
       'PRIMARY',
       (error) => {
         if (!isNil(error)) {
           this.setState({ error: error.message })
         }
       },
+    )
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("ViewerPrimaryEmail", className)
+  }
+
+  get options() {
+    const emailEdges = get(this.props, "viewer.primaryEmailOptions.edges", [])
+    const options = []
+    emailEdges.map(({node}) => node && options.push({
+      label: node.value,
+      value: node.id,
+    }))
+
+    return options
+  }
+
+  render() {
+    const {value} = this.state
+
+    return (
+      <div className={this.classes}>
+        <p>
+          Your primary email address, in addition to authentication, will be used for account-related notifications.
+        </p>
+        <form onSubmit={this.handleSubmit}>
+          <Select
+            className="rn-select"
+            outlined
+            label="Primary email address"
+            value={value}
+            onChange={(e) => this.setState({value: e.target.value})}
+            options={this.options}
+          />
+          <button
+            className="mdc-button mdc-button--unelevated ml2"
+            type="submit"
+            onClick={this.handleSubmit}
+          >
+            Save
+          </button>
+        </form>
+      </div>
     )
   }
 }

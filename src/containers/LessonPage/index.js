@@ -6,10 +6,10 @@ import {
 } from 'react-relay'
 import environment from 'Environment'
 import NotFound from 'components/NotFound'
-import LessonBody from 'components/LessonBody'
-import LessonHeader from 'components/LessonHeader'
-import LessonTimeline from 'components/LessonTimeline'
 import AddLessonCommentForm from 'components/AddLessonCommentForm'
+import LessonBody from './LessonBody'
+import LessonHeader from './LessonHeader'
+import LessonTimeline from './LessonTimeline'
 import { get } from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
@@ -31,7 +31,7 @@ const LessonPageQuery = graphql`
 class LessonPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("LessonPage mdc-layout-grid__inner", className)
+    return cls("LessonPage mdc-layout-grid", className)
   }
 
   render() {
@@ -58,17 +58,19 @@ class LessonPage extends React.Component {
 
             return (
               <div className={this.classes}>
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <LessonHeader lesson={lesson}/>
-                </div>
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <LessonBody lesson={lesson}/>
-                </div>
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <AddLessonCommentForm className="mt3" lesson={lesson} />
-                </div>
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <LessonTimeline lesson={lesson} />
+                <div className="mdc-layout-grid__inner">
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <LessonHeader lesson={lesson}/>
+                  </div>
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <LessonBody lesson={lesson}/>
+                  </div>
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <AddLessonCommentForm className="mt3" lesson={lesson} />
+                  </div>
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <LessonTimeline lesson={lesson} />
+                  </div>
                 </div>
               </div>
             )

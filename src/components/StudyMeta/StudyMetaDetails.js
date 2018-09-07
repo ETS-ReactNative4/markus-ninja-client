@@ -71,61 +71,13 @@ class StudyMetaDetails extends Component {
 
   render() {
     const study = get(this.props, "study", {})
-    const {description, open} = this.state
+    const {open} = this.state
+
     return (
       <div className={this.classes}>
         {open
-        ? study.viewerCanAdmin &&
-          <form className="StudyMeta__form inline-flex w-100" onSubmit={this.handleSubmit}>
-            <div className="flex-auto">
-              <TextField
-                className="w-100"
-                label="Description"
-                outlined
-                floatingLabelClassName={!isEmpty(description) ? "mdc-floating-label--float-above" : ""}
-                helperText={this.renderHelperText()}
-              >
-                <Input
-                  name="description"
-                  value={description}
-                  onChange={this.handleChange}
-                />
-              </TextField>
-            </div>
-            <div className="inline-flex items-center pa2 mb4">
-              <button
-                className="mdc-button mdc-button--unelevated"
-                type="submit"
-                onClick={this.handleSubmit}
-              >
-                Save
-              </button>
-              <span
-                className="pointer pa2 underline-hover"
-                role="button"
-                onClick={this.handleToggleOpen}
-              >
-                Cancel
-              </span>
-            </div>
-          </form>
-        : <div className="inline-flex items-center w-100">
-            <div className={cls("mdc-theme--subtitle1 flex-auto", {
-              "mdc-theme--text-secondary-on-light": !study.description,
-            })}>
-              {study.description || "No description provided"}
-            </div>
-            {study.viewerCanAdmin &&
-            <div className="inline-flex">
-              <button
-                className="material-icons mdc-icon-button"
-                type="button"
-                onClick={this.handleToggleOpen}
-              >
-                edit
-              </button>
-            </div>}
-          </div>}
+        ? study.viewerCanAdmin && this.renderForm()
+        : this.renderDetails()}
       </div>
     )
   }
@@ -133,6 +85,70 @@ class StudyMetaDetails extends Component {
   renderHelperText() {
     return (
       <HelperText>Give a brief description of the course.</HelperText>
+    )
+  }
+
+  renderForm() {
+    const {description} = this.state
+
+    return (
+      <form className="StudyMeta__form inline-flex w-100" onSubmit={this.handleSubmit}>
+        <div className="flex-auto">
+          <TextField
+            className="w-100"
+            label="Description"
+            outlined
+            floatingLabelClassName={!isEmpty(description) ? "mdc-floating-label--float-above" : ""}
+            helperText={this.renderHelperText()}
+          >
+            <Input
+              name="description"
+              value={description}
+              onChange={this.handleChange}
+            />
+          </TextField>
+        </div>
+        <div className="inline-flex items-center pa2 mb4">
+          <button
+            className="mdc-button mdc-button--unelevated"
+            type="submit"
+            onClick={this.handleSubmit}
+          >
+            Save
+          </button>
+          <span
+            className="pointer pa2 underline-hover"
+            role="button"
+            onClick={this.handleToggleOpen}
+          >
+            Cancel
+          </span>
+        </div>
+      </form>
+    )
+  }
+
+  renderDetails() {
+    const study = get(this.props, "study", {})
+
+    return (
+      <div className="inline-flex items-center w-100">
+        <div className={cls("mdc-theme--subtitle1 flex-auto", {
+          "mdc-theme--text-secondary-on-light": !study.description,
+        })}>
+          {study.description || "No description provided"}
+        </div>
+        {study.viewerCanAdmin &&
+        <div className="inline-flex">
+          <button
+            className="material-icons mdc-icon-button"
+            type="button"
+            onClick={this.handleToggleOpen}
+          >
+            edit
+          </button>
+        </div>}
+      </div>
     )
   }
 }

@@ -13,7 +13,7 @@ class UserSettingsNav extends Component {
     const profilePath = matchPath(pathname, { path: SETTINGS_PATH+"/profile", exact: true })
     const accountPath = matchPath(pathname, { path: SETTINGS_PATH+"/account", exact: true })
     const emailsPath = matchPath(pathname, { path: SETTINGS_PATH+"/emails", exact: true })
-    const notificationsPath = matchPath(pathname, { path: SETTINGS_PATH+"/notifications", exact: true })
+    // const notificationsPath = matchPath(pathname, { path: SETTINGS_PATH+"/notifications", exact: true })
 
     return (
       <aside className="UserSettingsNav mdc-drawer mdc-drawer--permanent mdc-typography">
@@ -49,13 +49,13 @@ class UserSettingsNav extends Component {
             >
               Emails
             </ListItem>
-            <ListItem
+            {/*<ListItem
               selected={notificationsPath && notificationsPath.isExact}
               as={Link}
               to={SETTINGS_PATH + "/notifications"}
             >
               Notifications
-            </ListItem>
+            </ListItem>*/}
           </nav>
         </nav>
       </aside>

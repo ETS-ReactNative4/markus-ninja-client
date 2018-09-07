@@ -9,8 +9,8 @@ import ChangePassword from 'components/ChangePassword'
 import ChangeUsername from 'components/ChangeUsername'
 import DeleteAccount from 'components/DeleteAccount'
 
-const UserSettingsAccountPageQuery = graphql`
-  query UserSettingsAccountPageQuery {
+const AccountSettingsQuery = graphql`
+  query AccountSettingsQuery {
     viewer {
       id
       ...ChangeUsername_user
@@ -18,17 +18,17 @@ const UserSettingsAccountPageQuery = graphql`
   }
 `
 
-class UserSettingsAccountPage extends React.Component {
+class AccountSettings extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("UserSettingsAccountPage mdc-layout-grid", className)
+    return cls("AccountSettings mdc-layout-grid", className)
   }
 
   render() {
     return (
       <QueryRenderer
         environment={environment}
-        query={UserSettingsAccountPageQuery}
+        query={AccountSettingsQuery}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
@@ -68,4 +68,4 @@ class UserSettingsAccountPage extends React.Component {
   }
 }
 
-export default UserSettingsAccountPage
+export default AccountSettings

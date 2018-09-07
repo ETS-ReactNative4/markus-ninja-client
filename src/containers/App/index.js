@@ -10,6 +10,7 @@ import Header from 'components/Header'
 
 import CreateStudyPage from 'containers/CreateStudyPage'
 import CoursePage from 'containers/CoursePage'
+import LessonPage from 'containers/LessonPage'
 import LoginPage from 'containers/LoginPage'
 import LogoutPage from 'containers/LogoutPage'
 import NotificationsPage from 'containers/NotificationsPage'
@@ -32,7 +33,6 @@ const AppQuery = graphql`
     viewer {
       id
       ...Header_viewer
-      ...HomePage_viewer
       ...CreateStudyPage_user
     }
   }
@@ -58,7 +58,7 @@ class App extends React.Component {
                       <Header viewer={props.viewer} />
                       <div className="mdc-top-app-bar--fixed-adjust mdc-theme--text-primary-on-light">
                         <Switch>
-                          <Route exact path="/" render={(routeProps) => <HomePage viewer={props.viewer} {...routeProps} />} />
+                          <Route exact path="/" component={HomePage} />
                           <PrivateRoute
                             exact
                             path="/new"
@@ -76,6 +76,11 @@ class App extends React.Component {
                             exact
                             path="/:owner/:name/course/:number"
                             component={CoursePage}
+                          />
+                          <Route
+                            exact
+                            path="/:owner/:name/lesson/:number"
+                            component={LessonPage}
                           />
                           <Route path="/:owner/:name" component={StudyPage} />
                           <Route component={NotFound} />

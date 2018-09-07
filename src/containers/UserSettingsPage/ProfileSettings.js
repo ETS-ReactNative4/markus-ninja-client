@@ -7,25 +7,25 @@ import {
 import environment from 'Environment'
 import UserProfileForm from 'components/UserProfileForm'
 
-const UserSettingsProfilePageQuery = graphql`
-  query UserSettingsProfilePageQuery {
+const ProfileSettingsQuery = graphql`
+  query ProfileSettingsQuery {
     viewer {
       ...UserProfileForm_user
     }
   }
 `
 
-class UserSettingsProfilePage extends React.Component {
+class ProfileSettings extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("UserSettingsProfilePage mdc-layout-grid", className)
+    return cls("ProfileSettings mdc-layout-grid", className)
   }
 
   render() {
     return (
       <QueryRenderer
         environment={environment}
-        query={UserSettingsProfilePageQuery}
+        query={ProfileSettingsQuery}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
@@ -51,4 +51,4 @@ class UserSettingsProfilePage extends React.Component {
   }
 }
 
-export default UserSettingsProfilePage
+export default ProfileSettings

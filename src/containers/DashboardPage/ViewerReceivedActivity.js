@@ -10,14 +10,14 @@ import { get, isEmpty } from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
 
-class UserActivity extends React.Component {
+class ViewerReceivedActivity extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("UserActivity mdc-layout-grid__inner", className)
+    return cls("ViewerReceivedActivity mdc-layout-grid__inner", className)
   }
 
   render() {
-    const activityEdges = get(this.props, "user.activity.edges", [])
+    const activityEdges = get(this.props, "viewer.receivedActivity.edges", [])
     return (
       <div className={this.classes}>
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
@@ -25,7 +25,7 @@ class UserActivity extends React.Component {
         </h5>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           {isEmpty(activityEdges)
-          ? <div>This user has no recent activity.</div>
+          ? <div>This is no recent activity.</div>
           : <React.Fragment>
               {activityEdges.map(({node}) => (
                 node
@@ -59,18 +59,18 @@ class UserActivity extends React.Component {
   }
 }
 
-export default withRouter(createPaginationContainer(UserActivity,
+export default withRouter(createPaginationContainer(ViewerReceivedActivity,
   {
-    user: graphql`
-      fragment UserActivity_user on User @argumentDefinitions(
+    viewer: graphql`
+      fragment ViewerReceivedActivity_viewer on User @argumentDefinitions(
         count: {type: "Int!"},
         after: {type: "String"}
       ) {
-        activity(
+        receivedActivity(
           first: $count,
           after: $after,
           orderBy: {direction: ASC, field: CREATED_AT}
-        ) @connection(key: "UserActivity_activity", filters: []) {
+        ) @connection(key: "ViewerReceivedActivity_receivedActivity", filters: []) {
           edges {
             node {
               __typename
@@ -94,13 +94,12 @@ export default withRouter(createPaginationContainer(UserActivity,
   {
     direction: 'forward',
     query: graphql`
-      query UserActivityForwardQuery(
-        $login: String!,
+      query ViewerReceivedActivityForwardQuery(
         $count: Int!,
         $after: String
       ) {
-        user(login: $login) {
-          ...UserActivity_user @arguments(
+        viewer {
+          ...ViewerReceivedActivity_viewer @arguments(
             count: $count,
             after: $after
           )
@@ -108,7 +107,7 @@ export default withRouter(createPaginationContainer(UserActivity,
       }
     `,
     getConnectionFromProps(props) {
-      return get(props, "user.activity")
+      return get(props, "viewer.activity")
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {
@@ -118,7 +117,6 @@ export default withRouter(createPaginationContainer(UserActivity,
     },
     getVariables(props, paginationInfo, getFragmentVariables) {
       return {
-        login: props.match.params.login,
         count: paginationInfo.count,
         after: paginationInfo.cursor,
       }

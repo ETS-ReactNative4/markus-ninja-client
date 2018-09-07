@@ -1,14 +1,16 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
+import Select from '@material/react-select'
 import UpdateEmailMutation from 'mutations/UpdateEmailMutation'
 import { get, isNil } from 'utils'
 
 import { EMAILS_PER_PAGE } from 'consts'
 
-class ViewerBackupEmail extends Component {
+class ViewerBackupEmail extends React.Component {
   constructor(props) {
     super(props)
 
@@ -23,44 +25,9 @@ class ViewerBackupEmail extends Component {
     }
 
     this.state = {
-      emailId: backupEmailId,
+      value: backupEmailId,
       error: null,
     }
-  }
-
-  render() {
-    const emailEdges = get(this.props, "viewer.backupEmailOptions.edges", [])
-    const { emailId, error } = this.state
-    return (
-      <div className="UserEmails__backup">
-        <form>
-          <label htmlFor="user_backup_email">Backup email address</label>
-          <div>
-            Your backup email address, in addition to authentication, can be used to reset your password.
-          </div>
-          <select
-            id="user_backup_email"
-            name="backupEmailId"
-            value={emailId}
-            onChange={this.handleChange}
-          >
-            <option value="">Only allow primary email</option>
-            {emailEdges.map(e => {
-              const node = get(e, "node", {})
-              return <option key={node.id} value={node.id}>{node.value}</option>
-            })}
-          </select>
-          <button
-            className="btn"
-            type="submit"
-            onClick={this.handleSubmit}
-          >
-            Save
-          </button>
-          <span>{error}</span>
-        </form>
-      </div>
-    )
   }
 
   _loadMore = () => {
@@ -84,15 +51,65 @@ class ViewerBackupEmail extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { emailId } = this.state
+    const {value} = this.state
     UpdateEmailMutation(
-      emailId,
+      value,
       'BACKUP',
       (error) => {
         if (!isNil(error)) {
           this.setState({ error: error.message })
         }
       },
+    )
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("ViewerBackupEmail", className)
+  }
+
+  get options() {
+    const emailEdges = get(this.props, "viewer.backupEmailOptions.edges", [])
+    const options = [{
+      label: "Only allow primary email",
+      value: "",
+    }]
+    emailEdges.map(({node}) => node && options.push({
+      label: node.value,
+      value: node.id,
+    }))
+
+    return options
+  }
+
+  render() {
+    const {value} = this.state
+
+    return (
+      <div className={this.classes}>
+        <p>
+          Your backup email address, in addition to authentication, can be used to reset your password.
+        </p>
+        <form>
+          <Select
+            className="rn-select"
+            floatingLabelClassName="mdc-floating-label--float-above"
+            notchedOutlineClassName="mdc-notched-outline--notched"
+            outlined
+            label="Backup email address"
+            value={value}
+            onChange={(e) => this.setState({value: e.target.value})}
+            options={this.options}
+          />
+          <button
+            className="mdc-button mdc-button--unelevated ml2"
+            type="submit"
+            onClick={this.handleSubmit}
+          >
+            Save
+          </button>
+        </form>
+      </div>
     )
   }
 }

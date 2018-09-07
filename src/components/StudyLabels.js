@@ -18,10 +18,10 @@ class StudyLabels extends Component {
     const labelCount = get(study, "labels.totalCount", 0)
     return (
       <div className="StudyLabels">
-        <h3>
+        <h5>
           <Counter>{labelCount}</Counter>
           {pluralize("Labels", labelCount)}
-        </h3>
+        </h5>
         <div className="StudyLabels__labels">
           {labelEdges.map((edge) =>
             <Edge key={get(edge, "node.id", "")} edge={edge} render={({node}) =>

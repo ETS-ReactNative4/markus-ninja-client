@@ -1,0 +1,50 @@
+@import "@material/chips/mixins";
+@import "@material/chips/variables";
+@import "@material/typography/mixins";
+
+.Label {
+  @include mdc-chip-corner-radius($mdc-chip-border-radius-default);
+  @include mdc-typography(body2);
+  @include mdc-chip-height($mdc-chip-height-default);
+
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 7px 32px;
+  outline: none;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+
+  &::before {
+    position: absolute;
+    top: calc(50% - 100%);
+    left: calc(50% - 100%);
+    width: 200%;
+    height: 200%;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    content: "";
+    transition: opacity 15ms linear;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.87);
+  }
+
+  &:hover {
+    @include mdc-theme-prop(color, on-surface);
+
+    ::before {
+      opacity: 0.12;
+    }
+  }
+
+  &.Label--dark {
+    @include mdc-chip-ink-color(text-primary-on-dark);
+  }
+
+  &.Label--light {
+    @include mdc-chip-ink-color(text-primary-on-light);
+  }
+}

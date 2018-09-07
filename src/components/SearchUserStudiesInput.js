@@ -16,12 +16,20 @@ class SearchUserStudiesInput extends React.Component {
   }
 
   componentDidMount() {
-    this.props.onQueryComplete(get(this.props, "query.search.edges", []))
+    this.props.onQueryComplete(
+      get(this.props, "query.search.edges", []),
+      this._hasMore,
+      this._loadMore,
+    )
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.loading && !this.state.loading) {
-      this.props.onQueryComplete(get(this.props, "query.search.edges", []))
+      this.props.onQueryComplete(
+        get(this.props, "query.search.edges", []),
+        this._hasMore,
+        this._loadMore,
+      )
     }
   }
 
@@ -31,10 +39,6 @@ class SearchUserStudiesInput extends React.Component {
       q,
     })
     this._refetch(q)
-  }
-
-  _hasMore = () => {
-    return get(this.props, "query.search.pageInfo.hasNextPage", false)
   }
 
   _loadMore = () => {
@@ -74,6 +78,10 @@ class SearchUserStudiesInput extends React.Component {
       {force: true},
     )
   }, 300)
+
+  get _hasMore() {
+    return get(this.props, "query.search.pageInfo.hasNextPage", false)
+  }
 
   get classes() {
     const {className} = this.props
