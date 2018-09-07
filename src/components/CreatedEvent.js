@@ -3,9 +3,9 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import UserLink from 'components/UserLink'
-import CreateableLink from 'components/CreateableLink'
-import CreateablePreview from 'components/CreateablePreview'
+import CoursePreview from 'components/CoursePreview'
+import LessonPreview from 'components/LessonPreview'
+import StudyPreview from 'components/StudyPreview'
 import { get, timeDifferenceForDate } from 'utils'
 
 class CreatedEvent extends Component {
@@ -15,15 +15,24 @@ class CreatedEvent extends Component {
     return (
       <div className="CreatedEvent">
         <div>
-          <UserLink user={get(event, "user", null)} />
           <span className="inline-flex">
-            created a {createable.__typename.toLowerCase()}
-            <CreateableLink createable={createable} />
-            {timeDifferenceForDate(event.createdAt)}
+            Created a {createable.__typename.toLowerCase()}
+            <span className="ml1">{timeDifferenceForDate(event.createdAt)}</span>
           </span>
         </div>
         <div>
-          <CreateablePreview createable={createable} />
+          {(() => {
+            switch(createable.__typename) {
+              case "Course":
+                return <CoursePreview course={createable} />
+              case "Lesson":
+                return <LessonPreview lesson={createable} />
+              case "Study":
+                return <StudyPreview study={createable} />
+              default:
+                return null
+            }
+          })()}
         </div>
       </div>
     )
@@ -34,13 +43,17 @@ export default createFragmentContainer(CreatedEvent, graphql`
   fragment CreatedEvent_event on CreatedEvent {
     createable {
       __typename
-      ...CreateableLink_createable
-      ...CreateablePreview_createable
+      ...on Course {
+        ...CoursePreview_course
+      }
+      ...on Lesson {
+        ...LessonPreview_lesson
+      }
+      ...on Study {
+        ...StudyPreview_study
+      }
     }
     createdAt
     id
-    user {
-      ...UserLink_user
-    }
   }
 `)

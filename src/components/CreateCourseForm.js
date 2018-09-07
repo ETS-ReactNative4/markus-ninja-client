@@ -19,44 +19,41 @@ class CreateCourseForm extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("CreateCourseForm", className)
+    return cls("CreateCourseForm mdc-layout-grid__inner", className)
   }
 
   render() {
-    const { name, description, error } = this.state
+    const {name, description} = this.state
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
-        <div className="mdc-layout-grid__inner">
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet">
-            <TextField
-              className="w-100"
-              outlined
-              label="Course name"
-            >
-              <Input
-                name="name"
-                value={name}
-                onChange={this.handleChange}
-              />
-            </TextField>
-          </div>
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <TextField
-              textarea
-              label="Description (optional)"
-              helperText={<HelperText>Give a brief description of the course.</HelperText>}
-            >
-              <Textarea
-                name="description"
-                value={description}
-                onChange={this.handleChange}
-              />
-            </TextField>
-          </div>
-          <div className="mdc-layout-grid__cell">
-            <button className="mdc-button mdc-button--unelevated" type="submit">Create course</button>
-          </div>
-          <span>{error}</span>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet">
+          <TextField
+            className="w-100"
+            outlined
+            label="Course name"
+          >
+            <Input
+              name="name"
+              value={name}
+              onChange={this.handleChange}
+            />
+          </TextField>
+        </div>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <TextField
+            textarea
+            label="Description (optional)"
+            helperText={<HelperText>Give a brief description of the course.</HelperText>}
+          >
+            <Textarea
+              name="description"
+              value={description}
+              onChange={this.handleChange}
+            />
+          </TextField>
+        </div>
+        <div className="mdc-layout-grid__cell">
+          <button className="mdc-button mdc-button--unelevated" type="submit">Create course</button>
         </div>
       </form>
     )

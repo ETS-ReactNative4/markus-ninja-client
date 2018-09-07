@@ -35,7 +35,7 @@ class StudyLessonSelect extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyLessonSelect rn-select", className)
+    return cls("StudyLessonSelect", className)
   }
 
   get options() {
@@ -58,6 +58,7 @@ class StudyLessonSelect extends React.Component {
     return (
       <div className={this.classes}>
         <Select
+          className="rn-select"
           outlined
           label="Select a lesson"
           value={value}

@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
@@ -32,7 +33,12 @@ const StudyPageQuery = graphql`
   }
 `
 
-class StudyPage extends Component {
+class StudyPage extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("StudyPage mdc-layout-grid", className)
+  }
+
   render() {
     return (
       <QueryRenderer
@@ -50,60 +56,66 @@ class StudyPage extends Component {
               return <NotFound />
             }
             return (
-              <div className="StudyPage mt3">
-                <StudyHeader study={props.study} />
-                <Switch>
-                  <Route
-                    exact
-                    path="/:owner/:name"
-                    component={StudyOverviewPage}
-                  />
-                  <Route
-                    exact
-                    path="/:owner/:name/courses"
-                    render={(routeProps) => <StudyCoursesPage {...routeProps} study={props.study} />}
-                  />
-                  <Route
-                    exact
-                    path="/:owner/:name/courses/new"
-                    component={CreateCoursePage}
-                  />
-                  <Route
-                    exact
-                    path="/:owner/:name/labels"
-                    render={(routeProps) => <StudyLabelsPage {...routeProps} study={props.study} />}
-                  />
-                  <Route
-                    exact
-                    path="/:owner/:name/lesson/:number"
-                    component={LessonPage}
-                  />
-                  <Route
-                    exact
-                    path="/:owner/:name/lessons"
-                    render={(routeProps) => <StudyLessonsPage {...routeProps} study={props.study} />}
-                  />
-                  <Route
-                    exact
-                    path="/:owner/:name/lessons/new"
-                    component={CreateLessonPage}
-                  />
-                  <Route
-                    exact
-                    path="/:owner/:name/asset/:filename"
-                    component={UserAssetPage}
-                  />
-                  <Route
-                    exact
-                    path="/:owner/:name/assets"
-                    component={StudyAssetsPage}
-                  />
-                  <Route
-                    exact
-                    path="/:owner/:name/settings"
-                    component={StudySettingsPage}
-                  />
-                </Switch>
+              <div className={this.classes}>
+                <div className="mdc-layout-grid__inner">
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <StudyHeader study={props.study} />
+                  </div>
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <Switch>
+                      <Route
+                        exact
+                        path="/:owner/:name"
+                        component={StudyOverviewPage}
+                      />
+                      <Route
+                        exact
+                        path="/:owner/:name/courses"
+                        render={(routeProps) => <StudyCoursesPage {...routeProps} study={props.study} />}
+                      />
+                      <Route
+                        exact
+                        path="/:owner/:name/courses/new"
+                        component={CreateCoursePage}
+                      />
+                      <Route
+                        exact
+                        path="/:owner/:name/labels"
+                        render={(routeProps) => <StudyLabelsPage {...routeProps} study={props.study} />}
+                      />
+                      <Route
+                        exact
+                        path="/:owner/:name/lesson/:number"
+                        component={LessonPage}
+                      />
+                      <Route
+                        exact
+                        path="/:owner/:name/lessons"
+                        render={(routeProps) => <StudyLessonsPage {...routeProps} study={props.study} />}
+                      />
+                      <Route
+                        exact
+                        path="/:owner/:name/lessons/new"
+                        component={CreateLessonPage}
+                      />
+                      <Route
+                        exact
+                        path="/:owner/:name/asset/:filename"
+                        component={UserAssetPage}
+                      />
+                      <Route
+                        exact
+                        path="/:owner/:name/assets"
+                        component={StudyAssetsPage}
+                      />
+                      <Route
+                        exact
+                        path="/:owner/:name/settings"
+                        component={StudySettingsPage}
+                      />
+                    </Switch>
+                  </div>
+                </div>
               </div>
             )
           }

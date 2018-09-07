@@ -1,40 +1,46 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import UserActivityEvent from './UserActivityEvent'
 import { get, isEmpty } from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
 
-class UserActivity extends Component {
+class UserActivity extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("UserActivity mdc-layout-grid__inner", className)
+  }
+
   render() {
     const activityEdges = get(this.props, "user.activity.edges", [])
-    if (isEmpty(activityEdges)) {
-      return (
-        <div className="UserActivity">
-          <Link to="/new">Create a study to get started</Link>
-        </div>
-      )
-    }
     return (
-      <div className="UserActivity">
-        <h3>Recent activity</h3>
-        {activityEdges.map(({node}) => (
-          node
-          ? <UserActivityEvent key={node.id} event={node} />
-          : null
-        ))}
-        {this.props.relay.hasMore() &&
-        <button
-          className="mdc-button mdc-button--unelevated"
-          onClick={this._loadMore}
-        >
-          Load more activity
-        </button>}
+      <div className={this.classes}>
+        <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          Recent activity
+        </h5>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          {isEmpty(activityEdges)
+          ? <div>This user has no recent activity.</div>
+          : <React.Fragment>
+              {activityEdges.map(({node}) => (
+                node
+                ? <UserActivityEvent key={node.id} event={node} />
+                : null
+              ))}
+              {this.props.relay.hasMore() &&
+              <button
+                className="mdc-button mdc-button--unelevated"
+                onClick={this._loadMore}
+              >
+                Load more activity
+              </button>}
+            </React.Fragment>}
+        </div>
       </div>
     )
   }
@@ -56,7 +62,10 @@ class UserActivity extends Component {
 export default withRouter(createPaginationContainer(UserActivity,
   {
     user: graphql`
-      fragment UserActivity_user on User {
+      fragment UserActivity_user on User @argumentDefinitions(
+        count: {type: "Int!"},
+        after: {type: "String"}
+      ) {
         activity(
           first: $count,
           after: $after,
@@ -91,7 +100,10 @@ export default withRouter(createPaginationContainer(UserActivity,
         $after: String
       ) {
         user(login: $login) {
-          ...UserActivity_user
+          ...UserActivity_user @arguments(
+            count: $count,
+            after: $after
+          )
         }
       }
     `,

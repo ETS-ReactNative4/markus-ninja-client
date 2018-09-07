@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   QueryRenderer,
   graphql,
 } from 'react-relay'
-import cls from 'classnames'
 import environment from 'Environment'
 import UserLink from 'components/UserLink'
 import SearchViewerStudies from './SearchViewerStudies'
@@ -12,13 +12,20 @@ import { get } from 'utils'
 
 import { SEARCH_BAR_RESULTS_PER_PAGE } from 'consts'
 
+import "./styles.css"
+
 const DashboardPageQuery = graphql`
   query DashboardPageQuery($count: Int!, $after: String, $query: String!, $within: ID!) {
     ...SearchUserStudiesInput_query @arguments(count: $count, after: $after, query: $query, within: $within)
   }
 `
 
-class DashboardPage extends Component {
+class DashboardPage extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("DashboardPage inline-flex", className)
+  }
+
   render() {
     return (
       <QueryRenderer
@@ -34,8 +41,8 @@ class DashboardPage extends Component {
             return <div>{error.message}</div>
           } else if (props) {
             return (
-              <div className="DashboardPage inline-flex">
-                <aside className="mdc-drawer mdc-drawer--permanent">
+              <div className={this.classes}>
+                <aside className="DashboardPage__nav mdc-drawer mdc-drawer--permanent">
                   <nav className="mdc-drawer__drawer">
                     <nav className="mdc-drawer__content">
                       <div className="mdc-list mdc-list--non-interactive">

@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import PropTypes from 'prop-types'
 import {
   createPaginationContainer,
@@ -8,10 +9,9 @@ import { Link, withRouter } from 'react-router-dom';
 import TextField, {HelperText, Input} from '@material/react-text-field'
 import UpdateTopicsMutation from 'mutations/UpdateTopicsMutation'
 import { get, isEmpty } from 'utils'
-import cls from 'classnames'
 import { TOPICS_PER_PAGE } from 'consts'
 
-class StudyMetaTopics extends Component {
+class StudyMetaTopics extends React.Component {
   constructor(props) {
     super(props)
 
@@ -84,77 +84,76 @@ class StudyMetaTopics extends Component {
 
   get classes() {
     const {className} = this.props
-    const {open} = this.state
-
-    return cls("StudyMetaTopics", className, {
-      "StudyMetaTopics__open": open,
-    })
+    return cls("StudyMetaTopics mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {
     const study = get(this.props, "study", {})
     const topicEdges = get(study, "topics.edges", [])
     const pageInfo = get(study, "topics.pageInfo", {})
-    const { error, topics } = this.state
+    const {open, topics} = this.state
     return (
       <div className={this.classes}>
-        <div className="StudyMetaTopics__show">
-          {topicEdges.map(({ node = {} }) =>
-          <Link
-            className="mdc-button mdc-button--outlined mr1 mb1"
-            key={node.id}
-            to={node.resourcePath}
-          >
-            {node.name}
-          </Link>)}
-          {pageInfo.hasNextPage &&
-          <button
-            className="material-icons mdc-icon-button mr1 mb1"
-            onClick={this._loadMore}
-          >
-            more
-          </button>}
-          {study.viewerCanAdmin &&
-          <button
-            className="mdc-button mdc-button--unelevated mr1 mb1"
-            type="button"
-            onClick={this.handleToggleOpen}
-          >
-            Manage topics
-          </button>}
-        </div>
-        {study.viewerCanAdmin &&
-        <form className="StudyMetaTopics__edit" onSubmit={this.handleSubmit}>
-          <div className="inline-flex flex-column flex-auto">
-            <TextField
-              label="Topics (separate with spaces)"
-              helperText={this.renderHelperText()}
+        {open
+        ? study.viewerCanAdmin &&
+          <form className="StudyMeta__form inline-flex w-100" onSubmit={this.handleSubmit}>
+            <div className="flex-auto">
+              <TextField
+                className="w-100"
+                outlined
+                label="Topics (separate with spaces)"
+                helperText={this.renderHelperText()}
+                floatingLabelClassName={!isEmpty(topicEdges) ? "mdc-floating-label--float-above" : ""}
+              >
+                <Input
+                  name="topics"
+                  value={topics}
+                  onChange={this.handleChange}
+                />
+              </TextField>
+            </div>
+            <div className="inline-flex items-center pa2 mb4">
+              <button
+                className="mdc-button mdc-button--unelevated"
+                type="submit"
+                onClick={this.handleSubmit}
+              >
+                Save
+              </button>
+              <span
+                className="pointer pa2 underline-hover"
+                role="button"
+                onClick={this.handleToggleOpen}
+              >
+                Cancel
+              </span>
+            </div>
+          </form>
+        : <div className="inline-flex items-center w-100">
+            {topicEdges.map(({ node = {} }) =>
+            <Link
+              className="mdc-button mdc-button--outlined mr1 mb1"
+              key={node.id}
+              to={node.resourcePath}
             >
-              <Input
-                name="topics"
-                value={topics}
-                onChange={this.handleChange}
-              />
-            </TextField>
-          </div>
-          <div className="inline-flex items-center pa2 mb4">
+              {node.name}
+            </Link>)}
+            {pageInfo.hasNextPage &&
             <button
-              className="mdc-button mdc-button--unelevated"
-              type="submit"
-              onClick={this.handleSubmit}
+              className="material-icons mdc-icon-button mr1 mb1"
+              onClick={this._loadMore}
             >
-              Save
-            </button>
-            <span
-              className="pointer pa2 underline-hover"
-              role="button"
+              more
+            </button>}
+            {study.viewerCanAdmin &&
+            <button
+              className="mdc-button mdc-button--unelevated mr1 mb1"
+              type="button"
               onClick={this.handleToggleOpen}
             >
-              Cancel
-            </span>
-          </div>
-        </form>}
-        <p>{error}</p>
+              Manage topics
+            </button>}
+          </div>}
       </div>
     )
   }

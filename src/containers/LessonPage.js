@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
@@ -27,7 +28,12 @@ const LessonPageQuery = graphql`
   }
 `
 
-class LessonPage extends Component {
+class LessonPage extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("LessonPage mdc-layout-grid__inner", className)
+  }
+
   render() {
     return (
       <QueryRenderer
@@ -51,11 +57,19 @@ class LessonPage extends Component {
             }
 
             return (
-              <div className="LessonPage flex flex-column">
-                <LessonHeader lesson={lesson}/>
-                <LessonBody lesson={lesson}/>
-                <AddLessonCommentForm className="mt3" lesson={lesson} />
-                <LessonTimeline lesson={lesson} />
+              <div className={this.classes}>
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <LessonHeader lesson={lesson}/>
+                </div>
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <LessonBody lesson={lesson}/>
+                </div>
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <AddLessonCommentForm className="mt3" lesson={lesson} />
+                </div>
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <LessonTimeline lesson={lesson} />
+                </div>
               </div>
             )
           }

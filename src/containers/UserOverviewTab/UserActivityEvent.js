@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { get } from 'utils'
-import AppledEvent from './AppledEvent'
-import CreatedEvent from './CreatedEvent'
+import AppledEvent from 'components/AppledEvent'
+import CreatedEvent from 'components/CreatedEvent'
 
-class UserActivityEvent extends Component {
+class UserActivityEvent extends React.Component {
   render() {
     const event = get(this.props, "event", {})
     switch(event.__typename) {

@@ -31,7 +31,7 @@ class UserStudiesTab extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("UserStudiesTab", className)
+    return cls("UserStudiesTab mdc-layout-grid__inner", className)
   }
 
   render() {
@@ -53,20 +53,29 @@ class UserStudiesTab extends React.Component {
             const { studyEdges } = this.state
             return (
               <div className={this.classes}>
-                <div className="inline-flex w-100 items-center bb bt pv3 b--black-20">
-                  <SearchUserStudiesInput
-                    className="flex-auto pr4"
-                    query={props}
-                    user={props.user}
-                    onQueryComplete={(studyEdges) => this.setState({ studyEdges })}
-                  />
-                  <Link className="mdc-button mdc-button--unelevated ml3" to="/new">New</Link>
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <div className="inline-flex items-center w-100">
+                    <SearchUserStudiesInput
+                      className="flex-auto mr4"
+                      query={props}
+                      user={props.user}
+                      onQueryComplete={(studyEdges) => this.setState({ studyEdges })}
+                    />
+                    <Link className="mdc-button mdc-button--unelevated ml3" to="/new">New</Link>
+                  </div>
                 </div>
+                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
                 {isEmpty(studyEdges)
-                ? (props.user.isViewer &&
-                  <span>No studies found</span>)
+                ? <span className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    No studies found
+                  </span>
                 : studyEdges.map(({node}) => (
-                    <UserStudyPreview className="bb pv4 b--black-20" key={node.id} study={node} />
+                    <React.Fragment key={get(node, "id", "")}>
+                      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                        <UserStudyPreview className="" key={node.id} study={node} />
+                      </div>
+                      <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                    </React.Fragment>
                   ))}
               </div>
             )

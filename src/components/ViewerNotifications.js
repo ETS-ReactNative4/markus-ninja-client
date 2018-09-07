@@ -38,11 +38,11 @@ class ViewerNotifications extends Component {
       <div className="ViewerNotifications">
         <div className="ViewerNotifications__notifications">
           {Object.keys(notificationsByStudy).map(key =>
-            <div className="mdc-card">
+            <div key={key} className="mdc-card">
               <div className="mdc-typography--headline5 pa3">
                 {get(notificationsByStudy[key][0], "node.study.nameWithOwner", "")}
               </div>
-              <div key={key} className="mdc-list">
+              <div className="mdc-list">
                 {notificationsByStudy[key].map(({node}) => (
                   <Notification key={node.id} className="mdc-list-item" notification={node} />
                 ))}

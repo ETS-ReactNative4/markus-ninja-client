@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import cls from 'classnames'
 import { withRouter } from 'react-router'
 import { get } from 'utils'
 import EnrollmentSelect from 'components/EnrollmentSelect'
@@ -11,20 +11,26 @@ import UserBio from 'components/UserBio'
 
 import './User.css'
 
-class User extends Component {
+class User extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("User", className)
+  }
+
   render() {
-    const { className } = this.props
     const user = get(this.props, "user", {})
+    const userProp = get(this.props, "user", null)
     const email = get(user, "email.value", null)
+
     return (
-      <div className={cls("User", className)}>
-        <div className="mdc-typography--headline3">{user.name}</div>
-        <div className="mdc-typography--subtitle1">{user.login}</div>
-        <UserBio user={user} />
+      <div className={this.classes}>
+        <h4>{user.name}</h4>
+        <h5>{user.login}</h5>
+        <UserBio className="mt2" user={userProp} />
         {!user.isViewer &&
-        <EnrollmentSelect enrollable={user} />}
+        <EnrollmentSelect enrollable={userProp} />}
         {email &&
-        <div className="User__email">{email}</div>}
+        <div className="User__email">email</div>}
       </div>
     )
   }
@@ -32,9 +38,10 @@ class User extends Component {
 
 export default withRouter(createFragmentContainer(User, graphql`
   fragment User_user on User {
+    ...UserBio_user
+    ...EnrollmentSelect_enrollable
+
     id
-    bio
-    bioHTML
     createdAt
     email {
       value
@@ -42,6 +49,5 @@ export default withRouter(createFragmentContainer(User, graphql`
     isViewer
     login
     name
-    ...EnrollmentSelect_enrollable
   }
 `))

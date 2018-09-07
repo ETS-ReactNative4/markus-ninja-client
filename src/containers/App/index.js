@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import {
   QueryRenderer,
   graphql,
@@ -38,7 +38,7 @@ const AppQuery = graphql`
   }
 `
 
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
       <QueryRenderer
@@ -57,31 +57,29 @@ class App extends Component {
                     <div>
                       <Header viewer={props.viewer} />
                       <div className="mdc-top-app-bar--fixed-adjust mdc-theme--text-primary-on-light">
-                        <div className="rn-page">
-                          <Switch>
-                            <Route exact path="/" render={(routeProps) => <HomePage viewer={props.viewer} {...routeProps} />} />
-                            <PrivateRoute
-                              exact
-                              path="/new"
-                              render={(routeProps) => <CreateStudyPage user={props.viewer} {...routeProps} />}
-                            />
-                            <PrivateRoute path="/notifications" component={NotificationsPage} />
-                            <Route exact path="/research" component={ResearchPage} />
-                            <Route exact path="/search" component={SearchPage} />
-                            <PrivateRoute path="/settings" component={UserSettingsPage} />
-                            <Route exact path="/signup" component={SignupPage} />
-                            <Route exact path="/topics/:name" component={TopicPage} />
-                            <Route exact path="/:owner/:name/search" component={StudySearchPage} />
-                            <Route exact path="/:login" component={UserPage} />
-                            <Route
-                              exact
-                              path="/:owner/:name/course/:number"
-                              component={CoursePage}
-                            />
-                            <Route path="/:owner/:name" component={StudyPage} />
-                            <Route component={NotFound} />
-                          </Switch>
-                        </div>
+                        <Switch>
+                          <Route exact path="/" render={(routeProps) => <HomePage viewer={props.viewer} {...routeProps} />} />
+                          <PrivateRoute
+                            exact
+                            path="/new"
+                            render={(routeProps) => <CreateStudyPage user={props.viewer} {...routeProps} />}
+                          />
+                          <PrivateRoute path="/notifications" component={NotificationsPage} />
+                          <Route exact path="/research" component={ResearchPage} />
+                          <Route exact path="/search" component={SearchPage} />
+                          <PrivateRoute path="/settings" component={UserSettingsPage} />
+                          <Route exact path="/signup" component={SignupPage} />
+                          <Route exact path="/topics/:name" component={TopicPage} />
+                          <Route exact path="/:owner/:name/search" component={StudySearchPage} />
+                          <Route exact path="/:login" component={UserPage} />
+                          <Route
+                            exact
+                            path="/:owner/:name/course/:number"
+                            component={CoursePage}
+                          />
+                          <Route path="/:owner/:name" component={StudyPage} />
+                          <Route component={NotFound} />
+                        </Switch>
                       </div>
                     </div>}
                   />

@@ -16,8 +16,8 @@ class StudyPreview extends Component {
         <Link to={study.resourcePath}>
           {study.nameWithOwner}
         </Link>
-        <span>{study.lessonCount} lessons</span>
-        <span>{study.description}</span>
+        <span className="ml1">{study.lessonCount} lessons</span>
+        <span className="ml1">{study.description}</span>
       </div>
     )
   }

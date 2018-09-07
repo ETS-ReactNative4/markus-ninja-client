@@ -5,9 +5,9 @@ import {
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router-dom';
-import TextField, {Input} from '@material/react-text-field'
+import TextField, {Input, HelperText} from '@material/react-text-field'
 import UpdateStudyMutation from 'mutations/UpdateStudyMutation'
-import { get, isNil } from 'utils'
+import { get, isEmpty, isNil } from 'utils'
 import cls from 'classnames'
 
 class StudyMetaDetails extends Component {
@@ -66,63 +66,73 @@ class StudyMetaDetails extends Component {
 
   get classes() {
     const {className} = this.props
-    const {open} = this.state
-
-    return cls("StudyMetaDetails", className, {
-      "StudyMetaDetails__open": open,
-    })
+    return cls("StudyMetaDetails mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {
     const study = get(this.props, "study", {})
-    const { description, error } = this.state
+    const {description, open} = this.state
     return (
       <div className={this.classes}>
-        <div className="StudyMetaDetails__show">
-          <div className={cls("mdc-theme--subtitle1 flex-auto", {
-            "mdc-theme--text-secondary-on-light": !study.description,
-          })}>
-            {study.description || "No description provided"}
-          </div>
-          {study.viewerCanAdmin &&
-          <div className="inline-flex">
-            <button
-              className="material-icons mdc-icon-button"
-              type="button"
-              onClick={this.handleToggleOpen}
-            >
-              edit
-            </button>
+        {open
+        ? study.viewerCanAdmin &&
+          <form className="StudyMeta__form inline-flex w-100" onSubmit={this.handleSubmit}>
+            <div className="flex-auto">
+              <TextField
+                className="w-100"
+                label="Description"
+                outlined
+                floatingLabelClassName={!isEmpty(description) ? "mdc-floating-label--float-above" : ""}
+                helperText={this.renderHelperText()}
+              >
+                <Input
+                  name="description"
+                  value={description}
+                  onChange={this.handleChange}
+                />
+              </TextField>
+            </div>
+            <div className="inline-flex items-center pa2 mb4">
+              <button
+                className="mdc-button mdc-button--unelevated"
+                type="submit"
+                onClick={this.handleSubmit}
+              >
+                Save
+              </button>
+              <span
+                className="pointer pa2 underline-hover"
+                role="button"
+                onClick={this.handleToggleOpen}
+              >
+                Cancel
+              </span>
+            </div>
+          </form>
+        : <div className="inline-flex items-center w-100">
+            <div className={cls("mdc-theme--subtitle1 flex-auto", {
+              "mdc-theme--text-secondary-on-light": !study.description,
+            })}>
+              {study.description || "No description provided"}
+            </div>
+            {study.viewerCanAdmin &&
+            <div className="inline-flex">
+              <button
+                className="material-icons mdc-icon-button"
+                type="button"
+                onClick={this.handleToggleOpen}
+              >
+                edit
+              </button>
+            </div>}
           </div>}
-        </div>
-        {study.viewerCanAdmin &&
-        <form className="StudyMetaDetails__edit" onSubmit={this.handleSubmit}>
-          <TextField className="flex-auto" label="Description">
-            <Input
-              name="description"
-              value={description}
-              onChange={this.handleChange}
-            />
-          </TextField>
-          <div className="inline-flex items-center pa2">
-            <button
-              className="mdc-button mdc-button--unelevated"
-              type="submit"
-              onClick={this.handleSubmit}
-            >
-              Save
-            </button>
-            <span
-              className="pointer pa2 underline-hover"
-              role="button"
-              onClick={this.handleToggleOpen}
-            >
-              Cancel
-            </span>
-          </div>
-          <span>{error}</span>
-        </form>}
       </div>
+    )
+  }
+
+  renderHelperText() {
+    return (
+      <HelperText>Give a brief description of the course.</HelperText>
     )
   }
 }

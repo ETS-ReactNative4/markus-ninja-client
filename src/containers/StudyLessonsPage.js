@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import * as React from 'react'
 import cls from 'classnames'
 import {
   createFragmentContainer,
@@ -41,7 +41,7 @@ const StudyLessonsPageQuery = graphql`
   }
 `
 
-class StudyLessonsPage extends Component {
+class StudyLessonsPage extends React.Component {
   state = {
     hasMore: false,
     lessonEdges: [],
@@ -50,7 +50,7 @@ class StudyLessonsPage extends Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyLessonsPage mdc-layout-grid", className)
+    return cls("StudyLessonsPage mdc-layout-grid__inner", className)
   }
 
   render() {
@@ -75,56 +75,54 @@ class StudyLessonsPage extends Component {
             const {hasMore, lessonEdges, loadMore} = this.state
             return (
               <div className={this.classes}>
-                <div className="mdc-layout-grid__inner">
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <div className="inline-flex items-center w-100">
-                      <SearchStudyLessonsInput
-                        className="flex-auto mr4"
-                        query={props}
-                        study={props.study}
-                        onQueryComplete={(lessonEdges, hasMore, loadMore) =>
-                          this.setState({ hasMore, lessonEdges, loadMore })
-                        }
-                      />
-                      <StudyLabelsLink
-                        className="mdc-button mdc-button--unelevated mr2"
-                        study={props.study}
-                      >
-                        Labels
-                      </StudyLabelsLink>
-                      <Link
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <div className="inline-flex items-center w-100">
+                    <SearchStudyLessonsInput
+                      className="flex-auto mr4"
+                      query={props}
+                      study={props.study}
+                      onQueryComplete={(lessonEdges, hasMore, loadMore) =>
+                        this.setState({ hasMore, lessonEdges, loadMore })
+                      }
+                    />
+                    <StudyLabelsLink
+                      className="mdc-button mdc-button--unelevated mr2"
+                      study={props.study}
+                    >
+                      Labels
+                    </StudyLabelsLink>
+                    <Link
+                      className="mdc-button mdc-button--unelevated"
+                      to={props.study.resourcePath + "/lessons/new"}
+                    >
+                      New lesson
+                    </Link>
+                  </div>
+                </div>
+                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  {isEmpty(lessonEdges)
+                  ? <React.Fragment>
+                      <span className="mr1">
+                        No lessons were found.
+                      </span>
+                      <CreateLessonLink className="rn-link" study={props.study}>
+                        Create a lesson.
+                      </CreateLessonLink>
+                    </React.Fragment>
+                  : <div className="StudyLessons__lessons">
+                      {lessonEdges.map(({node}) => (
+                        node && <LessonPreview key={node.id} lesson={node} />
+                      ))}
+                      {hasMore &&
+                      <button
                         className="mdc-button mdc-button--unelevated"
-                        to={props.study.resourcePath + "/lessons/new"}
+                        onClick={loadMore}
                       >
-                        New lesson
-                      </Link>
+                        More
+                      </button>}
                     </div>
-                  </div>
-                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    {isEmpty(lessonEdges)
-                    ? <React.Fragment>
-                        <span className="mr1">
-                          No lessons were found.
-                        </span>
-                        <CreateLessonLink className="rn-link" study={props.study}>
-                          Create a lesson.
-                        </CreateLessonLink>
-                      </React.Fragment>
-                    : <div className="StudyLessons__lessons">
-                        {lessonEdges.map(({node}) => (
-                          node && <LessonPreview key={node.id} lesson={node} />
-                        ))}
-                        {hasMore &&
-                        <button
-                          className="mdc-button mdc-button--unelevated"
-                          onClick={loadMore}
-                        >
-                          More
-                        </button>}
-                      </div>
-                    }
-                  </div>
+                  }
                 </div>
               </div>
             )

@@ -1,8 +1,10 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
+import TextField, {Input} from '@material/react-text-field'
 import UpdateViewerAccountMutation from 'mutations/UpdateViewerAccountMutation'
 import { isNil } from 'utils'
 
-class ChangePassword extends Component {
+class ChangePassword extends React.Component {
   state = {
     confirmNewPassword: "",
     newPassword: "",
@@ -10,41 +12,65 @@ class ChangePassword extends Component {
     error: null,
   }
 
+  get classes() {
+    const {className} = this.props
+    return cls("ChangePassword mdc-layout-grid__inner", className)
+  }
+
   render() {
-    const { confirmNewPassword, newPassword, oldPassword, error } = this.state
+    const {confirmNewPassword, newPassword, oldPassword} = this.state
     return (
-      <form className="ChangePassword" onSubmit={this.handleSubmit}>
-        <label htmlFor="user_old_password">Old password</label>
-        <input
-          id="user_old_password"
-          className="form-control"
-          type="password"
-          name="oldPassword"
-          value={oldPassword}
-          onChange={this.handleChange}
-        />
-        <label htmlFor="user_new_password">New password</label>
-        <input
-          id="user_new_password"
-          className="form-control"
-          type="password"
-          name="newPassword"
-          value={newPassword}
-          onChange={this.handleChange}
-        />
-        <label htmlFor="user_confirm_new_password">Confirm new password</label>
-        <input
-          id="user_confirm_new_password"
-          className="form-control"
-          type="password"
-          name="confirm_new_password"
-          value={confirmNewPassword}
-          onChange={this.handleChange}
-        />
-        <button type="submit">
-          Update password
-        </button>
-        <span>{error}</span>
+      <form className={this.classes} onSubmit={this.handleSubmit}>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <TextField
+            className="w-100"
+            outlined
+            label="Old password"
+          >
+            <Input
+              type="password"
+              name="oldPassword"
+              value={oldPassword}
+              onChange={this.handleChange}
+            />
+          </TextField>
+        </div>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <TextField
+            className="w-100"
+            outlined
+            label="New password"
+          >
+            <Input
+              type="password"
+              name="newPassword"
+              value={newPassword}
+              onChange={this.handleChange}
+            />
+          </TextField>
+        </div>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <TextField
+            className="w-100"
+            outlined
+            label="Confirm new password"
+          >
+            <Input
+              type="password"
+              name="confirmNewPassword"
+              value={confirmNewPassword}
+              onChange={this.handleChange}
+            />
+          </TextField>
+        </div>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <button
+            className="mdc-button mdc-button--unelevated"
+            type="submit"
+          >
+            Update password
+          </button>
+        </div>
       </form>
     )
   }

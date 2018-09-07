@@ -1,4 +1,5 @@
 import * as React from 'react'
+import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
@@ -25,6 +26,11 @@ const UserSettingsEmailsPageQuery = graphql`
 `
 
 class UserSettingsEmailsPage extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("UserSettingsEmailsPage mdc-layout-grid", className)
+  }
+
   render() {
     return (
       <QueryRenderer
@@ -38,11 +44,24 @@ class UserSettingsEmailsPage extends React.Component {
             return <div>{error.message}</div>
           } else if (props) {
             return (
-              <div>
-                <h2>Emails</h2>
-                <ViewerEmailList viewer={props.viewer} />
-                <ViewerPrimaryEmail viewer={props.viewer} />
-                <ViewerBackupEmail viewer={props.viewer} />
+              <div className={this.classes}>
+                <div className="mdc-layout-grid__inner">
+                  <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    Emails
+                  </h4>
+                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <ViewerEmailList viewer={props.viewer} />
+                  </div>
+                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <ViewerPrimaryEmail viewer={props.viewer} />
+                  </div>
+                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <ViewerBackupEmail viewer={props.viewer} />
+                  </div>
+                </div>
               </div>
             )
           }

@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
-import cls from 'classnames'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
 import UserPreview from 'components/UserPreview'
@@ -28,7 +28,12 @@ const UserTutorsTabQuery = graphql`
   }
 `
 
-class UserTutorsTab extends Component {
+class UserTutorsTab extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("UserTutorsTab mdc-layout-grid__inner", className)
+  }
+
   render() {
     const { match } = this.props
     return (
@@ -43,29 +48,26 @@ class UserTutorsTab extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            const { className } = this.props
             const enrolledEdges = get(props, "user.enrolled.edges", [])
-            if (isEmpty(enrolledEdges)) {
-              return (
-                <div className={cls("UserTutorsTab", className)}>
-                  {props.user.isViewer
-                  ? <span>
-                      You have not enrolled in any users yet.
-                      If you would like to receive notifications when certain users
-                      create new studies, then go to their profile page and change your
-                      enrollment status to Enrolled.
-                    </span>
-                  : <span>
-                      This user has not enrolled in any users yet.
-                    </span>}
-                </div>
-              )
-            }
+
             return (
-              <div className={cls("UserTutorsTab", className)}>
-                {enrolledEdges.map(({node}) => (
-                  <UserPreview key={node.__id} user={node} />
-                ))}
+              <div className={this.classes}>
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  {isEmpty(enrolledEdges)
+                  ? (props.user.isViewer
+                    ? <span>
+                        You have not enrolled in any users yet.
+                        If you would like to receive notifications when certain users
+                        create new studies, then go to their profile page and change your
+                        enrollment status to Enrolled.
+                      </span>
+                    : <span>
+                        This user has not enrolled in any users yet.
+                      </span>)
+                  : enrolledEdges.map(({node}) => node
+                    ? <UserPreview key={get(node, "id", "")} user={node} />
+                    : null)}
+                </div>
               </div>
             )
           }

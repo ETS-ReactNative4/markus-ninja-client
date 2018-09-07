@@ -1,15 +1,17 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
+import TextField, {Input} from '@material/react-text-field'
 import ViewerEmail from './ViewerEmail.js'
 import AddEmailMutation from 'mutations/AddEmailMutation'
 import { get, isNil } from 'utils'
 
 import { EMAILS_PER_PAGE } from 'consts'
 
-class ViewerEmailList extends Component {
+class ViewerEmailList extends React.Component {
   state = {
     addEmail: "",
     error: null,
@@ -47,44 +49,54 @@ class ViewerEmailList extends Component {
     )
   }
 
+  get classes() {
+    const {className} = this.props
+    return cls("ViewerEmailList mdc-layout-grid__inner", className)
+  }
+
   render() {
     const {relay} = this.props
     const emailEdges = get(this.props, "viewer.allEmails.edges", [])
-    const { addEmail } = this.state
+    const {addEmail} = this.state
+
     return (
-      <div className="ViewerEmailList">
-        <div className="ViewerEmailList__emails">
+      <div className={this.classes}>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           {emailEdges.map(({node}) => (
             <ViewerEmail key={node.__id} email={node} />
           ))}
           {relay.hasMore() &&
           <button
-            className="ViewerEmailList__more"
+            className="mdc-button mdc-button--unelevated"
+            type="button"
             onClick={this._loadMore}
           >
             More
           </button>}
         </div>
-        <div className="ViewerEmailList__add">
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="viewer_add_email">Add email address</label>
-            <input
-              id="viewer_add_email"
-              className="form-control"
-              type="text"
+        <form
+          className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+          onSubmit={this.handleSubmit}
+        >
+          <TextField
+            outlined
+            label="Add email address"
+          >
+            <Input
+              type="password"
               name="addEmail"
               value={addEmail}
               onChange={this.handleChange}
             />
-            <button
-              className="btn"
-              type="submit"
-              onClick={this.handleSubmit}
-            >
-              Add
-            </button>
-          </form>
-        </div>
+          </TextField>
+          <button
+            className="mdc-button mdc-button--unelevated ml2"
+            type="submit"
+            onClick={this.handleSubmit}
+          >
+            Add
+          </button>
+        </form>
       </div>
     )
   }

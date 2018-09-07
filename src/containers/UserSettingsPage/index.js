@@ -14,9 +14,9 @@ class UserSettingsPage extends Component {
       return <Redirect to="/settings/profile" />
     }
     return (
-      <div className="UserSettingsPage inline-flex">
+      <div className="UserSettingsPage inline-flex w-100">
         <UserSettingsNav />
-        <div className="pl3">
+        <div className="flex-auto">
           <Switch>
             <Route
               exact

@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
@@ -20,7 +21,12 @@ const NotificationsPageQuery = graphql`
   }
 `
 
-class NotificationsPage extends Component {
+class NotificationsPage extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("NotificationsPage mdc-layout-grid", className)
+  }
+
   render() {
     return (
       <QueryRenderer
@@ -36,8 +42,12 @@ class NotificationsPage extends Component {
             return <div>{error.message}</div>
           } else if (props) {
             return (
-              <div>
-                <ViewerNotifications viewer={props.viewer} />
+              <div className={this.classes}>
+                <div className="mdc-layout-grid__inner">
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <ViewerNotifications viewer={props.viewer} />
+                  </div>
+                </div>
               </div>
             )
           }

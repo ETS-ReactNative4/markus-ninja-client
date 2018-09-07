@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import * as React from 'react'
 import cls from 'classnames'
 import {
   createFragmentContainer,
@@ -10,7 +10,7 @@ import CourseMetaTopics from './CourseMetaTopics'
 
 import "./styles.css"
 
-class CourseMeta extends Component {
+class CourseMeta extends React.Component {
   state = {
     detailsOpen: false,
     topicsOpen: false,

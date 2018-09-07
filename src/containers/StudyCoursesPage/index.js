@@ -5,7 +5,6 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
-import {Link} from 'react-router-dom'
 import environment from 'Environment'
 import CreateCourseLink from 'components/CreateCourseLink'
 import CoursePreview from 'components/CoursePreview.js'
@@ -48,7 +47,7 @@ class StudyCoursesPage extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyCoursesPage mdc-layout-grid", className)
+    return cls("StudyCoursesPage mdc-layout-grid__inner", className)
   }
 
   render() {
@@ -73,50 +72,48 @@ class StudyCoursesPage extends React.Component {
             const {hasMore, courseEdges, loadMore} = this.state
             return (
               <div className={this.classes}>
-                <div className="mdc-layout-grid__inner">
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <div className="inline-flex items-center w-100">
-                      <SearchStudyCoursesInput
-                        className="flex-auto mr4"
-                        query={props}
-                        study={props.study}
-                        onQueryComplete={(courseEdges, hasMore, loadMore) =>
-                          this.setState({ hasMore, courseEdges, loadMore })
-                        }
-                      />
-                      <Link
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <div className="inline-flex items-center w-100">
+                    <SearchStudyCoursesInput
+                      className="flex-auto mr4"
+                      query={props}
+                      study={props.study}
+                      onQueryComplete={(courseEdges, hasMore, loadMore) =>
+                        this.setState({ hasMore, courseEdges, loadMore })
+                      }
+                    />
+                    <CreateCourseLink
+                      className="mdc-button mdc-button--unelevated"
+                      study={props.study}
+                    >
+                      New course
+                    </CreateCourseLink>
+                  </div>
+                </div>
+                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  {isEmpty(courseEdges)
+                  ? <React.Fragment>
+                      <span className="mr1">
+                        No courses were found.
+                      </span>
+                      <CreateCourseLink className="rn-link" study={props.study}>
+                        Create a course.
+                      </CreateCourseLink>
+                    </React.Fragment>
+                  : <div className="StudyCoursesPage__courses">
+                      {courseEdges.map(({node}) => (
+                        node && <CoursePreview key={node.id} course={node} />
+                      ))}
+                      {hasMore &&
+                      <button
                         className="mdc-button mdc-button--unelevated"
-                        to={props.study.resourcePath + "/courses/new"}
+                        onClick={loadMore}
                       >
-                        New course
-                      </Link>
+                        More
+                      </button>}
                     </div>
-                  </div>
-                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    {isEmpty(courseEdges)
-                    ? <React.Fragment>
-                        <span className="mr1">
-                          No courses were found.
-                        </span>
-                        <CreateCourseLink className="rn-link" study={props.study}>
-                          Create a course.
-                        </CreateCourseLink>
-                      </React.Fragment>
-                    : <div className="StudyCoursesPage__courses">
-                        {courseEdges.map(({node}) => (
-                          node && <CoursePreview key={node.id} course={node} />
-                        ))}
-                        {hasMore &&
-                        <button
-                          className="mdc-button mdc-button--unelevated"
-                          onClick={loadMore}
-                        >
-                          More
-                        </button>}
-                      </div>
-                    }
-                  </div>
+                  }
                 </div>
               </div>
             )

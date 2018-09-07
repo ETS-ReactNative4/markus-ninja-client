@@ -1,29 +1,35 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import UserLink from 'components/UserLink'
-import AppleableLink from 'components/AppleableLink'
-import AppleablePreview from 'components/AppleablePreview'
+import CoursePreview from 'components/CoursePreview'
+import StudyPreview from 'components/StudyPreview'
 import { get, timeDifferenceForDate } from 'utils'
 
-class AppledEvent extends Component {
+class AppledEvent extends React.Component {
   render() {
     const event = get(this.props, "event", {})
     const appleable = get(event, "appleable", null)
     return (
       <div className="AppledEvent">
         <div>
-          <UserLink user={get(event, "user", null)} />
           <span>
-            appled
-            <AppleableLink appleable={appleable} />
-            {timeDifferenceForDate(event.createdAt)}
+            Appled a {appleable.__typename.toLowerCase()}
+            <span className="ml1">{timeDifferenceForDate(event.createdAt)}</span>
           </span>
         </div>
         <div>
-          <AppleablePreview appleable={appleable} />
+          {(() => {
+            switch(appleable.__typename) {
+              case "Course":
+                return <CoursePreview course={appleable} />
+              case "Study":
+                return <StudyPreview study={appleable} />
+              default:
+                return null
+            }
+          })()}
         </div>
       </div>
     )
@@ -33,13 +39,15 @@ class AppledEvent extends Component {
 export default createFragmentContainer(AppledEvent, graphql`
   fragment AppledEvent_event on AppledEvent {
     appleable {
-      ...AppleableLink_appleable
-      ...AppleablePreview_appleable
+      __typename
+      ...on Course {
+        ...CoursePreview_course
+      }
+      ...on Study {
+        ...StudyPreview_study
+      }
     }
     createdAt
     id
-    user {
-      ...UserLink_user
-    }
   }
 `)

@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import * as React from 'react'
 import cls from 'classnames'
 import PropTypes from 'prop-types'
 import {
@@ -11,7 +11,7 @@ import UpdateTopicsMutation from 'mutations/UpdateTopicsMutation'
 import { get, isEmpty } from 'utils'
 import { TOPICS_PER_PAGE } from 'consts'
 
-class CourseMetaTopics extends Component {
+class CourseMetaTopics extends React.Component {
   constructor(props) {
     super(props)
 

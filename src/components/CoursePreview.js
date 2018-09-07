@@ -16,9 +16,9 @@ class CoursePreview extends Component {
           <Link to={course.resourcePath}>
             {course.name}
           </Link>
-          <span>({course.lessonCount} {pluralize("lesson", course.lessonCount)})</span>
+          <span className="ml1">({course.lessonCount} {pluralize("lesson", course.lessonCount)})</span>
           {!isNil(course.advancedAt) &&
-          <span>Advanced {timeDifferenceForDate(course.advancedAt)}</span>}
+          <span className="ml1">Advanced {timeDifferenceForDate(course.advancedAt)}</span>}
         </div>
         <div className="CoursePreview__description">{course.description}</div>
       </div>

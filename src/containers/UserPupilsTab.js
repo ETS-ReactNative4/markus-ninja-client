@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
-import cls from 'classnames'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
 import UserPreview from 'components/UserPreview'
@@ -28,7 +28,12 @@ const UserPupilsTabQuery = graphql`
   }
 `
 
-class UserPupilsTab extends Component {
+class UserPupilsTab extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("UserPupilsTab mdc-layout-grid__inner", className)
+  }
+
   render() {
     const { match } = this.props
     return (
@@ -43,26 +48,23 @@ class UserPupilsTab extends Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            const { className } = this.props
             const enrolleeEdges = get(props, "user.enrollees.edges", [])
-            if (isEmpty(enrolleeEdges)) {
-              return (
-                <div className={cls("UserPupilsTab", className)}>
-                  {props.user.isViewer
-                  ? <span>
-                      You do not have any pupils yet.
-                    </span>
-                  : <span>
-                      This user does not have any pupils yet.
-                    </span>}
-                </div>
-              )
-            }
+
             return (
-              <div className={cls("UserPupilsTab", className)}>
-                {enrolleeEdges.map(({node}) => (
-                  <UserPreview key={node.__id} user={node} />
-                ))}
+              <div className={this.classes}>
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  {isEmpty(enrolleeEdges)
+                  ? (props.user.isViewer
+                    ? <span>
+                        You do not have any pupils yet.
+                      </span>
+                    : <span>
+                        This user does have any pupils yet.
+                      </span>)
+                  : enrolleeEdges.map(({node}) => node
+                    ? <UserPreview key={get(node, "id", "")} user={node} />
+                    : null)}
+                </div>
               </div>
             )
           }

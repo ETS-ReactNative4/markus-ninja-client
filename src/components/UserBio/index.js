@@ -1,65 +1,76 @@
-import React, {Component} from 'react'
-import { withRouter } from 'react-router-dom';
-import UpdateViewerProfileMutation from 'mutations/UpdateViewerProfileMutation'
+import * as React from 'react'
 import cls from 'classnames'
+import {
+  createFragmentContainer,
+  graphql,
+} from 'react-relay'
+import { withRouter } from 'react-router-dom';
+import TextField, {Input} from '@material/react-text-field'
+import UpdateViewerProfileMutation from 'mutations/UpdateViewerProfileMutation'
 import HTML from 'components/HTML'
 import { get, isEmpty, isNil } from 'utils'
 
 import './styles.css'
 
-class UserBio extends Component {
+class UserBio extends React.Component {
   state = {
     error: null,
     open: false,
     bio: this.props.user.bio,
   }
 
+  get classes() {
+    const {className} = this.props
+    return cls("UserBio", className)
+  }
+
   render() {
     const { className } = this.props
     const user = get(this.props, "user", {})
-    const { error, open, bio } = this.state
+    const {open, bio} = this.state
     return (
       <div className={cls("UserBio", className, {open})}>
-        <div className="UserBio__show">
-          <HTML className="UserBio__user-bio" html={user.bioHTML} />
-          <div className="UserBio__actions">
+        {open
+        ? <form onSubmit={this.handleSubmit}>
+            <TextField
+              className="w-100"
+              label="Add a bio"
+              textarea
+              floatingLabelClassName={!isEmpty(bio) ? "mdc-floating-label--float-above" : ""}
+            >
+              <Input
+                name="bio"
+                value={bio}
+                onChange={this.handleChange}
+              />
+            </TextField>
+            <div className="inline-flex items-center mt2">
+              <button
+                className="mdc-button mdc-button--unelevated"
+                type="submit"
+                onClick={this.handleSubmit}
+              >
+                Save
+              </button>
+              <button
+                className="mdc-button mdc-button--outlined ml2"
+                type="button"
+                onClick={this.handleToggleOpen}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        : <div className="UserBio__show">
+            <HTML className="mb3" html={user.bioHTML} />
             <button
-              className="mdc-button mdc-button--unelevated"
+              className="mdc-button mdc-button--unelevated w-100"
               type="button"
               onClick={this.handleToggleOpen}
             >
               {isEmpty(user.bio) ? "Add a bio" : "Edit bio"}
             </button>
-          </div>
-        </div>
-        <div className="UserBio__edit">
-          <form onSubmit={this.handleSubmit}>
-            <input
-              id="user-bio"
-              className={cls("form-control", "edit-user-bio")}
-              type="text"
-              name="bio"
-              placeholder="Add a bio"
-              value={bio}
-              onChange={this.handleChange}
-            />
-            <button
-              className="btn"
-              type="submit"
-              onClick={this.handleSubmit}
-            >
-              Save
-            </button>
-            <button
-              className="btn-link"
-              type="button"
-              onClick={this.handleToggleOpen}
-            >
-              Cancel
-            </button>
-            <span>{error}</span>
-          </form>
-        </div>
+          </div>}
       </div>
     )
   }
@@ -91,4 +102,9 @@ class UserBio extends Component {
   }
 }
 
-export default withRouter(UserBio)
+export default withRouter(createFragmentContainer(UserBio, graphql`
+  fragment UserBio_user on User {
+    bio
+    bioHTML
+  }
+`))

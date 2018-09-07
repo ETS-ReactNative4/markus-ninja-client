@@ -19,7 +19,7 @@ class StudyHeader extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyHeader", className)
+    return cls("StudyHeader mdc-layout-grid__inner", className)
   }
 
   render() {
@@ -29,49 +29,47 @@ class StudyHeader extends React.Component {
     }
     return (
       <div className={this.classes}>
-        <div className="mdc-layout-grid">
-          <div className="mdc-layout-grid__inner">
+        <div className={cls(
+          "mdc-layout-grid__cell",
+          "mdc-layout-grid__cell--span-7-desktop",
+          "mdc-layout-grid__cell--span-4-tablet",
+          "mdc-layout-grid__cell--span-4-phone",
+          "mdc-typography--headline5",
+        )}>
+          <UserLink user={get(study, "owner", null)} />
+          <span>/</span>
+          <StudyLink study={study} />
+        </div>
+        <div className={cls(
+          "mdc-layout-grid__cell",
+          "mdc-layout-grid__cell--span-5-desktop",
+          "mdc-layout-grid__cell--span-4-tablet",
+          "mdc-layout-grid__cell--span-4-phone",
+        )}>
+          <div className="StudyHeader__actions">
             <div className={cls(
-              "mdc-layout-grid__cell",
-              "mdc-layout-grid__cell--span-7-desktop",
-              "mdc-layout-grid__cell--span-4-tablet",
-              "mdc-layout-grid__cell--span-4-phone",
-              "mdc-typography--headline5",
+              "StudyHeader__action",
+              "StudyHeader__action--enroll",
             )}>
-              <UserLink user={get(study, "owner", null)} />
-              <span>/</span>
-              <StudyLink study={study} />
+              <EnrollmentSelect enrollable={study} />
+              <button className="rn-count-button">
+                {get(study, "enrolleeCount", 0)}
+              </button>
             </div>
             <div className={cls(
-              "mdc-layout-grid__cell",
-              "mdc-layout-grid__cell--span-5-desktop",
-              "mdc-layout-grid__cell--span-4-tablet",
-              "mdc-layout-grid__cell--span-4-phone",
+              "StudyHeader__action",
+              "StudyHeader__action--apple",
             )}>
-              <div className="StudyHeader__actions">
-                <div className={cls(
-                  "StudyHeader__action",
-                  "StudyHeader__action--enroll",
-                )}>
-                  <EnrollmentSelect enrollable={study} />
-                  <button className="rn-count-button">
-                    {get(study, "enrolleeCount", 0)}
-                  </button>
-                </div>
-                <div className={cls(
-                  "StudyHeader__action",
-                  "StudyHeader__action--apple",
-                )}>
-                  <AppleButton appleable={study} />
-                  <button className="rn-count-button">
-                    {get(study, "appleGivers.totalCount", 0)}
-                  </button>
-                </div>
-              </div>
+              <AppleButton appleable={study} />
+              <button className="rn-count-button">
+                {get(study, "appleGivers.totalCount", 0)}
+              </button>
             </div>
           </div>
         </div>
-        <StudyTabs study={study} />
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <StudyTabs study={study} />
+        </div>
       </div>
     )
   }

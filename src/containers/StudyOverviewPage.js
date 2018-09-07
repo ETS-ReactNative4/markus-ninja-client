@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
@@ -24,7 +25,12 @@ const StudyOverviewPageQuery = graphql`
   }
 `
 
-class StudyOverviewPage extends Component {
+class StudyOverviewPage extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("StudyOverviewPage mdc-layout-grid__inner", className)
+  }
+
   render() {
     const { match } = this.props
     return (
@@ -45,16 +51,20 @@ class StudyOverviewPage extends Component {
             }
             const lesson = get(props, "study.lesson", null)
             return (
-              <div className="StudyOverviewPage mt2">
-                <StudyMeta study={props.study}  />
-                {isNil(lesson)
-                ? <Link
-                    className="LessonList__new-lesson"
-                    to={get(props, "study.resourcePath", "") + "/lessons/new"}
-                  >
-                    Create a lesson
-                  </Link>
-                : <LessonPreview lesson={lesson} />}
+              <div className={this.classes}>
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <StudyMeta study={props.study}  />
+                </div>
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  {isNil(lesson)
+                  ? <Link
+                      className="rn-link"
+                      to={get(props, "study.resourcePath", "") + "/lessons/new"}
+                    >
+                      Create a lesson
+                    </Link>
+                  : <LessonPreview lesson={lesson} />}
+                </div>
               </div>
             )
           }

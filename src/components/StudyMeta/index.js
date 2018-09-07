@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql
@@ -7,12 +8,17 @@ import { get } from 'utils'
 import StudyMetaDetails from './StudyMetaDetails'
 import StudyMetaTopics from './StudyMetaTopics'
 
-import './StudyMeta.css'
+import './styles.css'
 
-class StudyMeta extends Component {
+class StudyMeta extends React.Component {
   state = {
     detailsOpen: false,
     topicsOpen: false,
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("StudyMeta mdc-layout-inner", className)
   }
 
   render() {
@@ -20,10 +26,14 @@ class StudyMeta extends Component {
     const {detailsOpen, topicsOpen} = this.state
     return (
       <div className="StudyMeta">
-        {!topicsOpen &&
-        <StudyMetaDetails onOpen={(open) => this.setState({ detailsOpen: open })} study={study} />}
-        {!detailsOpen &&
-        <StudyMetaTopics onOpen={(open) => this.setState({ topicsOpen: open })} study={study} />}
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          {!topicsOpen &&
+          <StudyMetaDetails onOpen={(open) => this.setState({ detailsOpen: open })} study={study} />}
+        </div>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          {!detailsOpen &&
+          <StudyMetaTopics onOpen={(open) => this.setState({ topicsOpen: open })} study={study} />}
+        </div>
       </div>
     )
   }

@@ -1,96 +1,17 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import { withRouter } from 'react-router-dom';
+import TextField, {Input} from '@material/react-text-field'
 import DeleteViewerAccountMutation from 'mutations/DeleteViewerAccountMutation'
 import { isEmpty, isNil } from 'utils'
-import cls from 'classnames'
 
-import './DeleteAccount.css'
-
-class DeleteAccount extends Component {
+class DeleteAccount extends React.Component {
   state = {
     error: null,
     open: false,
     password: "",
     login: "",
     verify: "",
-  }
-
-  render() {
-    const { login, open, password, verify, error } = this.state
-    const submittable =
-      !isEmpty(login) &&
-      !isEmpty(password) &&
-      verify === 'delete my account'
-
-    return (
-      <div className={cls("DeleteAccount", {open})}>
-        <div className="DeleteAccount__info">
-          <div>Once you delete your account, there is no going back. Please be certain.</div>
-          <div className="DeleteAccount__actions">
-            <button
-              className="btn"
-              type="button"
-              onClick={this.handleToggleOpen}
-            >
-              Delete your account
-            </button>
-          </div>
-        </div>
-        <div className="DeleteAccount__form">
-          <div className="warning">This is extremely important.</div>
-          <div>We will immediately delete all your studies, and anything associated with your account</div>
-          <div>You will no longer receive any communication from us about your account.</div>
-          <div>Please be sure before you proceed.</div>
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="user_username_email">Your username or email</label>
-            <input
-              id="user_username_email"
-              className="form-control"
-              type="text"
-              name="login"
-              value={login}
-              onChange={this.handleChange}
-            />
-            <label htmlFor="verify-delete">
-              To verify, type <em>delete my account</em> below:
-            </label>
-            <input
-              id="verify-delete"
-              className="form-control"
-              type="text"
-              name="verify"
-              value={verify}
-              onChange={this.handleChange}
-            />
-            <label htmlFor="user_password">Confirm your password:</label>
-            <input
-              id="user_password"
-              className="form-control"
-              type="password"
-              name="password"
-              value={password}
-              onChange={this.handleChange}
-            />
-            <button
-              className="btn"
-              disabled={!submittable}
-              type="submit"
-              onClick={this.handleSubmit}
-            >
-              Delete this account
-            </button>
-            <button
-              className="btn-link"
-              type="button"
-              onClick={this.handleToggleOpen}
-            >
-              Cancel
-            </button>
-            <span>{error}</span>
-          </form>
-        </div>
-      </div>
-    )
   }
 
   handleChange = (e) => {
@@ -120,6 +41,119 @@ class DeleteAccount extends Component {
 
   handleToggleOpen = () => {
     this.setState({ open: !this.state.open })
+  }
+
+  get classes() {
+    const {className} = this.props
+    const {open} = this.state
+    return cls("DeleteAccount mdc-layout-grid__inner", className, {
+      open,
+    })
+  }
+
+  get isSubmittable() {
+    const {login, password, verify} = this.state
+    return !isEmpty(login) &&
+      !isEmpty(password) &&
+      verify === 'delete my account'
+  }
+
+  render() {
+    const {open} = this.state
+
+    return (
+      <div className={this.classes}>
+        {open
+        ? this.renderForm()
+        : this.renderInfo()}
+      </div>
+    )
+  }
+
+  renderInfo() {
+    return (
+      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <p>Once you delete your account, there is no going back. Please be certain.</p>
+        <button
+          className="mdc-button mdc-button--unelevated mt2"
+          type="button"
+          onClick={this.handleToggleOpen}
+        >
+          Delete your account
+        </button>
+      </div>
+    )
+  }
+
+  renderForm() {
+    const {login, password, verify} = this.state
+
+    return (
+      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <h6>This is extremely important.</h6>
+        <p>
+          We will immediately delete all your studies, and anything associated with your account.
+          You will no longer receive any communication from us about your account.
+          Please be sure before you proceed.
+        </p>
+        <form onSubmit={this.handleSubmit}>
+          <TextField
+            className="w-100"
+            outlined
+            label="You username or email"
+          >
+            <Input
+              name="login"
+              value={login}
+              onChange={this.handleChange}
+            />
+          </TextField>
+          <TextField
+            className="w-100 mt3"
+            outlined
+            label="Password"
+          >
+            <Input
+              type="password"
+              name="password"
+              value={password}
+              onChange={this.handleChange}
+            />
+          </TextField>
+          <p>
+            To verify, type <em>delete my account</em> below:
+          </p>
+          <TextField
+            className="w-100"
+            outlined
+            label="Verify"
+          >
+            <Input
+              name="verify"
+              value={verify}
+              onChange={this.handleChange}
+            />
+          </TextField>
+          <div className="mt2">
+            <button
+              className="mdc-button mdc-button--unelevated"
+              disabled={!this.isSubmittable}
+              type="submit"
+              onClick={this.handleSubmit}
+            >
+              Delete this account
+            </button>
+            <button
+              className="mdc-button mdc-button--outlined ml2"
+              type="button"
+              onClick={this.handleToggleOpen}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    )
   }
 }
 

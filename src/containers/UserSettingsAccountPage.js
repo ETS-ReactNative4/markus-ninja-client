@@ -1,4 +1,5 @@
 import * as React from 'react'
+import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
@@ -18,6 +19,11 @@ const UserSettingsAccountPageQuery = graphql`
 `
 
 class UserSettingsAccountPage extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("UserSettingsAccountPage mdc-layout-grid", className)
+  }
+
   render() {
     return (
       <QueryRenderer
@@ -28,13 +34,30 @@ class UserSettingsAccountPage extends React.Component {
             return <div>{error.message}</div>
           } else if (props) {
             return (
-              <div>
-                <h2>Change password</h2>
-                <ChangePassword />
-                <h2>Change username</h2>
-                <ChangeUsername user={props.viewer} />
-                <h2>Delete account</h2>
-                <DeleteAccount />
+              <div className={this.classes}>
+                <div className="mdc-layout-grid__inner">
+                  <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    Change password
+                  </h5>
+                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <ChangePassword />
+                  </div>
+                  <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    Change username
+                  </h5>
+                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <ChangeUsername user={props.viewer} />
+                  </div>
+                  <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    Delete account
+                  </h5>
+                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <DeleteAccount />
+                  </div>
+                </div>
               </div>
             )
           }

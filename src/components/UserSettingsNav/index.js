@@ -21,9 +21,9 @@ class UserSettingsNav extends Component {
         <nav className="mdc-drawer__drawer">
           <header className="mdc-drawer__header">
             <div className="mdc-drawer__header-content">
-              <h3>
+              <h5>
                 User Settings
-              </h3>
+              </h5>
             </div>
           </header>
           <nav className="mdc-drawer__content mdc-list">

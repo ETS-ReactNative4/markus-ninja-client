@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
@@ -34,7 +35,12 @@ const ResearchPageQuery = graphql`
   }
 `
 
-class ResearchPage extends Component {
+class ResearchPage extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("ResearchPage mdc-layout-grid", className)
+  }
+
   render() {
     return (
       <QueryRenderer
@@ -47,27 +53,37 @@ class ResearchPage extends Component {
             const popularStudyEdges = get(props, "popularStudies.edges", [])
             const popularTopicEdges = get(props, "popularTopics.edges", [])
             return (
-              <div>
-                <h2>Popular studies</h2>
-                <div className="mdc-layout-grid">
-                  <div className="mdc-layout-grid__inner">
-                    {popularStudyEdges.map(({node}) => (
-                      <div key={node.id} className="mdc-layout-grid__cell">
-                        <ResearchStudyPreview className="mdc-card pa3 h-100" study={node} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <h2>Popular topics</h2>
-                <div className="mdc-layout-grid">
-                  <div className="mdc-layout-grid__inner">
-                    {popularTopicEdges.map(({node}) => (
-                      <div key={node.id} className="mdc-layout-grid__cell">
-                        <div className="mdc-card">
-                          <TopicPreview className="mdc-card__primary-action pa3 h-100" key={node.id} topic={node} />
+              <div className={this.classes}>
+                <div className="mdc-layout-grid__inner">
+                  <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    Popular studies
+                  </h4>
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <div className="mdc-layout-grid__inner">
+                      {popularStudyEdges.map(({node}) => (
+                        <div key={node.id} className="mdc-layout-grid__cell">
+                          <ResearchStudyPreview className="mdc-card pa3 h-100" study={node} />
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
+                  </div>
+                  <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    Popular topics
+                  </h4>
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <div className="mdc-layout-grid__inner">
+                      {popularTopicEdges.map(({node}) => (
+                        <div key={node.id} className="mdc-layout-grid__cell">
+                          <div className="mdc-card">
+                            <TopicPreview
+                              className="mdc-card__primary-action pa3 h-100"
+                              key={node.id}
+                              topic={node}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
