@@ -1,0 +1,11 @@
+.CreateLabelForm__color-input {
+  display: inline-block;
+  position: relative;
+
+  .CreateLabelForm__color-picker {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+  }
+}

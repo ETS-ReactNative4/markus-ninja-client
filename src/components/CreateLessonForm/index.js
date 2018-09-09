@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import * as React from 'react'
 import cls from 'classnames'
 import {
   createFragmentContainer,
@@ -16,7 +16,7 @@ import { get, isNil } from 'utils'
 
 import "./styles.css"
 
-class CreateLessonForm extends Component {
+class CreateLessonForm extends React.Component {
   state = {
     error: null,
     body: "",

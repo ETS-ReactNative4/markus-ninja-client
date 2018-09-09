@@ -1,16 +1,18 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router-dom';
+import TextField, {Input} from '@material/react-text-field'
 import { GithubPicker } from 'react-color'
 import CreateLabelMutation from 'mutations/CreateLabelMutation'
 import { isNil } from 'utils'
 
-import './CreateLabelForm.css'
+import "./styles.css"
 
-class CreateLabelForm extends Component {
+class CreateLabelForm extends React.Component {
   state = {
     error: null,
     color: "",
@@ -18,43 +20,59 @@ class CreateLabelForm extends Component {
     name: "",
   }
 
+  get classes() {
+    const {className} = this.props
+    return cls("CreateLabelForm", className)
+  }
+
   render() {
-    const { color, description, name, error } = this.state
+    const {color, description, name} = this.state
     return (
       <form
         className="CreateLabelForm"
         onSubmit={this.handleSubmit}
       >
-        <label htmlFor="label-name">Label name</label>
-        <input
-          id="label-name"
-          type="text"
-          name="name"
-          value={name}
-          onChange={this.handleChange}
-        />
-        <label htmlFor="label-description">Description (optional)</label>
-        <input
-          id="label-description"
-          type="text"
-          name="description"
-          value={description}
-          onChange={this.handleChange}
-        />
-        <label htmlFor="label-description">Color</label>
-        <input
-          id="label-color"
-          className="CreateLabelForm__color-input"
-          type="text"
-          name="color"
-          value={color}
-        />
-        <GithubPicker
-          className="CreateLabelForm__color-picker"
-          onChangeComplete={this.handleChangeComplete}
-        />
-        <button type="submit">Create label</button>
-        <span>{error}</span>
+        <TextField
+          outlined
+          label="Label name"
+        >
+          <Input
+            name="name"
+            value={name}
+            onChange={this.handleChange}
+          />
+        </TextField>
+        <TextField
+          outlined
+          label="Description (optional)"
+        >
+          <Input
+            name="description"
+            value={description}
+            onChange={this.handleChange}
+          />
+        </TextField>
+        <div className="CreateLabelForm__color-input">
+          <TextField
+            outlined
+            label="Color"
+          >
+            <Input
+              name="color"
+              value={color}
+              onChange={this.handleChange}
+            />
+          </TextField>
+          <div className="CreateLabelForm__color-picker">
+            <GithubPicker onChangeComplete={this.handleChangeComplete} />
+          </div>
+        </div>
+        <button
+          className="mdc-button mdc-button--unelevated"
+          type="submit"
+        >
+          Create label
+        </button>
       </form>
     )
   }

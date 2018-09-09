@@ -37,21 +37,18 @@ export default (labelId, callback) => {
         if (!isNil(deleteLabelField)) {
           const labelStudy = deleteLabelField.getLinkedRecord('study')
           const labelStudyId = labelStudy.getValue('id')
-          const labelStudyLabels = labelStudy.getLinkedRecord('labels', {first: 0})
-          const study = proxyStore.get(labelStudyId)
-          study.setLinkedRecord(labelStudyLabels, 'labels', {first: 0})
-
-          const labelEdge = deleteLabelField.getLinkedRecord('labelEdge')
-          const studyLabels = ConnectionHandler.getConnection(
-            study,
-            "StudyLabels_labels",
-          )
-          studyLabels && ConnectionHandler.deleteNode(studyLabels, labelEdge)
-          const searchLabels = ConnectionHandler.getConnection(
+          const searchStudy = ConnectionHandler.getConnection(
             proxyStore.getRoot(),
-            "SearchStudyLabels_search",
+            "SearchStudy_search",
+            {type: "LABEL", within: labelStudyId},
           )
-          searchLabels && ConnectionHandler.deleteNode(searchLabels, labelEdge)
+
+          const labelStudyLabels = labelStudy.getLinkedRecord('labels', {first: 0})
+          const labelCount = labelStudyLabels.getValue("totalCount")
+          searchStudy && searchStudy.setValue(labelCount, "labelCount")
+
+          const deletedLabelId = deleteLabelField.getValue("deletedLabelId")
+          searchStudy && ConnectionHandler.deleteNode(searchStudy, deletedLabelId)
 
           proxyStore.delete(labelId)
         }

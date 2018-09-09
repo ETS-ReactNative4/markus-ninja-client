@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import * as React from 'react'
 import {
   createFragmentContainer,
   QueryRenderer,
@@ -7,23 +7,24 @@ import {
 import { withRouter } from 'react-router'
 import queryString from 'query-string'
 import environment from 'Environment'
-import SearchStudyLabels from 'components/SearchStudyLabels'
+import SearchStudyResults from './SearchStudyResults'
 import { get } from 'utils'
 
 import { SEARCH_RESULTS_PER_PAGE } from 'consts'
 
-const SearchStudyLabelsPageQuery = graphql`
-  query SearchStudyLabelsPageQuery(
+const SearchStudyQuery = graphql`
+  query SearchStudyQuery(
     $count: Int!,
     $after: String,
     $query: String!,
+    $type: SearchType!,
     $within: ID!
   ) {
-    ...SearchStudyLabels_query
+    ...SearchStudyResults_query @arguments(count: $count, after: $after, query: $query, type: $type, within: $within)
   }
 `
 
-class SearchStudyLabelsPage extends Component {
+class SearchStudy extends React.Component {
   render() {
     const searchQuery = queryString.parse(get(this.props, "location.search", ""))
     const query = get(searchQuery, "q", "*")
@@ -31,10 +32,11 @@ class SearchStudyLabelsPage extends Component {
     return (
       <QueryRenderer
         environment={environment}
-        query={SearchStudyLabelsPageQuery}
+        query={SearchStudyQuery}
         variables={{
           count: SEARCH_RESULTS_PER_PAGE,
           query,
+          type: this.props.type,
           within: this.props.study.id,
         }}
         render={({error,  props}) => {
@@ -42,8 +44,14 @@ class SearchStudyLabelsPage extends Component {
             return <div>{error.message}</div>
           } else if (props) {
             return (
-              <div className="SearchStudyLabelsPage">
-                <SearchStudyLabels query={props} studyId={this.props.study.id} />
+              <div className="SearchStudy">
+                <SearchStudyResults
+                  query={props}
+                  type={this.props.type}
+                  studyId={this.props.study.id}
+                >
+                  {this.props.children}
+                </SearchStudyResults>
               </div>
             )
           }
@@ -54,8 +62,8 @@ class SearchStudyLabelsPage extends Component {
   }
 }
 
-export default withRouter(createFragmentContainer(SearchStudyLabelsPage, graphql`
-  fragment SearchStudyLabelsPage_study on Study {
+export default withRouter(createFragmentContainer(SearchStudy, graphql`
+  fragment SearchStudy_study on Study {
     id
   }
 `))

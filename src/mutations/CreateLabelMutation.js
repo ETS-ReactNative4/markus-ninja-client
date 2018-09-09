@@ -11,6 +11,7 @@ const mutation = graphql`
     createLabel(input: $input) {
       labelEdge {
         node {
+          id
           ...LabelPreview_label
         }
       }
@@ -41,22 +42,19 @@ export default (studyId, name, description, color, callback) => {
       updater: proxyStore => {
         const createLabelField = proxyStore.getRootField('createLabel')
         if (!isNil(createLabelField)) {
+          const searchStudy = ConnectionHandler.getConnection(
+            proxyStore.getRoot(),
+            "SearchStudy_search",
+            {type: "LABEL", within: studyId},
+          )
+
           const labelStudy = createLabelField.getLinkedRecord('study')
           const labelStudyLabels = labelStudy.getLinkedRecord('labels', {first: 0})
-          const study = proxyStore.get(studyId)
-          study.setLinkedRecord(labelStudyLabels, 'labels', {first: 0})
+          const labelCount = labelStudyLabels.getValue("totalCount")
+          searchStudy && searchStudy.setValue(labelCount, "labelCount")
 
           const labelEdge = createLabelField.getLinkedRecord('labelEdge')
-          const studyLabels = ConnectionHandler.getConnection(
-            study,
-            "StudyLabels_labels",
-          )
-          studyLabels && ConnectionHandler.insertEdgeBefore(studyLabels, labelEdge)
-          const searchLabels = ConnectionHandler.getConnection(
-            proxyStore.getRoot(),
-            "SearchStudyLabels_search",
-          )
-          searchLabels && ConnectionHandler.insertEdgeBefore(searchLabels, labelEdge)
+          searchStudy && ConnectionHandler.insertEdgeBefore(searchStudy, labelEdge)
         }
       },
       onCompleted: callback,

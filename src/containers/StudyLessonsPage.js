@@ -24,14 +24,6 @@ const StudyLessonsPageQuery = graphql`
     $query: String!,
     $within: ID!
   ) {
-    ...SearchStudyLessonsInput_query @arguments(
-      owner: $owner,
-      name: $name,
-      count: $count,
-      after: $after,
-      query: $query,
-      within: $within,
-    )
     study(owner: $owner, name: $name) {
       ...CreateLessonLink_study
       ...StudyLabelsLink_study
@@ -77,14 +69,27 @@ class StudyLessonsPage extends React.Component {
               <div className={this.classes}>
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   <div className="inline-flex items-center w-100">
-                    <SearchStudyLessonsInput
-                      className="flex-auto mr4"
-                      query={props}
-                      study={props.study}
-                      onQueryComplete={(lessonEdges, hasMore, loadMore) =>
-                        this.setState({ hasMore, lessonEdges, loadMore })
-                      }
-                    />
+                    <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
+                      <input
+                        id="lessons-query"
+                        className="mdc-text-field__input"
+                        autoComplete="off"
+                        type="text"
+                        name="q"
+                        placeholder="Find a lesson..."
+                        value={q}
+                        onChange={this.handleChange}
+                      />
+                      <div className="mdc-notched-outline mdc-theme--background z-behind">
+                        <svg>
+                          <path className="mdc-notched-outline__path"></path>
+                        </svg>
+                      </div>
+                      <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
+                      <i className="material-icons mdc-text-field__icon">
+                        search
+                      </i>
+                    </div>
                     <StudyLabelsLink
                       className="mdc-button mdc-button--unelevated mr2"
                       study={props.study}
