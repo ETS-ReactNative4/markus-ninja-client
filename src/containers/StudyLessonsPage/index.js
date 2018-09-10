@@ -5,14 +5,20 @@ import {
   graphql,
 } from 'react-relay'
 import queryString from 'query-string'
-import CreateLabelForm from 'components/CreateLabelForm'
+import StudyLabelsLink from 'components/StudyLabelsLink'
+import CreateLessonLink from 'components/CreateLessonLink'
 import SearchStudyRefetch from 'components/SearchStudyRefetch'
-import StudyLabels from './StudyLabels'
+import StudyLessons from './StudyLessons'
 import {debounce, get, isEmpty} from 'utils'
 
-class StudyLabelsPage extends React.Component {
-  state = {
-    q: "",
+class StudyLessonsPage extends React.Component {
+  constructor(props) {
+    super(props)
+
+    const searchQuery = queryString.parse(get(this.props, "location.search", ""))
+    const q = get(searchQuery, "q", "")
+
+    this.state = {q}
   }
 
   handleChange = (e) => {
@@ -34,27 +40,36 @@ class StudyLabelsPage extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyLabelsPage mdc-layout-grid__inner", className)
+    return cls("StudyLessonsPage mdc-layout-grid__inner", className)
   }
 
   render() {
-    const {q} = this.state
     const study = get(this.props, "study", null)
+    const {q} = this.state
 
     return (
       <div className={this.classes}>
-        {this.renderInput()}
-
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <CreateLabelForm study={study} />
+          <div className="flex items-center w-100">
+            {this.renderInput()}
+            <StudyLabelsLink
+              className="mdc-button mdc-button--unelevated mh2"
+              study={study}
+            >
+              Labels
+            </StudyLabelsLink>
+            <CreateLessonLink
+              className="mdc-button mdc-button--unelevated"
+              study={study}
+            >
+              New lesson
+            </CreateLessonLink>
+          </div>
         </div>
+        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <SearchStudyRefetch
-            study={study}
-            type="LABEL"
-            query={q}
-          >
-            <StudyLabels />
+          <SearchStudyRefetch study={study} type="LESSON" query={q}>
+            <StudyLessons study={study} />
           </SearchStudyRefetch>
         </div>
       </div>
@@ -67,11 +82,12 @@ class StudyLabelsPage extends React.Component {
     return (
       <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
         <input
+          id="lessons-query"
           className="mdc-text-field__input"
           autoComplete="off"
           type="text"
           name="q"
-          placeholder="Search..."
+          placeholder="Find a lesson..."
           value={q}
           onChange={this.handleChange}
         />
@@ -89,9 +105,10 @@ class StudyLabelsPage extends React.Component {
   }
 }
 
-export default createFragmentContainer(StudyLabelsPage, graphql`
-  fragment StudyLabelsPage_study on Study {
-    ...CreateLabelForm_study
+export default createFragmentContainer(StudyLessonsPage, graphql`
+  fragment StudyLessonsPage_study on Study {
+    ...CreateLessonLink_study
+    ...StudyLabelsLink_study
     ...SearchStudyRefetch_study
   }
 `)

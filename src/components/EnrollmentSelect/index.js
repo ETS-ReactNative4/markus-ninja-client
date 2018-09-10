@@ -19,7 +19,7 @@ class EnrollmentSelect extends React.Component {
       return null
     }
 
-    const disabled = !enrollable.viewerCanEnroll
+    const disabled = this.props.disabled || !enrollable.viewerCanEnroll
     const { status } = this.state
 
     return (

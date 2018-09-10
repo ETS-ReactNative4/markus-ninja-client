@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import {
   createFragmentContainer,
   QueryRenderer,
@@ -7,7 +8,7 @@ import {
 import { withRouter } from 'react-router'
 import environment from 'Environment'
 import SearchStudyRefetchResults from './SearchStudyRefetchResults'
-import { get } from 'utils'
+import {get, isEmpty} from 'utils'
 
 import { SEARCH_RESULTS_PER_PAGE } from 'consts'
 
@@ -19,14 +20,20 @@ const SearchStudyRefetchQuery = graphql`
     $type: SearchType!,
     $within: ID!
   ) {
-    ...SearchStudyRefetchResults_query @arguments(count: $count, after: $after, query: $query, type: $type, within: $within)
+    ...SearchStudyRefetchResults_results @arguments(count: $count, after: $after, query: $query, type: $type, within: $within)
   }
 `
 
 class SearchStudyRefetch extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this._query = this.props.query
+  }
+
   render() {
-    const {children, query, type, study} = this.props
     const studyId = get(this.props, "study.id", "")
+    const initialQuery = isEmpty(this._query) ? "*" : this._query
 
     return (
       <QueryRenderer
@@ -34,20 +41,23 @@ class SearchStudyRefetch extends React.Component {
         query={SearchStudyRefetchQuery}
         variables={{
           count: SEARCH_RESULTS_PER_PAGE,
-          query,
-          type,
+          query: initialQuery,
+          type: this.props.type,
           within: studyId,
         }}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            const {children, query, type} = this.props
+
             return (
               <div className="SearchStudyRefetch">
                 <SearchStudyRefetchResults
-                  query={props}
+                  query={query}
+                  results={props}
                   type={type}
-                  studyId={study.id}
+                  studyId={studyId}
                 >
                   {children}
                 </SearchStudyRefetchResults>
@@ -59,6 +69,14 @@ class SearchStudyRefetch extends React.Component {
       />
     )
   }
+}
+
+SearchStudyRefetch.propTypes = {
+  query: PropTypes.string.isRequired,
+}
+
+SearchStudyRefetch.defaultProps = {
+  query: "",
 }
 
 export default withRouter(createFragmentContainer(SearchStudyRefetch, graphql`

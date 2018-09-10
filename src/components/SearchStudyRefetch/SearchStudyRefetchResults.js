@@ -1,7 +1,6 @@
 import * as React from 'react'
-import cls from 'classnames'
+import PropTypes from 'prop-types'
 import {
-  createFragmentContainer,
   createRefetchContainer,
   graphql,
 } from 'react-relay'
@@ -14,14 +13,14 @@ class SearchStudyRefetchResults extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.query && !this.props.query) {
+    if (prevProps.query !== this.props.query) {
       this._refetch(this.props.query)
     }
   }
 
   _loadMore = () => {
     const { loading, q } = this.state
-    const after = get(this.props, "query.search.pageInfo.endCursor")
+    const after = get(this.props, "results.search.pageInfo.endCursor")
 
     if (!this._hasMore()) {
       console.log("Nothing more to load")
@@ -38,13 +37,12 @@ class SearchStudyRefetchResults extends React.Component {
     this.setState({
       loading: true,
     })
-    this.props.onQuery(query)
     this.props.relay.refetch(
       {
         count: get(this.props, "count", 10),
         after,
         query: isEmpty(query) ? "*" : query,
-        within: get(this.props, "study.id"),
+        within: this.props.studyId,
       },
       null,
       (error) => {
@@ -58,12 +56,24 @@ class SearchStudyRefetchResults extends React.Component {
   }, 300)
 
   get _hasMore() {
-    return get(this.props, "query.search.pageInfo.hasNextPage", false)
+    return get(this.props, "results.search.pageInfo.hasNextPage", false)
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("SearchStudyRefetchResults h-100", className)
+  get _totalCount() {
+    const {type, results} = this.props
+
+    switch (type) {
+      case "COURSE":
+        return get(results, "search.courseCount", 0)
+      case "LABEL":
+        return get(results, "search.labelCount", 0)
+      case "LESSON":
+        return get(results, "search.lessonCount", 0)
+      case "USER_ASSET":
+        return get(results, "search.userAssetCount", 0)
+      default:
+        return 0
+    }
   }
 
   render() {
@@ -71,18 +81,29 @@ class SearchStudyRefetchResults extends React.Component {
 
     return React.cloneElement(child, {
       search: {
-        edges: get(this.props, "query.search.edges", []),
+        edges: get(this.props, "results.search.edges", []),
+        totalCount: this._totalCount,
         hasMore: this._hasMore,
         loadMore: this._loadMore,
-      }
+      },
     })
   }
 }
 
+SearchStudyRefetchResults.propTypes = {
+  query: PropTypes.string,
+  studyId: PropTypes.string,
+}
+
+SearchStudyRefetchResults.defaultProps = {
+  query: "",
+  studyId: "",
+}
+
 const refetchContainer = createRefetchContainer(SearchStudyRefetchResults,
   {
-    query: graphql`
-      fragment SearchStudyRefetchResults_query on Query @argumentDefinitions(
+    results: graphql`
+      fragment SearchStudyRefetchResults_results on Query @argumentDefinitions(
         count: {type: "Int!"},
         after: {type: "String"},
         query: {type: "String!"},
@@ -104,12 +125,19 @@ const refetchContainer = createRefetchContainer(SearchStudyRefetchResults,
               ...on Lesson {
                 ...LessonPreview_lesson
               }
+              ...on UserAsset {
+                ...UserAssetPreview_asset
+              }
             }
           }
           pageInfo {
             hasNextPage
             endCursor
           }
+          courseCount
+          labelCount
+          lessonCount
+          userAssetCount
         }
       }
     `,
@@ -122,13 +150,9 @@ const refetchContainer = createRefetchContainer(SearchStudyRefetchResults,
       $type: SearchType!,
       $within: ID!
     ) {
-      ...SearchStudyRefetchResults_query @arguments(count: $count, after: $after, query: $query, type: $type, within: $within)
+      ...SearchStudyRefetchResults_results @arguments(count: $count, after: $after, query: $query, type: $type, within: $within)
     }
   `,
 )
 
-export default createFragmentContainer(refetchContainer, graphql`
-  fragment SearchStudyRefetchResults_study on Study {
-    id
-  }
-`)
+export default refetchContainer

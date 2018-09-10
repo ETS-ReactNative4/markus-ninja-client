@@ -2,48 +2,40 @@ import * as React from 'react'
 import cls from 'classnames'
 import {
   createFragmentContainer,
-  QueryRenderer,
   graphql,
 } from 'react-relay'
-import environment from 'Environment'
+import queryString from 'query-string'
 import CreateCourseLink from 'components/CreateCourseLink'
-import CoursePreview from 'components/CoursePreview.js'
-import SearchStudyCoursesInput from 'components/SearchStudyCoursesInput'
-import { get, isEmpty, isNil } from 'utils'
-
-import { COURSES_PER_PAGE } from 'consts'
-
-const StudyCoursesPageQuery = graphql`
-  query StudyCoursesPageQuery(
-    $owner: String!,
-    $name: String!,
-    $count: Int!,
-    $after: String
-    $query: String!,
-    $within: ID!
-  ) {
-    ...SearchStudyCoursesInput_query @arguments(
-      owner: $owner,
-      name: $name,
-      count: $count,
-      after: $after,
-      query: $query,
-      within: $within,
-    )
-    study(owner: $owner, name: $name) {
-      id
-      ...CreateCourseLink_study
-      ...SearchStudyCoursesInput_study
-    }
-  }
-`
+import SearchStudyRefetch from 'components/SearchStudyRefetch'
+import StudyCourses from './StudyCourses'
+import {debounce, get, isEmpty} from 'utils'
 
 class StudyCoursesPage extends React.Component {
-  state = {
-    hasMore: false,
-    courseEdges: [],
-    loadMore: () => {},
+  constructor(props) {
+    super(props)
+
+    const searchQuery = queryString.parse(get(this.props, "location.search", ""))
+    const q = get(searchQuery, "q", "")
+
+    this.state = {q}
   }
+
+  handleChange = (e) => {
+    this.setState({q: e.target.value})
+    this._redirect()
+  }
+
+  _redirect = debounce(() => {
+    const {location, history} = this.props
+    const {q} = this.state
+
+    const searchQuery = queryString.parse(get(location, "search", ""))
+    searchQuery.q = isEmpty(q) ? undefined : q
+
+    const search = queryString.stringify(searchQuery)
+
+    history.push({pathname: location.pathname, search})
+  }, 300)
 
   get classes() {
     const {className} = this.props
@@ -51,82 +43,66 @@ class StudyCoursesPage extends React.Component {
   }
 
   render() {
+    const {q} = this.state
+    const study = get(this.props, "study", null)
+
     return (
-      <QueryRenderer
-        environment={environment}
-        query={StudyCoursesPageQuery}
-        variables={{
-          owner: this.props.match.params.owner,
-          name: this.props.match.params.name,
-          count: COURSES_PER_PAGE,
-          query: "*",
-          within: get(this.props, "study.id"),
-        }}
-        render={({error,  props}) => {
-          if (error) {
-            return <div>{error.message}</div>
-          } else if (props) {
-            if (isNil(props.study)) {
-              return null
-            }
-            const {hasMore, courseEdges, loadMore} = this.state
-            return (
-              <div className={this.classes}>
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <div className="inline-flex items-center w-100">
-                    <SearchStudyCoursesInput
-                      className="flex-auto mr4"
-                      query={props}
-                      study={props.study}
-                      onQueryComplete={(courseEdges, hasMore, loadMore) =>
-                        this.setState({ hasMore, courseEdges, loadMore })
-                      }
-                    />
-                    <CreateCourseLink
-                      className="mdc-button mdc-button--unelevated"
-                      study={props.study}
-                    >
-                      New course
-                    </CreateCourseLink>
-                  </div>
-                </div>
-                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  {isEmpty(courseEdges)
-                  ? <React.Fragment>
-                      <span className="mr1">
-                        No courses were found.
-                      </span>
-                      <CreateCourseLink className="rn-link" study={props.study}>
-                        Create a course.
-                      </CreateCourseLink>
-                    </React.Fragment>
-                  : <div className="StudyCoursesPage__courses">
-                      {courseEdges.map(({node}) => (
-                        node && <CoursePreview key={node.id} course={node} />
-                      ))}
-                      {hasMore &&
-                      <button
-                        className="mdc-button mdc-button--unelevated"
-                        onClick={loadMore}
-                      >
-                        More
-                      </button>}
-                    </div>
-                  }
-                </div>
-              </div>
-            )
-          }
-          return <div>Loading</div>
-        }}
-      />
+      <div className={this.classes}>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <div className="inline-flex items-center w-100">
+            {this.renderInput()}
+            <div className="ml2">
+              <CreateCourseLink
+                className="mdc-button mdc-button--unelevated"
+                study={study}
+              >
+                New course
+              </CreateCourseLink>
+            </div>
+          </div>
+        </div>
+        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <SearchStudyRefetch study={study} type="COURSE" query={q}>
+            <StudyCourses study={study} />
+          </SearchStudyRefetch>
+        </div>
+      </div>
+    )
+  }
+
+  renderInput() {
+    const {q} = this.state
+
+    return (
+      <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
+        <input
+          id="courses-query"
+          className="mdc-text-field__input"
+          autoComplete="off"
+          type="text"
+          name="q"
+          placeholder="Find a course..."
+          value={q}
+          onChange={this.handleChange}
+        />
+        <div className="mdc-notched-outline mdc-theme--background z-behind">
+          <svg>
+            <path className="mdc-notched-outline__path"></path>
+          </svg>
+        </div>
+        <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
+        <i className="material-icons mdc-text-field__icon">
+          search
+        </i>
+      </div>
     )
   }
 }
 
 export default createFragmentContainer(StudyCoursesPage, graphql`
   fragment StudyCoursesPage_study on Study {
-    id
+    ...CreateCourseLink_study
+    ...SearchStudyRefetch_study
   }
 `)

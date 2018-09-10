@@ -27,6 +27,7 @@ class StudyHeader extends React.Component {
     if (isNil(study)) {
       return null
     }
+
     return (
       <div className={this.classes}>
         <div className={cls(
@@ -51,8 +52,8 @@ class StudyHeader extends React.Component {
               "StudyHeader__action",
               "StudyHeader__action--enroll",
             )}>
-              <EnrollmentSelect enrollable={study} />
-              <button className="rn-count-button">
+              <EnrollmentSelect disabled={!study.viewerCanEnroll} enrollable={study} />
+              <button disabled={!study.viewerCanEnroll} className="rn-count-button">
                 {get(study, "enrolleeCount", 0)}
               </button>
             </div>
@@ -60,8 +61,8 @@ class StudyHeader extends React.Component {
               "StudyHeader__action",
               "StudyHeader__action--apple",
             )}>
-              <AppleButton appleable={study} />
-              <button className="rn-count-button">
+              <AppleButton disabled={!study.viewerCanApple} appleable={study} />
+              <button disabled={!study.viewerCanApple} className="rn-count-button">
                 {get(study, "appleGivers.totalCount", 0)}
               </button>
             </div>
@@ -77,6 +78,10 @@ class StudyHeader extends React.Component {
 
 export default withRouter(createFragmentContainer(StudyHeader, graphql`
   fragment StudyHeader_study on Study {
+    ...StudyLink_study
+    ...AppleButton_appleable
+    ...EnrollmentSelect_enrollable
+    ...StudyTabs_study
     id
     advancedAt
     appleGivers(first: 0) {
@@ -89,9 +94,7 @@ export default withRouter(createFragmentContainer(StudyHeader, graphql`
       ...UserLink_user
     }
     updatedAt
-    ...StudyLink_study
-    ...AppleButton_appleable
-    ...EnrollmentSelect_enrollable
-    ...StudyTabs_study
+    viewerCanApple
+    viewerCanEnroll
   }
 `))

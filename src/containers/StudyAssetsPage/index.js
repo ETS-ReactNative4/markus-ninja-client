@@ -5,14 +5,18 @@ import {
   graphql,
 } from 'react-relay'
 import queryString from 'query-string'
-import CreateLabelForm from 'components/CreateLabelForm'
 import SearchStudyRefetch from 'components/SearchStudyRefetch'
-import StudyLabels from './StudyLabels'
+import StudyAssets from './StudyAssets'
 import {debounce, get, isEmpty} from 'utils'
 
-class StudyLabelsPage extends React.Component {
-  state = {
-    q: "",
+class StudyAssetsPage extends React.Component {
+  constructor(props) {
+    super(props)
+
+    const searchQuery = queryString.parse(get(this.props, "location.search", ""))
+    const q = get(searchQuery, "q", "")
+
+    this.state = {q}
   }
 
   handleChange = (e) => {
@@ -34,7 +38,7 @@ class StudyLabelsPage extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyLabelsPage mdc-layout-grid__inner", className)
+    return cls("StudyAssetsPage mdc-layout-grid__inner", className)
   }
 
   render() {
@@ -43,18 +47,15 @@ class StudyLabelsPage extends React.Component {
 
     return (
       <div className={this.classes}>
-        {this.renderInput()}
-
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <CreateLabelForm study={study} />
+          <div className="inline-flex items-center w-100">
+            {this.renderInput()}
+          </div>
         </div>
+        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <SearchStudyRefetch
-            study={study}
-            type="LABEL"
-            query={q}
-          >
-            <StudyLabels />
+          <SearchStudyRefetch study={study} type="USER_ASSET" query={q}>
+            <StudyAssets />
           </SearchStudyRefetch>
         </div>
       </div>
@@ -71,7 +72,7 @@ class StudyLabelsPage extends React.Component {
           autoComplete="off"
           type="text"
           name="q"
-          placeholder="Search..."
+          placeholder="Find a asset..."
           value={q}
           onChange={this.handleChange}
         />
@@ -89,9 +90,8 @@ class StudyLabelsPage extends React.Component {
   }
 }
 
-export default createFragmentContainer(StudyLabelsPage, graphql`
-  fragment StudyLabelsPage_study on Study {
-    ...CreateLabelForm_study
+export default createFragmentContainer(StudyAssetsPage, graphql`
+  fragment StudyAssetsPage_study on Study {
     ...SearchStudyRefetch_study
   }
 `)

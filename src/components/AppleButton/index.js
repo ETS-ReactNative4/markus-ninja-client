@@ -104,12 +104,16 @@ class AppleButton extends React.Component {
     if (isNil(appleable)) {
       return null
     }
+
+    const disabled = this.props.disabled || !appleable.viewerCanApple
+
     return (
       <button
         className={this.classes}
         aria-label={viewerHasAppled ? "Take apple" : "Give apple"}
         aria-hidden="true"
         aria-pressed={this.state.attrs[ARIA_PRESSED]}
+        disabled={disabled}
         onClick={this.handleClick}
       >
         <FontAwesomeIcon
@@ -130,6 +134,7 @@ class AppleButton extends React.Component {
 export default createFragmentContainer(AppleButton, graphql`
   fragment AppleButton_appleable on Appleable {
     id
+    viewerCanApple
     viewerHasAppled
   }
 `)

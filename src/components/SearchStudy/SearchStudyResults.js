@@ -37,6 +37,8 @@ class SearchStudyResults extends React.Component {
         return get(query, "search.labelCount", 0)
       case "LESSON":
         return get(query, "search.lessonCount", 0)
+      case "USER_ASSET":
+        return get(query, "search.userAssetCount", 0)
       default:
         return 0
     }
@@ -80,6 +82,9 @@ export default withRouter(createPaginationContainer(SearchStudyResults,
               ...on Lesson {
                 ...LessonPreview_lesson
               }
+              ...on UserAsset {
+                ...UserAssetPreview_asset
+              }
             }
           }
           pageInfo {
@@ -89,6 +94,7 @@ export default withRouter(createPaginationContainer(SearchStudyResults,
           courseCount
           labelCount
           lessonCount
+          userAssetCount
         }
       }
     `,

@@ -27,6 +27,7 @@ const StudyPageQuery = graphql`
       ...StudyHeader_study
       ...StudyLabelsPage_study
       ...StudyLessonsPage_study
+      ...StudyAssetsPage_study
       ...StudyCoursesPage_study
     }
   }
@@ -100,7 +101,7 @@ class StudyPage extends React.Component {
                       <Route
                         exact
                         path="/:owner/:name/assets"
-                        component={StudyAssetsPage}
+                        render={(routeProps) => <StudyAssetsPage {...routeProps} study={props.study} />}
                       />
                       <Route
                         exact
