@@ -5,20 +5,23 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import CreateCourseForm from 'components/CreateCourseForm'
+import CreateLessonForm from './CreateLessonForm'
+import { COURSES_PER_PAGE } from 'consts'
 
-const CreateCoursePageQuery = graphql`
-  query CreateCoursePageQuery($owner: String!, $name: String!) {
+import "./styles.css"
+
+const CreateLessonPageQuery = graphql`
+  query CreateLessonPageQuery($owner: String!, $name: String!, $count: Int!, $after: String, $filename: String!) {
     study(owner: $owner, name: $name) {
-      ...CreateCourseForm_study
+      ...CreateLessonForm_study
     }
   }
 `
 
-class CreateCoursePage extends React.Component {
+class CreateLessonPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("CreateCoursePage mdc-layout-grid mw7", className)
+    return cls("CreateLessonPage mdc-layout-grid", className)
   }
 
   render() {
@@ -26,10 +29,12 @@ class CreateCoursePage extends React.Component {
     return (
       <QueryRenderer
         environment={environment}
-        query={CreateCoursePageQuery}
+        query={CreateLessonPageQuery}
         variables={{
           owner: match.params.owner,
           name: match.params.name,
+          count: COURSES_PER_PAGE,
+          filename: "",
         }}
         render={({error,  props}) => {
           if (error) {
@@ -39,14 +44,14 @@ class CreateCoursePage extends React.Component {
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <div className="mdc-typography--headline4">Create a new course</div>
-                    <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light pb3">
-                      Sort your lessons in sequential lists to be taken one after the other.
+                    <div className="mdc-typography--headline4">Create a new lesson</div>
+                    <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light">
+                      Teach us
                     </div>
                   </div>
                   <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <CreateCourseForm study={props.study} />
+                    <CreateLessonForm study={props.study} />
                   </div>
                 </div>
               </div>
@@ -59,4 +64,4 @@ class CreateCoursePage extends React.Component {
   }
 }
 
-export default CreateCoursePage
+export default CreateLessonPage

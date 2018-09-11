@@ -1,16 +1,13 @@
 import * as React from 'react'
 import cls from 'classnames'
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay'
+import {withRouter} from 'react-router-dom'
 import queryString from 'query-string'
-import CreateCourseLink from 'components/CreateCourseLink'
-import Search from 'components/Search'
-import StudyCourses from './StudyCourses'
+import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
+import SearchNav from './SearchNav'
+import SearchResultItemPreview from 'components/SearchResultItemPreview'
 import {debounce, get, isEmpty} from 'utils'
 
-class StudyCoursesPage extends React.Component {
+class SearchPageResults extends React.Component {
   constructor(props) {
     super(props)
 
@@ -39,33 +36,43 @@ class StudyCoursesPage extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyCoursesPage mdc-layout-grid__inner", className)
+    return cls("SearchPageResults flex w-100", className)
   }
 
   render() {
-    const {q} = this.state
-    const study = get(this.props, "study", null)
+    const {search} = this.props
+    const {edges, hasMore, loadMore} = search
 
     return (
       <div className={this.classes}>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <div className="inline-flex items-center w-100">
-            {this.renderInput()}
-            <div className="ml2">
-              <CreateCourseLink
-                className="mdc-button mdc-button--unelevated"
-                study={study}
-              >
-                New course
-              </CreateCourseLink>
+        <SearchNav counts={search.counts} />
+        <div className="flex-auto">
+          <div className="mdc-layout-grid">
+            <div className="mdc-layout-grid__inner">
+              <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                {this.renderInput()}
+              </div>
+              <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                {isEmpty(edges)
+                ? <span className="mr1">
+                    No results were found.
+                  </span>
+                : <div className="SearchPageResults__results">
+                    {edges.map(({node}) => (
+                      node && <SearchResultItemPreview key={node.id} item={node} />
+                    ))}
+                    {hasMore &&
+                    <button
+                      className="mdc-button mdc-button--unelevated"
+                      onClick={loadMore}
+                    >
+                      More
+                    </button>}
+                  </div>
+                }
+              </div>
             </div>
           </div>
-        </div>
-        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <Search type="COURSE" query={q} within={study.id}>
-            <StudyCourses study={study} />
-          </Search>
         </div>
       </div>
     )
@@ -77,12 +84,11 @@ class StudyCoursesPage extends React.Component {
     return (
       <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
         <input
-          id="courses-query"
           className="mdc-text-field__input"
           autoComplete="off"
           type="text"
           name="q"
-          placeholder="Find a course..."
+          placeholder="Search..."
           value={q}
           onChange={this.handleChange}
         />
@@ -100,9 +106,12 @@ class StudyCoursesPage extends React.Component {
   }
 }
 
-export default createFragmentContainer(StudyCoursesPage, graphql`
-  fragment StudyCoursesPage_study on Study {
-    id
-    ...CreateCourseLink_study
-  }
-`)
+SearchPageResults.propTypes = {
+  search: SearchResultsProp,
+}
+
+SearchPageResults.defaultProps = {
+  search: SearchResultsPropDefaults,
+}
+
+export default withRouter(SearchPageResults)

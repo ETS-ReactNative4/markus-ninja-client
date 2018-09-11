@@ -10,6 +10,19 @@ import { get } from 'utils'
 import { LESSONS_PER_PAGE } from 'consts'
 
 class CourseLessons extends Component {
+  _loadMore = () => {
+    const relay = get(this.props, "relay")
+    if (!relay.hasMore()) {
+      console.log("Nothing more to load")
+      return
+    } else if (relay.isLoading()){
+      console.log("Request is already pending")
+      return
+    }
+
+    relay.loadMore(LESSONS_PER_PAGE)
+  }
+
   render() {
     const course = get(this.props, "course", null)
     const lessonEdges = get(course, "lessons.edges", [])
@@ -23,7 +36,7 @@ class CourseLessons extends Component {
           ) : (
             <div className="CourseLessons__lessons">
               {lessonEdges.map(({node}) => (
-                <CourseLessonPreview key={node.__id} lesson={node} />
+                <CourseLessonPreview key={node.id} lesson={node} />
               ))}
               {this.props.relay.hasMore() &&
               <button
@@ -38,19 +51,6 @@ class CourseLessons extends Component {
       </div>
     )
   }
-
-  _loadMore = () => {
-    const relay = get(this.props, "relay")
-    if (!relay.hasMore()) {
-      console.log("Nothing more to load")
-      return
-    } else if (relay.isLoading()){
-      console.log("Request is already pending")
-      return
-    }
-
-    relay.loadMore(LESSONS_PER_PAGE)
-  }
 }
 
 export default createPaginationContainer(CourseLessons,
@@ -64,6 +64,7 @@ export default createPaginationContainer(CourseLessons,
         ) @connection(key: "CourseLessons_lessons", filters: []) {
           edges {
             node {
+              id
               ...CourseLessonPreview_lesson
             }
           }

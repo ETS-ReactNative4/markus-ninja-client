@@ -10,10 +10,10 @@ import Tab from 'components/Tab'
 import TabBar from 'components/TabBar'
 import { get } from 'utils'
 
-class StudyTabs extends React.Component {
+class StudyNav extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("StudyTabs mt3", className)
+    return cls("StudyNav mt3", className)
   }
 
   render() {
@@ -87,8 +87,8 @@ class StudyTabs extends React.Component {
   }
 }
 
-export default withRouter(createFragmentContainer(StudyTabs, graphql`
-  fragment StudyTabs_study on Study {
+export default withRouter(createFragmentContainer(StudyNav, graphql`
+  fragment StudyNav_study on Study {
     assets(first: 0) {
       totalCount
     }

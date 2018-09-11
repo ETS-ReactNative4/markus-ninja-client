@@ -6,6 +6,7 @@ import {
 } from 'react-relay'
 import { Link, withRouter } from 'react-router-dom';
 import TextField, {Input} from '@material/react-text-field'
+import CourseLink from 'components/CourseLink'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
@@ -163,19 +164,18 @@ class LessonHeader extends React.Component {
 
   renderCourse() {
     const lesson = get(this.props, "lesson", {})
+    const {previousLesson, nextLesson} = lesson
 
     return (
       <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
         <span>
           This lesson is part of course
-          <Link to={get(lesson, "course.resourcePath", "")}>
-            {get(lesson, "course.name", "")}
-          </Link>
+          <CourseLink className="rn-link ml1" course={get(lesson, "course", null)} />
         </span>
-        {!isNil(get(lesson, "previousLesson.resourcePath", null)) &&
-        <Link to={get(lesson, "previousLesson.resourcePath", null)}>Previous</Link>}
-        {!isNil(get(lesson, "nextLesson.resourcePath", null)) &&
-        <Link to={get(lesson, "nextLesson.resourcePath", null)}>Next</Link>}
+        {previousLesson &&
+        <Link className="rn-link ml1" to={previousLesson.resourcePath}>Previous</Link>}
+        {nextLesson &&
+        <Link className="rn-link ml1" to={nextLesson.resourcePath}>Next</Link>}
       </div>
     )
   }
@@ -199,8 +199,7 @@ class LessonHeader extends React.Component {
 export default withRouter(createFragmentContainer(LessonHeader, graphql`
   fragment LessonHeader_lesson on Lesson {
     course {
-      name
-      resourcePath
+      ...CourseLink_course
     }
     courseNumber
     id

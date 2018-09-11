@@ -4,7 +4,6 @@ import UserSettingsNav from './UserSettingsNav'
 import ProfileSettings from './ProfileSettings'
 import AccountSettings from './AccountSettings'
 import EmailSettings from './EmailSettings'
-// import NotificationSettings from './NotificationSettings'
 
 import './styles.css'
 
@@ -33,11 +32,6 @@ class UserSettingsPage extends Component {
               path="/settings/emails"
               component={EmailSettings}
             />
-            {/*<Route
-              exact
-              path="/settings/notifications"
-              component={NotificationSettings}
-            />*/}
           </Switch>
         </div>
       </div>

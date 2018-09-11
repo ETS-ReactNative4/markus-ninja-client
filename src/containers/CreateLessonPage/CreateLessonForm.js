@@ -14,8 +14,6 @@ import Preview from 'components/RichTextEditor/Preview'
 import StudyCourseSelect from 'components/StudyCourseSelect'
 import { get, isNil } from 'utils'
 
-import "./styles.css"
-
 class CreateLessonForm extends React.Component {
   state = {
     error: null,

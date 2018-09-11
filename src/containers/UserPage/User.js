@@ -9,8 +9,6 @@ import { get } from 'utils'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import UserBio from 'components/UserBio'
 
-import './User.css'
-
 class User extends React.Component {
   get classes() {
     const {className} = this.props

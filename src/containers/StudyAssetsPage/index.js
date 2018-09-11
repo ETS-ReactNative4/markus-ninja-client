@@ -5,7 +5,7 @@ import {
   graphql,
 } from 'react-relay'
 import queryString from 'query-string'
-import SearchStudyRefetch from 'components/SearchStudyRefetch'
+import Search from 'components/Search'
 import StudyAssets from './StudyAssets'
 import {debounce, get, isEmpty} from 'utils'
 
@@ -54,9 +54,9 @@ class StudyAssetsPage extends React.Component {
         </div>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <SearchStudyRefetch study={study} type="USER_ASSET" query={q}>
+          <Search type="USER_ASSET" query={q} within={study.id}>
             <StudyAssets />
-          </SearchStudyRefetch>
+          </Search>
         </div>
       </div>
     )
@@ -92,6 +92,6 @@ class StudyAssetsPage extends React.Component {
 
 export default createFragmentContainer(StudyAssetsPage, graphql`
   fragment StudyAssetsPage_study on Study {
-    ...SearchStudyRefetch_study
+    id
   }
 `)

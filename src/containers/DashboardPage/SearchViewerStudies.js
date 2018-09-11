@@ -2,29 +2,21 @@ import * as React from 'react'
 import cls from 'classnames'
 import {
   createFragmentContainer,
-  QueryRenderer,
   graphql,
 } from 'react-relay'
-import environment from 'Environment'
 import { Link } from 'react-router-dom'
-import StudyLink from 'components/StudyLink.js'
-import SearchUserStudiesInput from 'components/SearchUserStudiesInput'
+import Search from 'components/Search'
+import ViewerStudies from './ViewerStudies'
 import {get} from 'utils'
-import {SEARCH_BAR_RESULTS_PER_PAGE} from 'consts'
-
-const SearchViewerStudiesQuery = graphql`
-  query SearchViewerStudiesQuery($count: Int!, $after: String, $query: String!, $within: ID!) {
-    ...SearchUserStudiesInput_query @arguments(count: $count, after: $after, query: $query, within: $within)
-  }
-`
 
 class SearchViewerStudies extends React.Component {
   state = {
     error: null,
-    hasMore: false,
-    loadMore: () => {},
     q: "",
-    studyEdges: [],
+  }
+
+  handleChange = (e) => {
+    this.setState({q: e.target.value})
   }
 
   get classes() {
@@ -33,64 +25,52 @@ class SearchViewerStudies extends React.Component {
   }
 
   render() {
-    return (
-      <QueryRenderer
-        environment={environment}
-        query={SearchViewerStudiesQuery}
-        variables={{
-          count: SEARCH_BAR_RESULTS_PER_PAGE,
-          query: "*",
-          within: get(this.props, "viewer.id"),
-        }}
-        render={({error,  props}) => {
-          if (error) {
-            return <div>{error.message}</div>
-          } else if (props) {
-            const {hasMore, loadMore, studyEdges} = this.state
+    const {q} = this.state
+    const viewerId = get(this.props, "viewer.id", "")
 
-            return (
-              <div className={this.classes}>
-                <div role="separator" className="mdc-list-divider"></div>
-                <div className="mdc-list-item">
-                  <div className="flex justify-between items-center w-100">
-                    <span className="mdc-typography--subtitle1">Studies</span>
-                    <Link className="mdc-button mdc-button--unelevated" to="/new">New</Link>
-                  </div>
-                </div>
-                <div className="mdc-list-item">
-                  <SearchUserStudiesInput
-                    query={props}
-                    user={get(this.props, "viewer", null)}
-                    onQueryComplete={(studyEdges, hasMore, loadMore) =>
-                      this.setState({hasMore, loadMore, studyEdges})
-                    }
-                  />
-                </div>
-                <div className="mdc-list">
-                  {studyEdges.map((edge) => (
-                    edge
-                    ? <StudyLink
-                        key={get(edge, "node.id", "")}
-                        withOwner
-                        className="mdc-list-item"
-                        study={get(edge, "node", null)}
-                      />
-                    : null
-                  ))}
-                </div>
-                {hasMore &&
-                <button
-                  className="mdc-button mdc-list-item w-100"
-                  onClick={loadMore}
-                >
-                  Load more
-                </button>}
-              </div>
-            )
-          }
-          return <div>Loading</div>
-        }}
-      />
+    return (
+      <div className={this.classes}>
+        <div role="separator" className="mdc-list-divider"></div>
+        <div className="mdc-list-item">
+          <div className="flex justify-between items-center w-100">
+            <span className="mdc-typography--subtitle1">Studies</span>
+            <Link className="mdc-button mdc-button--unelevated" to="/new">New</Link>
+          </div>
+        </div>
+        <div className="mdc-list-item">
+          {this.renderInput()}
+        </div>
+        <Search type="STUDY" query={q} within={viewerId}>
+          <ViewerStudies />
+        </Search>
+      </div>
+    )
+  }
+
+  renderInput() {
+    const {q} = this.state
+
+    return (
+      <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
+        <input
+          className="mdc-text-field__input"
+          autoComplete="off"
+          type="text"
+          name="q"
+          placeholder="Find a study..."
+          value={q}
+          onChange={this.handleChange}
+        />
+        <div className="mdc-notched-outline mdc-theme--background z-behind">
+          <svg>
+            <path className="mdc-notched-outline__path"></path>
+          </svg>
+        </div>
+        <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
+        <i className="material-icons mdc-text-field__icon">
+          search
+        </i>
+      </div>
     )
   }
 }
@@ -98,6 +78,5 @@ class SearchViewerStudies extends React.Component {
 export default createFragmentContainer(SearchViewerStudies, graphql`
   fragment SearchViewerStudies_viewer on User {
     id
-    ...SearchUserStudiesInput_user
   }
 `)

@@ -6,13 +6,13 @@ import {
 } from 'react-relay'
 import queryString from 'query-string'
 import environment from 'Environment'
-import User from 'components/User'
-import UserTabs from 'components/User/UserTabs'
-import UserApplesTab from 'containers/UserApplesTab'
-import UserOverviewTab from 'containers/UserOverviewTab'
-import UserPupilsTab from 'containers/UserPupilsTab'
-import UserStudiesTab from 'containers/UserStudiesTab'
-import UserTutorsTab from 'containers/UserTutorsTab'
+import User from './User'
+import UserNav from './UserNav'
+import UserApplesTab from './UserApplesTab'
+import UserOverviewTab from './UserOverviewTab'
+import UserPupilsTab from './UserPupilsTab'
+import UserStudiesTab from './UserStudiesTab'
+import UserTutorsTab from './UserTutorsTab'
 import { get, isNil } from 'utils'
 import NotFound from 'components/NotFound'
 
@@ -21,7 +21,7 @@ const UserPageQuery = graphql`
     user(login: $login) {
       id
       ...User_user
-      ...UserTabs_user
+      ...UserNav_user
       ...UserOverviewTab_user
       ...UserStudiesTab_user
     }
@@ -88,7 +88,7 @@ class UserPage extends React.Component {
                   >
                     <div className="mdc-layout-grid__inner">
                       <div className="mdc-layout-grid__cell--span-12" >
-                        <UserTabs user={props.user} />
+                        <UserNav user={props.user} />
                       </div>
                       <div className="mdc-layout-grid__cell--span-12" >
                         <Tab user={props.user} />

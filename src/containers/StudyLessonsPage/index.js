@@ -7,7 +7,7 @@ import {
 import queryString from 'query-string'
 import StudyLabelsLink from 'components/StudyLabelsLink'
 import CreateLessonLink from 'components/CreateLessonLink'
-import SearchStudyRefetch from 'components/SearchStudyRefetch'
+import Search from 'components/Search'
 import StudyLessons from './StudyLessons'
 import {debounce, get, isEmpty} from 'utils'
 
@@ -68,9 +68,9 @@ class StudyLessonsPage extends React.Component {
         </div>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <SearchStudyRefetch study={study} type="LESSON" query={q}>
+          <Search type="LESSON" query={q} within={study.id}>
             <StudyLessons study={study} />
-          </SearchStudyRefetch>
+          </Search>
         </div>
       </div>
     )
@@ -82,7 +82,6 @@ class StudyLessonsPage extends React.Component {
     return (
       <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
         <input
-          id="lessons-query"
           className="mdc-text-field__input"
           autoComplete="off"
           type="text"
@@ -107,8 +106,8 @@ class StudyLessonsPage extends React.Component {
 
 export default createFragmentContainer(StudyLessonsPage, graphql`
   fragment StudyLessonsPage_study on Study {
+    id
     ...CreateLessonLink_study
     ...StudyLabelsLink_study
-    ...SearchStudyRefetch_study
   }
 `)

@@ -11,7 +11,7 @@ import Tab from 'components/Tab'
 import TabBar from 'components/TabBar'
 import { get, isEmpty } from 'utils'
 
-class UserTabs extends React.Component {
+class UserNav extends React.Component {
   render() {
     const { className, user } = this.props
     const tab = (() => {
@@ -29,7 +29,7 @@ class UserTabs extends React.Component {
     })()
 
     return (
-      <TabBar className={cls("UserTabs", className)}>
+      <TabBar className={cls("UserNav", className)}>
         <Tab
           active={isEmpty(tab)}
           as={Link}
@@ -94,8 +94,8 @@ class UserTabs extends React.Component {
   }
 }
 
-export default withRouter(createFragmentContainer(UserTabs, graphql`
-  fragment UserTabs_user on User {
+export default withRouter(createFragmentContainer(UserNav, graphql`
+  fragment UserNav_user on User {
     appled(first: 0 type: STUDY) {
       studyCount
     }

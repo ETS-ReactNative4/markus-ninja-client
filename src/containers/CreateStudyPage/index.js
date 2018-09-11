@@ -4,7 +4,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import CreateStudyForm from 'components/CreateStudyForm'
+import CreateStudyForm from './CreateStudyForm'
 
 class CreateStudyPage extends React.Component {
   get classes() {

@@ -6,7 +6,7 @@ import {
 } from 'react-relay'
 import queryString from 'query-string'
 import CreateLabelForm from 'components/CreateLabelForm'
-import SearchStudyRefetch from 'components/SearchStudyRefetch'
+import Search from 'components/Search'
 import StudyLabels from './StudyLabels'
 import {debounce, get, isEmpty} from 'utils'
 
@@ -49,13 +49,13 @@ class StudyLabelsPage extends React.Component {
           <CreateLabelForm study={study} />
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <SearchStudyRefetch
-            study={study}
+          <Search
             type="LABEL"
             query={q}
+            within={study.id}
           >
             <StudyLabels />
-          </SearchStudyRefetch>
+          </Search>
         </div>
       </div>
     )
@@ -91,7 +91,7 @@ class StudyLabelsPage extends React.Component {
 
 export default createFragmentContainer(StudyLabelsPage, graphql`
   fragment StudyLabelsPage_study on Study {
+    id
     ...CreateLabelForm_study
-    ...SearchStudyRefetch_study
   }
 `)

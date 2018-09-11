@@ -9,7 +9,7 @@ import AppleButton from 'components/AppleButton'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
-import StudyTabs from './StudyTabs'
+import StudyNav from './StudyNav'
 import { get, isNil } from 'utils'
 
 class StudyHeader extends React.Component {
@@ -69,7 +69,7 @@ class StudyHeader extends React.Component {
           </div>
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <StudyTabs study={study} />
+          <StudyNav study={study} />
         </div>
       </div>
     )
@@ -81,7 +81,7 @@ export default withRouter(createFragmentContainer(StudyHeader, graphql`
     ...StudyLink_study
     ...AppleButton_appleable
     ...EnrollmentSelect_enrollable
-    ...StudyTabs_study
+    ...StudyNav_study
     id
     advancedAt
     appleGivers(first: 0) {

@@ -7,7 +7,7 @@ import {
 import { withRouter } from 'react-router'
 import { get } from 'utils'
 import Counter from 'components/Counter'
-import CourseLessons from 'components/CourseLessons'
+import CourseLessons from './CourseLessons'
 import AddCourseLessonForm from 'components/AddCourseLessonForm'
 import {isNil} from 'utils'
 

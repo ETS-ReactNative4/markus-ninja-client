@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import * as React from 'react'
 import {
   QueryRenderer,
   graphql,
@@ -20,7 +20,7 @@ const UserAssetPageQuery = graphql`
   }
 `
 
-class UserAssetPage extends Component {
+class UserAssetPage extends React.Component {
   render() {
     return (
       <QueryRenderer

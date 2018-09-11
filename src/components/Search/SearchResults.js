@@ -6,7 +6,7 @@ import {
 } from 'react-relay'
 import { debounce, get, isNil, isEmpty } from 'utils'
 
-class SearchStudyRefetchResults extends React.Component {
+class SearchResults extends React.Component {
   state = {
     error: null,
     loading: false,
@@ -34,15 +34,18 @@ class SearchStudyRefetchResults extends React.Component {
   }
 
   _refetch = debounce((query, after) => {
+    const {relay, within} = this.props
+
     this.setState({
       loading: true,
     })
-    this.props.relay.refetch(
+
+    relay.refetch(
       {
         count: get(this.props, "count", 10),
         after,
         query: isEmpty(query) ? "*" : query,
-        within: this.props.studyId,
+        within,
       },
       null,
       (error) => {
@@ -59,20 +62,16 @@ class SearchStudyRefetchResults extends React.Component {
     return get(this.props, "results.search.pageInfo.hasNextPage", false)
   }
 
-  get _totalCount() {
-    const {type, results} = this.props
+  get _counts() {
+    const search = get(this.props, "results.search")
 
-    switch (type) {
-      case "COURSE":
-        return get(results, "search.courseCount", 0)
-      case "LABEL":
-        return get(results, "search.labelCount", 0)
-      case "LESSON":
-        return get(results, "search.lessonCount", 0)
-      case "USER_ASSET":
-        return get(results, "search.userAssetCount", 0)
-      default:
-        return 0
+    return {
+      course: search.courseCount,
+      lesson: search.lessonCount,
+      study: search.studyCount,
+      topic: search.topicCount,
+      user: search.userCount,
+      userAsset: search.userAssetCount,
     }
   }
 
@@ -82,7 +81,7 @@ class SearchStudyRefetchResults extends React.Component {
     return React.cloneElement(child, {
       search: {
         edges: get(this.props, "results.search.edges", []),
-        totalCount: this._totalCount,
+        counts: this._counts,
         hasMore: this._hasMore,
         loadMore: this._loadMore,
       },
@@ -90,28 +89,60 @@ class SearchStudyRefetchResults extends React.Component {
   }
 }
 
-SearchStudyRefetchResults.propTypes = {
-  query: PropTypes.string,
-  studyId: PropTypes.string,
+SearchResults.propTypes = {
+  query: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  within: PropTypes.string,
 }
 
-SearchStudyRefetchResults.defaultProps = {
+SearchResults.defaultProps = {
   query: "",
-  studyId: "",
+  type: "",
 }
 
-const refetchContainer = createRefetchContainer(SearchStudyRefetchResults,
+export const SearchResultsProp = PropTypes.shape({
+  edges: PropTypes.array,
+  hasMore: PropTypes.bool,
+  loadMore: PropTypes.func,
+  counts: PropTypes.shape({
+    course: PropTypes.number,
+    label: PropTypes.number,
+    lesson: PropTypes.number,
+    study: PropTypes.number,
+    topic: PropTypes.number,
+    user: PropTypes.number,
+    userAsset: PropTypes.number,
+  }),
+})
+
+export const SearchResultsPropDefaults = {
+  edges: [],
+  hasMore: false,
+  loadMore: () => {},
+  counts: {
+    course: 0,
+    label: 0,
+    lesson: 0,
+    study: 0,
+    topic: 0,
+    user: 0,
+    userAsset: 0,
+  },
+}
+
+const refetchContainer = createRefetchContainer(SearchResults,
   {
     results: graphql`
-      fragment SearchStudyRefetchResults_results on Query @argumentDefinitions(
+      fragment SearchResults_results on Query @argumentDefinitions(
         count: {type: "Int!"},
         after: {type: "String"},
+        orderBy: {type: "SearchOrder"},
         query: {type: "String!"},
         type: {type: "SearchType!"},
-        within: {type: "ID!"}
+        within: {type: "ID"}
       ) {
-        search(first: $count, after: $after, query: $query, type: $type, within: $within)
-        @connection(key: "SearchStudyRefetchResults_search", filters: ["type", "within"]) {
+        search(first: $count, after: $after, orderBy: $orderBy, query: $query, type: $type, within: $within)
+        @connection(key: "SearchResults_search", filters: ["orderBy", "type", "within"]) {
           edges {
             cursor
             node {
@@ -125,6 +156,15 @@ const refetchContainer = createRefetchContainer(SearchStudyRefetchResults,
               ...on Lesson {
                 ...LessonPreview_lesson
               }
+              ...on Study {
+                ...StudyPreview_study
+              }
+              ...on Topic {
+                ...TopicPreview_topic
+              }
+              ...on User {
+                ...UserPreview_user
+              }
               ...on UserAsset {
                 ...UserAssetPreview_asset
               }
@@ -137,20 +177,31 @@ const refetchContainer = createRefetchContainer(SearchStudyRefetchResults,
           courseCount
           labelCount
           lessonCount
+          studyCount
+          topicCount
+          userCount
           userAssetCount
         }
       }
     `,
   },
   graphql`
-    query SearchStudyRefetchResultsRefetchQuery(
+    query SearchResultsRefetchQuery(
       $count: Int!,
       $after: String,
+      $orderBy: SearchOrder,
       $query: String!,
       $type: SearchType!,
-      $within: ID!
+      $within: ID
     ) {
-      ...SearchStudyRefetchResults_results @arguments(count: $count, after: $after, query: $query, type: $type, within: $within)
+      ...SearchResults_results @arguments(
+        count: $count,
+        after: $after,
+        orderBy: $orderBy,
+        query: $query,
+        type: $type,
+        within: $within,
+      )
     }
   `,
 )

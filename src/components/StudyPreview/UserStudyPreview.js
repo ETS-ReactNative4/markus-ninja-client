@@ -1,16 +1,12 @@
-import React, { Component } from 'react'
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay'
+import * as React from 'react'
 import cls from 'classnames'
 import pluralize from 'pluralize'
-import { Link } from 'react-router-dom'
 import HTML from 'components/HTML'
 import StudyLink from 'components/StudyLink'
+import TopicLink from 'components/TopicLink'
 import { get, timeDifferenceForDate } from 'utils'
 
-class UserStudyPreview extends Component {
+class UserStudyPreview extends React.Component {
   get classes() {
     const {className} = this.props
     return cls("UserStudyPreview", className)
@@ -35,14 +31,12 @@ class UserStudyPreview extends Component {
         <StudyLink className="rn-link mdc-typography--headline5" study={study} />
         <HTML html={study.descriptionHTML} />
         <div className="flex mv2">
-          {topicNodes.map((node = {}) =>
-          <Link
-            className="mdc-button mdc-button--outlined mr1 mb1"
-            key={node.id}
-            to={node.resourcePath}
-          >
-            {node.name}
-          </Link>)}
+          {topicNodes.map((node) => node
+          ? <TopicLink
+              key={node.id}
+              className="mdc-button mdc-button--outlined mr1 mb1"
+            />
+          : null)}
         </div>
         <div className="inline-flex">
           <span>{study.lessonCount} {pluralize('lesson', study.lessonCount)}</span>
@@ -53,23 +47,4 @@ class UserStudyPreview extends Component {
   }
 }
 
-export default createFragmentContainer(UserStudyPreview, graphql`
-  fragment UserStudyPreview_study on Study {
-    advancedAt
-    createdAt
-    descriptionHTML
-    isPrivate
-    lessonCount
-    ...StudyLink_study
-    topics(first: 5) {
-      nodes {
-        id
-        name
-        resourcePath
-      }
-      pageInfo {
-        hasNextPage
-      }
-    }
-  }
-`)
+export default UserStudyPreview
