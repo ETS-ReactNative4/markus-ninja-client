@@ -16,9 +16,9 @@ class StudyLessonsPage extends React.Component {
     super(props)
 
     const searchQuery = queryString.parse(get(this.props, "location.search", ""))
-    const q = get(searchQuery, "q", "")
+    const {o, q, s} = searchQuery
 
-    this.state = {q}
+    this.state = {o, q, s}
   }
 
   handleChange = (e) => {
@@ -43,9 +43,43 @@ class StudyLessonsPage extends React.Component {
     return cls("StudyLessonsPage mdc-layout-grid__inner", className)
   }
 
+  get _order() {
+    const searchQuery = queryString.parse(get(this.props, "location.search", ""))
+    const {s} = searchQuery
+    switch (s) {
+      case "asc":
+        return "ASC"
+      case "desc":
+        return "DESC"
+      default:
+        return "ASC"
+    }
+  }
+
+  get _sort() {
+    const searchQuery = queryString.parse(get(this.props, "location.search", ""))
+    const {o} = searchQuery
+    switch (o) {
+      case "created":
+        return "CREATED_AT"
+      case "comments":
+        return "COMMENT_COUNT"
+      case "number":
+        return "NUMBER"
+      case "updated":
+        return "UPDATED_AT"
+      default:
+        return "NUMBER"
+    }
+  }
+
   render() {
     const study = get(this.props, "study", null)
     const {q} = this.state
+    const orderBy = {
+      direction: this._order,
+      field: this._sort,
+    }
 
     return (
       <div className={this.classes}>
@@ -59,7 +93,7 @@ class StudyLessonsPage extends React.Component {
               Labels
             </StudyLabelsLink>
             <CreateLessonLink
-              className="mdc-button mdc-button--unelevated"
+              className="mdc-button mdc-button--unelevated flex-stable"
               study={study}
             >
               New lesson
@@ -67,11 +101,9 @@ class StudyLessonsPage extends React.Component {
           </div>
         </div>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <Search type="LESSON" query={q} within={study.id}>
-            <StudyLessons study={study} />
-          </Search>
-        </div>
+        <Search type="LESSON" query={q} within={study.id} orderBy={orderBy}>
+          <StudyLessons study={study} />
+        </Search>
       </div>
     )
   }

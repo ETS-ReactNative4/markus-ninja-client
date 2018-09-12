@@ -30,7 +30,7 @@ class AddLessonCommentForm extends Component {
   }
 
   render() {
-    const { error, submitted } = this.state
+    const {submitted} = this.state
     if (!isAuthenticated()) {
       return (
         <div className={this.classes}>
@@ -47,8 +47,7 @@ class AddLessonCommentForm extends Component {
           placeholder="Leave a comment"
           study={get(this.props, "lesson.study", null)}
         />
-        <button className="mdc-button mdc-button--unelevated" type="submit">Comment</button>
-        <span>{error}</span>
+        <button className="mdc-button mdc-button--unelevated mt2" type="submit">Comment</button>
       </form>
     )
   }

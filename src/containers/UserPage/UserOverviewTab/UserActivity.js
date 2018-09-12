@@ -28,9 +28,8 @@ class UserActivity extends React.Component {
           ? <div>This user has no recent activity.</div>
           : <React.Fragment>
               {activityEdges.map(({node}) => (
-                node
-                ? <UserActivityEvent key={node.id} event={node} />
-                : null
+                node &&
+                <UserActivityEvent key={node.id} event={node} />
               ))}
               {this.props.relay.hasMore() &&
               <button

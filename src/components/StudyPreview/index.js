@@ -1,11 +1,12 @@
 import * as React from 'react'
+import cls from 'classnames'
 import Relay, {
   graphql,
 } from 'react-relay'
-import cls from 'classnames'
 import hoistNonReactStatic from 'hoist-non-react-statics'
 import StudyLink from 'components/StudyLink'
 import { get } from 'utils'
+import ResearchStudyPreview from './ResearchStudyPreview'
 import StudyPreviewLink from './StudyPreviewLink'
 import UserStudyPreview from './UserStudyPreview'
 
@@ -13,12 +14,16 @@ const FRAGMENT = graphql`
   fragment StudyPreview_study on Study {
     ...StudyLink_study
     advancedAt
+    appleGivers(first: 0) {
+      totalCount
+    }
     createdAt
     descriptionHTML
     description
     isPrivate
     lessonCount
     nameWithOwner
+    resourcePath
     topics(first: 5) {
       nodes {
         ...TopicLink_topic
@@ -29,13 +34,18 @@ const FRAGMENT = graphql`
 
 class StudyPreview extends React.Component {
   static Link = Relay.createFragmentContainer(StudyPreviewLink, FRAGMENT)
+  static Research = Relay.createFragmentContainer(ResearchStudyPreview, FRAGMENT)
   static User = Relay.createFragmentContainer(UserStudyPreview, FRAGMENT)
 
+  get classes() {
+    const {className} = this.props
+    return cls("StudyPreview", className)
+  }
+
   render() {
-    const { className } = this.props
     const study = get(this.props, "study", {})
     return (
-      <div className={cls("StudyPreview", className)}>
+      <div className={this.classes}>
         <StudyLink withOwner study={study} />
         <span className="ml1">{study.lessonCount} lessons</span>
         <span className="ml1">{study.description}</span>
@@ -46,5 +56,5 @@ class StudyPreview extends React.Component {
 
 export default hoistNonReactStatic(
   Relay.createFragmentContainer(StudyPreview, FRAGMENT),
-  StudyPreview
+  StudyPreview,
 )

@@ -2,14 +2,20 @@
 @import "./variables";
 
 .rn-link {
-  display: inline-block;
   text-decoration: none;
   transition: color $rn-link-transition-duration;
-  color: $mdc-theme-on-surface;
+  color: inherit;
 
   &:hover {
     color: var(--mdc-theme-text-secondary-on-light);
-    text-decoration: underline;
+
+    &.rn-link--underlined {
+      text-decoration: underline;
+    }
+
+    &.rn-link--secondary {
+      color: var(--mdc-theme-text-primary-on-light);
+    }
   }
 
   &.rn-link--on-primary {
@@ -17,7 +23,10 @@
 
     &:hover {
       color: var(--mdc-theme-text-secondary-on-dark);
-      text-decoration: underline;
+
+      &.rn-link--secondary {
+        color: var(--mdc-theme-text-primary-on-dark);
+      }
     }
   }
 
@@ -26,13 +35,10 @@
 
     &:hover {
       color: var(--mdc-theme-text-secondary-on-dark);
-      text-decoration: underline;
-    }
-  }
 
-  &.rn-link--undecorated {
-    &:hover {
-      text-decoration: none;
+      &.rn-link--secondary {
+        color: var(--mdc-theme-text-primary-on-dark);
+      }
     }
   }
 }

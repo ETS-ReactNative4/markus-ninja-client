@@ -6,7 +6,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
-import ResearchStudyPreview from 'components/ResearchStudyPreview'
+import StudyPreview from 'components/StudyPreview'
 import TopicPreview from 'components/TopicPreview'
 import { get } from 'utils'
 
@@ -17,7 +17,7 @@ const ResearchPageQuery = graphql`
         node {
           id
           ...on Study {
-            ...ResearchStudyPreview_study
+            ...StudyPreview_study
           }
         }
       }
@@ -52,29 +52,30 @@ class ResearchPage extends React.Component {
           } else if (props) {
             const popularStudyEdges = get(props, "popularStudies.edges", [])
             const popularTopicEdges = get(props, "popularTopics.edges", [])
+
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
-                  <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    Popular studies
-                  </h4>
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <div className="mdc-layout-grid__inner">
+                      <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                        Popular studies
+                      </h5>
                       {popularStudyEdges.map(({node}) => (
                         <div key={node.id} className="mdc-layout-grid__cell">
-                          <ResearchStudyPreview className="mdc-card pa3 h-100" study={node} />
+                          <StudyPreview.Research className="mdc-card mdc-card--outlined pa3 h-100" study={node} />
                         </div>
                       ))}
                     </div>
                   </div>
-                  <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    Popular topics
-                  </h4>
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <div className="mdc-layout-grid__inner">
+                      <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                        Popular topics
+                      </h5>
                       {popularTopicEdges.map(({node}) => (
                         <div key={node.id} className="mdc-layout-grid__cell">
-                          <div className="mdc-card">
+                          <div className="mdc-card mdc-card--outlined ">
                             <TopicPreview
                               className="mdc-card__primary-action pa3 h-100"
                               key={node.id}

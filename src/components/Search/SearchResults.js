@@ -13,7 +13,9 @@ class SearchResults extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.query !== this.props.query) {
+    if (prevProps.query !== this.props.query ||
+        prevProps.type !== this.props.type ||
+        prevProps.orderBy !== this.props.orderBy) {
       this._refetch(this.props.query)
     }
   }
@@ -34,7 +36,7 @@ class SearchResults extends React.Component {
   }
 
   _refetch = debounce((query, after) => {
-    const {relay, within} = this.props
+    const {orderBy, relay, type, within} = this.props
 
     this.setState({
       loading: true,
@@ -45,6 +47,8 @@ class SearchResults extends React.Component {
         count: get(this.props, "count", 10),
         after,
         query: isEmpty(query) ? "*" : query,
+        orderBy,
+        type,
         within,
       },
       null,
@@ -67,6 +71,7 @@ class SearchResults extends React.Component {
 
     return {
       course: search.courseCount,
+      label: search.labelCount,
       lesson: search.lessonCount,
       study: search.studyCount,
       topic: search.topicCount,
@@ -83,6 +88,7 @@ class SearchResults extends React.Component {
         edges: get(this.props, "results.search.edges", []),
         counts: this._counts,
         hasMore: this._hasMore,
+        isLoading: this.state.loading,
         loadMore: this._loadMore,
       },
     })
@@ -102,6 +108,7 @@ SearchResults.defaultProps = {
 
 export const SearchResultsProp = PropTypes.shape({
   edges: PropTypes.array,
+  idLoading: PropTypes.bool,
   hasMore: PropTypes.bool,
   loadMore: PropTypes.func,
   counts: PropTypes.shape({
@@ -117,6 +124,7 @@ export const SearchResultsProp = PropTypes.shape({
 
 export const SearchResultsPropDefaults = {
   edges: [],
+  isLoading: false,
   hasMore: false,
   loadMore: () => {},
   counts: {

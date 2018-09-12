@@ -1,9 +1,5 @@
 import * as React from 'react'
 import cls from 'classnames'
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faApple } from '@fortawesome/free-brands-svg-icons'
 import HTML from 'components/HTML'
@@ -36,12 +32,4 @@ class ResearchStudyPreview extends React.Component {
   }
 }
 
-export default createFragmentContainer(ResearchStudyPreview, graphql`
-  fragment ResearchStudyPreview_study on Study {
-    ...StudyLink_study
-    appleGivers(first: 0) {
-      totalCount
-    }
-    descriptionHTML
-  }
-`)
+export default ResearchStudyPreview

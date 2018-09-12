@@ -75,31 +75,35 @@ class UserStudiesTab extends React.Component {
 }
 
 const UserStudies = ({search}) => {
-  const {edges, hasMore, loadMore} = search
+  const {edges, hasMore, isLoading, loadMore} = search
 
   return (
-    <div>
-      {isEmpty(edges)
-      ? <span className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          No studies found
-        </span>
-      : <div>
-          {edges.map(({node}) => (
-            <React.Fragment key={get(node, "id", "")}>
-              <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                <StudyPreview.User key={node.id} study={node} />
-              </div>
-              <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-            </React.Fragment>
-          ))}
-          {hasMore &&
-          <button
-            className="mdc-button mdc-button--unelevated"
-            onClick={loadMore}
-          >
-            More
-          </button>}
-      </div>}
+    <div className="UserStudies mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+      {isLoading
+      ? <div>Loading...</div>
+      : (isEmpty(edges)
+        ? <span className="mr1">
+            No studies found
+          </span>
+        : <div className="mdc-layout-grid__inner">
+            {edges.map(({node}) => (
+              node &&
+              <React.Fragment key={node.id}>
+                <StudyPreview.User
+                  className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+                  study={node}
+                />
+                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+              </React.Fragment>
+            ))}
+            {hasMore &&
+            <button
+              className="mdc-button mdc-button--unelevated"
+              onClick={loadMore}
+            >
+              More
+            </button>}
+        </div>)}
     </div>
   )
 }

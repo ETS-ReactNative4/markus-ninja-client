@@ -7566,6 +7566,10 @@ tachyons-flexbox@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/tachyons-flexbox/-/tachyons-flexbox-2.1.0.tgz#cc12e9bd79653996cc8bd1b5fa2f6d6200bc2e77"
 
+tachyons-font-weight@^5.0.4:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/tachyons-font-weight/-/tachyons-font-weight-5.0.4.tgz#c95b4feb7f4c18558859bbc9af13197981d18d60"
+
 tachyons-heights@^6.1.3:
   version "6.1.3"
   resolved "https://registry.yarnpkg.com/tachyons-heights/-/tachyons-heights-6.1.3.tgz#7eae3d3c86dd6960101006fbfd9289446c6e41fe"

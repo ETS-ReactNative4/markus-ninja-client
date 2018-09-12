@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -8,10 +9,15 @@ import AddCourseLessonMutation from 'mutations/AddCourseLessonMutation'
 import StudyLessonSelect from 'components/StudyLessonSelect'
 import { get, isNil } from 'utils'
 
-class AddCourseLessonForm extends Component {
+class AddCourseLessonForm extends React.Component {
   state = {
     error: null,
     lessonId: "",
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("AddCourseLessonForm flex items-center", className)
   }
 
   render() {
@@ -20,13 +26,13 @@ class AddCourseLessonForm extends Component {
       return null
     }
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form className={this.classes} onSubmit={this.handleSubmit}>
         <StudyLessonSelect
           isCourseLesson={false}
           study={get(course, "study", null)}
           onChange={this.handleChangeLesson}
         />
-        <button className="mdc-button mdc-button--unelevated" type="submit">
+        <button className="mdc-button mdc-button--unelevated ml2" type="submit">
           Add lesson
         </button>
       </form>

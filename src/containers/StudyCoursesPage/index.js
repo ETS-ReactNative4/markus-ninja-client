@@ -51,7 +51,7 @@ class StudyCoursesPage extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="inline-flex items-center w-100">
             {this.renderInput()}
-            <div className="ml2">
+            <div className="flex-stable ml2">
               <CreateCourseLink
                 className="mdc-button mdc-button--unelevated"
                 study={study}
@@ -62,11 +62,9 @@ class StudyCoursesPage extends React.Component {
           </div>
         </div>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <Search type="COURSE" query={q} within={study.id}>
-            <StudyCourses study={study} />
-          </Search>
-        </div>
+        <Search type="COURSE" query={q} within={study.id}>
+          <StudyCourses study={study} />
+        </Search>
       </div>
     )
   }

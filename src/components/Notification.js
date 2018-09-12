@@ -10,7 +10,9 @@ import MarkNotificationAsReadMutation from 'mutations/MarkNotificationAsReadMuta
 import { isNil, timeDifferenceForDate } from 'utils'
 
 class Notification extends React.Component {
-  handleClick = (notificationId) => (e) => {
+  handleClick = (e) => {
+    const notificationId = get(this.props, "notification.id", "")
+
     MarkNotificationAsReadMutation(
       notificationId,
       (response, error) => {
@@ -24,7 +26,7 @@ class Notification extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("Notification", className)
+    return cls("Notification flex items-center", className)
   }
 
   render() {
@@ -33,8 +35,8 @@ class Notification extends React.Component {
 
     return (
       <div className={this.classes} onClick={this.handleClick}>
-        {subject.title}
-        {timeDifferenceForDate(notification.createdAt)}
+        <span>{subject.title}</span>
+        <span className="ml1">{timeDifferenceForDate(notification.createdAt)}</span>
       </div>
     )
   }

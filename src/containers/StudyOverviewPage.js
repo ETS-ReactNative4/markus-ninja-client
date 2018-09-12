@@ -1,26 +1,45 @@
 import * as React from 'react'
 import cls from 'classnames'
 import {
+  createFragmentContainer,
   QueryRenderer,
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router'
-import { Link } from 'react-router-dom'
 import environment from 'Environment'
+import CreateLessonLink from 'components/CreateLessonLink'
+import CoursePreview from 'components/CoursePreview'
 import LessonPreview from 'components/LessonPreview'
 import StudyMeta from 'components/StudyMeta'
-import { get, isNil } from 'utils'
+import {get, isEmpty} from 'utils'
 import { TOPICS_PER_PAGE } from 'consts'
 
 const StudyOverviewPageQuery = graphql`
-  query StudyOverviewPageQuery($owner: String!, $name: String!, $count: Int!, $after: String) {
-    study(owner: $owner, name: $name) {
-      id
-      lesson(number: 1) {
-        ...LessonPreview_lesson
+  query StudyOverviewPageQuery($owner: String!, $name: String!, $count: Int!, $after: String, $within: ID!) {
+    popularCourses: search(first: 6, query: "*", type: COURSE, orderBy:{direction:DESC, field:APPLE_COUNT}, within: $within) {
+      edges {
+        node {
+          id
+          ...on Course {
+            ...CoursePreview_course
+          }
+        }
       }
-      resourcePath
+    }
+    popularLessons: search(first: 6, query: "*", type: LESSON, orderBy:{direction:DESC, field:COMMENT_COUNT}, within: $within) {
+      edges {
+        node {
+          id
+          ...on Lesson {
+            ...LessonPreview_lesson
+          }
+        }
+      }
+    }
+    study(owner: $owner, name: $name) {
+      ...CreateLessonLink_study
       ...StudyMeta_study
+      lessonCount
     }
   }
 `
@@ -41,29 +60,56 @@ class StudyOverviewPage extends React.Component {
           owner: match.params.owner,
           name: match.params.name,
           count: TOPICS_PER_PAGE,
+          within: get(this.props, "study.id", ""),
         }}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            if (isNil(props.study)) {
-              return null
-            }
-            const lesson = get(props, "study.lesson", null)
+            const popularCourseEdges = get(props, "popularCourses.edges", [])
+            const popularLessonEdges = get(props, "popularLessons.edges", [])
+
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   <StudyMeta study={props.study}  />
                 </div>
+                {!isEmpty(popularLessonEdges) &&
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  {isNil(lesson)
-                  ? <Link
-                      className="rn-link"
-                      to={get(props, "study.resourcePath", "") + "/lessons/new"}
-                    >
-                      Create a lesson
-                    </Link>
-                  : <LessonPreview lesson={lesson} />}
+                  <div className="mdc-layout-grid__inner">
+                    <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      Popular lessons
+                    </h5>
+                    {popularLessonEdges.map(({node}) => (
+                      node &&
+                      <div key={node.id} className="mdc-layout-grid__cell">
+                        <LessonPreview.Study className="mdc-card mdc-card--outlined pa3 h-100" lesson={node} />
+                      </div>
+                    ))}
+                  </div>
+                </div>}
+                {!isEmpty(popularCourseEdges) &&
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <div className="mdc-layout-grid__inner">
+                    <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      Popular courses
+                    </h5>
+                    {popularCourseEdges.map(({node}) => (
+                      node &&
+                      <div key={node.id} className="mdc-layout-grid__cell">
+                        <CoursePreview.Study
+                          className="mdc-card mdc-card--outlined pa3 h-100"
+                          course={node}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>}
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  {props.study.lessonCount < 1 &&
+                  <CreateLessonLink className="rn-link">
+                    Create a lesson
+                  </CreateLessonLink>}
                 </div>
               </div>
             )
@@ -75,4 +121,8 @@ class StudyOverviewPage extends React.Component {
   }
 }
 
-export default withRouter(StudyOverviewPage)
+export default withRouter(createFragmentContainer(StudyOverviewPage, graphql`
+  fragment StudyOverviewPage_study on Study {
+    id
+  }
+`))

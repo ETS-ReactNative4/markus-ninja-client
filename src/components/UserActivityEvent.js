@@ -4,13 +4,24 @@ import AppledEvent from 'components/AppledEvent'
 import CreatedEvent from 'components/CreatedEvent'
 
 class UserActivityEvent extends React.Component {
+  get otherProps() {
+    const {
+      className,
+      event,
+      ...otherProps,
+    } = this.props
+    return otherProps
+  }
+
   render() {
+    const {className} = this.props
     const event = get(this.props, "event", {})
+
     switch(event.__typename) {
       case "AppledEvent":
-        return <AppledEvent event={event} />
+        return <AppledEvent {...this.otherProps} className={className} event={event} />
       case "CreatedEvent":
-        return <CreatedEvent event={event} />
+        return <CreatedEvent {...this.otherProps} className={className} event={event} />
       default:
         return null
     }

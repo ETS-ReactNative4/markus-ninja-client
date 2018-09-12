@@ -34,9 +34,7 @@ class Course extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <AddCourseLessonForm course={course} />
         </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <CourseLessons course={course} />
-        </div>
+        <CourseLessons course={course} />
       </div>
     )
   }

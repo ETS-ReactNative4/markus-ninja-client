@@ -11,7 +11,7 @@ const mutation = graphql`
     addCourseLesson(input: $input) {
       lessonEdge {
         node {
-          ...CourseLessonPreview_lesson
+          ...LessonPreview_lesson
         }
       }
       course {

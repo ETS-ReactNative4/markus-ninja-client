@@ -29,7 +29,7 @@ class CreateLabelForm extends React.Component {
     const {color, description, name} = this.state
     return (
       <form
-        className="CreateLabelForm"
+        className={this.classes}
         onSubmit={this.handleSubmit}
       >
         <TextField
@@ -68,7 +68,7 @@ class CreateLabelForm extends React.Component {
           </div>
         </div>
         <button
-          className="mdc-button mdc-button--unelevated"
+          className="mdc-button mdc-button--unelevated ml2"
           type="submit"
         >
           Create label

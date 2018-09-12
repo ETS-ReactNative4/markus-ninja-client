@@ -25,7 +25,7 @@ class LessonComment extends Component {
       return (
         <div
           id={`lesson_comment${moment(comment.createdAt).unix()}`}
-          className="LessonComment mdc-card"
+          className="LessonComment mdc-card mdc-card--outlined"
         >
           <HTML className="ph3" html={comment.bodyHTML} />
           <div className="mdc-card__actions">

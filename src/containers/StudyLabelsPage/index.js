@@ -12,6 +12,7 @@ import {debounce, get, isEmpty} from 'utils'
 
 class StudyLabelsPage extends React.Component {
   state = {
+    open: false,
     q: "",
   }
 
@@ -38,25 +39,43 @@ class StudyLabelsPage extends React.Component {
   }
 
   render() {
-    const {q} = this.state
+    const {open, q} = this.state
     const study = get(this.props, "study", null)
 
     return (
       <div className={this.classes}>
-        {this.renderInput()}
-
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <CreateLabelForm study={study} />
+          <div className="flex items-center w-100">
+            {this.renderInput()}
+            <button
+              className="mdc-button mdc-button--unelevated flex-stable ml2"
+              type="button"
+              onClick={() => this.setState({open: !open})}
+            >
+              New label
+            </button>
+          </div>
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <Search
-            type="LABEL"
-            query={q}
-            within={study.id}
-          >
-            <StudyLabels />
-          </Search>
+          {open &&
+          <div className="flex items-center">
+            <CreateLabelForm open={open} study={study} />
+            <button
+              className="mdc-button mdc-button--outlined flex-stable ml2"
+              type="button"
+              onClick={() => this.setState({open: !open})}
+            >
+              Cancel
+            </button>
+        </div>}
         </div>
+        <Search
+          type="LABEL"
+          query={q}
+          within={study.id}
+        >
+          <StudyLabels />
+        </Search>
       </div>
     )
   }

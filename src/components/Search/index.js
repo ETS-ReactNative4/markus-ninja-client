@@ -35,25 +35,18 @@ class Search extends React.Component {
   constructor(props) {
     super(props)
 
-    const {query, type} = this.props
+    const {orderBy, query, type} = this.props
 
     this.state = {
-      query,
+      orderBy,
+      query: isEmpty(query) ? "*" : query,
       type,
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const {query, type} = this.props
-    if (prevProps.type !== type) {
-      this.setState({query, type})
     }
   }
 
   render() {
     const {within} = this.props
-    const {type} = this.state
-    const initialQuery = isEmpty(this.state.query) ? "*" : this.state.query
+    const {orderBy, query, type} = this.state
 
     return (
       <QueryRenderer
@@ -61,8 +54,9 @@ class Search extends React.Component {
         query={SearchQuery}
         variables={{
           count: SEARCH_RESULTS_PER_PAGE,
-          query: initialQuery,
+          query,
           type,
+          orderBy,
           within,
         }}
         render={({error,  props}) => {
@@ -72,17 +66,15 @@ class Search extends React.Component {
             const {children, orderBy, query, type} = this.props
 
             return (
-              <div className="Search">
-                <SearchResults
-                  orderBy={orderBy}
-                  query={query}
-                  results={props}
-                  type={type}
-                  within={within}
-                >
-                  {children}
-                </SearchResults>
-              </div>
+              <SearchResults
+                orderBy={orderBy}
+                query={query}
+                results={props}
+                type={type}
+                within={within}
+              >
+                {children}
+              </SearchResults>
             )
           }
           return <div>Loading</div>

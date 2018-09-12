@@ -4,8 +4,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import pluralize from 'pluralize'
-import StudyLink from 'components/StudyLink'
+import StudyPreview from 'components/StudyPreview'
 import { get, isEmpty } from 'utils'
 
 class UserPopularStudies extends React.Component {
@@ -22,26 +21,23 @@ class UserPopularStudies extends React.Component {
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           Popular studies
         </h5>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          {isEmpty(studyEdges)
-          ? <div>This user has no created any studies yet.</div>
-          : studyEdges.map(({node}) => node
-            ? <div key={get(node, "id", "")} className={cls(
-                "mdc-card",
-                "mdc-layout-grid__cell",
-                "mdc-layout-grid__cell--span-6-desktop",
-                "mdc-layout-grid__cell--span-4-tablet",
-                "mdc-layout-grid__cell--span-2-phone",
-                "pa3",
-              )}>
-                <div className="flex flex-column">
-                  <StudyLink study={node} />
-                  <div>{node.description}</div>
-                  <div>{node.lessonCount} {pluralize('lesson', node.lessonCount)}</div>
-                </div>
-              </div>
-            : null)}
-        </div>
+        {isEmpty(studyEdges)
+        ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            This user has no created any studies yet.
+          </div>
+        : studyEdges.map(({node}) =>
+          node &&
+          <div key={get(node, "id", "")} className={cls(
+            "mdc-layout-grid__cell",
+            "mdc-layout-grid__cell--span-6-desktop",
+            "mdc-layout-grid__cell--span-4-tablet",
+            "mdc-layout-grid__cell--span-2-phone",
+          )}>
+            <StudyPreview.User
+              className="mdc-card mdc-card--outlined pa3 h-100"
+              study={node}
+            />
+          </div>)}
       </div>
     )
   }
@@ -57,10 +53,7 @@ export default createFragmentContainer(UserPopularStudies, graphql`
         node {
           id
           ...on Study {
-            ...StudyLink_study
-            description
-            lessonCount
-            name
+            ...StudyPreview_study
           }
         }
       }

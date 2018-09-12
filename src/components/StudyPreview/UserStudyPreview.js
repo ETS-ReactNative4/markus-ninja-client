@@ -1,10 +1,11 @@
 import * as React from 'react'
 import cls from 'classnames'
-import pluralize from 'pluralize'
+import moment from 'moment'
+import { Link } from 'react-router-dom'
 import HTML from 'components/HTML'
 import StudyLink from 'components/StudyLink'
 import TopicLink from 'components/TopicLink'
-import { get, timeDifferenceForDate } from 'utils'
+import {get} from 'utils'
 
 class UserStudyPreview extends React.Component {
   get classes() {
@@ -17,9 +18,9 @@ class UserStudyPreview extends React.Component {
     const createdAt = get(this.props, "study.createdAt")
 
     if (advancedAt) {
-      return `Advanced ${timeDifferenceForDate(advancedAt)}`
+      return `Advanced ${moment(advancedAt).format("MMM D")}`
     } else {
-      return `Created ${timeDifferenceForDate(createdAt)}`
+      return `Created ${moment(createdAt).format("MMM D")}`
     }
   }
 
@@ -28,19 +29,31 @@ class UserStudyPreview extends React.Component {
     const topicNodes = get(study, "topics.nodes", [])
     return (
       <div className={this.classes}>
-        <StudyLink className="rn-link mdc-typography--headline5" study={study} />
-        <HTML html={study.descriptionHTML} />
-        <div className="flex mv2">
-          {topicNodes.map((node) => node
-          ? <TopicLink
-              key={node.id}
-              className="mdc-button mdc-button--outlined mr1 mb1"
-            />
-          : null)}
-        </div>
-        <div className="inline-flex">
-          <span>{study.lessonCount} {pluralize('lesson', study.lessonCount)}</span>
-          <span className="ml2">{this.timestamp}</span>
+        <div className="flex">
+          <div className="inline-flex flex-column flex-auto">
+            <StudyLink className="rn-link mdc-typography--headline5 self-start" study={study} />
+            <HTML html={study.descriptionHTML} />
+            <div className="flex mv2">
+              {topicNodes.map((node) => node
+              ? <TopicLink
+                  key={node.id}
+                  className="mdc-button mdc-button--outlined mr1 mb1"
+                />
+              : null)}
+            </div>
+            <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light">
+              {this.timestamp}
+            </div>
+          </div>
+          <Link
+            className="rn-link inline-flex items-center self-start"
+            to={study.resourcePath+"/lessons"}
+          >
+            <i className="material-icons mr1">subject</i>
+            <span className="mdc-typography--subtitle2">
+              {study.lessonCount}
+            </span>
+          </Link>
         </div>
       </div>
     )

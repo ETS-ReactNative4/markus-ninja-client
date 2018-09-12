@@ -1,15 +1,16 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
 import CreateLessonLink from 'components/CreateLessonLink'
-import CourseLessonPreview from './CourseLessonPreview'
-import { get } from 'utils'
+import LessonPreview from 'components/LessonPreview'
+import {get, isEmpty} from 'utils'
 
 import { LESSONS_PER_PAGE } from 'consts'
 
-class CourseLessons extends Component {
+class CourseLessons extends React.Component {
   _loadMore = () => {
     const relay = get(this.props, "relay")
     if (!relay.hasMore()) {
@@ -23,31 +24,39 @@ class CourseLessons extends Component {
     relay.loadMore(LESSONS_PER_PAGE)
   }
 
+  get classes() {
+    const {className} = this.props
+    return cls("CourseLessons mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+  }
+
   render() {
     const course = get(this.props, "course", null)
     const lessonEdges = get(course, "lessons.edges", [])
     return (
-      <div>
-        {
-          lessonEdges.length < 1 ? (
-            <CreateLessonLink study={course.study}>
-              Create a lesson
-            </CreateLessonLink>
-          ) : (
-            <div className="CourseLessons__lessons">
-              {lessonEdges.map(({node}) => (
-                <CourseLessonPreview key={node.id} lesson={node} />
-              ))}
-              {this.props.relay.hasMore() &&
-              <button
-                className="CourseLessons__more"
-                onClick={this._loadMore}
-              >
-                More
-              </button>}
-            </div>
-          )
-        }
+      <div className={this.classes}>
+        {isEmpty(lessonEdges)
+        ? <CreateLessonLink study={course.study}>
+            Create a lesson
+          </CreateLessonLink>
+        : <div className="mdc-layout-grid__inner">
+            {lessonEdges.map(({node}) => (
+              node &&
+              <React.Fragment key={node.id}>
+                <LessonPreview.Course
+                  className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+                  lesson={node}
+                />
+                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+              </React.Fragment>
+            ))}
+            {this.props.relay.hasMore() &&
+            <button
+              className="CourseLessons__more"
+              onClick={this._loadMore}
+            >
+              More
+            </button>}
+          </div>}
       </div>
     )
   }
@@ -60,12 +69,12 @@ export default createPaginationContainer(CourseLessons,
         lessons(
           first: $count,
           after: $after,
-          orderBy:{direction: ASC field:NUMBER}
+          orderBy:{direction: ASC field: COURSE_NUMBER}
         ) @connection(key: "CourseLessons_lessons", filters: []) {
           edges {
             node {
               id
-              ...CourseLessonPreview_lesson
+              ...LessonPreview_lesson
             }
           }
           pageInfo {
