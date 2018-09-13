@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
@@ -22,11 +21,6 @@ const UserActivitySectionQuery = graphql`
 `
 
 class UserActivitySection extends React.Component {
-  get classes() {
-    const {className} = this.props
-    return cls("UserActivitySection", className)
-  }
-
   render() {
     const { match } = this.props
 
@@ -42,11 +36,7 @@ class UserActivitySection extends React.Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            return (
-              <div className={this.classes}>
-                <UserActivity user={get(props, "user", null)} />
-              </div>
-            )
+            return <UserActivity user={get(props, "user", null)} />
           }
           return <div>Loading</div>
         }}

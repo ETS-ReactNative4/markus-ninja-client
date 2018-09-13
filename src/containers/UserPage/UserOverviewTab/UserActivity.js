@@ -23,23 +23,29 @@ class UserActivity extends React.Component {
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           Recent activity
         </h5>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          {isEmpty(activityEdges)
-          ? <div>This user has no recent activity.</div>
-          : <React.Fragment>
-              {activityEdges.map(({node}) => (
-                node &&
-                <UserActivityEvent key={node.id} event={node} />
-              ))}
-              {this.props.relay.hasMore() &&
+        {isEmpty(activityEdges)
+        ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            This user has no recent activity.
+          </div>
+        : <React.Fragment>
+            {activityEdges.map(({node}) => (
+              node &&
+              <UserActivityEvent
+                key={node.id}
+                className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+                event={node}
+              />
+            ))}
+            {this.props.relay.hasMore() &&
+            <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               <button
                 className="mdc-button mdc-button--unelevated"
                 onClick={this._loadMore}
               >
                 Load more activity
-              </button>}
-            </React.Fragment>}
-        </div>
+              </button>
+            </div>}
+          </React.Fragment>}
       </div>
     )
   }

@@ -6,8 +6,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
-import CoursePreview from 'components/CoursePreview'
-import StudyPreview from 'components/StudyPreview'
+import AppleablePreview from 'components/AppleablePreview'
 import { get, isEmpty } from 'utils'
 import { APPLES_PER_PAGE } from 'consts'
 
@@ -58,32 +57,26 @@ class UserApplesTab extends React.Component {
 
             return (
               <div className={this.classes}>
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  {isEmpty(appleEdges)
-                  ? (props.user.isViewer
-                    ? <span>
-                        You have not appled any studies yet.
-                        While you're researching different studies, you can give apples
-                        to those you like.
-                      </span>
-                    : <span>
-                        This user has not appled any studies yet.
-                      </span>)
-                  : appleEdges.map(({node}) => node
-                    ? <div key={get(node, "id", "")}>
-                        {(() => {
-                          switch(node.__typename) {
-                            case "Course":
-                              return <CoursePreview course={node} />
-                            case "Study":
-                              return <StudyPreview study={node} />
-                            default:
-                              return null
-                          }
-                        })()}
-                      </div>
-                    : null)}
-                </div>
+                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                {isEmpty(appleEdges)
+                ? (props.user.isViewer
+                  ? <p className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      You have not appled any studies yet.
+                      While you're researching different studies, you can give apples
+                      to those you like.
+                    </p>
+                  : <p className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      This user has not appled any studies yet.
+                    </p>)
+                : appleEdges.map(({node}) =>
+                    node &&
+                    <React.Fragment key={node.id}>
+                      <AppleablePreview
+                        className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+                        appleable={node}
+                      />
+                      <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                    </React.Fragment>)}
               </div>
             )
           }

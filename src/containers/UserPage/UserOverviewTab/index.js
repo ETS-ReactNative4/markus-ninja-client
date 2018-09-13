@@ -41,7 +41,9 @@ class UserOverviewTab extends React.Component {
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   <UserPopularStudies query={props} />
                 </div>
-                <UserActivitySection className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"/>
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <UserActivitySection />
+                </div>
               </div>
             )
           }

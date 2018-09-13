@@ -6,12 +6,14 @@ import Relay, {
 import hoistNonReactStatic from 'hoist-non-react-statics'
 import StudyLink from 'components/StudyLink'
 import { get } from 'utils'
+import AppleStudyPreview from './AppleStudyPreview'
 import ResearchStudyPreview from './ResearchStudyPreview'
 import StudyPreviewLink from './StudyPreviewLink'
 import UserStudyPreview from './UserStudyPreview'
 
 const FRAGMENT = graphql`
   fragment StudyPreview_study on Study {
+    ...AppleButton_appleable
     ...StudyLink_study
     advancedAt
     appleGivers(first: 0) {
@@ -33,6 +35,7 @@ const FRAGMENT = graphql`
 `
 
 class StudyPreview extends React.Component {
+  static Apple = Relay.createFragmentContainer(AppleStudyPreview, FRAGMENT)
   static Link = Relay.createFragmentContainer(StudyPreviewLink, FRAGMENT)
   static Research = Relay.createFragmentContainer(ResearchStudyPreview, FRAGMENT)
   static User = Relay.createFragmentContainer(UserStudyPreview, FRAGMENT)

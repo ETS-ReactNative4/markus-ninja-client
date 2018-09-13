@@ -37,11 +37,9 @@ class UserStudiesTab extends React.Component {
           </div>
         </div>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <Search type="STUDY" query={q} within={userId}>
-            <UserStudies />
-          </Search>
-        </div>
+        <Search type="STUDY" query={q} within={userId}>
+          <UserStudies />
+        </Search>
       </div>
     )
   }
