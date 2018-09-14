@@ -33,6 +33,7 @@ class CourseLessonPreview extends React.Component {
             <UserLink className="rn-link rn-link--secondary ml1" user={get(lesson, "author", null)} />
           </div>
         </div>
+        {get(lesson, "course.viewerCanAdmin", false) &&
         <button
           className="material-icons mdc-icon-button mb1"
           type="button"
@@ -41,7 +42,7 @@ class CourseLessonPreview extends React.Component {
           title="Remove lesson"
         >
           delete
-        </button>
+        </button>}
       </div>
     )
   }

@@ -146,7 +146,7 @@ class LessonHeader extends React.Component {
             <span>/</span>
             <StudyLink className="rn-link" study={get(lesson, "study", null)} />
             <span>/</span>
-            <span>{lesson.title}</span>
+            <span className="fw5">{lesson.title}</span>
             <span className="mdc-theme--text-hint-on-light ml2">#{lesson.number}</span>
           </h5>
           {lesson.viewerCanUpdate &&
@@ -170,12 +170,12 @@ class LessonHeader extends React.Component {
       <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
         <span>
           This lesson is part of course
-          <CourseLink className="rn-link ml1" course={get(lesson, "course", null)} />
+          <CourseLink className="rn-link fw5 ml1" course={get(lesson, "course", null)} />
         </span>
         {previousLesson &&
-        <Link className="rn-link ml1" to={previousLesson.resourcePath}>Previous</Link>}
+        <Link className="mdc-button mdc-button--outlined ml2" to={previousLesson.resourcePath}>Previous</Link>}
         {nextLesson &&
-        <Link className="rn-link ml1" to={nextLesson.resourcePath}>Next</Link>}
+        <Link className="mdc-button mdc-button--unelevated ml2" to={nextLesson.resourcePath}>Next</Link>}
       </div>
     )
   }

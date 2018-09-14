@@ -43,7 +43,7 @@ class AppledEvent extends React.Component {
             {(() => {
               switch(appleable.__typename) {
                 case "Course":
-                  return <CoursePreview course={appleable} />
+                  return <CoursePreview.User course={appleable} />
                 case "Study":
                   return <StudyPreview.User study={appleable} />
                 default:

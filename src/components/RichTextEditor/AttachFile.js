@@ -25,67 +25,6 @@ class AttachFile extends React.Component {
     this.state.request.cancel()
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("AttachFile", className)
-  }
-
-  render() {
-    const { uid } = this.props
-    const { file, save, submittable } = this.state
-    const filename = get(this.state, "file.name", "")
-
-    return (
-      <div className={this.classes}>
-        <label
-          htmlFor={`file-save${uid}`}
-          title="Save file to study assets"
-          aria-label="Save file to study assets"
-        >
-          <input
-            id={`file-save${uid}`}
-            type="checkbox"
-            name="save"
-            checked={this.state.save}
-            onChange={(e) => this.setState({ save: e.target.checked })}
-          />
-        </label>
-        <label htmlFor={`file-input${uid}`}>
-          File
-          <input
-            id={`file-input${uid}`}
-            className="dn"
-            type="file"
-            onChange={(e) => this.setState({file: e.target.files[0]})}
-          />
-        </label>
-        <UserAssetNameInput
-          className={cls("AttachFile__name-input", {open: save})}
-          study={get(this.props, "study", null)}
-          disabled={!save}
-          placeholder="No file chosen"
-          value={filename}
-          onChange={this.handleChangeName}
-        />
-        <input
-          id={`file-name${uid}`}
-          className={cls("AttachFile__name", {open: !save})}
-          placeholder="No file chosen"
-          disabled
-          value={filename}
-        />
-        <button
-          className="mdc-button mdc-button--unelevated"
-          type="button"
-          onClick={this.handleAttachFile}
-          disabled={isNil(file) || (save && !submittable)}
-        >
-          {save ? "Attach & Save" : "Attach"}
-        </button>
-      </div>
-    )
-  }
-
   handleChangeName = (name, submittable) => {
     this.setState({
       name,
@@ -157,6 +96,72 @@ class AttachFile extends React.Component {
         return
       })
     }
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("AttachFile flex items-center", className)
+  }
+
+  render() {
+    const { uid } = this.props
+    const { file, save, submittable } = this.state
+    const filename = get(this.state, "file.name", "")
+
+    return (
+      <div className={this.classes}>
+        <label
+          htmlFor={`file-save${uid}`}
+          title="Save file to study assets"
+          aria-label="Save file to study assets"
+        >
+          <input
+            id={`file-save${uid}`}
+            type="checkbox"
+            name="save"
+            checked={this.state.save}
+            onChange={(e) => this.setState({ save: e.target.checked })}
+          />
+        </label>
+        <label
+          className="material-icons pointer"
+          htmlFor={`file-input${uid}`}
+          title="Attach file"
+          aria-label="Attach file"
+        >
+          attach_file
+          <input
+            id={`file-input${uid}`}
+            className="dn"
+            type="file"
+            onChange={(e) => this.setState({file: e.target.files[0]})}
+          />
+        </label>
+        <UserAssetNameInput
+          className={cls("AttachFile__name-input", {open: save})}
+          study={get(this.props, "study", null)}
+          disabled={!save}
+          placeholder="No file chosen"
+          value={filename}
+          onChange={this.handleChangeName}
+        />
+        <input
+          id={`file-name${uid}`}
+          className={cls("AttachFile__name", {open: !save})}
+          placeholder="No file chosen"
+          disabled
+          value={filename}
+        />
+        <button
+          className="mdc-button mdc-button--unelevated ml2"
+          type="button"
+          onClick={this.handleAttachFile}
+          disabled={isNil(file) || (save && !submittable)}
+        >
+          {save ? "Attach & Save" : "Attach"}
+        </button>
+      </div>
+    )
   }
 }
 

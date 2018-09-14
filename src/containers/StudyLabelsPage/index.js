@@ -58,16 +58,16 @@ class StudyLabelsPage extends React.Component {
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           {open &&
-          <div className="flex items-center">
-            <CreateLabelForm open={open} study={study} />
-            <button
-              className="mdc-button mdc-button--outlined flex-stable ml2"
-              type="button"
-              onClick={() => this.setState({open: !open})}
-            >
-              Cancel
-            </button>
-        </div>}
+            <div className="flex items-center">
+              <CreateLabelForm study={study} />
+              <button
+                className="mdc-button mdc-button--outlined flex-stable ml2"
+                type="button"
+                onClick={() => this.setState({open: !open})}
+              >
+                Cancel
+              </button>
+          </div>}
         </div>
         <Search
           type="LABEL"

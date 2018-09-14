@@ -25,11 +25,11 @@ class ViewerReceivedActivity extends React.Component {
         </h5>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           {isEmpty(activityEdges)
-          ? <div>This is no recent activity.</div>
+          ? <div>There is no recent activity.</div>
           : <React.Fragment>
               {activityEdges.map(({node}) => (
                 node
-                ? <UserActivityEvent key={node.id} event={node} />
+                ? <UserActivityEvent key={node.id} withUser event={node} />
                 : null
               ))}
               {this.props.relay.hasMore() &&

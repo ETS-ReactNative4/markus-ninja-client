@@ -7,6 +7,7 @@ import { Route, Switch } from 'react-router-dom'
 
 import PrivateRoute from 'components/PrivateRoute'
 import Header from 'components/Header'
+import NotFound from 'components/NotFound'
 
 import CreateStudyPage from 'containers/CreateStudyPage'
 import CoursePage from 'containers/CoursePage'
@@ -23,7 +24,7 @@ import StudySearchPage from 'containers/StudySearchPage'
 import TopicPage from 'containers/TopicPage'
 import HomePage from 'containers/HomePage'
 import UserPage from 'containers/UserPage'
-import NotFound from 'components/NotFound'
+import UserAssetPage from 'containers/UserAssetPage'
 import environment from 'Environment'
 
 import './styles.css'
@@ -72,6 +73,11 @@ class App extends React.Component {
                           <Route exact path="/topics/:name" component={TopicPage} />
                           <Route exact path="/:owner/:name/search" component={StudySearchPage} />
                           <Route exact path="/:login" component={UserPage} />
+                          <Route
+                            exact
+                            path="/:owner/:name/asset/:filename"
+                            component={UserAssetPage}
+                          />
                           <Route
                             exact
                             path="/:owner/:name/course/:number"

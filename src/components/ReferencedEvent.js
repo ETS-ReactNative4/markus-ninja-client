@@ -1,28 +1,32 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import { Link } from 'react-router-dom'
+import moment from 'moment'
 import UserLink from 'components/UserLink'
-import { get, timeDifferenceForDate } from 'utils'
+import LessonPreview from 'components/LessonPreview'
+import {get} from 'utils'
 
-class ReferencedEvent extends Component {
+class ReferencedEvent extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("ReferencedEvent mdc-card", className)
+    return cls("ReferencedEvent", className)
   }
 
   render() {
     const event = get(this.props, "event", {})
     return (
       <div className={this.classes}>
-        <UserLink user={get(event, "user", null)} />
-        <span>{event.isCrossStudy && "cross-"}referenced this {timeDifferenceForDate(event.createdAt)}</span>
         <div>
-          from
-          <Link to={get(event, "source.resourcePath", "")}>here</Link>
+          <UserLink className="rn-link fw5" user={get(event, "user", null)} />
+          <span className="ml1">
+            {event.isCrossStudy && "cross-"}referenced this on {moment(event.createdAt).format("MMM D")}
+          </span>
+        </div>
+        <div className="pl2 pv2">
+          <LessonPreview lesson={event.source} />
         </div>
       </div>
     )
@@ -35,7 +39,7 @@ export default createFragmentContainer(ReferencedEvent, graphql`
     id
     isCrossStudy
     source {
-      resourcePath
+      ...LessonPreview_lesson
     }
     user {
       ...UserLink_user

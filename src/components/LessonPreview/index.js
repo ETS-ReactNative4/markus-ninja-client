@@ -17,6 +17,9 @@ const FRAGMENT = graphql`
     comments(first: 0) {
       totalCount
     }
+    course {
+      viewerCanAdmin
+    }
     courseNumber
     createdAt
     id

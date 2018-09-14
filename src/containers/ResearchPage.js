@@ -6,12 +6,23 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
+import CoursePreview from 'components/CoursePreview'
 import StudyPreview from 'components/StudyPreview'
 import TopicPreview from 'components/TopicPreview'
 import { get } from 'utils'
 
 const ResearchPageQuery = graphql`
   query ResearchPageQuery {
+    popularCourses: search(first: 6, query: "*", type: COURSE, orderBy:{direction:DESC, field:APPLE_COUNT}) {
+      edges {
+        node {
+          id
+          ...on Course {
+            ...CoursePreview_course
+          }
+        }
+      }
+    }
     popularStudies: search(first: 6, query: "*", type: STUDY, orderBy:{direction:DESC, field:APPLE_COUNT}) {
       edges {
         node {
@@ -50,6 +61,7 @@ class ResearchPage extends React.Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            const popularCourseEdges = get(props, "popularCourses.edges", [])
             const popularStudyEdges = get(props, "popularStudies.edges", [])
             const popularTopicEdges = get(props, "popularTopics.edges", [])
 
@@ -59,11 +71,23 @@ class ResearchPage extends React.Component {
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <div className="mdc-layout-grid__inner">
                       <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                        Popular courses
+                      </h5>
+                      {popularCourseEdges.map(({node}) => (
+                        <div key={node.id} className="mdc-layout-grid__cell">
+                          <CoursePreview.Apple className="mdc-card mdc-card--outlined pa3 h-100" course={node} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <div className="mdc-layout-grid__inner">
+                      <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                         Popular studies
                       </h5>
                       {popularStudyEdges.map(({node}) => (
                         <div key={node.id} className="mdc-layout-grid__cell">
-                          <StudyPreview.Research className="mdc-card mdc-card--outlined pa3 h-100" study={node} />
+                          <StudyPreview.Apple className="mdc-card mdc-card--outlined pa3 h-100" study={node} />
                         </div>
                       ))}
                     </div>

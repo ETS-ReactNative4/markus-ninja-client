@@ -1,9 +1,8 @@
 import * as React from 'react'
 import cls from 'classnames'
 import moment from 'moment'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import HTML from 'components/HTML'
-import StudyLink from 'components/StudyLink'
 import TopicLink from 'components/TopicLink'
 import {get} from 'utils'
 
@@ -31,15 +30,21 @@ class UserStudyPreview extends React.Component {
       <div className={this.classes}>
         <div className="flex">
           <div className="inline-flex flex-column flex-auto">
-            <StudyLink className="rn-link mdc-typography--headline5 self-start" study={study} />
+            <Link
+              className="rn-link mdc-typography--headline5 self-start"
+              to={study.resourcePath}
+            >
+              {study.name}
+            </Link>
             <HTML html={study.descriptionHTML} />
             <div className="flex mv2">
-              {topicNodes.map((node) => node
-              ? <TopicLink
+              {topicNodes.map((node) =>
+                node &&
+                <TopicLink
                   key={node.id}
                   className="mdc-button mdc-button--outlined mr1 mb1"
-                />
-              : null)}
+                  topic={node}
+                />)}
             </div>
             <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light">
               {this.timestamp}

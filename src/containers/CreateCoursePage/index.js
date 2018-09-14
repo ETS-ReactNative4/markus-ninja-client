@@ -1,11 +1,14 @@
 import * as React from 'react'
 import cls from 'classnames'
 import {
+  createFragmentContainer,
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import {Redirect} from 'react-router-dom'
 import environment from 'Environment'
 import CreateCourseForm from './CreateCourseForm'
+import {get} from 'utils'
 
 const CreateCoursePageQuery = graphql`
   query CreateCoursePageQuery($owner: String!, $name: String!) {
@@ -22,7 +25,12 @@ class CreateCoursePage extends React.Component {
   }
 
   render() {
-    const { match } = this.props
+    const { match, study } = this.props
+
+    if (!get(study, "viewerCanAdmin", false)) {
+      return <Redirect to={get(study, "resourcePath", "")} />
+    }
+
     return (
       <QueryRenderer
         environment={environment}
@@ -59,4 +67,9 @@ class CreateCoursePage extends React.Component {
   }
 }
 
-export default CreateCoursePage
+export default createFragmentContainer(CreateCoursePage, graphql`
+  fragment CreateCoursePage_study on Study {
+    resourcePath
+    viewerCanAdmin
+  }
+`)

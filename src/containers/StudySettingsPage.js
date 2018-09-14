@@ -1,17 +1,22 @@
 import * as React from 'react'
 import cls from 'classnames'
 import {
+  createFragmentContainer,
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import {Redirect} from 'react-router-dom'
 import environment from 'Environment'
+import NotFound from 'components/NotFound'
 import StudySettings from 'components/StudySettings'
-import { isNil } from 'utils'
+import {get, isNil} from 'utils'
 
 const StudySettingsPageQuery = graphql`
   query StudySettingsPageQuery($owner: String!, $name: String!) {
     study(owner: $owner, name: $name) {
       ...StudySettings_study
+      resourcePath
+      viewerCanAdmin
     }
   }
 `
@@ -23,7 +28,12 @@ class StudySettingsPage extends React.Component {
   }
 
   render() {
-    const { match } = this.props
+    const { match, study } = this.props
+
+    if (!get(study, "viewerCanAdmin", false)) {
+      return <Redirect to={get(study, "resourcePath", "")} />
+    }
+
     return (
       <QueryRenderer
         environment={environment}
@@ -37,8 +47,9 @@ class StudySettingsPage extends React.Component {
             return <div>{error.message}</div>
           } else if (props) {
             if (isNil(props.study)) {
-              return null
+              return <NotFound />
             }
+
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
@@ -54,4 +65,9 @@ class StudySettingsPage extends React.Component {
   }
 }
 
-export default StudySettingsPage
+export default createFragmentContainer(StudySettingsPage, graphql`
+  fragment StudySettingsPage_study on Study {
+    resourcePath
+    viewerCanAdmin
+  }
+`)

@@ -4,7 +4,7 @@ import Relay, {
   graphql,
 } from 'react-relay'
 import hoistNonReactStatic from 'hoist-non-react-statics'
-import StudyLink from 'components/StudyLink'
+import {Link} from 'react-router-dom'
 import { get } from 'utils'
 import AppleStudyPreview from './AppleStudyPreview'
 import ResearchStudyPreview from './ResearchStudyPreview'
@@ -13,8 +13,6 @@ import UserStudyPreview from './UserStudyPreview'
 
 const FRAGMENT = graphql`
   fragment StudyPreview_study on Study {
-    ...AppleButton_appleable
-    ...StudyLink_study
     advancedAt
     appleGivers(first: 0) {
       totalCount
@@ -24,13 +22,17 @@ const FRAGMENT = graphql`
     description
     isPrivate
     lessonCount
+    name
     nameWithOwner
     resourcePath
     topics(first: 5) {
       nodes {
+        id
         ...TopicLink_topic
       }
     }
+    viewerCanApple
+    viewerHasAppled
   }
 `
 
@@ -49,7 +51,7 @@ class StudyPreview extends React.Component {
     const study = get(this.props, "study", {})
     return (
       <div className={this.classes}>
-        <StudyLink withOwner study={study} />
+        <Link to={study.resourcePath}>{study.nameWithOwner}</Link>
         <span className="ml1">{study.lessonCount} lessons</span>
         <span className="ml1">{study.description}</span>
       </div>

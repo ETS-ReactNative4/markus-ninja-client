@@ -42,16 +42,18 @@ export default (lessonId, title, body, callback) => {
       },
       updater: proxyStore => {
         const updateLessonField = proxyStore.getRootField('updateLesson')
-        const newBody = updateLessonField.getValue('body')
-        const newBodyHTML = updateLessonField.getValue('bodyHTML')
-        const newTitle = updateLessonField.getValue('title')
-        const newUpdatedAt = updateLessonField.getValue('updatedAt')
+        if (updateLessonField) {
+          const newBody = updateLessonField.getValue('body')
+          const newBodyHTML = updateLessonField.getValue('bodyHTML')
+          const newTitle = updateLessonField.getValue('title')
+          const newUpdatedAt = updateLessonField.getValue('updatedAt')
 
-        const lesson = proxyStore.get(lessonId)
-        lesson.setValue(newBody, 'body')
-        lesson.setValue(newBodyHTML, 'bodyHTML')
-        lesson.setValue(newTitle, 'title')
-        lesson.setValue(newUpdatedAt, 'updatedAt')
+          const lesson = proxyStore.get(lessonId)
+          lesson.setValue(newBody, 'body')
+          lesson.setValue(newBodyHTML, 'bodyHTML')
+          lesson.setValue(newTitle, 'title')
+          lesson.setValue(newUpdatedAt, 'updatedAt')
+        }
       },
       onCompleted: (response, error) => {
         callback(response.updateLesson, error)

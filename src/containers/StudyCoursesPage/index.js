@@ -52,12 +52,13 @@ class StudyCoursesPage extends React.Component {
           <div className="inline-flex items-center w-100">
             {this.renderInput()}
             <div className="flex-stable ml2">
+              {study.viewerCanAdmin &&
               <CreateCourseLink
                 className="mdc-button mdc-button--unelevated"
                 study={study}
               >
                 New course
-              </CreateCourseLink>
+              </CreateCourseLink>}
             </div>
           </div>
         </div>
@@ -100,7 +101,8 @@ class StudyCoursesPage extends React.Component {
 
 export default createFragmentContainer(StudyCoursesPage, graphql`
   fragment StudyCoursesPage_study on Study {
-    id
     ...CreateCourseLink_study
+    id
+    viewerCanAdmin
   }
 `)

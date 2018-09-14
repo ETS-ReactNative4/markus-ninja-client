@@ -40,7 +40,7 @@ const DashboardPageQuery = graphql`
 class DashboardPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("DashboardPage inline-flex", className)
+    return cls("DashboardPage flex", className)
   }
 
   render() {
@@ -71,30 +71,42 @@ class DashboardPage extends React.Component {
                     </nav>
                   </nav>
                 </aside>
-                <div className="mdc-layout-grid">
-                  <div className="mdc-layout-grid__inner">
-                    <div
-                      className={cls(
-                        "mdc-layout-grid__cell--span-8-desktop",
-                        "mdc-layout-grid__cell--span-5-tablet",
-                        "mdc-layout-grid__cell--span-4-phone",
-                      )}
-                    >
-                      <ViewerReceivedActivity viewer={props.viewer} />
-                    </div>
-                    <div
-                      className={cls(
-                        "mdc-layout-grid__cell--span-4-desktop",
-                        "mdc-layout-grid__cell--span-3-tablet",
-                        "mdc-layout-grid__cell--span-4-phone",
-                      )}
-                    >
-                      <h5>Research studies</h5>
-                      {researchStudyEdges.map(({node}) => (
-                        <div key={node.id}>
-                          <StudyPreview study={node} />
+                <div className="flex-auto">
+                  <div className="mdc-layout-grid">
+                    <div className="mdc-layout-grid__inner">
+                      <div
+                        className={cls(
+                          "mdc-layout-grid__cell",
+                          "mdc-layout-grid__cell--span-8-desktop",
+                          "mdc-layout-grid__cell--span-8-tablet",
+                          "mdc-layout-grid__cell--span-4-phone",
+                        )}
+                      >
+                        <ViewerReceivedActivity viewer={props.viewer} />
+                      </div>
+                      <div
+                        className={cls(
+                          "mdc-layout-grid__cell",
+                          "mdc-layout-grid__cell--span-4-desktop",
+                          "mdc-layout-grid__cell--span-8-tablet",
+                          "mdc-layout-grid__cell--span-4-phone",
+                        )}
+                      >
+                        <div className="mdc-layout-grid__inner">
+                          <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                            Research studies
+                          </h5>
+                          {researchStudyEdges.map(({node}) => (
+                            <React.Fragment key={node.id}>
+                              <StudyPreview.User
+                                className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+                                study={node}
+                              />
+                              <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12"/>
+                            </React.Fragment>
+                          ))}
                         </div>
-                      ))}
+                      </div>
                     </div>
                   </div>
                 </div>

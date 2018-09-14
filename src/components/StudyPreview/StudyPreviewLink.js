@@ -1,6 +1,6 @@
 import * as React from 'react'
 import cls from 'classnames'
-import StudyLink from 'components/StudyLink'
+import {Link} from 'react-router-dom'
 import {get} from 'utils'
 
 class StudyPreviewLink extends React.Component {
@@ -11,7 +11,11 @@ class StudyPreviewLink extends React.Component {
 
   render() {
     const study = get(this.props, "study", {})
-    return <StudyLink className={this.classes} study={study} />
+    return (
+      <Link className={this.classes} to={study.resourcePath}>
+        {study.name}
+      </Link>
+    )
   }
 }
 

@@ -7,8 +7,8 @@ import {
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import Search from 'components/Search'
-import StudyPreview from 'components/StudyPreview'
-import { get, isEmpty } from 'utils'
+import UserStudies from './UserStudies'
+import {get} from 'utils'
 
 class UserStudiesTab extends React.Component {
   state = {
@@ -70,40 +70,6 @@ class UserStudiesTab extends React.Component {
       </div>
     )
   }
-}
-
-const UserStudies = ({search}) => {
-  const {edges, hasMore, isLoading, loadMore} = search
-
-  return (
-    <div className="UserStudies mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-      {isLoading
-      ? <div>Loading...</div>
-      : (isEmpty(edges)
-        ? <span className="mr1">
-            No studies found
-          </span>
-        : <div className="mdc-layout-grid__inner">
-            {edges.map(({node}) => (
-              node &&
-              <React.Fragment key={node.id}>
-                <StudyPreview.User
-                  className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                  study={node}
-                />
-                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-              </React.Fragment>
-            ))}
-            {hasMore &&
-            <button
-              className="mdc-button mdc-button--unelevated"
-              onClick={loadMore}
-            >
-              More
-            </button>}
-        </div>)}
-    </div>
-  )
 }
 
 export default withRouter(createFragmentContainer(UserStudiesTab, graphql`

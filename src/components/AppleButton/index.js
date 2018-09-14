@@ -15,7 +15,7 @@ import './styles.css'
 const ARIA_PRESSED = "aria-pressed"
 const BUTTON_ON = "mdc-button--on"
 
-class AppleButton extends React.Component {
+export class AppleButton extends React.Component {
   constructor(props) {
     super(props)
 

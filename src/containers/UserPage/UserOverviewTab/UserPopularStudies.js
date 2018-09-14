@@ -14,7 +14,7 @@ class UserPopularStudies extends React.Component {
   }
 
   render() {
-    const studyEdges = get(this.props, "query.search.edges", [])
+    const studyEdges = get(this.props, "query.popularStudies.edges", [])
 
     return (
       <div className={this.classes}>
@@ -47,8 +47,8 @@ export default createFragmentContainer(UserPopularStudies, graphql`
   fragment UserPopularStudies_query on Query @argumentDefinitions(
     within: {type: "ID!"}
   ) {
-    search(first: 6, query: "*", type: STUDY, orderBy:{direction: DESC, field: APPLE_COUNT} within: $within)
-      @connection(key: "UserPopularStudies_search", filters: []) {
+    popularStudies: search(first: 6, query: "*", type: STUDY, orderBy:{direction: DESC, field: APPLE_COUNT} within: $within)
+      @connection(key: "UserPopularStudies_popularStudies", filters: []) {
       edges {
         node {
           id

@@ -4,7 +4,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import { withRouter } from 'react-router'
+import { Link, withRouter } from 'react-router-dom'
 import AppleButton from 'components/AppleButton'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import StudyLink from 'components/StudyLink'
@@ -53,18 +53,24 @@ class StudyHeader extends React.Component {
               "StudyHeader__action--enroll",
             )}>
               <EnrollmentSelect disabled={!study.viewerCanEnroll} enrollable={study} />
-              <button disabled={!study.viewerCanEnroll} className="rn-count-button">
+              <Link
+                className="rn-count-button"
+                to={study.resourcePath+"/enrollees"}
+              >
                 {get(study, "enrolleeCount", 0)}
-              </button>
+              </Link>
             </div>
             <div className={cls(
               "StudyHeader__action",
               "StudyHeader__action--apple",
             )}>
               <AppleButton disabled={!study.viewerCanApple} appleable={study} />
-              <button disabled={!study.viewerCanApple} className="rn-count-button">
+              <Link
+                className="rn-count-button"
+                to={study.resourcePath+"/applegivers"}
+              >
                 {get(study, "appleGivers.totalCount", 0)}
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -93,6 +99,7 @@ export default withRouter(createFragmentContainer(StudyHeader, graphql`
     owner {
       ...UserLink_user
     }
+    resourcePath
     updatedAt
     viewerCanApple
     viewerCanEnroll

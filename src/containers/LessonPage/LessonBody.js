@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -8,7 +9,7 @@ import RichTextEditor from 'components/RichTextEditor'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
 import { get, isNil } from 'utils'
 
-class LessonBody extends Component {
+class LessonBody extends React.Component {
   state = {
     edit: false,
     error: null,
@@ -35,12 +36,17 @@ class LessonBody extends Component {
     this.setState({ edit: !this.state.edit })
   }
 
+  get classes() {
+    const {className} = this.props
+    return cls("LessonBody mdc-card mdc-card--outlined", className)
+  }
+
   render() {
     const lesson = get(this.props, "lesson", {})
     const { edit, error, body } = this.state
     if (!edit) {
       return (
-        <div className="LessonBody mdc-card mdc-card--outlined">
+        <div className={this.classes}>
           <HTML className="mh3" html={lesson.bodyHTML} />
           {lesson.viewerCanUpdate &&
           <div className="mdc-card__actions">

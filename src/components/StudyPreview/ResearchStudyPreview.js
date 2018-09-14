@@ -1,9 +1,9 @@
 import * as React from 'react'
 import cls from 'classnames'
+import {Link} from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faApple } from '@fortawesome/free-brands-svg-icons'
 import HTML from 'components/HTML'
-import StudyLink from 'components/StudyLink'
 import { get } from 'utils'
 
 class ResearchStudyPreview extends React.Component {
@@ -17,11 +17,12 @@ class ResearchStudyPreview extends React.Component {
 
     return (
       <div className={this.classes}>
-        <StudyLink
-          withOwner
+        <Link
           className="rn-link mdc-typography--headline6"
-          study={study}
-        />
+          to={study.resourcePath}
+        >
+          {study.nameWithOwner}
+        </Link>
         <HTML html={study.descriptionHTML} />
         <div className="inline-flex items-center">
           <FontAwesomeIcon className="material-icons mr2" icon={faApple} />

@@ -52,7 +52,7 @@ class CourseHeader extends React.Component {
           <span>/</span>
           <StudyLink className="rn-link" study={get(course, "study", null)} />
           <span>/</span>
-          <span><strong>{get(course, "name", "")}</strong></span>
+          <span className="fw5">{get(course, "name", "")}</span>
           <span className="mdc-theme--text-hint-on-light ml2">#{get(course, "number", 0)}</span>
         </h5>
         <div className={cls(

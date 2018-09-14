@@ -5,6 +5,7 @@ import {
   graphql,
 } from 'react-relay'
 import { Route, Switch } from 'react-router-dom'
+import PrivateRoute from 'components/PrivateRoute'
 import environment from 'Environment'
 import StudyHeader from './StudyHeader'
 import CreateCoursePage from 'containers/CreateCoursePage'
@@ -12,8 +13,9 @@ import CreateLessonPage from 'containers/CreateLessonPage'
 import StudyCoursesPage from 'containers/StudyCoursesPage'
 import StudyLabelsPage from 'containers/StudyLabelsPage'
 import StudyLessonsPage from 'containers/StudyLessonsPage'
-import UserAssetPage from 'containers/UserAssetPage'
+import StudyAppleGiversPage from 'containers/StudyAppleGiversPage'
 import StudyAssetsPage from 'containers/StudyAssetsPage'
+import StudyEnrolleesPage from 'containers/StudyEnrolleesPage'
 import StudyOverviewPage from 'containers/StudyOverviewPage'
 import StudySettingsPage from 'containers/StudySettingsPage'
 import NotFound from 'components/NotFound'
@@ -24,12 +26,15 @@ import "./styles.css"
 const StudyPageQuery = graphql`
   query StudyPageQuery($owner: String!, $name: String!) {
     study(owner: $owner, name: $name) {
+      ...CreateCoursePage_study
+      ...CreateLessonPage_study
       ...StudyHeader_study
       ...StudyLabelsPage_study
       ...StudyLessonsPage_study
       ...StudyAssetsPage_study
       ...StudyCoursesPage_study
       ...StudyOverviewPage_study
+      ...StudySettingsPage_study
     }
   }
 `
@@ -74,10 +79,20 @@ class StudyPage extends React.Component {
                         path="/:owner/:name/courses"
                         render={(routeProps) => <StudyCoursesPage {...routeProps} study={props.study} />}
                       />
-                      <Route
+                      <PrivateRoute
                         exact
                         path="/:owner/:name/courses/new"
-                        component={CreateCoursePage}
+                        render={(routeProps) => <CreateCoursePage {...routeProps} study={props.study} />}
+                      />
+                      <Route
+                        exact
+                        path="/:owner/:name/applegivers"
+                        component={StudyAppleGiversPage}
+                      />
+                      <Route
+                        exact
+                        path="/:owner/:name/enrollees"
+                        component={StudyEnrolleesPage}
                       />
                       <Route
                         exact
@@ -89,25 +104,20 @@ class StudyPage extends React.Component {
                         path="/:owner/:name/lessons"
                         render={(routeProps) => <StudyLessonsPage {...routeProps} study={props.study} />}
                       />
-                      <Route
+                      <PrivateRoute
                         exact
                         path="/:owner/:name/lessons/new"
-                        component={CreateLessonPage}
-                      />
-                      <Route
-                        exact
-                        path="/:owner/:name/asset/:filename"
-                        component={UserAssetPage}
+                        render={(routeProps) => <CreateLessonPage {...routeProps} study={props.study} />}
                       />
                       <Route
                         exact
                         path="/:owner/:name/assets"
                         render={(routeProps) => <StudyAssetsPage {...routeProps} study={props.study} />}
                       />
-                      <Route
+                      <PrivateRoute
                         exact
                         path="/:owner/:name/settings"
-                        component={StudySettingsPage}
+                        render={(routeProps) => <StudySettingsPage {...routeProps} study={props.study} />}
                       />
                     </Switch>
                   </div>

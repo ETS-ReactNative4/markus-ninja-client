@@ -13,6 +13,16 @@ class EnrollmentSelect extends React.Component {
   state = {
     status: get(this.props, "enrollable.enrollmentStatus"),
   }
+
+  get classes() {
+    const {className} = this.props
+    const enrollable = get(this.props, "enrollable", {})
+    const disabled = this.props.disabled || !enrollable.viewerCanEnroll
+    return cls("EnrollmentSelect rn-select-button", className, {
+      'rn-select-button--disabled': disabled,
+    })
+  }
+
   render() {
     const enrollable = get(this.props, "enrollable", null)
     if (isNil(enrollable)) {
@@ -23,12 +33,7 @@ class EnrollmentSelect extends React.Component {
     const { status } = this.state
 
     return (
-      <div
-        className={cls(
-          "EnrollmentSelect rn-select-button",
-          { "rn-select-button--disabled": disabled },
-        )}
-      >
+      <div className={this.classes}>
         <select
           className="rn-select-button__native-control"
           value={status}

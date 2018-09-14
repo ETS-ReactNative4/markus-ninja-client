@@ -92,12 +92,13 @@ class StudyLessonsPage extends React.Component {
             >
               Labels
             </StudyLabelsLink>
+            {study.viewerCanAdmin &&
             <CreateLessonLink
               className="mdc-button mdc-button--unelevated flex-stable"
               study={study}
             >
               New lesson
-            </CreateLessonLink>
+            </CreateLessonLink>}
           </div>
         </div>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
@@ -138,8 +139,9 @@ class StudyLessonsPage extends React.Component {
 
 export default createFragmentContainer(StudyLessonsPage, graphql`
   fragment StudyLessonsPage_study on Study {
-    id
     ...CreateLessonLink_study
     ...StudyLabelsLink_study
+    id
+    viewerCanAdmin
   }
 `)

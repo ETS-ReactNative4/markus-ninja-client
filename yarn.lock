@@ -183,6 +183,13 @@
     "@material/ripple" "^0.38.1"
     "@material/theme" "^0.38.0"
 
+"@material/image-list@^0.39.1":
+  version "0.39.1"
+  resolved "https://registry.yarnpkg.com/@material/image-list/-/image-list-0.39.1.tgz#2cbf763d352ca4ac94ef1fba8b3cbca5ec019a81"
+  dependencies:
+    "@material/theme" "^0.39.1"
+    "@material/typography" "^0.39.0"
+
 "@material/layout-grid@^0.34.0":
   version "0.34.0"
   resolved "https://registry.yarnpkg.com/@material/layout-grid/-/layout-grid-0.34.0.tgz#f730bdd962401b691ab7538e7d2b4d91764f4052"

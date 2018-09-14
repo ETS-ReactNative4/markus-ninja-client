@@ -5,8 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faApple } from '@fortawesome/free-brands-svg-icons'
 import { Link } from 'react-router-dom'
 import HTML from 'components/HTML'
-import AppleButton from 'components/AppleButton'
-import StudyLink from 'components/StudyLink'
+import {AppleButton} from 'components/AppleButton'
 import TopicLink from 'components/TopicLink'
 import {get} from 'utils'
 
@@ -32,17 +31,23 @@ class AppleStudyPreview extends React.Component {
     const topicNodes = get(study, "topics.nodes", [])
     return (
       <div className={this.classes}>
-        <div className="flex">
+        <div className="flex h-100">
           <div className="inline-flex flex-column flex-auto">
-            <StudyLink className="rn-link mdc-typography--headline5 self-start" study={study} />
+            <Link
+              className="rn-link mdc-typography--headline5 self-start"
+              to={study.resourcePath}
+            >
+              {study.name}
+            </Link>
             <HTML html={study.descriptionHTML} />
             <div className="flex mv2">
-              {topicNodes.map((node) => node
-              ? <TopicLink
+              {topicNodes.map((node) =>
+                node &&
+                <TopicLink
                   key={node.id}
                   className="mdc-button mdc-button--outlined mr1 mb1"
-                />
-              : null)}
+                  topic={node}
+                />)}
             </div>
             <div className="inline-flex items-center">
               <Link
@@ -51,7 +56,7 @@ class AppleStudyPreview extends React.Component {
               >
                 <FontAwesomeIcon className="material-icons" icon={faApple} />
                 <span className="mdc-typography--subtitle1 ml1">
-                  {get(study, "appleGivers.totalCount")}
+                  {get(study, "appleGivers.totalCount", 0)}
                 </span>
               </Link>
               <span className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light ml3">

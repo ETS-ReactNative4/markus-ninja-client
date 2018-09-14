@@ -13,9 +13,11 @@ class UserAssetTimeline extends Component {
   render() {
     const timelineEdges = get(this.props, "asset.timeline.edges", [])
     return (
-      <div className="UserAssetTimeline">
+      <div className="UserAssetTimeline flex flex-column">
         {timelineEdges.map(({node}) => (
-          <UserAssetTimelineEvent key={node.id} item={node} />
+          <div key={node.id} className="mt3">
+            <UserAssetTimelineEvent item={node} />
+          </div>
         ))}
         {this.props.relay.hasMore() &&
         <button

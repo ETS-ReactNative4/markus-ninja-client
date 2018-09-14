@@ -1,0 +1,5 @@
+@import "@material/image-list/mixins";
+
+.rn-image-list {
+  @include mdc-image-list-standard-columns(5);
+}
