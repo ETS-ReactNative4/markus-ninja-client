@@ -101,7 +101,7 @@ class CreateUserAssetForm extends React.Component {
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
         <label
-          className="mdc-button mdc-button--outlined mt1"
+          className="mdc-button mdc-button--outlined mt2"
           htmlFor={"file-input"}
           title="Attach file"
           aria-label="Attach file"
@@ -121,13 +121,13 @@ class CreateUserAssetForm extends React.Component {
         />
         <div className="flex-stable">
           <button
-            className="mdc-button mdc-button--unelevated mt1"
+            className="mdc-button mdc-button--unelevated mt2"
             type="submit"
           >
             Create asset
           </button>
           <button
-            className="mdc-button mdc-button--outlined ml2 mt1"
+            className="mdc-button mdc-button--outlined ml2 mt2"
             type="button"
             onClick={this.props.onCancel}
           >

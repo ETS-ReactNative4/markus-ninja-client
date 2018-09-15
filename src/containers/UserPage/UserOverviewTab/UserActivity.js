@@ -16,6 +16,19 @@ class UserActivity extends React.Component {
     return cls("UserActivity mdc-layout-grid__inner", className)
   }
 
+  _loadMore = () => {
+    const relay = get(this.props, "relay")
+    if (!relay.hasMore()) {
+      console.log("Nothing more to load")
+      return
+    } else if (relay.isLoading()){
+      console.log("Request is already pending")
+      return
+    }
+
+    relay.loadMore(EVENTS_PER_PAGE)
+  }
+
   render() {
     const activityEdges = get(this.props, "user.activity.edges", [])
     return (
@@ -48,19 +61,6 @@ class UserActivity extends React.Component {
           </React.Fragment>}
       </div>
     )
-  }
-
-  _loadMore = () => {
-    const relay = get(this.props, "relay")
-    if (!relay.hasMore()) {
-      console.log("Nothing more to load")
-      return
-    } else if (relay.isLoading()){
-      console.log("Request is already pending")
-      return
-    }
-
-    relay.loadMore(EVENTS_PER_PAGE)
   }
 }
 

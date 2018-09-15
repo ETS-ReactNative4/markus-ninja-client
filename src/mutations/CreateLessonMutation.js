@@ -33,7 +33,7 @@ const mutation = graphql`
 export default (studyId, title, body, courseId, callback) => {
   const variables = {
     input: {
-      body,
+      body: nullString(body),
       courseId: nullString(courseId),
       studyId: nullString(studyId),
       title: nullString(title),

@@ -35,6 +35,7 @@ class CreateLessonForm extends React.Component {
       (lesson, errors) => {
         if (!isNil(errors)) {
           this.setState({ error: errors[0].message })
+          return
         }
         this.props.history.push(lesson.resourcePath)
       }

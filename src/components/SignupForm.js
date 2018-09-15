@@ -1,46 +1,14 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
+import TextField, {Input, HelperText} from '@material/react-text-field'
 import CreateUserMutation from 'mutations/CreateUserMutation'
 
-class SignupForm extends Component {
+class SignupForm extends React.Component {
   state = {
     error: null,
     email: "",
     username: "",
     password: "",
-  }
-
-  render() {
-    const { email, username, password, error } = this.state
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <label htmlFor="SignupForm__email">Email</label>
-        <input
-          id="SignupForm__email"
-          type="email"
-          name="email"
-          value={email}
-          onChange={this.handleChange}
-        />
-        <label htmlFor="SignupForm__username">Username</label>
-        <input
-          id="SignupForm__username"
-          type="text"
-          name="username"
-          value={username}
-          onChange={this.handleChange}
-        />
-        <label htmlFor="SignupForm__password">Password</label>
-        <input
-          id="SignupForm__password"
-          type="password"
-          name="password"
-          value={password}
-          onChange={this.handleChange}
-        />
-        <button type="submit">Signup</button>
-        <span>{error}</span>
-      </form>
-    )
   }
 
   handleChange = (e) => {
@@ -59,6 +27,82 @@ class SignupForm extends Component {
       window.sessionStorage.setItem("access_token", token.token)
       this.props.history.push("/")
     })
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("SignupForm mdc-layout-grid__inner", className)
+  }
+
+  render() {
+    const {email, username, password} = this.state
+    return (
+      <form
+        className={this.classes}
+        onSubmit={this.handleSubmit}
+      >
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <TextField
+            className="w-100"
+            outlined
+            label="Username"
+            helperText={<HelperText persistent>This will be your username.</HelperText>}
+          >
+            <Input
+              name="username"
+              value={username}
+              onChange={this.handleChange}
+            />
+          </TextField>
+        </div>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <TextField
+            className="w-100"
+            outlined
+            label="Email address"
+            helperText={
+              <HelperText persistent>
+                We'll occasionally send updates about your account to this inbox.
+                We'll never share your email address with anyone.
+              </HelperText>
+            }
+          >
+            <Input
+              name="email"
+              value={email}
+              onChange={this.handleChange}
+            />
+          </TextField>
+        </div>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <TextField
+            className="w-100"
+            outlined
+            label="Password"
+            helperText={
+              <HelperText persistent>
+                Use at least one lowercase letter, one numeral, and seven characters.
+              </HelperText>
+            }
+          >
+            <Input
+              type="password"
+              name="password"
+              value={password}
+              onChange={this.handleChange}
+            />
+          </TextField>
+        </div>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <button
+            className="mdc-button mdc-button--unelevated"
+            type="submit"
+          >
+            Create an account
+          </button>
+        </div>
+      </form>
+    )
   }
 }
 

@@ -1,74 +1,18 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import { withRouter } from 'react-router'
 import queryString from 'query-string'
-import cls from 'classnames'
-import { withUID } from 'components/UniqueId'
+import TextField, {Input} from '@material/react-text-field'
 import LoginUserMutation from 'mutations/LoginUserMutation'
 import { get, isNil } from 'utils'
 
 import './styles.css'
 
-class LoginForm extends Component {
-  userNameInput_ = null
-
+class LoginForm extends React.Component {
   state = {
     error: null,
     username: "",
     password: "",
-  }
-
-  componentDidMount() {
-    this.userNameInput_.focus()
-  }
-
-  render() {
-    const { className, uid } = this.props
-    const { username, password, error } = this.state
-    return (
-      <form
-        className={cls("LoginForm", "mdc-layout-grid", className)}
-        onSubmit={this.handleSubmit}
-      >
-        <div className="mdc-layout-grid__inner">
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <div className="mdc-text-field mdc-text-field--fullwidth">
-              <input type="text"
-                className="mdc-text-field__input"
-                id={`username-${uid}`}
-                ref={(node) => this.userNameInput_ = node}
-                name="username"
-                placeholder="Username or email"
-                value={username}
-                aria-label="Full-Width Text Field"
-                onChange={this.handleChange}
-              />
-            </div>
-          </div>
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <div className="mdc-text-field mdc-text-field--fullwidth">
-              <input type="password"
-                className="mdc-text-field__input"
-                id={`password-${uid}`}
-                name="password"
-                placeholder="Password"
-                value={password}
-                aria-label="Full-Width Text Field"
-                onChange={this.handleChange}
-              />
-            </div>
-          </div>
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <button
-              className="mdc-button mdc-button--unelevated w-100"
-              type="submit"
-            >
-              Sign in
-            </button>
-          </div>
-        </div>
-        <span>{error}</span>
-      </form>
-    )
   }
 
   handleChange = (e) => {
@@ -95,6 +39,57 @@ class LoginForm extends Component {
       },
     )
   }
+
+  get classes() {
+    const {className} = this.props
+    return cls("LoginForm mdc-layout-grid__inner", className)
+  }
+
+  render() {
+    const {username, password} = this.state
+    return (
+      <form
+        className={this.classes}
+        onSubmit={this.handleSubmit}
+      >
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <TextField
+            className="w-100"
+            outlined
+            label="Username or email"
+          >
+            <Input
+              name="username"
+              value={username}
+              onChange={this.handleChange}
+            />
+          </TextField>
+        </div>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <TextField
+            className="w-100"
+            outlined
+            label="Password"
+          >
+            <Input
+              type="password"
+              name="password"
+              value={password}
+              onChange={this.handleChange}
+            />
+          </TextField>
+        </div>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <button
+            className="mdc-button mdc-button--unelevated w-100"
+            type="submit"
+          >
+            Sign in
+          </button>
+        </div>
+      </form>
+    )
+  }
 }
 
-export default withUID((getUID) => ({ uid: getUID() }))(withRouter(LoginForm))
+export default withRouter(LoginForm)

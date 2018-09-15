@@ -5,7 +5,7 @@ import {
   graphql,
 } from 'react-relay'
 import cls from 'classnames'
-import { withUID } from 'components/UniqueId'
+import TextField, {Input, HelperText} from '@material/react-text-field'
 import { withRouter } from 'react-router'
 import { debounce, get, isEmpty, isNil } from 'utils'
 
@@ -75,31 +75,41 @@ class StudyAssetNameInput extends React.Component {
   }
 
   render() {
-    const { disabled, uid } = this.props
-    const { fetched, loading, name } = this.state
-    const asset = get(this.props, "study.asset", undefined)
+    const {disabled} = this.props
+    const {name} = this.state
 
     return (
       <div className={this.classes}>
-        <input
-          id={`asset-name-input${uid}`}
-          autoComplete="off"
-          className="form-control"
-          disabled={disabled}
-          type="text"
-          name="name"
-          placeholder={this.placeholder}
-          value={name}
-          onChange={(e) => this.handleChange(e.target.value)}
-        />
-        <p className="mdc-text-field-helper-text mdc-text-field-helper-text--persistent">
-          {loading
-          ? "Loading..."
-          : !isEmpty(name) && fetched
-            ? `Name ${asset ? "taken" : "available"}`
-            : " "}
-        </p>
+        <TextField
+          className="w-100"
+          outlined
+          label={this.placeholder}
+          helperText={this.renderHelperText()}
+        >
+          <Input
+            name="name"
+            disabled={disabled}
+            value={name}
+            onChange={(e) => this.handleChange(e.target.value)}
+          />
+        </TextField>
       </div>
+    )
+  }
+
+  renderHelperText() {
+    const { fetched, loading, name } = this.state
+    const asset = get(this.props, "study.asset", undefined)
+    const nameTaken = !isEmpty(name) && fetched
+
+    return (
+      <HelperText persistent>
+        {loading
+        ? "Loading..."
+        : nameTaken
+          ? `Name ${asset ? "taken" : "available"}`
+          : " "}
+      </HelperText>
     )
   }
 }
@@ -112,7 +122,7 @@ StudyAssetNameInput.defaultProps = {
   onChange: () => {},
 }
 
-export default withUID((getUID) => ({uid: getUID() }))(withRouter(createRefetchContainer(StudyAssetNameInput,
+export default withRouter(createRefetchContainer(StudyAssetNameInput,
   {
     study: graphql`
       fragment StudyAssetNameInput_study on Study {
@@ -134,4 +144,4 @@ export default withUID((getUID) => ({uid: getUID() }))(withRouter(createRefetchC
       }
     }
   `,
-)))
+))

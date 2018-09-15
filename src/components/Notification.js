@@ -26,7 +26,7 @@ class Notification extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("Notification flex items-center", className)
+    return cls("Notification flex items-center pointer", className)
   }
 
   render() {

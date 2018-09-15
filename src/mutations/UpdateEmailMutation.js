@@ -35,10 +35,12 @@ export default (emailId, type, callback) => {
       },
       updater: proxyStore => {
         const updateEmailField = proxyStore.getRootField('updateEmail')
-        const newType = updateEmailField.getValue('type')
+        if (updateEmailField) {
+          const newType = updateEmailField.getValue('type')
 
-        const email = proxyStore.get(emailId)
-        email.setValue(newType, 'type')
+          const email = proxyStore.get(emailId)
+          email && email.setValue(newType, 'type')
+        }
       },
       onCompleted: callback,
       onError: err => console.error(err),
