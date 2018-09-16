@@ -11,7 +11,7 @@ class ViewerEmail extends Component {
     return (
       <div className="ViewerEmail">
         {email.value}
-        <span className="ViewerEmail__type">{email.type}</span>
+        <span className="mdc-button mdc-button--outlined ml2">{email.type}</span>
       </div>
     )
   }

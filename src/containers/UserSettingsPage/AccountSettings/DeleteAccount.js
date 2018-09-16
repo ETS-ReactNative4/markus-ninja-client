@@ -89,16 +89,19 @@ class DeleteAccount extends React.Component {
     const {login, password, verify} = this.state
 
     return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+      <form
+        className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+        onSubmit={this.handleSubmit}
+      >
         <h6>This is extremely important.</h6>
         <p>
           We will immediately delete all your studies, and anything associated with your account.
           You will no longer receive any communication from us about your account.
           Please be sure before you proceed.
         </p>
-        <form onSubmit={this.handleSubmit}>
+        <div className="flex flex-column">
           <TextField
-            className="w-100"
+            className="rn-form__input"
             outlined
             label="You username or email"
           >
@@ -109,7 +112,7 @@ class DeleteAccount extends React.Component {
             />
           </TextField>
           <TextField
-            className="w-100 mt3"
+            className="rn-form__input mt3"
             outlined
             label="Password"
           >
@@ -120,39 +123,39 @@ class DeleteAccount extends React.Component {
               onChange={this.handleChange}
             />
           </TextField>
-          <p>
-            To verify, type <em>delete my account</em> below:
-          </p>
-          <TextField
-            className="w-100"
-            outlined
-            label="Verify"
+        </div>
+        <p>
+          To verify, type <em>delete my account</em> below:
+        </p>
+        <TextField
+          className="rn-form__input"
+          outlined
+          label="Verify"
+        >
+          <Input
+            name="verify"
+            value={verify}
+            onChange={this.handleChange}
+          />
+        </TextField>
+        <div className="mt2">
+          <button
+            className="mdc-button mdc-button--unelevated"
+            disabled={!this.isSubmittable}
+            type="submit"
+            onClick={this.handleSubmit}
           >
-            <Input
-              name="verify"
-              value={verify}
-              onChange={this.handleChange}
-            />
-          </TextField>
-          <div className="mt2">
-            <button
-              className="mdc-button mdc-button--unelevated"
-              disabled={!this.isSubmittable}
-              type="submit"
-              onClick={this.handleSubmit}
-            >
-              Delete this account
-            </button>
-            <button
-              className="mdc-button mdc-button--outlined ml2"
-              type="button"
-              onClick={this.handleToggleOpen}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
+            Delete this account
+          </button>
+          <button
+            className="mdc-button mdc-button--outlined ml2"
+            type="button"
+            onClick={this.handleToggleOpen}
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
     )
   }
 }

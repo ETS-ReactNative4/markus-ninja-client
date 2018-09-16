@@ -2,19 +2,53 @@ import * as React from 'react'
 import cls from 'classnames'
 
 class Tab extends React.PureComponent {
+  get classes() {
+    const {
+      active,
+      className,
+      minWidth,
+      stacked,
+    } = this.props
+    return cls("mdc-tab", className, {
+      "mdc-tab--active": active,
+      "mdc-tab--stacked": stacked,
+      "mdc-tab--min-width": minWidth,
+    })
+  }
+
+  get indicatorClasses() {
+    const {
+      active,
+    } = this.props
+    return cls("mdc-tab-indicator", {
+      "mdc-tab-indicator--active": active,
+    })
+  }
+
+  get otherProps() {
+    const {
+      active,
+      className,
+      minWidth,
+      stacked,
+      ...otherProps,
+    } = this.props
+    return otherProps
+  }
+
   render() {
-    const { active, as: Component = 'div', children, className, ...props } = this.props
+    const {active, as: Component = 'div', children} = this.props
 
     return (
       <Component
-        className={cls("mdc-tab", className, { "mdc-tab--active": active })}
+        {...this.otherProps}
+        className={this.classes}
         role="tab"
         aria-selected={active ? "true" : "false" }
         tabIndex="0"
-        {...props}
       >
         {children}
-        <span className={cls("mdc-tab-indicator", { "mdc-tab-indicator--active": active })}>
+        <span className={this.indicatorClasses}>
           <span className="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
         </span>
       </Component>

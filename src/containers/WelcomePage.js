@@ -20,9 +20,11 @@ class WelcomePage extends React.Component {
                 </h4>
                 <p className="mdc-typography--subtitle1">
                   RkusNinja is a learning platform inspired by an idea:
-                  <blockquote>
-                    "If you can't explain it simply, you really don't understand it yourself."
-                  </blockquote>
+                </p>
+                <blockquote>
+                  "If you can't explain it simply, you really don't understand it yourself."
+                </blockquote>
+                <p>
                   I used GitHub as my model, but I repurposed it into something else.
                 </p>
               </div>

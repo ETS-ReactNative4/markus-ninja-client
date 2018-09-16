@@ -5,9 +5,12 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import ViewerNotifications from 'components/ViewerNotifications'
+import NotificationsPageNav from './NotificationsPageNav'
+import ViewerNotifications from './ViewerNotifications'
 
 import { NOTIFICATIONS_PER_PAGE } from 'consts'
+
+import "./styles.css"
 
 const NotificationsPageQuery = graphql`
   query NotificationsPageQuery(
@@ -24,7 +27,7 @@ const NotificationsPageQuery = graphql`
 class NotificationsPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("NotificationsPage mdc-layout-grid", className)
+    return cls("NotificationsPage mdc-layout-grid mw8", className)
   }
 
   render() {
@@ -33,8 +36,6 @@ class NotificationsPage extends React.Component {
         environment={environment}
         query={NotificationsPageQuery}
         variables={{
-          owner: this.props.match.params.owner,
-          name: this.props.match.params.name,
           count: NOTIFICATIONS_PER_PAGE,
         }}
         render={({error,  props}) => {
@@ -44,6 +45,8 @@ class NotificationsPage extends React.Component {
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
+                  <NotificationsPageNav viewer={props.viewer} />
+                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <ViewerNotifications viewer={props.viewer} />
                   </div>

@@ -42,7 +42,7 @@ class UserPupils extends React.Component {
             {enrolleeEdges.map(({node}) => (
               node &&
               <React.Fragment key={node.id}>
-                <UserPreview.Study
+                <UserPreview.Tutor
                   className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
                   user={node}
                 />

@@ -5,9 +5,9 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import ChangePassword from 'components/ChangePassword'
-import ChangeUsername from 'components/ChangeUsername'
-import DeleteAccount from 'components/DeleteAccount'
+import ChangePassword from './ChangePassword'
+import ChangeUsername from './ChangeUsername'
+import DeleteAccount from './DeleteAccount'
 
 const AccountSettingsQuery = graphql`
   query AccountSettingsQuery {

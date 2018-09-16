@@ -11,6 +11,7 @@ import NotFound from 'components/NotFound'
 
 import CreateStudyPage from 'containers/CreateStudyPage'
 import CoursePage from 'containers/CoursePage'
+import EnrolledStudiesPage from 'containers/EnrolledStudiesPage'
 import LessonPage from 'containers/LessonPage'
 import LoginPage from 'containers/LoginPage'
 import LogoutPage from 'containers/LogoutPage'
@@ -65,6 +66,7 @@ class App extends React.Component {
                             path="/new"
                             render={(routeProps) => <CreateStudyPage user={props.viewer} {...routeProps} />}
                           />
+                          <PrivateRoute path="/enrolled" component={EnrolledStudiesPage} />
                           <PrivateRoute path="/notifications" component={NotificationsPage} />
                           <Route exact path="/research" component={ResearchPage} />
                           <Route exact path="/search" component={SearchPage} />

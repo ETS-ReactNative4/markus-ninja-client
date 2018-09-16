@@ -43,7 +43,7 @@ class UserProfileForm extends React.Component {
       <form className={this.classes} onSubmit={this.handleSubmit}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
-            className="w-100"
+            className="rn-form__input"
             outlined
             label="Name"
             floatingLabelClassName={!isEmpty(name) ? "mdc-floating-label--float-above" : ""}
@@ -68,7 +68,7 @@ class UserProfileForm extends React.Component {
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
-            className="w-100"
+            className="rn-form__input"
             label="Bio"
             textarea
             floatingLabelClassName={!isEmpty(bio) ? "mdc-floating-label--float-above" : ""}

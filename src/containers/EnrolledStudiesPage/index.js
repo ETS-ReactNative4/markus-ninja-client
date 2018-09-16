@@ -5,27 +5,39 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import UserProfileForm from './UserProfileForm'
+import EnrolledStudiesPageNav from './EnrolledStudiesPageNav'
+import ViewerEnrolledStudies from './ViewerEnrolledStudies'
 
-const ProfileSettingsQuery = graphql`
-  query ProfileSettingsQuery {
+import { STUDIES_PER_PAGE } from 'consts'
+
+import "./styles.css"
+
+const EnrolledStudiesPageQuery = graphql`
+  query EnrolledStudiesPageQuery(
+    $count: Int!,
+    $after: String
+  ) {
     viewer {
-      ...UserProfileForm_user
+      id
+      ...ViewerEnrolledStudies_viewer
     }
   }
 `
 
-class ProfileSettings extends React.Component {
+class EnrolledStudiesPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("ProfileSettings mdc-layout-grid", className)
+    return cls("EnrolledStudiesPage mdc-layout-grid mw8", className)
   }
 
   render() {
     return (
       <QueryRenderer
         environment={environment}
-        query={ProfileSettingsQuery}
+        query={EnrolledStudiesPageQuery}
+        variables={{
+          count: STUDIES_PER_PAGE,
+        }}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
@@ -33,12 +45,10 @@ class ProfileSettings extends React.Component {
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
-                  <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    Public profile
-                  </h4>
+                  <EnrolledStudiesPageNav viewer={props.viewer} />
                   <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <UserProfileForm user={props.viewer} />
+                    <ViewerEnrolledStudies viewer={props.viewer} />
                   </div>
                 </div>
               </div>
@@ -51,4 +61,4 @@ class ProfileSettings extends React.Component {
   }
 }
 
-export default ProfileSettings
+export default EnrolledStudiesPage

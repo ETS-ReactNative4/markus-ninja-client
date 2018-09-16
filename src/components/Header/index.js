@@ -74,7 +74,7 @@ class Header extends Component {
                 <Link className="rn-link rn-link--undecorated rn-link--on-primary" to="/signup" aria-label="Sign up">Sign up</Link>
               </div>}
               {authenticated &&
-              <div className="mdc-top-app-bar__title">
+              <React.Fragment>
                 <IconLink
                   className="mdc-top-app-bar__navigation-icon"
                   to="/notifications"
@@ -115,7 +115,7 @@ class Header extends Component {
                 >
                   settings
                 </IconLink>
-              </div>}
+              </React.Fragment>}
             </section>
           </div>
           <MediaQuery query="(max-width: 674px)">

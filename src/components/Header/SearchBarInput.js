@@ -71,7 +71,7 @@ class SearchBarInput extends React.Component {
       const inputs = ['input', 'select', 'textarea']
       if (activeElement &&
         (inputs.indexOf(activeElement.tagName.toLowerCase()) !== -1 ||
-          activeElement.role !== 'textbox')
+          activeElement.role === 'textbox')
       ) {
         return
       }

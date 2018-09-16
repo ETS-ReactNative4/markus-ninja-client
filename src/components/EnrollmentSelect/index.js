@@ -14,6 +14,21 @@ class EnrollmentSelect extends React.Component {
     status: get(this.props, "enrollable.enrollmentStatus"),
   }
 
+  handleChange = (e) => {
+    this.setState({
+      status: e.target.value,
+    })
+    UpdateEnrollmentMutation(
+      this.props.enrollable.id,
+      e.target.value,
+      (errors) => {
+        if (!isNil(errors)) {
+          console.error(errors[0].message)
+        }
+      }
+    )
+  }
+
   get classes() {
     const {className} = this.props
     const enrollable = get(this.props, "enrollable", {})
@@ -45,21 +60,6 @@ class EnrollmentSelect extends React.Component {
           <option value="UNENROLLED">Unenrolled</option>
         </select>
       </div>
-    )
-  }
-
-  handleChange = (e) => {
-    this.setState({
-      status: e.target.value,
-    })
-    UpdateEnrollmentMutation(
-      this.props.enrollable.id,
-      e.target.value,
-      (errors) => {
-        if (!isNil(errors)) {
-          console.error(errors[0].message)
-        }
-      }
     )
   }
 }

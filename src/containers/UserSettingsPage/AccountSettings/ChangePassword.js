@@ -23,7 +23,7 @@ class ChangePassword extends React.Component {
       <form className={this.classes} onSubmit={this.handleSubmit}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
-            className="w-100"
+            className="rn-form__input"
             outlined
             label="Old password"
           >
@@ -37,7 +37,7 @@ class ChangePassword extends React.Component {
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
-            className="w-100"
+            className="rn-form__input"
             outlined
             label="New password"
           >
@@ -51,7 +51,7 @@ class ChangePassword extends React.Component {
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
-            className="w-100"
+            className="rn-form__input"
             outlined
             label="Confirm new password"
           >
