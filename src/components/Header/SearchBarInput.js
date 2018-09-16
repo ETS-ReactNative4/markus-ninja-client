@@ -67,14 +67,25 @@ class SearchBarInput extends React.Component {
     const { cursor, focus } = this.state
     const searchEdges = get(this.props, "query.search.edges", [])
     if (forwardSlash) {
+      const activeElement = document.activeElement
+      const inputs = ['input', 'select', 'textarea']
+      if (activeElement &&
+        (inputs.indexOf(activeElement.tagName.toLowerCase()) !== -1 ||
+          activeElement.role !== 'textbox')
+      ) {
+        return
+      }
       e.preventDefault()
       const element = document.getElementById("search-bar-input")
       element.focus()
       this.setState({ focus: true })
     } else if (isEscape) {
-      const element = document.getElementById("search-bar-input")
-      element.blur()
-      this.setState({ focus: false })
+      const {focus} = this.state
+      if (focus) {
+        const element = document.getElementById("search-bar-input")
+        element.blur()
+        this.setState({ focus: false })
+      }
     }
 
     if (!focus) { return }
