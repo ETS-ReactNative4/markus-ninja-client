@@ -19,6 +19,7 @@ const FRAGMENT = graphql`
     login
     name
     resourcePath
+    viewerCanEnroll
   }
 `
 

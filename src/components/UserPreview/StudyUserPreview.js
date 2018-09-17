@@ -21,7 +21,7 @@ class StudyUserPreview extends React.Component {
           <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light">
             Joined on {moment(user.createdAt).format("MMM D, YYYY")}
           </div>
-          {!user.isViewer &&
+          {user.viewerCanEnroll && !user.isViewer &&
           <EnrollmentSelect enrollable={user} />}
         </div>
       </div>

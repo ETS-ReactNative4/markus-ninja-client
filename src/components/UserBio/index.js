@@ -30,7 +30,7 @@ class UserBio extends React.Component {
     const {open, bio} = this.state
     return (
       <div className={cls("UserBio", className, {open})}>
-        {open
+        {open && user.isViewer
         ? <form onSubmit={this.handleSubmit}>
             <TextField
               className="w-100"
@@ -63,13 +63,14 @@ class UserBio extends React.Component {
           </form>
         : <div className="UserBio__show">
             <HTML className="mb3" html={user.bioHTML} />
+            {user.isViewer &&
             <button
               className="mdc-button mdc-button--unelevated w-100"
               type="button"
               onClick={this.handleToggleOpen}
             >
               {isEmpty(user.bio) ? "Add a bio" : "Edit bio"}
-            </button>
+            </button>}
           </div>}
       </div>
     )
@@ -106,5 +107,6 @@ export default withRouter(createFragmentContainer(UserBio, graphql`
   fragment UserBio_user on User {
     bio
     bioHTML
+    isViewer
   }
 `))

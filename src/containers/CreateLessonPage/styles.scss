@@ -1,22 +1,6 @@
 @import "@material/layout-grid/mixins";
 
 .CreateLessonForm {
-  .CreateLessonForm__tabs {
-    margin-bottom: 1em;
-
-    @include mdc-layout-grid-media-query_(desktop) {
-      width: 30%;
-    }
-
-    @include mdc-layout-grid-media-query_(tablet) {
-      width: 50%;
-    }
-
-    @include mdc-layout-grid-media-query_(phone) {
-      width: 100%;
-    }
-  }
-
   .CreateLessonForm__input {
     display: block;
   }

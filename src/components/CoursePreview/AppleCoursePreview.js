@@ -73,7 +73,8 @@ class AppleCoursePreview extends React.Component {
               </span>
             </div>
           </div>
-          <AppleButton className="self-center" appleable={course} />
+          {course.viewerCanApple &&
+          <AppleButton className="self-center" appleable={course} />}
         </div>
       </div>
     )

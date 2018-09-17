@@ -1,7 +1,6 @@
 import * as React from 'react'
 import cls from 'classnames'
 import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
-import CreateUserAssetLink from 'components/CreateUserAssetLink'
 import UserAssetPreview from 'components/UserAssetPreview'
 import {isEmpty} from 'utils'
 
@@ -12,7 +11,7 @@ class StudyAssets extends React.Component {
   }
 
   render() {
-    const {search, study} = this.props
+    const {search} = this.props
     const {edges, hasMore, isLoading, loadMore} = search
 
     return (
@@ -24,9 +23,6 @@ class StudyAssets extends React.Component {
               <span className="mr1">
                 No assets were found.
               </span>
-              <CreateUserAssetLink className="rn-link" study={study}>
-                Create an asset.
-              </CreateUserAssetLink>
             </React.Fragment>
         : <ul className="rn-image-list mdc-image-list mdc-image-list--with-text-protection">
             {edges.map(({node}) => (

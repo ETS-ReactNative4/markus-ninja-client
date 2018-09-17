@@ -29,7 +29,7 @@ class TutorUserPreview extends React.Component {
             </div>
           </div>
           <div className="flex-stable">
-            {!user.isViewer &&
+            {user.viewerCanEnroll && !user.isViewer &&
             <EnrollmentSelect enrollable={user} />}
           </div>
         </div>

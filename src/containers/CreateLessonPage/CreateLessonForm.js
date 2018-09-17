@@ -66,34 +66,34 @@ class CreateLessonForm extends React.Component {
               </TextField>
             </div>
             <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-              <div className="CreateLessonForm__tabs">
-                <TabBar>
-                  <Tab
-                    active={!preview}
-                    as="button"
-                    type="button"
-                    onClick={() => this.setState({preview: false})}
-                  >
-                    <span className="mdc-tab__content">
-                      <span className="mdc-tab__text-label">
-                        Write
-                      </span>
+              <TabBar className="mb2">
+                <Tab
+                  active={!preview}
+                  minWidth
+                  as="button"
+                  type="button"
+                  onClick={() => this.setState({preview: false})}
+                >
+                  <span className="mdc-tab__content">
+                    <span className="mdc-tab__text-label">
+                      Write
                     </span>
-                  </Tab>
-                  <Tab
-                    active={preview}
-                    as="button"
-                    type="button"
-                    onClick={() => this.setState({preview: true})}
-                  >
-                    <span className="mdc-tab__content">
-                      <span className="mdc-tab__text-label">
-                        Preview
-                      </span>
+                  </span>
+                </Tab>
+                <Tab
+                  active={preview}
+                  minWidth
+                  as="button"
+                  type="button"
+                  onClick={() => this.setState({preview: true})}
+                >
+                  <span className="mdc-tab__content">
+                    <span className="mdc-tab__text-label">
+                      Preview
                     </span>
-                  </Tab>
-                </TabBar>
-              </div>
+                  </span>
+                </Tab>
+              </TabBar>
               <div className="CreateLessonForm__input">
                 <RichTextEditor
                   study={get(this.props, "study", null)}

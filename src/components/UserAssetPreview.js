@@ -20,7 +20,7 @@ class UserAssetPreview extends React.Component {
         <div className="mdc-image-list__image-aspect-container">
           <img
             className="mdc-image-list__image"
-            src={asset.href}
+            src={asset.href + "?s=400"}
             alt={asset.name}
           />
         </div>

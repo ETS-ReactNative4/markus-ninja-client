@@ -28,6 +28,8 @@ class Tab extends React.PureComponent {
   get otherProps() {
     const {
       active,
+      as,
+      children,
       className,
       minWidth,
       stacked,

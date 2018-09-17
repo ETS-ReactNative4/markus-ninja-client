@@ -25,7 +25,7 @@ class User extends React.Component {
         <h4>{user.name}</h4>
         <h5>{user.login}</h5>
         <UserBio className="mt2" user={userProp} />
-        {!user.isViewer &&
+        {user.viewerCanEnroll && !user.isViewer &&
         <EnrollmentSelect enrollable={userProp} />}
         {email &&
         <div className="User__email">email</div>}
@@ -47,5 +47,6 @@ export default withRouter(createFragmentContainer(User, graphql`
     isViewer
     login
     name
+    viewerCanEnroll
   }
 `))

@@ -52,7 +52,7 @@ class AppleStudyPreview extends React.Component {
             <div className="inline-flex items-center">
               <Link
                 className="rn-link inline-flex items-center self-start"
-                to={study.resourcePath}
+                to={study.resourcePath+"/applegivers"}
               >
                 <FontAwesomeIcon className="material-icons" icon={faApple} />
                 <span className="mdc-typography--subtitle1 ml1">
@@ -64,7 +64,8 @@ class AppleStudyPreview extends React.Component {
               </span>
             </div>
           </div>
-          <AppleButton className="self-center" appleable={study} />
+          {study.viewerCanApple &&
+          <AppleButton className="self-center" appleable={study} />}
         </div>
       </div>
     )
