@@ -23,6 +23,7 @@ import SignupPage from 'containers/SignupPage'
 import StudyPage from 'containers/StudyPage'
 import StudySearchPage from 'containers/StudySearchPage'
 import TopicPage from 'containers/TopicPage'
+import TopicsPage from 'containers/TopicsPage'
 import HomePage from 'containers/HomePage'
 import UserPage from 'containers/UserPage'
 import UserAssetPage from 'containers/UserAssetPage'
@@ -72,6 +73,7 @@ class App extends React.Component {
                           <Route exact path="/search" component={SearchPage} />
                           <PrivateRoute path="/settings" component={UserSettingsPage} />
                           <Route exact path="/signup" component={SignupPage} />
+                          <Route exact path="/topics" component={TopicsPage} />
                           <Route exact path="/topics/:name" component={TopicPage} />
                           <Route exact path="/:owner/:name/search" component={StudySearchPage} />
                           <Route exact path="/:login" component={UserPage} />

@@ -67,7 +67,7 @@ class SearchResults extends React.Component {
   }
 
   get _counts() {
-    const search = get(this.props, "results.search")
+    const search = get(this.props, "results.search", {})
 
     return {
       course: search.courseCount,

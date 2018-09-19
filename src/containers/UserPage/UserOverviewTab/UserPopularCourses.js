@@ -47,7 +47,7 @@ export default createFragmentContainer(UserPopularCourses, graphql`
   fragment UserPopularCourses_query on Query @argumentDefinitions(
     within: {type: "ID!"}
   ) {
-    popularCourses: search(first: 6, query: "*", type: COURSE, orderBy:{direction: DESC, field: APPLE_COUNT} within: $within)
+    popularCourses: search(first: 4, query: "*", type: COURSE, orderBy:{direction: DESC, field: APPLE_COUNT} within: $within)
       @connection(key: "UserPopularCourses_popularCourses", filters: []) {
       edges {
         node {

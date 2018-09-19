@@ -30,7 +30,7 @@ class StudyLabelsPage extends React.Component {
 
     const search = queryString.stringify(searchQuery)
 
-    history.push({pathname: location.pathname, search})
+    history.replace({pathname: location.pathname, search})
   }, 300)
 
   get classes() {

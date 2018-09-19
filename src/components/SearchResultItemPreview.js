@@ -14,13 +14,13 @@ class SearchResultItemPreview extends React.Component {
 
     switch(item.__typename) {
       case "Course":
-        return <CoursePreview className={className} course={item} />
+        return <CoursePreview.Search className={className} course={item} />
       case "Lesson":
         return <LessonPreview className={className} lesson={item} />
       case "Study":
-        return <StudyPreview className={className} study={item} />
+        return <StudyPreview.Search className={className} study={item} />
       case "Topic":
-        return <TopicPreview className={className} topic={item} />
+        return <TopicPreview.Search className={className} topic={item} />
       case "User":
         return <UserPreview className={className} user={item} />
       case "UserAsset":

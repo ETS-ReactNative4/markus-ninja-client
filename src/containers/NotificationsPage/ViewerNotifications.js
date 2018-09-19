@@ -3,6 +3,8 @@ import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
+import StudyLink from 'components/StudyLink'
+import UserLink from 'components/UserLink'
 import Notification from './Notification.js'
 import MarkAllStudyNotificationsAsReadMutation from 'mutations/MarkAllStudyNotificationsAsReadMutation'
 import {get, groupBy, isEmpty, isNil} from 'utils'
@@ -54,7 +56,15 @@ class ViewerNotifications extends React.Component {
             <div key={key} className="mdc-card mdc-card--outlined">
               <div className="flex items-center pa3">
                 <span className="mdc-typography--headline5 flex-auto">
-                  {get(notificationsByStudy[key][0], "node.study.nameWithOwner", "")}
+                  <UserLink
+                    className="rn-link"
+                    user={get(this.props, "viewer", null)}
+                  />
+                  <span>/</span>
+                  <StudyLink
+                    className="rn-link"
+                    study={get(notificationsByStudy[key][0], "node.study", null)}
+                  />
                 </span>
                 <button
                   className="mdc-button mdc-button--unelevated"
@@ -89,6 +99,7 @@ export default createPaginationContainer(ViewerNotifications,
   {
     viewer: graphql`
       fragment ViewerNotifications_viewer on User {
+        ...UserLink_user
         notifications(
           first: $count,
           after: $after,
@@ -98,8 +109,8 @@ export default createPaginationContainer(ViewerNotifications,
             node {
               id
               study {
+                ...StudyLink_study
                 id
-                nameWithOwner
               }
               ...Notification_notification
             }

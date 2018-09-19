@@ -9,6 +9,7 @@ import { get } from 'utils'
 import AppleStudyPreview from './AppleStudyPreview'
 import ResearchStudyPreview from './ResearchStudyPreview'
 import StudyPreviewLink from './StudyPreviewLink'
+import SearchStudyPreview from './SearchStudyPreview'
 import UserStudyPreview from './UserStudyPreview'
 
 const FRAGMENT = graphql`
@@ -40,6 +41,7 @@ class StudyPreview extends React.Component {
   static Apple = Relay.createFragmentContainer(AppleStudyPreview, FRAGMENT)
   static Link = Relay.createFragmentContainer(StudyPreviewLink, FRAGMENT)
   static Research = Relay.createFragmentContainer(ResearchStudyPreview, FRAGMENT)
+  static Search = Relay.createFragmentContainer(SearchStudyPreview, FRAGMENT)
   static User = Relay.createFragmentContainer(UserStudyPreview, FRAGMENT)
 
   get classes() {

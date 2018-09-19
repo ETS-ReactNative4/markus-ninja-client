@@ -30,17 +30,16 @@ class StudyHeader extends React.Component {
 
     return (
       <div className={this.classes}>
-        <div className={cls(
+        <h5 className={cls(
           "mdc-layout-grid__cell",
           "mdc-layout-grid__cell--span-7-desktop",
           "mdc-layout-grid__cell--span-4-tablet",
           "mdc-layout-grid__cell--span-4-phone",
-          "mdc-typography--headline5",
         )}>
-          <UserLink user={get(study, "owner", null)} />
+          <UserLink className="rn-link" user={get(study, "owner", null)} />
           <span>/</span>
-          <StudyLink study={study} />
-        </div>
+          <StudyLink className="rn-link" study={study} />
+        </h5>
         <div className={cls(
           "mdc-layout-grid__cell",
           "mdc-layout-grid__cell--span-5-desktop",

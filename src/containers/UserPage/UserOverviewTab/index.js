@@ -11,7 +11,7 @@ import UserPopularCourses from './UserPopularCourses'
 import UserPopularStudies from './UserPopularStudies'
 import UserActivity from './UserActivity'
 import {get} from 'utils'
-import {EVENTS_PER_PAGE} from 'consts'
+import {USER_ACTIVITY_PER_PAGE} from 'consts'
 
 const UserOverviewTabQuery = graphql`
   query UserOverviewTabQuery($login: String!, $count: Int!, $after: String, $within: ID!) {
@@ -44,7 +44,7 @@ class UserOverviewTab extends React.Component {
         environment={environment}
         query={UserOverviewTabQuery}
         variables={{
-          count: EVENTS_PER_PAGE,
+          count: USER_ACTIVITY_PER_PAGE,
           login: get(match.params, "login", ""),
           within: get(this.props, "user.id", ""),
         }}

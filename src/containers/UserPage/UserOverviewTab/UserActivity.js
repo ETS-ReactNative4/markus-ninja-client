@@ -8,7 +8,7 @@ import { withRouter } from 'react-router'
 import UserActivityEvent from 'components/UserActivityEvent'
 import { get, isEmpty } from 'utils'
 
-import { EVENTS_PER_PAGE } from 'consts'
+import {USER_ACTIVITY_PER_PAGE} from 'consts'
 
 class UserActivity extends React.Component {
   get classes() {
@@ -26,7 +26,7 @@ class UserActivity extends React.Component {
       return
     }
 
-    relay.loadMore(EVENTS_PER_PAGE)
+    relay.loadMore(USER_ACTIVITY_PER_PAGE)
   }
 
   render() {

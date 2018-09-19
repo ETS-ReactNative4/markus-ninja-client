@@ -12,3 +12,4 @@ export const STUDIES_PER_PAGE = 10
 export const TOPICABLES_PER_PAGE = 10
 export const TOPICS_PER_PAGE = 10
 export const USERS_PER_PAGE = 10
+export const USER_ACTIVITY_PER_PAGE = 4

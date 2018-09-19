@@ -84,7 +84,7 @@ class StudyMetaDetails extends Component {
 
   renderHelperText() {
     return (
-      <HelperText>Give a brief description of the course.</HelperText>
+      <HelperText persistent>Give a brief description of the course.</HelperText>
     )
   }
 

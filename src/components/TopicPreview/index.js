@@ -1,13 +1,22 @@
 import React, { Component } from 'react'
 import cls from 'classnames'
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay'
+import Relay, { graphql } from 'react-relay'
+import hoistNonReactStatic from 'hoist-non-react-statics'
 import { Link } from 'react-router-dom'
 import { get } from 'utils'
+import SearchTopicPreview from './SearchTopicPreview'
 
+const FRAGMENT = graphql`
+  fragment TopicPreview_topic on Topic {
+    createdAt
+    description
+    name
+    resourcePath
+  }
+`
 class TopicPreview extends Component {
+  static Search = Relay.createFragmentContainer(SearchTopicPreview, FRAGMENT)
+
   get classes() {
     const {className} = this.props
     return cls("TopicPreview flex flex-column items-center", className)
@@ -17,17 +26,14 @@ class TopicPreview extends Component {
     const topic = get(this.props, "topic", {})
     return (
       <Link className={this.classes} to={topic.resourcePath}>
-        <div className="mdc-typography--headline5">{topic.name}</div>
+        <h5>{topic.name}</h5>
         <div>{topic.description}</div>
       </Link>
     )
   }
 }
 
-export default createFragmentContainer(TopicPreview, graphql`
-  fragment TopicPreview_topic on Topic {
-    description
-    name
-    resourcePath
-  }
-`)
+export default hoistNonReactStatic(
+  Relay.createFragmentContainer(TopicPreview, FRAGMENT),
+  TopicPreview,
+)
