@@ -3,11 +3,10 @@ import cls from 'classnames'
 import {withRouter} from 'react-router-dom'
 import queryString from 'query-string'
 import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
-import SearchNav from './SearchNav'
 import SearchResultItemPreview from 'components/SearchResultItemPreview'
 import {debounce, get, isEmpty} from 'utils'
 
-class SearchPageResults extends React.Component {
+class TopicSearchResults extends React.Component {
   constructor(props) {
     super(props)
 
@@ -36,7 +35,7 @@ class SearchPageResults extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("SearchPageResults flex w-100", className)
+    return cls("TopicSearchResults flex w-100", className)
   }
 
   render() {
@@ -45,34 +44,31 @@ class SearchPageResults extends React.Component {
 
     return (
       <div className={this.classes}>
-        <SearchNav counts={search.counts} />
         <div className="flex-auto">
           <div className="mdc-layout-grid">
             <div className="mdc-layout-grid__inner">
               <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                 {this.renderInput()}
               </div>
-              {isEmpty(edges)
-              ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  No results were found.
-                </div>
-              : <React.Fragment>
-                  {edges.map(({node}) => (
-                    node &&
-                    <SearchResultItemPreview
-                      key={node.id}
-                      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                      item={node}
-                    />
-                  ))}
-                  {hasMore &&
-                  <button
-                    className="mdc-button mdc-button--unelevated"
-                    onClick={loadMore}
-                  >
-                    More
-                  </button>}
-                </React.Fragment>}
+              <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                {isEmpty(edges)
+                ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    No results were found.
+                  </div>
+                : <div className="TopicSearchResults__results">
+                    {edges.map(({node}) => (
+                      node && <SearchResultItemPreview key={node.id} item={node} />
+                    ))}
+                    {hasMore &&
+                    <button
+                      className="mdc-button mdc-button--unelevated"
+                      onClick={loadMore}
+                    >
+                      More
+                    </button>}
+                  </div>
+                }
+              </div>
             </div>
           </div>
         </div>
@@ -108,12 +104,12 @@ class SearchPageResults extends React.Component {
   }
 }
 
-SearchPageResults.propTypes = {
+TopicSearchResults.propTypes = {
   search: SearchResultsProp,
 }
 
-SearchPageResults.defaultProps = {
+TopicSearchResults.defaultProps = {
   search: SearchResultsPropDefaults,
 }
 
-export default withRouter(SearchPageResults)
+export default withRouter(TopicSearchResults)

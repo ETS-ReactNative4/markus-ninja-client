@@ -21,7 +21,7 @@ class LessonTimeline extends Component {
         ))}
         {this.props.relay.hasMore() &&
         <button
-          className="LessonTimeline__more"
+          className="mdc-button mdc-button--unelevated self-center mt3"
           onClick={this._loadMore}
         >
           More
@@ -81,7 +81,8 @@ export default withRouter(createPaginationContainer(LessonTimeline,
         $name: String!,
         $number: Int!,
         $count: Int!,
-        $after: String
+        $after: String,
+        $filename: String!,
       ) {
         study(owner: $owner, name: $name) {
           lesson(number: $number) {
@@ -106,6 +107,7 @@ export default withRouter(createPaginationContainer(LessonTimeline,
         number: parseInt(props.match.params.number, 10),
         count: paginationInfo.count,
         after: paginationInfo.cursor,
+        filename: "",
       }
     },
   },

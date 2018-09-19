@@ -4,7 +4,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import TopicSearch from 'components/TopicSearch'
+import TopicSearch from './TopicSearch'
 import NotFound from 'components/NotFound'
 import { isNil } from 'utils'
 

@@ -13,33 +13,35 @@ import { EVENTS_PER_PAGE } from 'consts'
 class ViewerReceivedActivity extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("ViewerReceivedActivity mdc-layout-grid__inner", className)
+    return cls("ViewerReceivedActivity mdc-layout-grid", className)
   }
 
   render() {
     const activityEdges = get(this.props, "viewer.receivedActivity.edges", [])
     return (
       <div className={this.classes}>
-        <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          Recent activity
-        </h5>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          {isEmpty(activityEdges)
-          ? <div>There is no recent activity.</div>
-          : <React.Fragment>
-              {activityEdges.map(({node}) => (
-                node
-                ? <UserActivityEvent key={node.id} withUser event={node} />
-                : null
-              ))}
-              {this.props.relay.hasMore() &&
-              <button
-                className="mdc-button mdc-button--unelevated"
-                onClick={this._loadMore}
-              >
-                Load more activity
-              </button>}
-            </React.Fragment>}
+        <div className="mdc-layout-grid__inner">
+          <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            Recent activity
+          </h5>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            {isEmpty(activityEdges)
+            ? <div>There is no recent activity.</div>
+            : <React.Fragment>
+                {activityEdges.map(({node}) => (
+                  node
+                  ? <UserActivityEvent key={node.id} withUser event={node} />
+                  : null
+                ))}
+                {this.props.relay.hasMore() &&
+                <button
+                  className="mdc-button mdc-button--unelevated"
+                  onClick={this._loadMore}
+                >
+                  Load more activity
+                </button>}
+              </React.Fragment>}
+          </div>
         </div>
       </div>
     )

@@ -7589,6 +7589,10 @@ tachyons-max-widths@^4.0.5:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/tachyons-max-widths/-/tachyons-max-widths-4.0.5.tgz#07243992827c21771f1579510b8a7a7784eccd01"
 
+tachyons-opacity@^1.1.10:
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/tachyons-opacity/-/tachyons-opacity-1.1.10.tgz#18de2eb7d23c47b94aceee55b6313907b4cf10ed"
+
 tachyons-overflow@^4.0.5:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/tachyons-overflow/-/tachyons-overflow-4.0.5.tgz#b385e73ee42f5d3c1730ad87f30ee727c829d8a5"

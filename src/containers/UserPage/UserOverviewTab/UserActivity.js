@@ -74,7 +74,7 @@ export default withRouter(createPaginationContainer(UserActivity,
         activity(
           first: $count,
           after: $after,
-          orderBy: {direction: ASC, field: CREATED_AT}
+          orderBy: {direction: DESC, field: CREATED_AT}
         ) @connection(key: "UserActivity_activity", filters: []) {
           edges {
             node {

@@ -6,7 +6,7 @@ import {
 } from 'react-relay'
 import queryString from 'query-string'
 import environment from 'Environment'
-import User from './User'
+import UserHeader from './UserHeader'
 import UserNav from './UserNav'
 import UserApplesTab from './UserApplesTab'
 import UserOverviewTab from './UserOverviewTab'
@@ -20,7 +20,7 @@ const UserPageQuery = graphql`
   query UserPageQuery($login: String!) {
     user(login: $login) {
       id
-      ...User_user
+      ...UserHeader_user
       ...UserNav_user
       ...UserOverviewTab_user
       ...UserStudiesTab_user
@@ -69,23 +69,10 @@ class UserPage extends React.Component {
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
-                  <div
-                    className={cls(
-                      "mdc-layout-grid__cell",
-                      "mdc-layout-grid__cell--span-3-desktop",
-                      "mdc-layout-grid__cell--span-2-tablet",
-                      "mdc-layout-grid__cell--span-1-phone",
-                    )}
-                  >
-                    <User user={props.user} />
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <UserHeader user={props.user} />
                   </div>
-                  <div
-                    className={cls(
-                      "mdc-layout-grid__cell--span-9-desktop",
-                      "mdc-layout-grid__cell--span-10-tablet",
-                      "mdc-layout-grid__cell--span-11-phone",
-                    )}
-                  >
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <div className="mdc-layout-grid__inner">
                       <div className="mdc-layout-grid__cell--span-12" >
                         <UserNav user={props.user} />

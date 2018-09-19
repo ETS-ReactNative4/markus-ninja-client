@@ -1,14 +1,27 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
 import Notification from './Notification.js'
-import { get, groupBy, isEmpty } from 'utils'
+import MarkAllStudyNotificationsAsReadMutation from 'mutations/MarkAllStudyNotificationsAsReadMutation'
+import {get, groupBy, isEmpty, isNil} from 'utils'
 
 import { NOTIFICATIONS_PER_PAGE } from 'consts'
 
-class ViewerNotifications extends Component {
+class ViewerNotifications extends React.Component {
+  handleMarkAllAsRead = (studyId) => () => {
+    MarkAllStudyNotificationsAsReadMutation(
+      studyId,
+      (response, error) => {
+        if (!isNil(error)) {
+          console.error(error)
+        }
+        window.location.reload()
+      },
+    )
+  }
+
   _loadMore = () => {
     const relay = get(this.props, "relay")
     if (!relay.hasMore()) {
@@ -39,8 +52,17 @@ class ViewerNotifications extends Component {
         <div className="ViewerNotifications__notifications">
           {Object.keys(notificationsByStudy).map(key =>
             <div key={key} className="mdc-card mdc-card--outlined">
-              <div className="mdc-typography--headline5 pa3">
-                {get(notificationsByStudy[key][0], "node.study.nameWithOwner", "")}
+              <div className="flex items-center pa3">
+                <span className="mdc-typography--headline5 flex-auto">
+                  {get(notificationsByStudy[key][0], "node.study.nameWithOwner", "")}
+                </span>
+                <button
+                  className="mdc-button mdc-button--unelevated"
+                  type="button"
+                  onClick={this.handleMarkAllAsRead(key)}
+                >
+                  Mark all as read
+                </button>
               </div>
               <div className="mdc-list mdc-list--two-line mdc-list--avatar-list">
                 <li role="separator" className="mdc-list-divider" />
@@ -71,7 +93,7 @@ export default createPaginationContainer(ViewerNotifications,
           first: $count,
           after: $after,
           orderBy:{direction: ASC field:CREATED_AT}
-        ) @connection(key: "ViewerNotifications_notifications") {
+        ) @connection(key: "ViewerNotifications_notifications", filters: []) {
           edges {
             node {
               id

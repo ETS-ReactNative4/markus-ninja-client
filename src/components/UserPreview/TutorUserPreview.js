@@ -20,8 +20,8 @@ class TutorUserPreview extends React.Component {
         <div className="flex">
           <div className="inline-flex flex-column items-start flex-auto">
             <div>
-              <UserLink className="rn-link mdc-typography--headline5 mr1" useName user={user} />
-              <UserLink className="rn-link mdc-typography--subtitle1" user={user} />
+              <UserLink className="rn-link mdc-typography--headline5" user={user} />
+              <UserLink className="rn-link mdc-typography--subtitle1 ml1" useName user={user} />
             </div>
             <HTML html={user.descriptionHTML} />
             <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light">

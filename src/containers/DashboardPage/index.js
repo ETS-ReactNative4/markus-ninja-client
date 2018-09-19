@@ -4,6 +4,7 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import {Link} from 'react-router-dom'
 import environment from 'Environment'
 import UserLink from 'components/UserLink'
 import SearchViewerStudies from './SearchViewerStudies'
@@ -64,51 +65,27 @@ class DashboardPage extends React.Component {
                     <nav className="mdc-drawer__content">
                       <div className="mdc-list mdc-list--non-interactive">
                         <div className="mdc-list-item">
-                          <UserLink className="mdc-typography--headline5" user={props.viewer} />
+                          <UserLink className="rn-link mdc-typography--headline5" user={props.viewer} />
                         </div>
                         <SearchViewerStudies viewer={props.viewer} />
+                        <div role="separator" className="mdc-list-divider"></div>
+                        <div className="mdc-list-item">
+                          <Link className="rn-link mdc-typography--headline6" to="/research">Research studies</Link>
+                        </div>
+                        <div className="mdc-list">
+                          {researchStudyEdges.map(({node}) => (
+                            <StudyPreview.Link
+                              key={node.id}
+                              className="mdc-list-item"
+                              study={node}
+                            />))}
+                        </div>
                       </div>
                     </nav>
                   </nav>
                 </aside>
                 <div className="flex-auto">
-                  <div className="mdc-layout-grid">
-                    <div className="mdc-layout-grid__inner">
-                      <div
-                        className={cls(
-                          "mdc-layout-grid__cell",
-                          "mdc-layout-grid__cell--span-8-desktop",
-                          "mdc-layout-grid__cell--span-8-tablet",
-                          "mdc-layout-grid__cell--span-4-phone",
-                        )}
-                      >
-                        <ViewerReceivedActivity viewer={props.viewer} />
-                      </div>
-                      <div
-                        className={cls(
-                          "mdc-layout-grid__cell",
-                          "mdc-layout-grid__cell--span-4-desktop",
-                          "mdc-layout-grid__cell--span-8-tablet",
-                          "mdc-layout-grid__cell--span-4-phone",
-                        )}
-                      >
-                        <div className="mdc-layout-grid__inner">
-                          <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                            Research studies
-                          </h5>
-                          {researchStudyEdges.map(({node}) => (
-                            <React.Fragment key={node.id}>
-                              <StudyPreview.User
-                                className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                                study={node}
-                              />
-                              <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12"/>
-                            </React.Fragment>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <ViewerReceivedActivity viewer={props.viewer} />
                 </div>
               </div>
             )

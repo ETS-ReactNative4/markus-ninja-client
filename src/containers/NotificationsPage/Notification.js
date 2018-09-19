@@ -5,10 +5,10 @@ import {
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router'
-import { get } from 'utils'
+import NotificationButton from 'components/NotificationButton'
 import MarkNotificationAsReadMutation from 'mutations/MarkNotificationAsReadMutation'
 import UpdateEnrollmentMutation from 'mutations/UpdateEnrollmentMutation'
-import { isNil, timeDifferenceForDate } from 'utils'
+import {get, isNil, timeDifferenceForDate} from 'utils'
 
 class Notification extends React.Component {
   handleMarkAsRead = (e) => {
@@ -56,16 +56,9 @@ class Notification extends React.Component {
           </span>
         </span>
         <span className="mdc-list-item__meta">
+          <NotificationButton enrollable={subject} />
           <span
-            className="material-icons pointer mr3"
-            onClick={this.handleUnenroll}
-            title="Unenroll in thread"
-            aria-label="Unenroll in thread"
-          >
-            notifications_off
-          </span>
-          <span
-            className="material-icons pointer"
+            className="mdc-icon-button material-icons"
             onClick={this.handleMarkAsRead}
             title="Mark as read"
             aria-label="Mark as read"
@@ -83,6 +76,7 @@ export default withRouter(createFragmentContainer(Notification, graphql`
     id
     createdAt
     subject {
+      ...NotificationButton_enrollable
       id
       title
       resourcePath

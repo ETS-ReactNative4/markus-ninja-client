@@ -58,11 +58,11 @@ class SearchBarInput extends React.Component {
   }
 
   handleKeyDown = (e) => {
-    const forwardSlash = e.key === 'Slash' || e.keyCode === 191
-    const arrowUp = e.key === 'ArrowUp' || e.keyCode === 38
-    const arrowDown = e.key === 'ArrowDown' || e.keyCode === 40
-    const isEnter = e.key === 'Enter' || e.keyCode === 13
-    const isEscape = e.key === 'Escape' || e.keyCode === 27
+    const forwardSlash = e.key === '/' || (e.code === 'Slash' && !e.shiftKey)
+    const arrowUp = e.key === 'ArrowUp' || e.code === 'ArrowUp'
+    const arrowDown = e.key === 'ArrowDown' || e.code === 'ArrowDown'
+    const isEnter = e.key === 'Enter' || e.code === 'Enter'
+    const isEscape = e.key === 'Escape' || e.code === 'Escape'
 
     const { cursor, focus } = this.state
     const searchEdges = get(this.props, "query.search.edges", [])
@@ -71,7 +71,7 @@ class SearchBarInput extends React.Component {
       const inputs = ['input', 'select', 'textarea']
       if (activeElement &&
         (inputs.indexOf(activeElement.tagName.toLowerCase()) !== -1 ||
-          activeElement.role === 'textbox')
+          activeElement.isContentEditable)
       ) {
         return
       }
