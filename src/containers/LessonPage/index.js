@@ -6,9 +6,9 @@ import {
 } from 'react-relay'
 import environment from 'Environment'
 import NotFound from 'components/NotFound'
-import AddLessonCommentForm from 'components/AddLessonCommentForm'
-import LessonBody from './LessonBody'
 import LessonHeader from './LessonHeader'
+import LessonBody from './LessonBody'
+import AddLessonCommentForm from './AddLessonCommentForm'
 import LessonTimeline from './LessonTimeline'
 import { get } from 'utils'
 
@@ -59,18 +59,10 @@ class LessonPage extends React.Component {
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <LessonHeader lesson={lesson}/>
-                  </div>
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <LessonBody lesson={lesson}/>
-                  </div>
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <AddLessonCommentForm className="mt3" lesson={lesson} />
-                  </div>
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <LessonTimeline lesson={lesson} />
-                  </div>
+                  <LessonHeader lesson={lesson}/>
+                  <LessonBody lesson={lesson}/>
+                  <AddLessonCommentForm className="mt3" lesson={lesson} />
+                  <LessonTimeline lesson={lesson} />
                 </div>
               </div>
             )

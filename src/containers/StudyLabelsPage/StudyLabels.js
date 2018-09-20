@@ -27,7 +27,7 @@ class StudyLabels extends React.Component {
         ? <div>Loading...</div>
         : (isEmpty(edges)
           ? <span className="mr1">
-              No lessons were found.
+              No labels were found.
             </span>
           : <div className="mdc-layout-grid__inner">
               <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />

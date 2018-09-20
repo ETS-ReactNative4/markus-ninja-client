@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -36,17 +35,24 @@ class LessonBody extends React.Component {
     this.setState({ edit: !this.state.edit })
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("LessonBody mdc-card mdc-card--outlined", className)
+  render() {
+    const {edit} = this.state
+
+    return (
+      <React.Fragment>
+        {edit
+        ? this.renderForm()
+        : this.renderBody()}
+      </React.Fragment>
+    )
   }
 
-  render() {
+  renderBody() {
     const lesson = get(this.props, "lesson", {})
-    const { edit, error, body } = this.state
-    if (!edit) {
-      return (
-        <div className={this.classes}>
+
+    return (
+      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <div className="mdc-card mdc-card--outlined">
           <HTML className="mh3" html={lesson.bodyHTML} />
           {lesson.viewerCanUpdate &&
           <div className="mdc-card__actions">
@@ -57,24 +63,42 @@ class LessonBody extends React.Component {
             </div>
           </div>}
         </div>
-      )
-    } else if (lesson.viewerCanUpdate) {
-      return (
-        <form onSubmit={this.handleSubmit}>
-          <RichTextEditor
-            id="LessonBody__body"
-            onChange={(body) => this.setState({body})}
-            placeholder="Begin your lesson"
-            initialValue={body}
-            study={get(lesson, "study", null)}
-          />
-          <button type="submit">Update lesson</button>
-          <button onClick={this.handleToggleEdit}>Cancel</button>
-          <span>{error}</span>
-        </form>
-      )
-    }
-    return null
+      </div>
+    )
+  }
+
+  renderForm() {
+    const lesson = get(this.props, "lesson", {})
+    const {body} = this.state
+
+    return (
+      <form
+        className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+        onSubmit={this.handleSubmit}
+      >
+        <RichTextEditor
+          id="LessonBody__body"
+          onChange={(body) => this.setState({body})}
+          placeholder="Begin your lesson"
+          initialValue={body}
+          study={get(lesson, "study", null)}
+        />
+        <div className="mt2">
+          <button
+            className="mdc-button mdc-button--unelevated"
+            type="submit"
+          >
+            Update lesson
+          </button>
+          <button
+            className="mdc-button mdc-button--outlined ml2"
+            onClick={this.handleToggleEdit}
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    )
   }
 }
 

@@ -11,6 +11,8 @@ const mutation = graphql`
     createUserAsset(input: $input) {
       userAssetEdge {
         node {
+          href
+          name
           ...UserAssetPreview_asset
         }
       }

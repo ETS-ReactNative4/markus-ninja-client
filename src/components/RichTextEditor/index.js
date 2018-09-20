@@ -45,7 +45,7 @@ class RichTextEditor extends React.Component {
         ContentState.createFromText(initialValue),
         compositeDecorator,
       ),
-      loadingFileSelection: null,
+      loadingFile: false,
     }
   }
 
@@ -62,7 +62,7 @@ class RichTextEditor extends React.Component {
   }
 
   render() {
-    const { editorState } = this.state
+    const {editorState, loadingFile} = this.state
     const { placeholder } = this.props
 
     return (
@@ -70,6 +70,7 @@ class RichTextEditor extends React.Component {
         <div className="flex-auto" onClick={() => this.focus()}>
           <Editor
             editorState={editorState}
+            readOnly={loadingFile}
             onChange={this.handleChange}
             placeholder={placeholder || "Enter text"}
             ref={this.editorElement}
@@ -87,43 +88,35 @@ class RichTextEditor extends React.Component {
   handleChangeFile = (file) => {
     const { editorState } = this.state
     const selection = editorState.getSelection()
-    const contentState = editorState.getCurrentContent()
-    const loadingText = `![Uploading ${file.name}...]()`
+    const currentContent = editorState.getCurrentContent()
+    const loadingText = ` ![Uploading ${file.name}...]() `
     const loadingLink = Modifier.insertText(
-      contentState,
+      currentContent,
       selection,
       loadingText,
     )
     const es = EditorState.push(editorState, loadingLink, 'insert-fragment')
     this.setState({
       editorState: es,
-      loadingFileSelection: selection.merge({
-        focusKey: es.getSelection().getFocusKey(),
-        focusOffset: loadingText.length,
-      }),
+      loadingFile: true,
     })
   }
 
   handleChangeFileComplete = (asset, wasSaved, error) => {
-    const { loadingFileSelection, editorState } = this.state
+    const {editorState} = this.state
 
     if (!isNil(error)) {
       console.error(error)
-      const contentState = editorState.getCurrentContent()
-      const removeLoadingText = Modifier.replaceText(contentState, loadingFileSelection, "")
-      this.setState({
-        loadingFileSelection: null,
-      })
-      this.handleChange(EditorState.push(editorState, removeLoadingText, 'insert-fragment'))
+      this.handleChange(EditorState.undo(editorState))
       return
     }
-    const contentState = editorState.getCurrentContent()
-    const fileLink = Modifier.replaceText(contentState, loadingFileSelection,
-      `![${wasSaved ? "$$" : ""}${asset.name}](${asset.href})`
+    const previousEditorState = EditorState.undo(editorState)
+    const currentContent = previousEditorState.getCurrentContent()
+    const selection = previousEditorState.getSelection()
+    const fileLink = Modifier.insertText(currentContent, selection,
+      ` ![${wasSaved ? "$$" : ""}${asset.name}](${asset.href}) `
     )
-    this.setState({
-      loadingFileSelection: null,
-    })
+    this.setState({loadingFile: false})
     this.handleChange(EditorState.push(editorState, fileLink, 'insert-fragment'))
     return
   }

@@ -10,7 +10,7 @@ import environment from 'Environment'
 import CreateLessonLink from 'components/CreateLessonLink'
 import CoursePreview from 'components/CoursePreview'
 import LessonPreview from 'components/LessonPreview'
-import StudyMeta from 'components/StudyMeta'
+import StudyMeta from './StudyMeta'
 import {get, isEmpty} from 'utils'
 import { TOPICS_PER_PAGE } from 'consts'
 

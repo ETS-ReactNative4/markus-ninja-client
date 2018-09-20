@@ -78,7 +78,7 @@ class AttachFile extends React.Component {
                 file: null,
                 save: false,
               })
-              this.props.onChangeComplete(data.asset, save, data.error)
+              this.props.onChangeComplete(userAsset, save, data.error)
             }
           )
         } else {

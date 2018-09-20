@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import * as React from 'react'
 import cls from 'classnames'
 import {
   createFragmentContainer,
@@ -11,7 +11,7 @@ import RichTextEditor from 'components/RichTextEditor'
 import { get, isNil } from 'utils'
 import { isAuthenticated } from 'auth'
 
-class AddLessonCommentForm extends Component {
+class AddLessonCommentForm extends React.Component {
   state = {
     error: null,
     body: "",
@@ -22,34 +22,6 @@ class AddLessonCommentForm extends Component {
     if (this.state.submitted) {
       this.setState({ submitted: false })
     }
-  }
-
-  get classes() {
-    const {className} = this.props
-    return cls("AddLessonCommentForm", className)
-  }
-
-  render() {
-    const {submitted} = this.state
-    if (!isAuthenticated()) {
-      return (
-        <div className={this.classes}>
-          <LoginLink>Login to leave a comment</LoginLink>
-        </div>
-      )
-    }
-    return (
-      <form className={this.classes} onSubmit={this.handleSubmit}>
-        <RichTextEditor
-          id="AddLessonCommentForm__body"
-          onChange={this.handleChangeBody}
-          submit={submitted}
-          placeholder="Leave a comment"
-          study={get(this.props, "lesson.study", null)}
-        />
-        <button className="mdc-button mdc-button--unelevated mt2" type="submit">Comment</button>
-      </form>
-    )
   }
 
   handleChangeBody = (body) => {
@@ -68,6 +40,49 @@ class AddLessonCommentForm extends Component {
         }
         this.setState({ submitted: true })
       }
+    )
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("AddLessonCommentForm", className)
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        {isAuthenticated
+        ? this.renderForm()
+        : this.renderLoginLink()}
+      </React.Fragment>
+    )
+  }
+
+  renderForm() {
+    const {submitted} = this.state
+
+    return (
+      <form
+        className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+        onSubmit={this.handleSubmit}
+      >
+        <RichTextEditor
+          id="AddLessonCommentForm__body"
+          onChange={this.handleChangeBody}
+          submit={submitted}
+          placeholder="Leave a comment"
+          study={get(this.props, "lesson.study", null)}
+        />
+        <button className="mdc-button mdc-button--unelevated mt2" type="submit">Comment</button>
+      </form>
+    )
+  }
+
+  renderLoginLink() {
+    return (
+      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <LoginLink>Login to leave a comment</LoginLink>
+      </div>
     )
   }
 }

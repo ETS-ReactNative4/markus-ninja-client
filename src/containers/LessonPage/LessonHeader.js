@@ -77,7 +77,7 @@ class LessonHeader extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("LessonHeader mdc-layout-grid__inner", className)
+    return cls("LessonHeader", className)
   }
 
   render() {
@@ -85,13 +85,13 @@ class LessonHeader extends React.Component {
     const {open} = this.state
 
     return (
-      <div className={this.classes}>
-        {open
-        ? lesson.viewerCanUpdate && this.renderForm()
+      <React.Fragment>
+        {open && lesson.viewerCanUpdate
+        ? this.renderForm()
         : this.renderDetails()}
         {lesson.isCourseLesson && this.renderCourse()}
         {this.renderLabels()}
-      </div>
+      </React.Fragment>
     )
   }
 
@@ -169,8 +169,8 @@ class LessonHeader extends React.Component {
     return (
       <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
         <span>
-          This lesson is part of course
-          <CourseLink className="rn-link fw5 ml1" course={get(lesson, "course", null)} />
+          <CourseLink className="rn-link mdc-typography--headline6" course={get(lesson, "course", null)} />
+          <span className="mdc-theme--text-hint-on-light ml2">#{lesson.courseNumber}</span>
         </span>
         {previousLesson &&
         <Link className="mdc-button mdc-button--outlined ml2" to={previousLesson.resourcePath}>Previous</Link>}

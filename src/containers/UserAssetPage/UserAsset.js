@@ -9,22 +9,6 @@ import DeleteUserAssetMutation from 'mutations/DeleteUserAssetMutation'
 import { get, isNil } from 'utils'
 
 class UserAsset extends React.Component {
-  get classes() {
-    const {className} = this.props
-    return cls("UserAsset flex flex-column", className)
-  }
-
-  render() {
-    const asset = get(this.props, "asset", {})
-    return (
-      <div className={this.classes}>
-        <div>{asset.type}</div>
-        <div>{asset.subtype}</div>
-        <img className="w-100 h-auto" src={asset.href} alt={asset.name} />
-      </div>
-    )
-  }
-
   handleDelete = () => {
     DeleteUserAssetMutation(
       this.props.asset.id,
@@ -37,6 +21,29 @@ class UserAsset extends React.Component {
           )
         }
       },
+    )
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("UserAsset flex flex-column", className)
+  }
+
+  render() {
+    const asset = get(this.props, "asset", {})
+    return (
+      <div className={this.classes}>
+        <div>{asset.type}</div>
+        <div>{asset.subtype}</div>
+        <img className="w-100 h-auto" src={asset.href} alt={asset.name} />
+        <button
+          className="mdc-icon-button material-icons"
+          type="button"
+          onClick={this.handleDelete}
+        >
+          delete
+        </button>
+      </div>
     )
   }
 }
