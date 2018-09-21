@@ -7,7 +7,7 @@ import {
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import Search from 'components/Search'
-import UserStudies from './UserStudies'
+import StudySearchResults from 'components/StudySearchResults'
 import {get} from 'utils'
 
 class UserStudiesTab extends React.Component {
@@ -38,7 +38,7 @@ class UserStudiesTab extends React.Component {
         </div>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <Search type="STUDY" query={q} within={userId}>
-          <UserStudies />
+          <StudySearchResults />
         </Search>
       </div>
     )

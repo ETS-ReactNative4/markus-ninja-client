@@ -64,11 +64,6 @@ class StudyMetaDetails extends Component {
     })
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("StudyMetaDetails mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
-  }
-
   render() {
     const study = get(this.props, "study", {})
     const {open} = this.state

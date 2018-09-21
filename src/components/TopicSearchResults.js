@@ -38,9 +38,6 @@ class TopicSearchResults extends React.Component {
 
     return (
       <React.Fragment>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          {this.renderInput()}
-        </div>
         {isLoading
         ? <div>Loading</div>
         : isEmpty(edges)
@@ -68,33 +65,6 @@ class TopicSearchResults extends React.Component {
             </button>}
           </React.Fragment>}
       </React.Fragment>
-    )
-  }
-
-  renderInput() {
-    const {q} = this.state
-
-    return (
-      <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
-        <input
-          className="mdc-text-field__input"
-          autoComplete="off"
-          type="text"
-          name="q"
-          placeholder="Search..."
-          value={q}
-          onChange={this.handleChange}
-        />
-        <div className="mdc-notched-outline mdc-theme--background z-behind">
-          <svg>
-            <path className="mdc-notched-outline__path"></path>
-          </svg>
-        </div>
-        <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
-        <i className="material-icons mdc-text-field__icon">
-          search
-        </i>
-      </div>
     )
   }
 }

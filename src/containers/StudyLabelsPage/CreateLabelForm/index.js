@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import {
   createFragmentContainer,
@@ -90,9 +91,10 @@ class CreateLabelForm extends React.Component {
         onSubmit={this.handleSubmit}
       >
         <div className="flex items-center flex-wrap">
-          <div className="inline-flex flex-column">
-            <div>
+          <div className="inline-flex flex-column mr2">
+            <div className="inline-flex flex-wrap">
               <TextField
+                className="mr2 mb2"
                 outlined
                 label="Label name"
               >
@@ -102,7 +104,7 @@ class CreateLabelForm extends React.Component {
                   onChange={this.handleChange}
                 />
               </TextField>
-              <div ref={this.colorInput} className="CreateLabelForm__color-input ml2">
+              <div ref={this.colorInput} className="CreateLabelForm__color-input mb2">
                 <TextField
                   outlined
                   label="Color"
@@ -121,7 +123,6 @@ class CreateLabelForm extends React.Component {
               </div>
             </div>
             <TextField
-              className="mt2"
               outlined
               label="Description (optional)"
             >
@@ -132,16 +133,33 @@ class CreateLabelForm extends React.Component {
               />
             </TextField>
           </div>
-          <button
-            className="mdc-button mdc-button--unelevated ml2"
-            type="submit"
-          >
-            Create label
-          </button>
+          <div className="flex-stable">
+            <button
+              className="mdc-button mdc-button--unelevated mt2"
+              type="submit"
+            >
+              Create label
+            </button>
+            <button
+              className="mdc-button mdc-button--outlined ml2 mt2"
+              type="button"
+              onClick={this.props.onCancel}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </form>
     )
   }
+}
+
+CreateLabelForm.propTypes = {
+  onCancel: PropTypes.func,
+}
+
+CreateLabelForm.defaultProps = {
+  onCancel: () => {},
 }
 
 export default withRouter(createFragmentContainer(CreateLabelForm, graphql`

@@ -6,7 +6,6 @@ import {
 import cls from 'classnames'
 import { Link, matchPath, withRouter } from 'react-router-dom'
 import queryString from 'query-string'
-import Edge from 'components/Edge'
 import SearchBarResult from './SearchBarResult'
 import StudyLink from 'components/StudyLink'
 import { debounce, get, isNil, isEmpty } from 'utils'
@@ -218,38 +217,34 @@ class SearchBarInput extends React.Component {
               <div className="mdc-list-item">Loading...</div>
             </div>
           // eslint-disable-next-line jsx-a11y/role-supports-aria-props
-          : searchEdges.length > 0
-            ? <div className="mdc-list" aria-orientation="vertical">
-                {isStudyPath &&
+          : <div className="mdc-list" aria-orientation="vertical">
+              {isStudyPath &&
+                <SearchBarResult
+                  id="search-bar-this-study"
+                  selected={cursor === 0}
+                  as={Link}
+                  to={{
+                    pathname: studyPath.url + "/search",
+                    search: queryString.stringify({ q }),
+                  }}
+                  onMouseEnter={this.handleMouseEnter}
+                  onClick={() => this.setState({ focus: false })}
+                >
+                  Search this study...
+                </SearchBarResult>}
+                {searchEdges.map(({node}, i) =>
+                  node &&
                   <SearchBarResult
-                    id="search-bar-this-study"
-                    selected={cursor === 0}
-                    as={Link}
-                    to={{
-                      pathname: studyPath.url + "/search",
-                      search: queryString.stringify({ q }),
-                    }}
+                    key={node.id}
+                    id={node.id}
+                    selected={cursor === i+1}
+                    as={StudyLink}
+                    withOwner
+                    study={node}
                     onMouseEnter={this.handleMouseEnter}
                     onClick={() => this.setState({ focus: false })}
-                  >
-                    Search this study...
-                  </SearchBarResult>}
-                {searchEdges.map((edge, i) =>
-                  <Edge key={get(edge, "node.id", "")} edge={edge} render={({ node }) =>
-                    <SearchBarResult
-                      id={node.id}
-                      selected={cursor === i+1}
-                      as={StudyLink}
-                      withOwner
-                      study={node}
-                      onMouseEnter={this.handleMouseEnter}
-                      onClick={() => this.setState({ focus: false })}
-                    />
-                  }/>)}
-              </div>
-            : <div className="mdc-list mdc-list--non-interactive" aria-orientation="vertical">
-                <div className="mdc-list-item">No results found...</div>
-              </div>}
+                  />)}
+            </div>}
         </div>
       </div>
     )

@@ -1,32 +1,27 @@
 import * as React from 'react'
-import cls from 'classnames'
-import StudyPreview from 'components/StudyPreview'
+import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
+import UserPreview from 'components/UserPreview'
 import {isEmpty} from 'utils'
 
-class UserStudies extends React.PureComponent {
-  get classes() {
-    const {className} = this.props
-    return cls("UserStudies mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
-  }
-
+class UserSearchResults extends React.Component {
   render() {
     const {edges, hasMore, isLoading, loadMore} = this.props.search
 
     return (
-      <div className={this.classes}>
+      <React.Fragment>
         {isLoading
         ? <div>Loading...</div>
         : (isEmpty(edges)
           ? <span className="mr1">
-              No studies found
+              No users were found.
             </span>
-          : <div className="mdc-layout-grid__inner">
+          : <React.Fragment>
               {edges.map(({node}) => (
                 node &&
                 <React.Fragment key={node.id}>
-                  <StudyPreview.User
+                  <UserPreview.Search
                     className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                    study={node}
+                    user={node}
                   />
                   <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
                 </React.Fragment>
@@ -38,10 +33,18 @@ class UserStudies extends React.PureComponent {
               >
                 More
               </button>}
-          </div>)}
-      </div>
+          </React.Fragment>)}
+      </React.Fragment>
     )
   }
 }
 
-export default UserStudies
+UserSearchResults.propTypes = {
+  search: SearchResultsProp,
+}
+
+UserSearchResults.defaultProps = {
+  search: SearchResultsPropDefaults,
+}
+
+export default UserSearchResults

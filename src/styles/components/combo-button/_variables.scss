@@ -1,0 +1,9 @@
+@import "@material/theme/variables";
+
+$rn-combo-button-border-radius: 5px;
+$rn-combo-button-fill-color-default: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 12%);
+$rn-combo-button-ink-color-default: rgba(mdc-theme-prop-value(on-surface), .87);
+$rn-combo-button-horizontal-padding: 12px;
+$rn-combo-button-vertical-padding: 7px;
+$rn-combo-button-border: rgba(mdc-theme-prop-value(on-surface), .24);
+$rn-combo-button-hover-border: rgba(mdc-theme-prop-value(on-surface), .87);

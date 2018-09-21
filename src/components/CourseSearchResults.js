@@ -1,40 +1,28 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
-import CreateLessonLink from 'components/CreateLessonLink'
-import LessonPreview from 'components/LessonPreview'
+import CoursePreview from 'components/CoursePreview'
 import {isEmpty} from 'utils'
 
-class StudyLessons extends React.Component {
-  get classes() {
-    const {className} = this.props
-    return cls("StudyLessons mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
-  }
-
+class CourseSearchResults extends React.Component {
   render() {
-    const {search, study} = this.props
+    const {search} = this.props
     const {edges, hasMore, isLoading, loadMore} = search
 
     return (
-      <div className={this.classes}>
+      <React.Fragment>
         {isLoading
         ? <div>Loading...</div>
         : (isEmpty(edges)
-          ? <React.Fragment>
-              <span className="mr1">
-                No lessons were found.
-              </span>
-              <CreateLessonLink className="rn-link" study={study}>
-                Create a lesson.
-              </CreateLessonLink>
-            </React.Fragment>
-          : <div className="mdc-layout-grid__inner">
+          ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              No courses were found.
+            </div>
+          : <React.Fragment>
               {edges.map(({node}) => (
                 node &&
                 <React.Fragment key={node.id}>
-                  <LessonPreview.Study
+                  <CoursePreview.Study
                     className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                    lesson={node}
+                    course={node}
                   />
                   <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
                 </React.Fragment>
@@ -46,18 +34,18 @@ class StudyLessons extends React.Component {
               >
                 More
               </button>}
-            </div>)}
-      </div>
+            </React.Fragment>)}
+      </React.Fragment>
     )
   }
 }
 
-StudyLessons.propTypes = {
+CourseSearchResults.propTypes = {
   search: SearchResultsProp,
 }
 
-StudyLessons.defaultProps = {
+CourseSearchResults.defaultProps = {
   search: SearchResultsPropDefaults,
 }
 
-export default StudyLessons
+export default CourseSearchResults

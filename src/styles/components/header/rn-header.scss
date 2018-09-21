@@ -1,0 +1,12 @@
+.rn-header {
+  display: flex;
+  position: relative;
+  align-items: center;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+.rn-header__meta {
+  margin-left: auto;
+  margin-right: 0;
+}

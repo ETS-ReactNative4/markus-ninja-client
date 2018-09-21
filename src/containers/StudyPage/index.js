@@ -17,6 +17,7 @@ import StudyAppleGiversPage from 'containers/StudyAppleGiversPage'
 import StudyAssetsPage from 'containers/StudyAssetsPage'
 import StudyEnrolleesPage from 'containers/StudyEnrolleesPage'
 import StudyOverviewPage from 'containers/StudyOverviewPage'
+import StudySearchPage from 'containers/StudySearchPage'
 import StudySettingsPage from 'containers/StudySettingsPage'
 import NotFound from 'components/NotFound'
 import { isNil } from 'utils'
@@ -34,6 +35,7 @@ const StudyPageQuery = graphql`
       ...StudyAssetsPage_study
       ...StudyCoursesPage_study
       ...StudyOverviewPage_study
+      ...StudySearchPage_study
       ...StudySettingsPage_study
     }
   }
@@ -113,6 +115,11 @@ class StudyPage extends React.Component {
                         exact
                         path="/:owner/:name/assets"
                         render={(routeProps) => <StudyAssetsPage {...routeProps} study={props.study} />}
+                      />
+                      <Route
+                        exact
+                        path="/:owner/:name/search"
+                        render={(routeProps) => <StudySearchPage {...routeProps} study={props.study} />}
                       />
                       <PrivateRoute
                         exact

@@ -28,7 +28,7 @@ const StudyAppleGiversPageQuery = graphql`
 class StudyAppleGiversPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("StudyAppleGiversPage", className)
+    return cls("StudyAppleGiversPage mdc-layout-grid__inner", className)
   }
 
   render() {
@@ -47,7 +47,11 @@ class StudyAppleGiversPage extends React.Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            return <StudyAppleGivers study={props.study} />
+            return (
+              <div className={this.classes}>
+                <StudyAppleGivers study={props.study} />
+              </div>
+            )
           }
           return <div>Loading</div>
         }}

@@ -6,6 +6,7 @@ import Relay, {
 import hoistNonReactStatic from 'hoist-non-react-statics'
 import { Link } from 'react-router-dom'
 import { get } from 'utils'
+import SearchUserPreview from './SearchUserPreview'
 import StudyUserPreview from './StudyUserPreview'
 import TutorUserPreview from './TutorUserPreview'
 
@@ -24,6 +25,7 @@ const FRAGMENT = graphql`
 `
 
 class UserPreview extends React.Component {
+  static Search = Relay.createFragmentContainer(SearchUserPreview, FRAGMENT)
   static Study = Relay.createFragmentContainer(StudyUserPreview, FRAGMENT)
   static Tutor = Relay.createFragmentContainer(TutorUserPreview, FRAGMENT)
 

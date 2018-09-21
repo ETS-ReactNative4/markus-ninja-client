@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql
@@ -16,25 +15,16 @@ class CourseMeta extends React.Component {
     topicsOpen: false,
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("CourseMeta mdc-layout-inner", className)
-  }
-
   render() {
     const course = get(this.props, "course", null)
     const {detailsOpen, topicsOpen} = this.state
     return (
-      <div className={this.classes}>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          {!topicsOpen &&
-          <CourseMetaDetails onOpen={(open) => this.setState({ detailsOpen: open })} course={course} />}
-        </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          {!detailsOpen &&
-          <CourseMetaTopics onOpen={(open) => this.setState({ topicsOpen: open })} course={course} />}
-        </div>
-      </div>
+      <React.Fragment>
+        {!topicsOpen &&
+        <CourseMetaDetails onOpen={(open) => this.setState({ detailsOpen: open })} course={course} />}
+        {!detailsOpen &&
+        <CourseMetaTopics onOpen={(open) => this.setState({ topicsOpen: open })} course={course} />}
+      </React.Fragment>
     )
   }
 }

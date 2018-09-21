@@ -48,7 +48,7 @@ export default (courseId, description, name, callback) => {
         course.setValue(newUpdatedAt, 'updatedAt')
       },
       onCompleted: (response, error) => {
-        callback(error)
+        callback(response.updateCourse, error)
       },
       onError: err => console.error(err),
     },

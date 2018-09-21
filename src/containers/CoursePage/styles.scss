@@ -13,11 +13,8 @@
 
     &.CourseHeader__action--apple {
       min-width: 125.5px;
-      margin-bottom: 1em;
-      margin-left: 1em;
     }
-    &.CourseHeader__action--delete {
-      margin-bottom: 1em;
+    &.CourseHeader__action--edit {
       margin-left: 1em;
     }
   }
@@ -31,7 +28,7 @@
         margin-bottom: 0;
         margin-left: 0;
       }
-      &.CourseHeader__action--delete {
+      &.CourseHeader__action--edit {
         margin-bottom: 0;
         margin-left: 0;
       }

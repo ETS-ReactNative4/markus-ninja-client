@@ -8,7 +8,7 @@ import { withRouter } from 'react-router'
 import { get } from 'utils'
 import Counter from 'components/Counter'
 import CourseLessons from './CourseLessons'
-import AddCourseLessonForm from 'components/AddCourseLessonForm'
+import AddCourseLessonForm from './AddCourseLessonForm'
 import {isNil} from 'utils'
 
 class Course extends React.Component {
@@ -23,19 +23,17 @@ class Course extends React.Component {
       return null
     }
     return (
-      <div className={this.classes}>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <h6>
-            Lessons
-            <Counter>{course.lessonCount}</Counter>
-          </h6>
-        </div>
+      <React.Fragment>
+        <h6 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          Lessons
+          <Counter className="ml1">{course.lessonCount}</Counter>
+        </h6>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <AddCourseLessonForm course={course} />
         </div>
         <CourseLessons course={course} />
-      </div>
+      </React.Fragment>
     )
   }
 }

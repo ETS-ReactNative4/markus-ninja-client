@@ -26,19 +26,21 @@ class CourseLessons extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("CourseLessons mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+    return cls("CourseLessons ", className)
   }
 
   render() {
     const course = get(this.props, "course", null)
     const lessonEdges = get(course, "lessons.edges", [])
     return (
-      <div className={this.classes}>
+      <React.Fragment>
         {isEmpty(lessonEdges)
-        ? <CreateLessonLink study={course.study}>
-            Create a lesson
-          </CreateLessonLink>
-        : <div className="mdc-layout-grid__inner">
+        ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <CreateLessonLink study={course.study}>
+              Create a lesson
+            </CreateLessonLink>
+          </div>
+        : <React.Fragment>
             {lessonEdges.map(({node}) => (
               node &&
               <React.Fragment key={node.id}>
@@ -56,8 +58,8 @@ class CourseLessons extends React.Component {
             >
               More
             </button>}
-          </div>}
-      </div>
+          </React.Fragment>}
+      </React.Fragment>
     )
   }
 }

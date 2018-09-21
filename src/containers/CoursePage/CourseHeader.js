@@ -1,96 +1,139 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router'
+import TextField, {Input} from '@material/react-text-field'
 import AppleButton from 'components/AppleButton'
 import StudyLink from 'components/StudyLink'
+import UpdateCourseMutation from 'mutations/UpdateCourseMutation'
 import UserLink from 'components/UserLink'
-import DeleteCourseMutation from 'mutations/DeleteCourseMutation'
-import { get, isNil } from 'utils'
+import {get, isEmpty, isNil} from 'utils'
 
 class CourseHeader extends React.Component {
   state = {
     edit: false,
+    error: null,
+    name: this.props.course.name,
   }
 
-  handleDelete = () => {
-    const {course} = this.props
-    DeleteCourseMutation(
-      get(course, "id", ""),
-      (response, error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
-        } else {
-          this.props.history.replace(get(course, "study.resourcePath", "") + "/courses")
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const {name} = this.state
+    UpdateCourseMutation(
+      get(this.props, "course.id", ""),
+      null,
+      name,
+      (updatedCourse, errors) => {
+        if (!isNil(errors)) {
+          this.setState({ error: errors[0].message })
         }
+        this.handleToggleEdit()
+        this.setState({
+          name: get(updatedCourse, "name", ""),
+        })
       },
     )
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("CourseHeader mdc-layout-grid__inner", className)
+  handleToggleEdit = () => {
+    this.setState({ edit: !this.state.edit })
   }
 
   render() {
-    const course = get(this.props, "course", null)
-    if (isNil(course)) {
-      return null
-    }
+    const course = get(this.props, "course", {})
+    const {edit} = this.state
+
     return (
-      <div className={this.classes}>
-        <h5 className={cls(
-          "mdc-layout-grid__cell",
-          "mdc-layout-grid__cell--span-7-desktop",
-          "mdc-layout-grid__cell--span-4-tablet",
-          "mdc-layout-grid__cell--span-4-phone",
-        )}>
+      <React.Fragment>
+        {edit && course.viewerCanAdmin
+        ? this.renderForm()
+        : this.renderDetails()}
+      </React.Fragment>
+    )
+  }
+
+  renderDetails() {
+    const course = get(this.props, "course", null)
+
+    return (
+      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <h5 className="rn-header">
           <UserLink className="rn-link" user={get(course, "study.owner", null)} />
           <span>/</span>
           <StudyLink className="rn-link" study={get(course, "study", null)} />
           <span>/</span>
-          <span className="fw5">{get(course, "name", "")}</span>
-          <span className="mdc-theme--text-hint-on-light ml2">#{get(course, "number", 0)}</span>
-        </h5>
-        <div className={cls(
-          "mdc-layout-grid__cell",
-          "mdc-layout-grid__cell--span-5-desktop",
-          "mdc-layout-grid__cell--span-4-tablet",
-          "mdc-layout-grid__cell--span-4-phone",
-        )}>
-          <div className="CourseHeader__actions">
-            <div className={cls(
-              "CourseHeader__action",
-              "CourseHeader__action--apple",
-            )}>
+          <span>
+            <span className="fw5">{get(course, "name", "")}</span>
+            <span className="mdc-theme--text-hint-on-light ml2">#{get(course, "number", 0)}</span>
+          </span>
+          <div className="rn-header__meta">
+            <div className="rn-combo-button">
               <AppleButton appleable={course} />
-              <button className="rn-count-button">
+              <button className="rn-combo-button__count">
                 {get(course, "appleGivers.totalCount", 0)}
               </button>
             </div>
-            {get(course, "viewerCanAdmin", false) &&
-            <div className={cls(
-              "CourseHeader__action",
-              "CourseHeader__action--delete",
-            )}>
-              <button
-                className="material-icons mdc-icon-button"
-                type="button"
-                onClick={this.handleDelete}
-                aria-label="Delete course"
-                title="Delete course"
-              >
-                delete
-              </button>
-            </div>}
+            {course.viewerCanAdmin &&
+            <button
+              className="material-icons mdc-icon-button"
+              type="button"
+              onClick={this.handleToggleEdit}
+            >
+              edit
+            </button>}
           </div>
-        </div>
+        </h5>
       </div>
     )
   }
+
+  renderForm() {
+    const {name} = this.state
+
+    return (
+      <form
+        className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+        onSubmit={this.handleSubmit}
+      >
+        <div className="inline-flex items-center w-100">
+          <TextField
+            className="flex-auto"
+            outlined
+            label="Name"
+            floatingLabelClassName={!isEmpty(name) ? "mdc-floating-label--float-above" : ""}
+          >
+            <Input
+              name="name"
+              value={name}
+              onChange={this.handleChange}
+            />
+          </TextField>
+          <button
+            className="mdc-button mdc-button--unelevated ml2"
+            type="submit"
+            onClick={this.handleSubmit}
+          >
+            Save
+          </button>
+          <span
+            className="pointer pa2"
+            role="button"
+            onClick={this.handleToggleEdit}
+          >
+            Cancel
+          </span>
+        </div>
+      </form>
+      )
+    }
 }
 
 export default withRouter(createFragmentContainer(CourseHeader, graphql`

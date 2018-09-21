@@ -90,7 +90,7 @@ class SearchNav extends React.Component {
               as={Link}
               to={{pathname, search: searchUserAssets}}
             >
-              UserAssets
+              Assets
               <Counter>{counts.userAsset}</Counter>
             </ListItem>
           </nav>

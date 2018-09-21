@@ -16,6 +16,7 @@
 @import "~tachyons-position/css/tachyons-position.css";
 @import "~tachyons-spacing/css/tachyons-spacing.css";
 @import "~tachyons-text-align/css/tachyons-text-align.css";
+@import "~tachyons-typography/css/tachyons-typography.css";
 @import "~tachyons-utilities/css/tachyons-utilities.css";
 @import "~tachyons-vertical-align/css/tachyons-vertical-align.css";
 @import "~tachyons-widths/css/tachyons-widths.css";
@@ -43,9 +44,10 @@
 @import "@material/theme/mdc-theme";
 @import "@material/typography/mdc-typography";
 
-@import "components/count-button/rn-count-button.scss";
+@import "components/combo-button/rn-combo-button.scss";
 @import "components/divider/rn-divider.scss";
 @import "components/form/rn-form.scss";
+@import "components/header/rn-header.scss";
 @import "components/image-list/rn-image-list.scss";
 @import "components/link/rn-link.scss";
 @import "components/page/rn-page.scss";

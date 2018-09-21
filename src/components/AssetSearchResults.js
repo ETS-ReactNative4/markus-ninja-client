@@ -4,10 +4,10 @@ import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
 import UserAssetPreview from 'components/UserAssetPreview'
 import {isEmpty} from 'utils'
 
-class StudyAssets extends React.Component {
+class AssetSearchResults extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("StudyAssets mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+    return cls("AssetSearchResults mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {
@@ -41,12 +41,12 @@ class StudyAssets extends React.Component {
   }
 }
 
-StudyAssets.propTypes = {
+AssetSearchResults.propTypes = {
   search: SearchResultsProp,
 }
 
-StudyAssets.defaultProps = {
+AssetSearchResults.defaultProps = {
   search: SearchResultsPropDefaults,
 }
 
-export default StudyAssets
+export default AssetSearchResults

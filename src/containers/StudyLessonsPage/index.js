@@ -8,7 +8,7 @@ import queryString from 'query-string'
 import StudyLabelsLink from 'components/StudyLabelsLink'
 import CreateLessonLink from 'components/CreateLessonLink'
 import Search from 'components/Search'
-import StudyLessons from './StudyLessons'
+import LessonSearchResults from 'components/LessonSearchResults'
 import {debounce, get, isEmpty} from 'utils'
 
 class StudyLessonsPage extends React.Component {
@@ -103,7 +103,7 @@ class StudyLessonsPage extends React.Component {
         </div>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <Search type="LESSON" query={q} within={study.id} orderBy={orderBy}>
-          <StudyLessons study={study} />
+          <LessonSearchResults study={study} />
         </Search>
       </div>
     )

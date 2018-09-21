@@ -7,58 +7,39 @@ import {
 } from 'react-relay'
 import { Link, withRouter } from 'react-router-dom';
 import TextField, {HelperText, Input} from '@material/react-text-field'
-import UpdateTopicsMutation from 'mutations/UpdateTopicsMutation'
-import { get, isEmpty } from 'utils'
+import Label from 'components/Label'
+import AddLabelMutation from 'mutations/AddLabelMutation'
+import RemoveLabelMutation from 'mutations/RemoveLabelMutation'
+import {get, isEmpty, isNil} from 'utils'
 import { TOPICS_PER_PAGE } from 'consts'
 
-class StudyMetaTopics extends React.Component {
-  constructor(props) {
-    super(props)
+class LessonMeta extends React.Component {
+  state = {
+    error: null,
+  }
 
-    const topicEdges = get(props, "study.topics.edges", [])
-    const topics = topicEdges.map(edge => get(edge, "node.name")).join(" ")
-
-    this.state = {
-      error: null,
-      invalidTopicNames: null,
-      initialValues: {
-        topics,
-      },
-      topics,
-      open: false,
+  handleLabelChecklist = (labelId, checked) => {
+    if (checked) {
+      AddLabelMutation(
+        labelId,
+        this.props.lesson.id,
+        (response, error) => {
+          if (!isNil(error)) {
+            this.setState({ error: error[0].message })
+          }
+        },
+      )
+    } else {
+      RemoveLabelMutation(
+        labelId,
+        this.props.lesson.id,
+        (response, error) => {
+          if (!isNil(error)) {
+            this.setState({ error: error[0].message })
+          }
+        },
+      )
     }
-  }
-
-  handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-      error: null,
-    })
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const { topics } = this.state
-    UpdateTopicsMutation(
-      this.props.study.id,
-      topics.split(" "),
-      (error, invalidTopicNames) => {
-        if (!isEmpty(invalidTopicNames)) {
-          this.setState({ error, invalidTopicNames })
-        } else {
-          this.handleToggleOpen()
-        }
-      },
-    )
-  }
-
-  handleToggleOpen = () => {
-    const open = !this.state.open
-
-    this.setState({ open, error: null })
-    this.props.onOpen(open)
-
-    this.reset_()
   }
 
   _loadMore = () => {
@@ -74,17 +55,9 @@ class StudyMetaTopics extends React.Component {
     relay.loadMore(TOPICS_PER_PAGE)
   }
 
-  reset_ = () => {
-    this.setState({
-      error: null,
-      invalidTopicNames: null,
-      ...this.state.initialValues,
-    })
-  }
-
   get classes() {
     const {className} = this.props
-    return cls("StudyMetaTopics mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+    return cls("LessonMeta mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {
@@ -95,15 +68,15 @@ class StudyMetaTopics extends React.Component {
       <div className={this.classes}>
         {open && study.viewerCanAdmin
         ? this.renderForm()
-        : this.renderTopics()}
+        : this.renderLabels()}
       </div>
     )
   }
 
   renderForm() {
     const study = get(this.props, "study", {})
-    const topicEdges = get(study, "topics.edges", [])
-    const {topics} = this.state
+    const labelEdges = get(study, "labels.edges", [])
+    const {labels} = this.state
 
     return (
       <form className="StudyMeta__form inline-flex w-100" onSubmit={this.handleSubmit}>
@@ -111,13 +84,13 @@ class StudyMetaTopics extends React.Component {
           <TextField
             className="w-100"
             outlined
-            label="Topics (separate with spaces)"
+            label="Labels (separate with spaces)"
             helperText={this.renderHelperText()}
-            floatingLabelClassName={!isEmpty(topicEdges) ? "mdc-floating-label--float-above" : ""}
+            floatingLabelClassName={!isEmpty(labelEdges) ? "mdc-floating-label--float-above" : ""}
           >
             <Input
-              name="topics"
-              value={topics}
+              name="labels"
+              value={labels}
               onChange={this.handleChange}
             />
           </TextField>
@@ -142,35 +115,21 @@ class StudyMetaTopics extends React.Component {
     )
   }
 
-  renderHelperText() {
-    return (
-      <HelperText persistent>
-        Add topics to categorize your study and make it more discoverable.
-      </HelperText>
-    )
-  }
-
-  renderTopics() {
+  renderLabels() {
     const study = get(this.props, "study", {})
-    const topicEdges = get(study, "topics.edges", [])
-    const pageInfo = get(study, "topics.pageInfo", {})
+    const labelEdges = get(study, "labels.edges", [])
+    const pageInfo = get(study, "labels.pageInfo", {})
 
     return (
       <div className="inline-flex items-center w-100">
-        {topicEdges.map(({ node = {} }) =>
-        <Link
-          className="mdc-button mdc-button--outlined mr1 mb1"
-          key={node.id}
-          to={node.resourcePath}
-        >
-          {node.name}
-        </Link>)}
+        {labelEdges.map(({node}) =>
+          <Label key={get(node, "id", "")} label={node} />)}
         {pageInfo.hasNextPage &&
         <button
           className="material-icons mdc-icon-button mr1 mb1"
           onClick={this._loadMore}
         >
-          more
+          More
         </button>}
         {study.viewerCanAdmin &&
         <button
@@ -178,30 +137,30 @@ class StudyMetaTopics extends React.Component {
           type="button"
           onClick={this.handleToggleOpen}
         >
-          Manage topics
+          Manage labels
         </button>}
       </div>
     )
   }
 }
 
-StudyMetaTopics.propTypes = {
+LessonMeta.propTypes = {
   onOpen: PropTypes.func,
 }
 
-StudyMetaTopics.defaulProps = {
+LessonMeta.defaulProps = {
   onOpen: () => {}
 }
 
-export default withRouter(createPaginationContainer(StudyMetaTopics,
+export default withRouter(createPaginationContainer(LessonMeta,
   {
     study: graphql`
-      fragment StudyMetaTopics_study on Study {
+      fragment LessonMeta_study on Study {
         id
-        topics(
+        labels(
           first: $count,
           after: $after,
-        ) @connection(key: "StudyMetaTopics_topics", filters: []) {
+        ) @connection(key: "LessonMeta_labels", filters: []) {
           edges {
             node {
               id
@@ -221,19 +180,19 @@ export default withRouter(createPaginationContainer(StudyMetaTopics,
   {
     direction: 'forward',
     query: graphql`
-      query StudyMetaTopicsForwardQuery(
+      query LessonMetaForwardQuery(
         $owner: String!,
         $name: String!,
         $count: Int!,
         $after: String
       ) {
         study(owner: $owner, name: $name) {
-          ...StudyMetaTopics_study
+          ...LessonMeta_study
         }
       }
     `,
     getConnectionFromProps(props) {
-      return get(props, "study.topics")
+      return get(props, "study.labels")
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {

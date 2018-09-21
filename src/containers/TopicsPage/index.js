@@ -2,7 +2,7 @@ import * as React from 'react'
 import cls from 'classnames'
 import queryString from 'query-string'
 import Search from 'components/Search'
-import TopicsPageResults from './TopicsPageResults'
+import TopicSearchResults from 'components/TopicSearchResults'
 import {get} from 'utils'
 
 class TopicsPage extends React.Component {
@@ -42,14 +42,44 @@ class TopicsPage extends React.Component {
           <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             Topics
           </h4>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            {this.renderInput()}
+          </div>
           <Search
             type="TOPIC"
             query={query.query}
             orderBy={query.orderBy}
           >
-            <TopicsPageResults />
+            <TopicSearchResults />
           </Search>
         </div>
+      </div>
+    )
+  }
+
+  renderInput() {
+    const {q} = this.state
+
+    return (
+      <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
+        <input
+          className="mdc-text-field__input"
+          autoComplete="off"
+          type="text"
+          name="q"
+          placeholder="Search..."
+          value={q}
+          onChange={this.handleChange}
+        />
+        <div className="mdc-notched-outline mdc-theme--background z-behind">
+          <svg>
+            <path className="mdc-notched-outline__path"></path>
+          </svg>
+        </div>
+        <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
+        <i className="material-icons mdc-text-field__icon">
+          search
+        </i>
       </div>
     )
   }

@@ -10,6 +10,7 @@ class SearchResults extends React.Component {
   state = {
     error: null,
     loading: false,
+    type: this.props.type,
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -40,6 +41,7 @@ class SearchResults extends React.Component {
 
     this.setState({
       loading: true,
+      type,
     })
 
     relay.refetch(
@@ -82,13 +84,15 @@ class SearchResults extends React.Component {
 
   render() {
     const child = React.Children.only(this.props.children)
+    const {loading, type} = this.state
 
     return React.cloneElement(child, {
       search: {
+        type,
         edges: get(this.props, "results.search.edges", []),
         counts: this._counts,
         hasMore: this._hasMore,
-        isLoading: this.state.loading,
+        isLoading: loading,
         loadMore: this._loadMore,
       },
     })
@@ -107,6 +111,7 @@ SearchResults.defaultProps = {
 }
 
 export const SearchResultsProp = PropTypes.shape({
+  type: PropTypes.string,
   edges: PropTypes.array,
   idLoading: PropTypes.bool,
   hasMore: PropTypes.bool,
@@ -123,6 +128,7 @@ export const SearchResultsProp = PropTypes.shape({
 })
 
 export const SearchResultsPropDefaults = {
+  type: "",
   edges: [],
   isLoading: false,
   hasMore: false,

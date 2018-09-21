@@ -16,7 +16,7 @@ class SearchResultItemPreview extends React.Component {
       case "Course":
         return <CoursePreview.Search className={className} course={item} />
       case "Lesson":
-        return <LessonPreview className={className} lesson={item} />
+        return <LessonPreview.Search className={className} lesson={item} />
       case "Study":
         return <StudyPreview.Search className={className} study={item} />
       case "Topic":

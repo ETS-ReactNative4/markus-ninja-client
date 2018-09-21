@@ -7,7 +7,7 @@ import {
 import queryString from 'query-string'
 import CreateUserAssetForm from './CreateUserAssetForm'
 import Search from 'components/Search'
-import StudyAssets from './StudyAssets'
+import AssetSearchResults from 'components/AssetSearchResults'
 import {debounce, get, isEmpty} from 'utils'
 
 class StudyAssetsPage extends React.Component {
@@ -75,7 +75,7 @@ class StudyAssetsPage extends React.Component {
         </div>}
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <Search type="USER_ASSET" query={q} within={study.id}>
-          <StudyAssets />
+          <AssetSearchResults />
         </Search>
       </div>
     )

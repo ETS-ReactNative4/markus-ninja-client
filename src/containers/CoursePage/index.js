@@ -7,7 +7,7 @@ import {
 import environment from 'Environment'
 import Course from './Course'
 import CourseHeader from './CourseHeader'
-import CourseMeta from 'components/CourseMeta'
+import CourseMeta from './CourseMeta'
 import NotFound from 'components/NotFound'
 import { get, isNil } from 'utils'
 
@@ -64,15 +64,9 @@ class CoursePage extends Component {
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <CourseHeader course={course} />
-                  </div>
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <CourseMeta course={course} />
-                  </div>
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <Course course={course} />
-                  </div>
+                  <CourseHeader course={course} />
+                  <CourseMeta course={course} />
+                  <Course course={course} />
                 </div>
               </div>
             )

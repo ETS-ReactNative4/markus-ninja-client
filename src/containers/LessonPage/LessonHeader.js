@@ -10,8 +10,6 @@ import CourseLink from 'components/CourseLink'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
-import AddLabelMutation from 'mutations/AddLabelMutation'
-import RemoveLabelMutation from 'mutations/RemoveLabelMutation'
 import Label from 'components/Label'
 import {get, isEmpty, isNil} from 'utils'
 
@@ -26,30 +24,6 @@ class LessonHeader extends React.Component {
     this.setState({
       [e.target.name]: e.target.value,
     })
-  }
-
-  handleLabelChecklist = (labelId, checked) => {
-    if (checked) {
-      AddLabelMutation(
-        labelId,
-        this.props.lesson.id,
-        (response, error) => {
-          if (!isNil(error)) {
-            this.setState({ error: error[0].message })
-          }
-        },
-      )
-    } else {
-      RemoveLabelMutation(
-        labelId,
-        this.props.lesson.id,
-        (response, error) => {
-          if (!isNil(error)) {
-            this.setState({ error: error[0].message })
-          }
-        },
-      )
-    }
   }
 
   handleSubmit = (e) => {
@@ -140,24 +114,24 @@ class LessonHeader extends React.Component {
 
     return (
       <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <div className="inline-flex w-100">
-          <h5 className="flex-auto">
-            <UserLink className="rn-link" user={get(lesson, "study.owner", null)} />
-            <span>/</span>
-            <StudyLink className="rn-link" study={get(lesson, "study", null)} />
-            <span>/</span>
-            <span className="fw5">{lesson.title}</span>
-            <span className="mdc-theme--text-hint-on-light ml2">#{lesson.number}</span>
-          </h5>
-          {lesson.viewerCanUpdate &&
-          <button
-            className="material-icons mdc-icon-button"
-            type="button"
-            onClick={this.handleToggleOpen}
-          >
-            edit
-          </button>}
-        </div>
+        <h5 className="rn-header">
+          <UserLink className="rn-link" user={get(lesson, "study.owner", null)} />
+          <span>/</span>
+          <StudyLink className="rn-link" study={get(lesson, "study", null)} />
+          <span>/</span>
+          <span className="fw5">{lesson.title}</span>
+          <span className="mdc-theme--text-hint-on-light ml2">#{lesson.number}</span>
+          <div className="rn-header__meta">
+            {lesson.viewerCanUpdate &&
+            <button
+              className="material-icons mdc-icon-button"
+              type="button"
+              onClick={this.handleToggleOpen}
+            >
+              edit
+            </button>}
+          </div>
+        </h5>
       </div>
     )
   }

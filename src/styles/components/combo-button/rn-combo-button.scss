@@ -1,7 +1,25 @@
 @import "@material/button/mixins";
 @import "./variables";
 
-.rn-count-button {
+.rn-combo-button {
+  display: inline-flex;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+
+  .mdc-button:not(:disabled) {
+    + .rn-combo-button__count {
+      border-left: none;
+    }
+  }
+
+  .rn-select-button:not(.rn-select-button--disabled) {
+    + .rn-combo-button__count {
+      border-left: none;
+    }
+  }
+}
+
+.rn-combo-button__count {
   @include mdc-button-base_;
   @include mdc-button-corner-radius(2px);
   @include mdc-button-container-fill-color(transparent);
@@ -15,14 +33,4 @@
   min-width: 36px;
 }
 
-.mdc-button:not(:disabled) {
-  + .rn-count-button {
-    border-left: none;
-  }
-}
 
-.rn-select-button:not(.rn-select-button--disabled) {
-  + .rn-count-button {
-    border-left: none;
-  }
-}

@@ -44,7 +44,7 @@ export default (studyId, name, description, color, callback) => {
         if (!isNil(createLabelField)) {
           const searchStudy = ConnectionHandler.getConnection(
             proxyStore.getRoot(),
-            "SearchStudy_search",
+            "SearchResults_search",
             {type: "LABEL", within: studyId},
           )
 

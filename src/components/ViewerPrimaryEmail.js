@@ -76,6 +76,8 @@ class ViewerPrimaryEmail extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <Select
             className="rn-select"
+            floatingLabelClassName="mdc-floating-label--float-above"
+            notchedOutlineClassName="mdc-notched-outline--notched"
             outlined
             label="Primary email address"
             value={value}

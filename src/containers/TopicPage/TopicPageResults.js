@@ -6,7 +6,7 @@ import TopicNav from './TopicNav'
 import SearchResultItemPreview from 'components/SearchResultItemPreview'
 import {debounce, get, isEmpty} from 'utils'
 
-class TopicPageResults extends React.Component {
+class TopicSearchResults extends React.Component {
   constructor(props) {
     super(props)
 
@@ -35,7 +35,7 @@ class TopicPageResults extends React.Component {
 
   render() {
     const {search} = this.props
-    const {edges, hasMore, loadMore} = search
+    const {edges, hasMore, isLoading, loadMore} = search
 
     return (
       <React.Fragment>
@@ -43,10 +43,12 @@ class TopicPageResults extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           {this.renderInput()}
         </div>
-        {isEmpty(edges)
-        ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            No results were found.
-          </div>
+        {isLoading
+        ? <div>Loading</div>
+        : isEmpty(edges)
+          ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              No results were found.
+            </div>
         : <React.Fragment>
             {edges.map(({node}) => (
               node &&
@@ -98,12 +100,12 @@ class TopicPageResults extends React.Component {
   }
 }
 
-TopicPageResults.propTypes = {
+TopicSearchResults.propTypes = {
   search: SearchResultsProp,
 }
 
-TopicPageResults.defaultProps = {
+TopicSearchResults.defaultProps = {
   search: SearchResultsPropDefaults,
 }
 
-export default withRouter(TopicPageResults)
+export default withRouter(TopicSearchResults)

@@ -5,9 +5,9 @@ import {
   graphql,
 } from 'react-relay'
 import queryString from 'query-string'
-import CreateLabelForm from 'components/CreateLabelForm'
 import Search from 'components/Search'
-import StudyLabels from './StudyLabels'
+import LabelSearchResults from 'components/LabelSearchResults'
+import CreateLabelForm from './CreateLabelForm'
 import {debounce, get, isEmpty} from 'utils'
 
 class StudyLabelsPage extends React.Component {
@@ -56,25 +56,22 @@ class StudyLabelsPage extends React.Component {
             </button>
           </div>
         </div>
+        {open &&
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          {open &&
-            <div className="flex items-center">
-              <CreateLabelForm study={study} />
-              <button
-                className="mdc-button mdc-button--outlined flex-stable ml2"
-                type="button"
-                onClick={() => this.setState({open: !open})}
-              >
-                Cancel
-              </button>
-          </div>}
-        </div>
+          <div className="flex items-center">
+            <CreateLabelForm
+              study={study}
+              onCancel={() => this.setState({open: false})}
+            />
+          </div>
+        </div>}
+        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <Search
           type="LABEL"
           query={q}
           within={study.id}
         >
-          <StudyLabels />
+          <LabelSearchResults />
         </Search>
       </div>
     )

@@ -1,35 +1,28 @@
 import * as React from 'react'
-import cls from 'classnames'
-import pluralize from 'pluralize'
 import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
 import LabelPreview from 'components/LabelPreview'
 import Counter from 'components/Counter'
 import {get, isEmpty} from 'utils'
 
-class StudyLabels extends React.Component {
-  get classes() {
-    const {className} = this.props
-    return cls("StudyLabels mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
-  }
-
+class LabelSearchResults extends React.Component {
   render() {
     const {search} = this.props
     const {edges, hasMore, isLoading, loadMore} = search
     const labelCount = get(search, "counts.label", 0)
 
     return (
-      <div className={this.classes}>
-        <h5>
-          {pluralize("Labels", labelCount)}
-          <Counter>{labelCount}</Counter>
+      <React.Fragment>
+        <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          Labels
+          <Counter className="ml1">{labelCount}</Counter>
         </h5>
         {isLoading
         ? <div>Loading...</div>
         : (isEmpty(edges)
-          ? <span className="mr1">
+          ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               No labels were found.
-            </span>
-          : <div className="mdc-layout-grid__inner">
+            </div>
+          : <React.Fragment>
               <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
               {edges.map(({node}) =>
                 node &&
@@ -48,19 +41,19 @@ class StudyLabels extends React.Component {
               >
                 More
               </button>}
-            </div>)}
-      </div>
+            </React.Fragment>)}
+      </React.Fragment>
     )
   }
 }
 
-StudyLabels.propTypes = {
+LabelSearchResults.propTypes = {
   search: SearchResultsProp,
 }
 
-StudyLabels.defaultProps = {
+LabelSearchResults.defaultProps = {
   search: SearchResultsPropDefaults,
 }
 
 
-export default StudyLabels
+export default LabelSearchResults
