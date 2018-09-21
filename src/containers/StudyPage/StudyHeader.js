@@ -9,7 +9,6 @@ import AppleButton from 'components/AppleButton'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
-import StudyNav from './StudyNav'
 import { get, isNil } from 'utils'
 
 class StudyHeader extends React.Component {
@@ -19,7 +18,7 @@ class StudyHeader extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyHeader mdc-layout-grid__inner", className)
+    return cls("rn-header mdc-typography--headline5 mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {
@@ -29,54 +28,31 @@ class StudyHeader extends React.Component {
     }
 
     return (
-      <div className={this.classes}>
-        <h5 className={cls(
-          "mdc-layout-grid__cell",
-          "mdc-layout-grid__cell--span-7-desktop",
-          "mdc-layout-grid__cell--span-4-tablet",
-          "mdc-layout-grid__cell--span-4-phone",
-        )}>
-          <UserLink className="rn-link" user={get(study, "owner", null)} />
-          <span>/</span>
-          <StudyLink className="rn-link" study={study} />
-        </h5>
-        <div className={cls(
-          "mdc-layout-grid__cell",
-          "mdc-layout-grid__cell--span-5-desktop",
-          "mdc-layout-grid__cell--span-4-tablet",
-          "mdc-layout-grid__cell--span-4-phone",
-        )}>
-          <div className="StudyHeader__actions">
-            <div className={cls(
-              "StudyHeader__action",
-              "StudyHeader__action--enroll",
-            )}>
-              <EnrollmentSelect disabled={!study.viewerCanEnroll} enrollable={study} />
-              <Link
-                className="rn-count-button"
-                to={study.resourcePath+"/enrollees"}
-              >
-                {get(study, "enrolleeCount", 0)}
-              </Link>
-            </div>
-            <div className={cls(
-              "StudyHeader__action",
-              "StudyHeader__action--apple",
-            )}>
-              <AppleButton disabled={!study.viewerCanApple} appleable={study} />
-              <Link
-                className="rn-count-button"
-                to={study.resourcePath+"/applegivers"}
-              >
-                {get(study, "appleGivers.totalCount", 0)}
-              </Link>
-            </div>
+      <header className={this.classes}>
+        <UserLink className="rn-link" user={get(study, "owner", null)} />
+        <span>/</span>
+        <StudyLink className="rn-link" study={study} />
+        <div className="rn-header__meta">
+          <div className="rn-combo-button mr2">
+            <EnrollmentSelect disabled={!study.viewerCanEnroll} enrollable={study} />
+            <Link
+              className="rn-combo-button__count"
+              to={study.resourcePath+"/enrollees"}
+            >
+              {get(study, "enrolleeCount", 0)}
+            </Link>
+          </div>
+          <div className="rn-combo-button">
+            <AppleButton disabled={!study.viewerCanApple} appleable={study} />
+            <Link
+              className="rn-combo-button__count"
+              to={study.resourcePath+"/applegivers"}
+            >
+              {get(study, "appleGivers.totalCount", 0)}
+            </Link>
           </div>
         </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <StudyNav study={study} />
-        </div>
-      </div>
+      </header>
     )
   }
 }
@@ -86,7 +62,6 @@ export default withRouter(createFragmentContainer(StudyHeader, graphql`
     ...StudyLink_study
     ...AppleButton_appleable
     ...EnrollmentSelect_enrollable
-    ...StudyNav_study
     id
     advancedAt
     appleGivers(first: 0) {

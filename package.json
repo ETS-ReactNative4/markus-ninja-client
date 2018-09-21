@@ -19,6 +19,7 @@
     "@material/layout-grid": "^0.34.0",
     "@material/list": "^0.38.1",
     "@material/menu": "^0.38.0",
+    "@material/react-ripple": "^0.4.2",
     "@material/react-select": "^0.4.2",
     "@material/react-text-field": "^0.4.2",
     "@material/select": "^0.39.1",

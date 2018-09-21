@@ -4,9 +4,12 @@
   align-items: center;
   flex-wrap: wrap;
   overflow: hidden;
+  min-height: 48px;
 }
 
 .rn-header__meta {
+  display: inline-flex;
+  align-items: center;
   margin-left: auto;
   margin-right: 0;
 }

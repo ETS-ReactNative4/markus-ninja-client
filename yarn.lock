@@ -274,6 +274,15 @@
     prop-types "^15.6.1"
     react "^16.3.2"
 
+"@material/react-ripple@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@material/react-ripple/-/react-ripple-0.4.2.tgz#1e57d42617433cc9f8955ac049367418a10410f0"
+  dependencies:
+    "@material/ripple" "^0.38.1"
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+    react "^16.3.2"
+
 "@material/react-select@^0.4.2":
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/@material/react-select/-/react-select-0.4.2.tgz#1a33be24a4adf13c0a21563b07022af3b861865e"

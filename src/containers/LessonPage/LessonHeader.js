@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -10,6 +9,7 @@ import CourseLink from 'components/CourseLink'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
+import LabelSet from 'components/LabelSet'
 import Label from 'components/Label'
 import {get, isEmpty, isNil} from 'utils'
 
@@ -49,11 +49,6 @@ class LessonHeader extends React.Component {
     this.setState({ open: !this.state.open })
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("LessonHeader", className)
-  }
-
   render() {
     const lesson = get(this.props, "lesson", {})
     const {open} = this.state
@@ -62,7 +57,7 @@ class LessonHeader extends React.Component {
       <React.Fragment>
         {open && lesson.viewerCanUpdate
         ? this.renderForm()
-        : this.renderDetails()}
+        : this.renderHeader()}
         {lesson.isCourseLesson && this.renderCourse()}
         {this.renderLabels()}
       </React.Fragment>
@@ -109,30 +104,28 @@ class LessonHeader extends React.Component {
       )
     }
 
-  renderDetails() {
+  renderHeader() {
     const lesson = get(this.props, "lesson", {})
 
     return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <h5 className="rn-header">
-          <UserLink className="rn-link" user={get(lesson, "study.owner", null)} />
-          <span>/</span>
-          <StudyLink className="rn-link" study={get(lesson, "study", null)} />
-          <span>/</span>
-          <span className="fw5">{lesson.title}</span>
-          <span className="mdc-theme--text-hint-on-light ml2">#{lesson.number}</span>
-          <div className="rn-header__meta">
-            {lesson.viewerCanUpdate &&
-            <button
-              className="material-icons mdc-icon-button"
-              type="button"
-              onClick={this.handleToggleOpen}
-            >
-              edit
-            </button>}
-          </div>
-        </h5>
-      </div>
+      <header className="rn-header mdc-typography--headline5 mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <UserLink className="rn-link" user={get(lesson, "study.owner", null)} />
+        <span>/</span>
+        <StudyLink className="rn-link" study={get(lesson, "study", null)} />
+        <span>/</span>
+        <span className="fw5">{lesson.title}</span>
+        <span className="mdc-theme--text-hint-on-light ml2">#{lesson.number}</span>
+        <div className="rn-header__meta">
+          {lesson.viewerCanUpdate &&
+          <button
+            className="material-icons mdc-icon-button"
+            type="button"
+            onClick={this.handleToggleOpen}
+          >
+            edit
+          </button>}
+        </div>
+      </header>
     )
   }
 
@@ -155,16 +148,32 @@ class LessonHeader extends React.Component {
   }
 
   renderLabels() {
-    const labelEdges = get(this.props, "lesson.labels.edges", [])
+    const lessonId = get(this.props, "lesson.id", "")
+    const viewerCanUpdate = get(this.props, "lesson.viewerCanUpdate", false)
+    const lessonLabelEdges = get(this.props, "lesson.labels.edges", [])
+    const studyLabelEdges = get(this.props, "lesson.study.labels.edges", [])
+    const labelEdges =
+      viewerCanUpdate
+      ? studyLabelEdges
+      : lessonLabelEdges
 
     if (isEmpty(labelEdges)) { return null }
 
+    const selectedLabelIds = lessonLabelEdges.map(({node}) => node.id)
+
     return (
       <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <div className="inline-flex items-center">
+        <LabelSet selectedLabelIds={selectedLabelIds}>
           {labelEdges.map(({node}) =>
-            <Label key={get(node, "id", "")} label={node} />)}
-        </div>
+            node &&
+            <Label
+              key={node.id}
+              id={node.id}
+              label={node}
+              labelableId={lessonId}
+              disabled={!viewerCanUpdate}
+            />)}
+        </LabelSet>
       </div>
     )
   }
@@ -195,6 +204,14 @@ export default withRouter(createFragmentContainer(LessonHeader, graphql`
     }
     study {
       ...StudyLink_study
+      labels(first: 10) {
+        edges {
+          node {
+            id
+            ...Label_label
+          }
+        }
+      }
       owner {
         ...UserLink_user
       }

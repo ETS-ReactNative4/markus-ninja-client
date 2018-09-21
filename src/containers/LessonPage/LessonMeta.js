@@ -5,41 +5,15 @@ import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import { Link, withRouter } from 'react-router-dom';
-import TextField, {HelperText, Input} from '@material/react-text-field'
+import {withRouter} from 'react-router-dom';
 import Label from 'components/Label'
-import AddLabelMutation from 'mutations/AddLabelMutation'
-import RemoveLabelMutation from 'mutations/RemoveLabelMutation'
-import {get, isEmpty, isNil} from 'utils'
-import { TOPICS_PER_PAGE } from 'consts'
+import LabelSet from 'components/LabelSet'
+import {get, isEmpty} from 'utils'
+import {LABELS_PER_PAGE} from 'consts'
 
 class LessonMeta extends React.Component {
   state = {
     error: null,
-  }
-
-  handleLabelChecklist = (labelId, checked) => {
-    if (checked) {
-      AddLabelMutation(
-        labelId,
-        this.props.lesson.id,
-        (response, error) => {
-          if (!isNil(error)) {
-            this.setState({ error: error[0].message })
-          }
-        },
-      )
-    } else {
-      RemoveLabelMutation(
-        labelId,
-        this.props.lesson.id,
-        (response, error) => {
-          if (!isNil(error)) {
-            this.setState({ error: error[0].message })
-          }
-        },
-      )
-    }
   }
 
   _loadMore = () => {
@@ -52,7 +26,7 @@ class LessonMeta extends React.Component {
       return
     }
 
-    relay.loadMore(TOPICS_PER_PAGE)
+    relay.loadMore(LABELS_PER_PAGE)
   }
 
   get classes() {
@@ -67,78 +41,70 @@ class LessonMeta extends React.Component {
     return (
       <div className={this.classes}>
         {open && study.viewerCanAdmin
-        ? this.renderForm()
+        ? this.renderLabelChecklist()
         : this.renderLabels()}
       </div>
     )
   }
 
-  renderForm() {
-    const study = get(this.props, "study", {})
-    const labelEdges = get(study, "labels.edges", [])
-    const {labels} = this.state
+  renderLabelChecklist() {
+    const lessonId = get(this.props, "lesson.id", "")
+    const viewerCanUpdate = get(this.props, "lesson.viewerCanUpdate", false)
+    const lessonLabelEdges = get(this.props, "lesson.labels.edges", [])
+    const studyLabelEdges = get(this.props, "lesson.study.labels.edges", [])
+    const labelEdges =
+      viewerCanUpdate
+      ? studyLabelEdges
+      : lessonLabelEdges
+
+    if (isEmpty(labelEdges)) { return null }
+
+    const selectedLabelIds = lessonLabelEdges.map(({node}) => node.id)
 
     return (
-      <form className="StudyMeta__form inline-flex w-100" onSubmit={this.handleSubmit}>
-        <div className="flex-auto">
-          <TextField
-            className="w-100"
-            outlined
-            label="Labels (separate with spaces)"
-            helperText={this.renderHelperText()}
-            floatingLabelClassName={!isEmpty(labelEdges) ? "mdc-floating-label--float-above" : ""}
-          >
-            <Input
-              name="labels"
-              value={labels}
-              onChange={this.handleChange}
-            />
-          </TextField>
-        </div>
-        <div className="inline-flex items-center pa2 mb4">
-          <button
-            className="mdc-button mdc-button--unelevated"
-            type="submit"
-            onClick={this.handleSubmit}
-          >
-            Save
-          </button>
-          <span
-            className="pointer pa2 underline-hover"
-            role="button"
-            onClick={this.handleToggleOpen}
-          >
-            Cancel
-          </span>
-        </div>
-      </form>
+      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <LabelSet selectedLabelIds={selectedLabelIds}>
+          {labelEdges.map(({node}) =>
+            node &&
+            <Label
+              key={node.id}
+              id={node.id}
+              label={node}
+              labelableId={lessonId}
+              disabled={!viewerCanUpdate}
+            />)}
+        </LabelSet>
+      </div>
     )
   }
 
   renderLabels() {
-    const study = get(this.props, "study", {})
-    const labelEdges = get(study, "labels.edges", [])
-    const pageInfo = get(study, "labels.pageInfo", {})
+    const lessonId = get(this.props, "lesson.id", "")
+    const viewerCanUpdate = get(this.props, "lesson.viewerCanUpdate", false)
+    const lessonLabelEdges = get(this.props, "lesson.labels.edges", [])
+    const studyLabelEdges = get(this.props, "lesson.study.labels.edges", [])
+    const labelEdges =
+      viewerCanUpdate
+      ? studyLabelEdges
+      : lessonLabelEdges
+
+    if (isEmpty(labelEdges)) { return null }
+
+    const selectedLabelIds = lessonLabelEdges.map(({node}) => node.id)
 
     return (
-      <div className="inline-flex items-center w-100">
-        {labelEdges.map(({node}) =>
-          <Label key={get(node, "id", "")} label={node} />)}
-        {pageInfo.hasNextPage &&
-        <button
-          className="material-icons mdc-icon-button mr1 mb1"
-          onClick={this._loadMore}
-        >
-          More
-        </button>}
-        {study.viewerCanAdmin &&
-        <button
-          className="mdc-button mdc-button--unelevated mr1 mb1"
-          type="button"
-          onClick={this.handleToggleOpen}
-        >
-          Manage labels
-        </button>}
+      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <LabelSet selectedLabelIds={selectedLabelIds}>
+          {labelEdges.map(({node}) =>
+            node &&
+            <Label
+              key={node.id}
+              id={node.id}
+              label={node}
+              labelableId={lessonId}
+              disabled={!viewerCanUpdate}
+            />)}
+        </LabelSet>
       </div>
     )
   }
@@ -154,8 +120,8 @@ LessonMeta.defaulProps = {
 
 export default withRouter(createPaginationContainer(LessonMeta,
   {
-    study: graphql`
-      fragment LessonMeta_study on Study {
+    lesson: graphql`
+      fragment LessonMeta_lesson on Lesson {
         id
         labels(
           first: $count,
@@ -173,6 +139,9 @@ export default withRouter(createPaginationContainer(LessonMeta,
             endCursor
           }
         }
+        study {
+          ...StudyLabelChecklist_study
+        }
         viewerCanAdmin
       }
     `,
@@ -183,11 +152,14 @@ export default withRouter(createPaginationContainer(LessonMeta,
       query LessonMetaForwardQuery(
         $owner: String!,
         $name: String!,
+        $number: Int!,
         $count: Int!,
         $after: String
       ) {
         study(owner: $owner, name: $name) {
-          ...LessonMeta_study
+          lesson(number: $number) {
+            ...LessonMeta_lesson
+          }
         }
       }
     `,

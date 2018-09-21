@@ -156,7 +156,7 @@ class StudyMetaTopics extends React.Component {
     const pageInfo = get(study, "topics.pageInfo", {})
 
     return (
-      <div className="inline-flex items-center w-100">
+      <div className="flex flex-wrap items-center w-100">
         {topicEdges.map(({ node = {} }) =>
         <Link
           className="mdc-button mdc-button--outlined mr1 mb1"
@@ -169,6 +169,8 @@ class StudyMetaTopics extends React.Component {
         <button
           className="material-icons mdc-icon-button mr1 mb1"
           onClick={this._loadMore}
+          aria-label="More"
+          title="More"
         >
           more
         </button>}

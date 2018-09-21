@@ -8,6 +8,7 @@ import { Route, Switch } from 'react-router-dom'
 import PrivateRoute from 'components/PrivateRoute'
 import environment from 'Environment'
 import StudyHeader from './StudyHeader'
+import StudyNav from './StudyNav'
 import CreateCoursePage from 'containers/CreateCoursePage'
 import CreateLessonPage from 'containers/CreateLessonPage'
 import StudyCoursesPage from 'containers/StudyCoursesPage'
@@ -30,6 +31,7 @@ const StudyPageQuery = graphql`
       ...CreateCoursePage_study
       ...CreateLessonPage_study
       ...StudyHeader_study
+      ...StudyNav_study
       ...StudyLabelsPage_study
       ...StudyLessonsPage_study
       ...StudyAssetsPage_study
@@ -66,9 +68,8 @@ class StudyPage extends React.Component {
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <StudyHeader study={props.study} />
-                  </div>
+                  <StudyHeader study={props.study} />
+                  <StudyNav study={props.study} />
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <Switch>
                       <Route

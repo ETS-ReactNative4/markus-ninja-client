@@ -13,7 +13,7 @@ import { get } from 'utils'
 class StudyNav extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("StudyNav mt3", className)
+    return cls("mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {

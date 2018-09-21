@@ -55,43 +55,41 @@ class CourseHeader extends React.Component {
       <React.Fragment>
         {edit && course.viewerCanAdmin
         ? this.renderForm()
-        : this.renderDetails()}
+        : this.renderHeader()}
       </React.Fragment>
     )
   }
 
-  renderDetails() {
+  renderHeader() {
     const course = get(this.props, "course", null)
 
     return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <h5 className="rn-header">
-          <UserLink className="rn-link" user={get(course, "study.owner", null)} />
-          <span>/</span>
-          <StudyLink className="rn-link" study={get(course, "study", null)} />
-          <span>/</span>
-          <span>
-            <span className="fw5">{get(course, "name", "")}</span>
-            <span className="mdc-theme--text-hint-on-light ml2">#{get(course, "number", 0)}</span>
-          </span>
-          <div className="rn-header__meta">
-            <div className="rn-combo-button">
-              <AppleButton appleable={course} />
-              <button className="rn-combo-button__count">
-                {get(course, "appleGivers.totalCount", 0)}
-              </button>
-            </div>
-            {course.viewerCanAdmin &&
-            <button
-              className="material-icons mdc-icon-button"
-              type="button"
-              onClick={this.handleToggleEdit}
-            >
-              edit
-            </button>}
+      <header className="rn-header mdc-typography--headline5 mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <UserLink className="rn-link" user={get(course, "study.owner", null)} />
+        <span>/</span>
+        <StudyLink className="rn-link" study={get(course, "study", null)} />
+        <span>/</span>
+        <span>
+          <span className="fw5">{get(course, "name", "")}</span>
+          <span className="mdc-theme--text-hint-on-light ml2">#{get(course, "number", 0)}</span>
+        </span>
+        <div className="rn-header__meta">
+          <div className="rn-combo-button">
+            <AppleButton appleable={course} />
+            <button className="rn-combo-button__count">
+              {get(course, "appleGivers.totalCount", 0)}
+            </button>
           </div>
-        </h5>
-      </div>
+          {course.viewerCanAdmin &&
+          <button
+            className="material-icons mdc-icon-button"
+            type="button"
+            onClick={this.handleToggleEdit}
+          >
+            edit
+          </button>}
+        </div>
+      </header>
     )
   }
 

@@ -31,7 +31,7 @@ class StudyLabelPreview extends React.Component {
     return (
       <div className={this.classes}>
         <span className="inline-flex items-center flex-stable content-center mr2">
-          <Label className="self-start" label={label} />
+          <Label className="self-start" selected label={label} />
         </span>
         <span className="self-start truncate">
           <span className="truncate mt0 db mdc-typography--subtitle1 mdc-theme--text-primary-on-light ml2">
