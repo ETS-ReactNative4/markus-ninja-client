@@ -1,6 +1,6 @@
 import * as React from 'react'
 import cls from 'classnames'
-import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
+import {SearchProp, SearchPropDefaults} from 'components/Search'
 import UserAssetPreview from 'components/UserAssetPreview'
 import {isEmpty} from 'utils'
 
@@ -42,11 +42,11 @@ class AssetSearchResults extends React.Component {
 }
 
 AssetSearchResults.propTypes = {
-  search: SearchResultsProp,
+  search: SearchProp,
 }
 
 AssetSearchResults.defaultProps = {
-  search: SearchResultsPropDefaults,
+  search: SearchPropDefaults,
 }
 
 export default AssetSearchResults

@@ -6,7 +6,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
-import SearchResults, {SearchResultsProp, SearchResultsPropDefaults} from './SearchResults'
+import SearchContainer, {SearchProp, SearchPropDefaults} from './SearchContainer'
 import {isEmpty} from 'utils'
 
 import { SEARCH_RESULTS_PER_PAGE } from 'consts'
@@ -20,7 +20,7 @@ const SearchQuery = graphql`
     $type: SearchType!,
     $within: ID,
   ) {
-    ...SearchResults_results @arguments(
+    ...SearchContainer_results @arguments(
       count: $count,
       after: $after,
       orderBy: $orderBy,
@@ -66,7 +66,7 @@ class Search extends React.Component {
             const {children, orderBy, query, type} = this.props
 
             return (
-              <SearchResults
+              <SearchContainer
                 orderBy={orderBy}
                 query={query}
                 results={props}
@@ -74,7 +74,7 @@ class Search extends React.Component {
                 within={within}
               >
                 {children}
-              </SearchResults>
+              </SearchContainer>
             )
           }
           return <div>Loading</div>
@@ -99,5 +99,5 @@ Search.defaultProps = {
   type: "",
 }
 
-export {SearchResultsProp, SearchResultsPropDefaults}
+export {SearchProp, SearchPropDefaults}
 export default withRouter(Search)

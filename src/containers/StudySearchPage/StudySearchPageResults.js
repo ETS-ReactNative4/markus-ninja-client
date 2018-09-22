@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {withRouter} from 'react-router-dom'
-import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
+import {SearchProp, SearchPropDefaults} from 'components/Search'
 import SearchResults from 'components/SearchResults'
 import StudySearchNav from './StudySearchNav'
 
@@ -18,11 +18,11 @@ class StudySearchPageResults extends React.Component {
 }
 
 StudySearchPageResults.propTypes = {
-  search: SearchResultsProp,
+  search: SearchProp,
 }
 
 StudySearchPageResults.defaultProps = {
-  search: SearchResultsPropDefaults,
+  search: SearchPropDefaults,
 }
 
 export default withRouter(StudySearchPageResults)

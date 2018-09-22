@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
+import {SearchProp, SearchPropDefaults} from 'components/Search'
 import LabelPreview from 'components/LabelPreview'
 import Counter from 'components/Counter'
 import {get, isEmpty} from 'utils'
@@ -48,11 +48,11 @@ class LabelSearchResults extends React.Component {
 }
 
 LabelSearchResults.propTypes = {
-  search: SearchResultsProp,
+  search: SearchProp,
 }
 
 LabelSearchResults.defaultProps = {
-  search: SearchResultsPropDefaults,
+  search: SearchPropDefaults,
 }
 
 

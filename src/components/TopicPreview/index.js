@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import cls from 'classnames'
 import Relay, { graphql } from 'react-relay'
 import hoistNonReactStatic from 'hoist-non-react-statics'
@@ -14,7 +14,7 @@ const FRAGMENT = graphql`
     resourcePath
   }
 `
-class TopicPreview extends Component {
+class TopicPreview extends React.Component {
   static Search = Relay.createFragmentContainer(SearchTopicPreview, FRAGMENT)
 
   get classes() {
@@ -26,8 +26,10 @@ class TopicPreview extends Component {
     const topic = get(this.props, "topic", {})
     return (
       <Link className={this.classes} to={topic.resourcePath}>
-        <h5>{topic.name}</h5>
-        <div>{topic.description}</div>
+        <h5>{topic.name.toUpperCase()}</h5>
+        <p className="mdc-theme--text-secondary-on-light">
+          {topic.description}
+        </p>
       </Link>
     )
   }

@@ -1,22 +1,20 @@
 import * as React from 'react'
-import cls from 'classnames'
-import PropTypes from 'prop-types'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
 import {withRouter} from 'react-router-dom';
+import {StudyLabelsProp, StudyLabelsPropDefaults} from 'components/StudyLabels'
 import Label from 'components/Label'
 import LabelSet from 'components/LabelSet'
 import {get, isEmpty} from 'utils'
-import {LABELS_PER_PAGE} from 'consts'
+import { LABELS_PER_PAGE } from 'consts'
 
-class LessonMeta extends React.Component {
-  state = {
-    error: null,
-  }
-
+class LessonLabels extends React.Component {
   _loadMore = () => {
+    const {loadMore} = this.props.studyLabels
+    loadMore(LABELS_PER_PAGE)
+
     const relay = get(this.props, "relay")
     if (!relay.hasMore()) {
       console.log("Nothing more to load")
@@ -29,42 +27,34 @@ class LessonMeta extends React.Component {
     relay.loadMore(LABELS_PER_PAGE)
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("LessonMeta mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+  get _hasMore() {
+    const {hasMore} = this.props.studyLabels
+    return hasMore || this.props.relay.hasMore()
   }
 
   render() {
-    const study = get(this.props, "study", {})
-    const {open} = this.state
+    let {edges: studyLabelEdges} = this.props.studyLabels
 
-    return (
-      <div className={this.classes}>
-        {open && study.viewerCanAdmin
-        ? this.renderLabelChecklist()
-        : this.renderLabels()}
-      </div>
-    )
-  }
-
-  renderLabelChecklist() {
     const lessonId = get(this.props, "lesson.id", "")
     const viewerCanUpdate = get(this.props, "lesson.viewerCanUpdate", false)
     const lessonLabelEdges = get(this.props, "lesson.labels.edges", [])
-    const studyLabelEdges = get(this.props, "lesson.study.labels.edges", [])
-    const labelEdges =
-      viewerCanUpdate
-      ? studyLabelEdges
-      : lessonLabelEdges
-
-    if (isEmpty(labelEdges)) { return null }
-
     const selectedLabelIds = lessonLabelEdges.map(({node}) => node.id)
+
+    if (isEmpty(studyLabelEdges)) {
+      return null
+    } else if (!viewerCanUpdate) {
+      studyLabelEdges = studyLabelEdges.reduce((r, v) => {
+        if (selectedLabelIds.indexOf(get(v, "node.id")) > -1) {
+          r.push(v)
+        }
+        return r
+      }, [])
+    }
 
     return (
       <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
         <LabelSet selectedLabelIds={selectedLabelIds}>
-          {labelEdges.map(({node}) =>
+          {studyLabelEdges.map(({node}) =>
             node &&
             <Label
               key={node.id}
@@ -74,64 +64,39 @@ class LessonMeta extends React.Component {
               disabled={!viewerCanUpdate}
             />)}
         </LabelSet>
-      </div>
-    )
-  }
-
-  renderLabels() {
-    const lessonId = get(this.props, "lesson.id", "")
-    const viewerCanUpdate = get(this.props, "lesson.viewerCanUpdate", false)
-    const lessonLabelEdges = get(this.props, "lesson.labels.edges", [])
-    const studyLabelEdges = get(this.props, "lesson.study.labels.edges", [])
-    const labelEdges =
-      viewerCanUpdate
-      ? studyLabelEdges
-      : lessonLabelEdges
-
-    if (isEmpty(labelEdges)) { return null }
-
-    const selectedLabelIds = lessonLabelEdges.map(({node}) => node.id)
-
-    return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <LabelSet selectedLabelIds={selectedLabelIds}>
-          {labelEdges.map(({node}) =>
-            node &&
-            <Label
-              key={node.id}
-              id={node.id}
-              label={node}
-              labelableId={lessonId}
-              disabled={!viewerCanUpdate}
-            />)}
-        </LabelSet>
+        {this._hasMore &&
+        <button
+          className="mdc-button mdc-button--unelevated"
+          onClick={this._loadMore}
+        >
+          More
+        </button>}
       </div>
     )
   }
 }
 
-LessonMeta.propTypes = {
-  onOpen: PropTypes.func,
+LessonLabels.propTypes = {
+  studyLabels: StudyLabelsProp,
 }
 
-LessonMeta.defaulProps = {
-  onOpen: () => {}
+LessonLabels.defaultProps = {
+  studyLabels: StudyLabelsPropDefaults,
 }
 
-export default withRouter(createPaginationContainer(LessonMeta,
+
+export default withRouter(createPaginationContainer(LessonLabels,
   {
     lesson: graphql`
-      fragment LessonMeta_lesson on Lesson {
+      fragment LessonLabels_lesson on Lesson {
         id
         labels(
           first: $count,
           after: $after,
-        ) @connection(key: "LessonMeta_labels", filters: []) {
+        ) @connection(key: "LessonLabels_labels", filters: []) {
           edges {
             node {
               id
-              name
-              resourcePath
             }
           }
           pageInfo {
@@ -146,7 +111,7 @@ export default withRouter(createPaginationContainer(LessonMeta,
   {
     direction: 'forward',
     query: graphql`
-      query LessonMetaForwardQuery(
+      query LessonLabelsForwardQuery(
         $owner: String!,
         $name: String!,
         $number: Int!,
@@ -155,7 +120,7 @@ export default withRouter(createPaginationContainer(LessonMeta,
       ) {
         study(owner: $owner, name: $name) {
           lesson(number: $number) {
-            ...LessonMeta_lesson
+            ...LessonLabels_lesson
           }
         }
       }

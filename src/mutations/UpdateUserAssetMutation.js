@@ -10,7 +10,9 @@ const mutation = graphql`
     updateUserAsset(input: $input) {
       id
       name
+      resourcePath
       updatedAt
+      url
     }
   }
 `
@@ -30,19 +32,25 @@ export default (userAssetId, name, callback) => {
       variables,
       optimisticUpdater: proxyStore => {
         const userAsset = proxyStore.get(userAssetId)
-        if (!isEmpty(name)) {
+        if (userAsset && !isEmpty(name)) {
           userAsset.setValue(name, 'name')
         }
       },
       updater: proxyStore => {
         const updateUserAssetField = proxyStore.getRootField('updateUserAsset')
-        const newTitle = updateUserAssetField.getValue('name')
-        const newUpdatedAt = updateUserAssetField.getValue('updatedAt')
+        if (updateUserAssetField) {
+          const newTitle = updateUserAssetField.getValue('name')
+          const newResourcePath = updateUserAssetField.getValue('resourcePath')
+          const newUpdatedAt = updateUserAssetField.getValue('updatedAt')
+          const newUrl = updateUserAssetField.getValue('url')
 
-        const userAsset = proxyStore.get(userAssetId)
-        if (userAsset) {
-          userAsset.setValue(newTitle, 'name')
-          userAsset.setValue(newUpdatedAt, 'updatedAt')
+          const userAsset = proxyStore.get(userAssetId)
+          if (userAsset) {
+            userAsset.setValue(newTitle, 'name')
+            userAsset.setValue(newResourcePath, 'resourcePath')
+            userAsset.setValue(newUpdatedAt, 'updatedAt')
+            userAsset.setValue(newUrl, 'url')
+          }
         }
       },
       onCompleted: (response, error) => {

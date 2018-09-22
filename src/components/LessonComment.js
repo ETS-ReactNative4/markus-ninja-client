@@ -34,10 +34,11 @@ class LessonComment extends React.Component {
     UpdateLessonCommentMutation(
       this.props.comment.id,
       body,
-      (error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
+      (lessonComment, errors) => {
+        if (!isNil(errors)) {
+          this.setState({ error: errors[0].message })
         }
+        this.setState({body: lessonComment.body})
         this.handleToggleEdit()
       },
     )

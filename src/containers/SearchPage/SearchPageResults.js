@@ -2,7 +2,7 @@ import * as React from 'react'
 import cls from 'classnames'
 import {withRouter} from 'react-router-dom'
 import queryString from 'query-string'
-import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
+import {SearchProp, SearchPropDefaults} from 'components/Search'
 import SearchNav from './SearchNav'
 import SearchResults from 'components/SearchResults'
 import {debounce, get, isEmpty} from 'utils'
@@ -88,11 +88,11 @@ class SearchPageResults extends React.Component {
 }
 
 SearchPageResults.propTypes = {
-  search: SearchResultsProp,
+  search: SearchProp,
 }
 
 SearchPageResults.defaultProps = {
-  search: SearchResultsPropDefaults,
+  search: SearchPropDefaults,
 }
 
 export default withRouter(SearchPageResults)

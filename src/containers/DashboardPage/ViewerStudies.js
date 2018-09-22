@@ -1,6 +1,6 @@
 import * as React from 'react'
 import cls from 'classnames'
-import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
+import {SearchProp, SearchPropDefaults} from 'components/Search'
 import StudyPreview from 'components/StudyPreview'
 
 class ViewerStudies extends React.Component {
@@ -31,11 +31,11 @@ class ViewerStudies extends React.Component {
 }
 
 ViewerStudies.propTypes = {
-  search: SearchResultsProp,
+  search: SearchProp,
 }
 
 ViewerStudies.defaultProps = {
-  search: SearchResultsPropDefaults,
+  search: SearchPropDefaults,
 }
 
 export default ViewerStudies

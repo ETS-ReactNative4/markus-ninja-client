@@ -125,6 +125,7 @@ class TopicHeader extends React.Component {
 export default withRouter(createFragmentContainer(TopicHeader, graphql`
   fragment TopicHeader_topic on Topic {
     description
+    id
     name
     viewerCanUpdate
   }

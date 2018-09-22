@@ -6,7 +6,9 @@ import {
 } from 'react-relay'
 import environment from 'Environment'
 import NotFound from 'components/NotFound'
+import StudyLabels from 'components/StudyLabels'
 import LessonHeader from './LessonHeader'
+import LessonLabels from './LessonLabels'
 import LessonBody from './LessonBody'
 import AddLessonCommentForm from './AddLessonCommentForm'
 import LessonTimeline from './LessonTimeline'
@@ -20,6 +22,7 @@ const LessonPageQuery = graphql`
       lesson(number: $number) {
         id
         ...LessonHeader_lesson
+        ...LessonLabels_lesson
         ...LessonBody_lesson
         ...LessonTimeline_lesson
         ...AddLessonCommentForm_lesson
@@ -60,6 +63,9 @@ class LessonPage extends React.Component {
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
                   <LessonHeader lesson={lesson}/>
+                  <StudyLabels>
+                    <LessonLabels lesson={lesson}/>
+                  </StudyLabels>
                   <LessonBody lesson={lesson}/>
                   <AddLessonCommentForm className="mt3" lesson={lesson} />
                   <LessonTimeline lesson={lesson} />

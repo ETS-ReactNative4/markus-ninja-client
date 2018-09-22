@@ -38,6 +38,7 @@ class UserAssetHeader extends React.Component {
         this.setState({
           name: get(updatedUserAsset, "name", ""),
         })
+        this.props.history.push(updatedUserAsset.resourcePath)
       },
     )
   }

@@ -17,12 +17,11 @@ const mutation = graphql`
   }
 `
 
-export default (topicId, description, name, callback) => {
+export default (topicId, description, callback) => {
   const variables = {
     input: {
       topicId,
       description,
-      name,
     },
   }
 
@@ -33,22 +32,24 @@ export default (topicId, description, name, callback) => {
       variables,
       optimisticUpdater: proxyStore => {
         const topic = proxyStore.get(topicId)
-        if (!isNil(description)) {
+        if (topic && !isNil(description)) {
           topic.setValue(description, 'description')
         }
       },
       updater: proxyStore => {
         const updateTopicField = proxyStore.getRootField('updateTopic')
-        const newDescription = updateTopicField.getValue('description')
-        const newResourcePath = updateTopicField.getValue('resourcePath')
-        const newUrl = updateTopicField.getValue('url')
-        const newUpdatedAt = updateTopicField.getValue('updatedAt')
+        if (updateTopicField) {
+          const newDescription = updateTopicField.getValue('description')
+          const newResourcePath = updateTopicField.getValue('resourcePath')
+          const newUrl = updateTopicField.getValue('url')
+          const newUpdatedAt = updateTopicField.getValue('updatedAt')
 
-        const topic = proxyStore.get(topicId)
-        topic.setValue(newDescription, 'description')
-        topic.setValue(newResourcePath, 'resourcePath')
-        topic.setValue(newUrl, 'url')
-        topic.setValue(newUpdatedAt, 'updatedAt')
+          const topic = proxyStore.get(topicId)
+          topic.setValue(newDescription, 'description')
+          topic.setValue(newResourcePath, 'resourcePath')
+          topic.setValue(newUrl, 'url')
+          topic.setValue(newUpdatedAt, 'updatedAt')
+        }
       },
       onCompleted: (response, error) => {
         callback(error)

@@ -102,7 +102,7 @@ class ResearchPage extends React.Component {
                       </h5>
                       {popularTopicEdges.map(({node}) => (
                         <div key={node.id} className="mdc-layout-grid__cell">
-                          <div className="mdc-card mdc-card--outlined ">
+                          <div className="mdc-card mdc-card--outlined h-100">
                             <TopicPreview
                               className="mdc-card__primary-action pa3 h-100"
                               key={node.id}

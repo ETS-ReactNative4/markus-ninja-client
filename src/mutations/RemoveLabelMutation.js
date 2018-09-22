@@ -33,7 +33,7 @@ export default (labelId, labelableId, callback) => {
           const labelable = proxyStore.get(labelableId)
           const labels = ConnectionHandler.getConnection(
             labelable,
-            "LessonHeader_labels",
+            "LessonLabels_labels",
           )
           const removedLabelId = removeLabelField.getValue("removedLabelId")
 

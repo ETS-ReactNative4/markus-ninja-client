@@ -26,7 +26,9 @@ class ReferencedEvent extends React.Component {
           </span>
         </div>
         <div className="pl2 pv2">
-          <LessonPreview lesson={event.source} />
+          <div className="mdc-card mdc-card--outlined pa3">
+            <LessonPreview.Search lesson={event.source} />
+          </div>
         </div>
       </div>
     )

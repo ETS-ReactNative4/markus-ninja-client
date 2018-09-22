@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
+import {SearchProp, SearchPropDefaults} from 'components/Search'
 import StudyPreview from 'components/StudyPreview'
 import {isEmpty} from 'utils'
 
@@ -40,11 +40,11 @@ class StudySearchResults extends React.Component {
 }
 
 StudySearchResults.propTypes = {
-  search: SearchResultsProp,
+  search: SearchProp,
 }
 
 StudySearchResults.defaultProps = {
-  search: SearchResultsPropDefaults,
+  search: SearchPropDefaults,
 }
 
 export default StudySearchResults

@@ -37,7 +37,7 @@ export default (labelId, labelableId, callback) => {
           const labelable = proxyStore.get(labelableId)
           const labels = ConnectionHandler.getConnection(
             labelable,
-            "LessonHeader_labels",
+            "LessonLabels_labels",
           )
           const edge = addLabelField.getLinkedRecord("labelEdge")
 

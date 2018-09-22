@@ -48,13 +48,12 @@ class UserTutors extends React.Component {
             <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
             {enrolledEdges.map(({node}) => (
               node &&
-              <React.Fragment key={node.id}>
-                <UserPreview.Tutor
-                  className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                  user={node}
-                />
-                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-              </React.Fragment>
+              <div key={node.id} className="mdc-layout-grid__cell">
+                <div key={node.id} className="mdc-layout-grid__cell">
+                  <UserPreview.Tutor user={node} />
+                  <div className="rn-divider mt4" />
+                </div>
+              </div>
             ))}
             {this.props.relay.hasMore() &&
             <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">

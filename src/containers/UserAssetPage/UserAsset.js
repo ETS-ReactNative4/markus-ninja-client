@@ -33,8 +33,6 @@ class UserAsset extends React.Component {
     const asset = get(this.props, "asset", {})
     return (
       <div className={this.classes}>
-        <div>{asset.type}</div>
-        <div>{asset.subtype}</div>
         <img className="w-100 h-auto" src={asset.href} alt={asset.name} />
         <button
           className="mdc-icon-button material-icons"

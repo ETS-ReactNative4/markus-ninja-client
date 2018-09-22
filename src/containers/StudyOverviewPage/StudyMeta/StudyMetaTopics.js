@@ -167,12 +167,12 @@ class StudyMetaTopics extends React.Component {
         </Link>)}
         {pageInfo.hasNextPage &&
         <button
-          className="material-icons mdc-icon-button mr1 mb1"
+          className="mdc-button mdc-button--unelevated mr1 mb1"
           onClick={this._loadMore}
           aria-label="More"
           title="More"
         >
-          more
+          Load More
         </button>}
         {study.viewerCanAdmin &&
         <button

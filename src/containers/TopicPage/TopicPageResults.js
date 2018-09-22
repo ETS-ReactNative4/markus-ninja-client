@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {withRouter} from 'react-router-dom'
 import queryString from 'query-string'
-import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
+import {SearchProp, SearchPropDefaults} from 'components/Search'
 import TopicNav from './TopicNav'
 import SearchResultItemPreview from 'components/SearchResultItemPreview'
 import {debounce, get, isEmpty} from 'utils'
@@ -101,11 +101,11 @@ class TopicSearchResults extends React.Component {
 }
 
 TopicSearchResults.propTypes = {
-  search: SearchResultsProp,
+  search: SearchProp,
 }
 
 TopicSearchResults.defaultProps = {
-  search: SearchResultsPropDefaults,
+  search: SearchPropDefaults,
 }
 
 export default withRouter(TopicSearchResults)

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {get} from 'utils'
-import {SearchResultsProp, SearchResultsPropDefaults} from 'components/Search'
+import {SearchProp, SearchPropDefaults} from 'components/Search'
 import CourseSearchResults from 'components/CourseSearchResults'
 import LabelSearchResults from 'components/LabelSearchResults'
 import LessonSearchResults from 'components/LessonSearchResults'
@@ -34,11 +34,11 @@ class SearchResults extends React.PureComponent {
 }
 
 SearchResults.propTypes = {
-  search: SearchResultsProp,
+  search: SearchProp,
 }
 
 SearchResults.defaultProps = {
-  search: SearchResultsPropDefaults,
+  search: SearchPropDefaults,
 }
 
 export default SearchResults

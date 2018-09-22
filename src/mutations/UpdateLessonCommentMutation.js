@@ -48,7 +48,9 @@ export default (lessonCommentId, body, callback) => {
           lessonComment.setValue(newUpdatedAt, 'updatedAt')
         }
       },
-      onCompleted: callback,
+      onCompleted: (response, error) => {
+        callback(response.updateLessonComment, error)
+      },
       onError: err => console.error(err),
     },
   )

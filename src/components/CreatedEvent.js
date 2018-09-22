@@ -55,9 +55,7 @@ class CreatedEvent extends React.Component {
                 return null
             }
           })()}
-          <span
-            className="mdc-typography--text-secondary-on-light ml1"
-          >
+          <span className="ml1">
             on {moment(event.createdAt).format("MMM D")}
           </span>
         </div>

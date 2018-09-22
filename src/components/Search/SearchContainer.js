@@ -6,7 +6,7 @@ import {
 } from 'react-relay'
 import { debounce, get, isNil, isEmpty } from 'utils'
 
-class SearchResults extends React.Component {
+class SearchContainer extends React.Component {
   state = {
     error: null,
     loading: false,
@@ -25,7 +25,7 @@ class SearchResults extends React.Component {
     const { loading, q } = this.state
     const after = get(this.props, "results.search.pageInfo.endCursor")
 
-    if (!this._hasMore()) {
+    if (!this._hasMore) {
       console.log("Nothing more to load")
       return
     } else if (loading) {
@@ -99,18 +99,18 @@ class SearchResults extends React.Component {
   }
 }
 
-SearchResults.propTypes = {
+SearchContainer.propTypes = {
   query: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   within: PropTypes.string,
 }
 
-SearchResults.defaultProps = {
+SearchContainer.defaultProps = {
   query: "",
   type: "",
 }
 
-export const SearchResultsProp = PropTypes.shape({
+export const SearchProp = PropTypes.shape({
   type: PropTypes.string,
   edges: PropTypes.array,
   idLoading: PropTypes.bool,
@@ -127,7 +127,7 @@ export const SearchResultsProp = PropTypes.shape({
   }),
 })
 
-export const SearchResultsPropDefaults = {
+export const SearchPropDefaults = {
   type: "",
   edges: [],
   isLoading: false,
@@ -144,10 +144,10 @@ export const SearchResultsPropDefaults = {
   },
 }
 
-const refetchContainer = createRefetchContainer(SearchResults,
+const refetchContainer = createRefetchContainer(SearchContainer,
   {
     results: graphql`
-      fragment SearchResults_results on Query @argumentDefinitions(
+      fragment SearchContainer_results on Query @argumentDefinitions(
         count: {type: "Int!"},
         after: {type: "String"},
         orderBy: {type: "SearchOrder"},
@@ -156,7 +156,7 @@ const refetchContainer = createRefetchContainer(SearchResults,
         within: {type: "ID"}
       ) {
         search(first: $count, after: $after, orderBy: $orderBy, query: $query, type: $type, within: $within)
-        @connection(key: "SearchResults_search", filters: ["orderBy", "type", "within"]) {
+        @connection(key: "SearchContainer_search", filters: ["orderBy", "type", "within"]) {
           edges {
             cursor
             node {
@@ -200,7 +200,7 @@ const refetchContainer = createRefetchContainer(SearchResults,
     `,
   },
   graphql`
-    query SearchResultsRefetchQuery(
+    query SearchContainerRefetchQuery(
       $count: Int!,
       $after: String,
       $orderBy: SearchOrder,
@@ -208,7 +208,7 @@ const refetchContainer = createRefetchContainer(SearchResults,
       $type: SearchType!,
       $within: ID
     ) {
-      ...SearchResults_results @arguments(
+      ...SearchContainer_results @arguments(
         count: $count,
         after: $after,
         orderBy: $orderBy,

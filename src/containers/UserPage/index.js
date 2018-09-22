@@ -73,14 +73,10 @@ class UserPage extends React.Component {
                     <UserHeader user={props.user} />
                   </div>
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <div className="mdc-layout-grid__inner">
-                      <div className="mdc-layout-grid__cell--span-12" >
-                        <UserNav user={props.user} />
-                      </div>
-                      <div className="mdc-layout-grid__cell--span-12" >
-                        <Tab user={props.user} />
-                      </div>
-                    </div>
+                    <UserNav user={props.user} />
+                  </div>
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12" >
+                    <Tab user={props.user} />
                   </div>
                 </div>
               </div>
