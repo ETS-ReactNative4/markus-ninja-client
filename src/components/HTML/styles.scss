@@ -1,4 +1,30 @@
+@import "@material/theme/mixins";
+@import "@material/typography/mixins";
+@import "@material/typography/variables";
+
 .HTML {
+  @include mdc-typography(body1); 
+  @include mdc-theme-prop(color, text-primary-on-background);
+
+  a {
+    text-decoration: none;
+    transition: color 100ms;
+    color: inherit;
+
+    &:hover {
+      color: var(--mdc-theme-text-secondary-on-light);
+    }
+  }
+
+  blockquote {
+    @include mdc-theme-prop(border-color, primary);
+
+    margin: 20px 0;
+    padding-left: 1.5rem;
+    border-left-width: 5px;
+    border-left-style: solid;
+  }
+
   img {
     width: 100%;
   }

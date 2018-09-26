@@ -43,11 +43,16 @@ class LessonPreview extends React.Component {
   render() {
     const lesson = get(this.props, "lesson", {})
     return (
-      <div className={this.classes}>
+      <span className={this.classes}>
         <Link className="link" to={lesson.resourcePath}>
-          {lesson.number}: {lesson.title}
+          <span className="mdc-typography--headline6">
+            {lesson.title}
+          </span>
+          <span className="mdc-theme--text-secondary-on-light ml1">
+            #{lesson.number}
+          </span>
         </Link>
-      </div>
+      </span>
     )
   }
 }

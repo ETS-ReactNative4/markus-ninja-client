@@ -31,7 +31,7 @@ export default (lessonCommentId, body, callback) => {
       variables,
       optimisticUpdater: proxyStore => {
         const lessonComment = proxyStore.get(lessonCommentId)
-        if (!isNil(body)) {
+        if (lessonComment && !isNil(body)) {
           lessonComment.setValue(body, 'body')
         }
       },
@@ -43,9 +43,11 @@ export default (lessonCommentId, body, callback) => {
           const newUpdatedAt = updateLessonCommentField.getValue('updatedAt')
 
           const lessonComment = proxyStore.get(lessonCommentId)
-          lessonComment.setValue(newBody, 'body')
-          lessonComment.setValue(newBodyHTML, 'bodyHTML')
-          lessonComment.setValue(newUpdatedAt, 'updatedAt')
+          if (lessonComment) {
+            lessonComment.setValue(newBody, 'body')
+            lessonComment.setValue(newBodyHTML, 'bodyHTML')
+            lessonComment.setValue(newUpdatedAt, 'updatedAt')
+          }
         }
       },
       onCompleted: (response, error) => {

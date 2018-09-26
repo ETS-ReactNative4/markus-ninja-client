@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import HTML from 'components/HTML'
 import { isNil, makeCancelable } from 'utils'
@@ -33,7 +34,7 @@ class Preview extends React.Component {
 
   fetchPreview = () => {
     this.setState({loading: true})
-    const {text} = this.props
+    const {studyId, text} = this.props
 
     const Authorization = getAuthHeader()
     if (isNil(Authorization)) { return }
@@ -42,7 +43,7 @@ class Preview extends React.Component {
     formData.append("text", text)
 
     const request = makeCancelable(fetch(
-      process.env.REACT_APP_API_URL + "/preview",
+      process.env.REACT_APP_API_URL + "/preview?study=" + studyId,
       {
         method: "POST",
         headers: {
@@ -90,6 +91,16 @@ class Preview extends React.Component {
       </div>
     )
   }
+}
+
+Preview.propTypes = {
+  studyId: PropTypes.string,
+  text: PropTypes.string,
+}
+
+Preview.defaultProps = {
+  studyId: "",
+  text: "",
 }
 
 export default Preview

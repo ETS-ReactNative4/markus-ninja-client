@@ -23,6 +23,10 @@ class HTML extends React.PureComponent {
   render() {
     const {html} = this.props
 
+    if (html === null) {
+      return null
+    }
+
     return (
       <div {...this.otherProps} className={this.classes}>
         {convert(html)}

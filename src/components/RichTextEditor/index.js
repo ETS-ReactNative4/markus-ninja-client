@@ -114,7 +114,9 @@ class RichTextEditor extends React.Component {
     const currentContent = previousEditorState.getCurrentContent()
     const selection = previousEditorState.getSelection()
     const fileLink = Modifier.insertText(currentContent, selection,
-      ` ![${asset.name}](${asset.href}) `
+      wasSaved
+      ? `$$${asset.name}`
+      : ` ![${asset.name}](${asset.href})`
     )
     this.setState({loadingFile: false})
     this.handleChange(EditorState.push(editorState, fileLink, 'insert-fragment'))

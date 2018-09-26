@@ -22,13 +22,9 @@ class ReferencedEvent extends React.Component {
         <div>
           <UserLink className="rn-link fw5" user={get(event, "user", null)} />
           <span className="ml1">
-            {event.isCrossStudy && "cross-"}referenced this on {moment(event.createdAt).format("MMM D")}
+            {event.isCrossStudy && "cross-"}referenced this lesson on {moment(event.createdAt).format("MMM D")} from
           </span>
-        </div>
-        <div className="pl2 pv2">
-          <div className="mdc-card mdc-card--outlined pa3">
-            <LessonPreview.Search lesson={event.source} />
-          </div>
+          <LessonPreview className="ml1" lesson={event.source} />
         </div>
       </div>
     )

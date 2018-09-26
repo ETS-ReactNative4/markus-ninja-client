@@ -22,10 +22,11 @@ class LessonBody extends React.Component {
       this.props.lesson.id,
       null,
       body,
-      (error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
+      (lesson, errors) => {
+        if (!isNil(errors)) {
+          this.setState({ error: errors[0].message })
         }
+        this.setState({body: lesson.body})
         this.handleToggleEdit()
       },
     )

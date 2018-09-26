@@ -102,7 +102,7 @@ class CreateLessonForm extends React.Component {
                 />
               </div>
               <div className="CreateLessonForm__preview">
-                <Preview open={preview} text={body} />
+                <Preview open={preview} studyId={get(this.props, "study.id", "")} text={body} />
               </div>
             </div>
           </div>
