@@ -6,10 +6,8 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import AddLessonCommentMutation from 'mutations/AddLessonCommentMutation'
-import LoginLink from 'components/LoginLink'
 import RichTextEditor from 'components/RichTextEditor'
 import { get, isNil } from 'utils'
-import { isAuthenticated } from 'auth'
 
 class AddLessonCommentForm extends React.Component {
   state = {
@@ -45,25 +43,15 @@ class AddLessonCommentForm extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("AddLessonCommentForm", className)
+    return cls("AddLessonCommentForm mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {
-    return (
-      <React.Fragment>
-        {isAuthenticated
-        ? this.renderForm()
-        : this.renderLoginLink()}
-      </React.Fragment>
-    )
-  }
-
-  renderForm() {
     const {submitted} = this.state
 
     return (
       <form
-        className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+        className={this.classes}
         onSubmit={this.handleSubmit}
       >
         <RichTextEditor
@@ -75,14 +63,6 @@ class AddLessonCommentForm extends React.Component {
         />
         <button className="mdc-button mdc-button--unelevated mt2" type="submit">Comment</button>
       </form>
-    )
-  }
-
-  renderLoginLink() {
-    return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <LoginLink>Login to leave a comment</LoginLink>
-      </div>
     )
   }
 }

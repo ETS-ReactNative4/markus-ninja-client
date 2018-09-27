@@ -49,8 +49,8 @@ class UserTutors extends React.Component {
             {enrolledEdges.map(({node}) => (
               node &&
               <div key={node.id} className="mdc-layout-grid__cell">
-                <div key={node.id} className="mdc-layout-grid__cell">
-                  <UserPreview.Tutor user={node} />
+                <div className="flex flex-column h-100">
+                  <UserPreview.Tutor className="flex-auto" user={node} />
                   <div className="rn-divider mt4" />
                 </div>
               </div>

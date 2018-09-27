@@ -2,12 +2,7 @@ import base64url from 'base64url'
 import moment from 'moment'
 import { isEmpty } from 'utils'
 
-export function isAuthenticated() {
-  return tokenIsValid()
-}
-
-export function tokenIsValid() {
-  const accessToken = window.sessionStorage.getItem("access_token")
+function isAccessTokenValid(accessToken) {
   if (!isEmpty(accessToken)) {
     const tokenParts = accessToken.split(".")
     const decodedPayload = base64url.decode(tokenParts[0])
@@ -23,6 +18,36 @@ export function tokenIsValid() {
   return false
 }
 
+function removeAccessToken() {
+  window.sessionStorage.removeItem("access_token")
+}
+
+function getAccessToken() {
+  return window.sessionStorage.getItem("access_token")
+}
+
+function setAccessToken(accessToken) {
+  if (isAccessTokenValid(accessToken)) {
+    window.sessionStorage.setItem("access_token", accessToken)
+  }
+}
+
+export function login(token) {
+  setAccessToken(token)
+}
+
+export function logout() {
+  removeAccessToken()
+}
+
+export function getAuthHeader() {
+  if (isAccessTokenValid(getAccessToken())) {
+    const accessToken = window.sessionStorage.getItem("access_token")
+    return "Bearer "+ accessToken
+  }
+  return null
+}
+
 export function getViewerId() {
   const accessToken = window.sessionStorage.getItem("access_token")
   if (!isEmpty(accessToken)) {
@@ -34,14 +59,6 @@ export function getViewerId() {
   return null
 }
 
-export function getAuthHeader() {
-  if (tokenIsValid()) {
-    const accessToken = window.sessionStorage.getItem("access_token")
-    return "Bearer "+ accessToken
-  }
-  return null
-}
-
-export function removeAccessToken() {
-  window.sessionStorage.removeItem("access_token")
+export function isAuthenticated() {
+  return isAccessTokenValid(getAccessToken())
 }

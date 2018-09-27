@@ -57,12 +57,14 @@ class TopicSearchResults extends React.Component {
               </div>
             ))}
             {hasMore &&
-            <button
-              className="mdc-button mdc-button--unelevated"
-              onClick={loadMore}
-            >
-              More
-            </button>}
+            <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              <button
+                className="mdc-button mdc-button--unelevated"
+                onClick={loadMore}
+              >
+                More
+              </button>
+            </div>}
           </React.Fragment>}
       </React.Fragment>
     )

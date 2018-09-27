@@ -7,11 +7,13 @@ import {
 import environment from 'Environment'
 import NotFound from 'components/NotFound'
 import StudyLabels from 'components/StudyLabels'
+import LoginLink from 'components/LoginLink'
 import LessonHeader from './LessonHeader'
 import LessonLabels from './LessonLabels'
 import LessonBody from './LessonBody'
 import AddLessonCommentForm from './AddLessonCommentForm'
 import LessonTimeline from './LessonTimeline'
+import {isAuthenticated} from 'auth'
 import { get } from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
@@ -67,7 +69,11 @@ class LessonPage extends React.Component {
                     <LessonLabels lesson={lesson}/>
                   </StudyLabels>
                   <LessonBody lesson={lesson}/>
-                  <AddLessonCommentForm className="mt3" lesson={lesson} />
+                  {isAuthenticated()
+                  ? <AddLessonCommentForm className="mt3" lesson={lesson} />
+                  : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      <LoginLink>Login to leave a comment</LoginLink>
+                    </div>}
                   <LessonTimeline lesson={lesson} />
                 </div>
               </div>

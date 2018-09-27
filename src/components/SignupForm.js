@@ -1,7 +1,10 @@
 import * as React from 'react'
 import cls from 'classnames'
+import {withRouter} from 'react-router-dom'
 import TextField, {Input, HelperText} from '@material/react-text-field'
 import CreateUserMutation from 'mutations/CreateUserMutation'
+import {isNil} from 'utils'
+import {login} from 'auth'
 
 class SignupForm extends React.Component {
   state = {
@@ -20,13 +23,18 @@ class SignupForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { email, username, password } = this.state
-    CreateUserMutation(email, username, password, (token, error) => {
-      if (error !== null) {
-        this.setState({ error: error.message })
+    CreateUserMutation(
+      email,
+      username,
+      password,
+      (token, errors) => {
+        if (!isNil(errors)) {
+          console.error(errors[0].message)
+        }
+        login(token.token)
+        this.props.history.push("/")
       }
-      window.sessionStorage.setItem("access_token", token.token)
-      this.props.history.push("/")
-    })
+    )
   }
 
   get classes() {
@@ -62,8 +70,8 @@ class SignupForm extends React.Component {
             label="Email address"
             helperText={
               <HelperText persistent>
-                We'll occasionally send updates about your account to this inbox.
-                We'll never share your email address with anyone.
+                You will occasionally receive updates about your account to this inbox.
+                Your email address will never shared with anyone.
               </HelperText>
             }
           >
@@ -106,4 +114,4 @@ class SignupForm extends React.Component {
   }
 }
 
-export default SignupForm
+export default withRouter(SignupForm)

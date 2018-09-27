@@ -12,6 +12,31 @@ class ChangePassword extends React.Component {
     error: null,
   }
 
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const { confirmNewPassword, newPassword, oldPassword } = this.state
+    if (newPassword !== confirmNewPassword) {
+      this.setState({ error: "passwords do not match" })
+    } else {
+      return UpdateViewerAccountMutation(
+        null,
+        newPassword,
+        oldPassword,
+        (error) => {
+          if (!isNil(error)) {
+            this.setState({ error: error.message })
+          }
+        },
+      )
+    }
+  }
+
   get classes() {
     const {className} = this.props
     return cls("ChangePassword mdc-layout-grid__inner", className)
@@ -73,31 +98,6 @@ class ChangePassword extends React.Component {
         </div>
       </form>
     )
-  }
-
-  handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    })
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const { confirmNewPassword, newPassword, oldPassword } = this.state
-    if (newPassword !== confirmNewPassword) {
-      this.setState({ error: "passwords do not match" })
-    } else {
-      return UpdateViewerAccountMutation(
-        null,
-        newPassword,
-        oldPassword,
-        (error) => {
-          if (!isNil(error)) {
-            this.setState({ error: error.message })
-          }
-        },
-      )
-    }
   }
 }
 

@@ -18,6 +18,7 @@ import LogoutPage from 'containers/LogoutPage'
 import NotificationsPage from 'containers/NotificationsPage'
 import UserSettingsPage from 'containers/UserSettingsPage'
 import ResearchPage from 'containers/ResearchPage'
+import ResetPasswordPage from 'containers/ResetPasswordPage'
 import SearchPage from 'containers/SearchPage'
 import SignupPage from 'containers/SignupPage'
 import StudyPage from 'containers/StudyPage'
@@ -55,6 +56,7 @@ class App extends React.Component {
                 <Switch>
                   <Route exact path="/login" component={LoginPage} />
                   <Route exact path="/logout" component={LogoutPage} />
+                  <Route exact path="/reset_password" component={ResetPasswordPage} />
                   <Route render={() =>
                     <div>
                       <Header viewer={props.viewer} />

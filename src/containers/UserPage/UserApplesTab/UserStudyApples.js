@@ -33,7 +33,7 @@ class UserStudyApples extends React.Component {
     const appledEdges = get(user, "appledStudies.edges", [])
     return (
       <div className={this.classes}>
-        <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <h5 className="fw5 mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           Appled studies
         </h5>
         {isEmpty(appledEdges)

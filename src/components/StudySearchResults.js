@@ -12,9 +12,9 @@ class StudySearchResults extends React.Component {
         {isLoading
         ? <div>Loading...</div>
         : (isEmpty(edges)
-          ? <span className="mr1">
+          ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               No studies were found.
-            </span>
+            </div>
           : <React.Fragment>
               {edges.map(({node}) => (
                 node &&
@@ -27,12 +27,14 @@ class StudySearchResults extends React.Component {
                 </React.Fragment>
               ))}
               {hasMore &&
-              <button
-                className="mdc-button mdc-button--unelevated"
-                onClick={loadMore}
-              >
-                More
-              </button>}
+              <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                <button
+                  className="mdc-button mdc-button--unelevated"
+                  onClick={loadMore}
+                >
+                  More
+                </button>
+              </div>}
           </React.Fragment>)}
       </React.Fragment>
     )

@@ -7,9 +7,9 @@ import {
 import { Link, withRouter } from 'react-router-dom'
 import MediaQuery from 'react-responsive'
 import IconLink from 'components/IconLink'
-import { isAuthenticated } from 'auth'
 import LoginLink from 'components/LoginLink'
 import SearchBar from './SearchBar'
+import {isAuthenticated} from 'auth'
 import { get } from 'utils'
 
 import './styles.css'

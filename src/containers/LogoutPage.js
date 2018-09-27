@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Redirect } from 'react-router-dom'
 import LogoutUserMutation from 'mutations/LogoutUserMutation'
-import { removeAccessToken } from 'auth'
+import {logout} from 'auth'
 import { isNil } from 'utils'
 
 class LogoutPage extends React.Component {
@@ -16,7 +16,7 @@ class LogoutPage extends React.Component {
           this.setState({ error: error[0].message })
           return
         }
-        removeAccessToken()
+        logout()
         this.setState({ loggedOut: true })
       },
     )

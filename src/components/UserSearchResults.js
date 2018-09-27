@@ -18,21 +18,22 @@ class UserSearchResults extends React.Component {
           : <React.Fragment>
               {edges.map(({node}) => (
                 node &&
-                <React.Fragment key={node.id}>
-                  <UserPreview.Search
-                    className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                    user={node}
-                  />
-                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                </React.Fragment>
+                <div key={node.id} className="mdc-layout-grid__cell">
+                  <div className="flex flex-column h-100">
+                    <UserPreview.Search className="flex-auto" user={node} />
+                    <div className="rn-divider mt4" />
+                  </div>
+                </div>
               ))}
               {hasMore &&
-              <button
-                className="mdc-button mdc-button--unelevated"
-                onClick={loadMore}
-              >
-                More
-              </button>}
+              <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                <button
+                  className="mdc-button mdc-button--unelevated"
+                  onClick={loadMore}
+                >
+                  More
+                </button>
+              </div>}
           </React.Fragment>)}
       </React.Fragment>
     )

@@ -129,12 +129,18 @@ class UserHeader extends React.Component {
           <EnrollmentSelect enrollable={userProp} />}
         </div>
         <div className="flex items-center w-100">
-          <HTML className="flex-auto mdc-theme--text-secondary-on-light" html={user.bioHTML} />
+          <div className="flex-auto mdc-theme--text-secondary-on-light">
+            {isEmpty(user.bio)
+            ? <div>No bio provided</div>
+            : <HTML html={user.bioHTML} />}
+          </div>
           {user.isViewer &&
           <button
             className="mdc-icon-button material-icons"
             type="button"
             onClick={this.handleToggleOpen}
+            aria-label="Edit bio"
+            title="Edit bio"
           >
             edit
           </button>}

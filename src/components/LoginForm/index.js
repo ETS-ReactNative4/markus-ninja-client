@@ -4,6 +4,7 @@ import { withRouter } from 'react-router'
 import queryString from 'query-string'
 import TextField, {Input} from '@material/react-text-field'
 import LoginUserMutation from 'mutations/LoginUserMutation'
+import {login} from 'auth'
 import { get, isNil } from 'utils'
 
 import './styles.css'
@@ -32,7 +33,7 @@ class LoginForm extends React.Component {
           this.setState({ error: error[0].message })
           return
         }
-        window.sessionStorage.setItem("access_token", token.token)
+        login(token.token)
         const search = queryString.parse(get(this.props, "location.search", ""))
         const returnTo = get(search, "return_to", undefined)
         this.props.history.replace(returnTo || "/")
