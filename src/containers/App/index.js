@@ -27,6 +27,7 @@ import TopicsPage from 'containers/TopicsPage'
 import HomePage from 'containers/HomePage'
 import UserPage from 'containers/UserPage'
 import UserAssetPage from 'containers/UserAssetPage'
+import VerifyEmailPage from 'containers/VerifyEmailPage'
 import environment from 'Environment'
 
 import './styles.css'
@@ -57,6 +58,7 @@ class App extends React.Component {
                   <Route exact path="/login" component={LoginPage} />
                   <Route exact path="/logout" component={LogoutPage} />
                   <Route exact path="/reset_password" component={ResetPasswordPage} />
+                  <Route exact path="/verify_email" component={VerifyEmailPage} />
                   <Route render={() =>
                     <div>
                       <Header viewer={props.viewer} />

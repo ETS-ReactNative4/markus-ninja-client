@@ -1,14 +1,30 @@
 import base64url from 'base64url'
 import moment from 'moment'
+import cookies from 'browser-cookies'
 import { isEmpty } from 'utils'
 
-function isAccessTokenValid(accessToken) {
-  if (!isEmpty(accessToken)) {
+function decodeAccessToken(accessToken) {
+  if (!isEmpty(accessToken) && typeof accessToken === 'string') {
     const tokenParts = accessToken.split(".")
     const decodedPayload = base64url.decode(tokenParts[0])
     const payload = JSON.parse(decodedPayload)
+    return payload
+  }
+  return
+}
+
+function removeAccessToken() {
+  cookies.erase("accessToken")
+}
+
+function getAccessToken() {
+  return cookies.get("accessToken")
+}
+
+function isAccessTokenPayloadValid(payload) {
+  if (payload && typeof payload === 'object') {
     if (moment.unix(payload.Exp).isBefore(moment())) {
-      console.error("access_token expired")
+      console.error("accessToken expired")
       removeAccessToken()
       return false
     } else {
@@ -18,18 +34,24 @@ function isAccessTokenValid(accessToken) {
   return false
 }
 
-function removeAccessToken() {
-  window.sessionStorage.removeItem("access_token")
-}
-
-function getAccessToken() {
-  return window.sessionStorage.getItem("access_token")
-}
-
 function setAccessToken(accessToken) {
-  if (isAccessTokenValid(accessToken)) {
-    window.sessionStorage.setItem("access_token", accessToken)
+  const payload = decodeAccessToken(accessToken)
+  if (payload) {
+    if (moment.unix(payload.Exp).isBefore(moment())) {
+      console.error("accessToken expired")
+      return
+    }
+    return cookies.set(
+      "accessToken",
+      accessToken,
+      {
+        expires: moment.unix(payload.Exp).toDate(),
+        // secure: true,
+        // httponly: true,
+      },
+    )
   }
+  return
 }
 
 export function login(token) {
@@ -41,24 +63,25 @@ export function logout() {
 }
 
 export function getAuthHeader() {
-  if (isAccessTokenValid(getAccessToken())) {
-    const accessToken = window.sessionStorage.getItem("access_token")
-    return "Bearer "+ accessToken
+  const accessToken = getAccessToken()
+  const payload = decodeAccessToken(accessToken)
+  if (isAccessTokenPayloadValid(payload)) {
+    return "Bearer " + accessToken
   }
-  return null
+  return
 }
 
 export function getViewerId() {
-  const accessToken = window.sessionStorage.getItem("access_token")
-  if (!isEmpty(accessToken)) {
-    const tokenParts = accessToken.split(".")
-    const decodedPayload = base64url.decode(tokenParts[0])
-    const payload = JSON.parse(decodedPayload)
+  const accessToken = getAccessToken()
+  const payload = decodeAccessToken(accessToken)
+  if (payload) {
     return payload.Sub
   }
-  return null
+  return
 }
 
 export function isAuthenticated() {
-  return isAccessTokenValid(getAccessToken())
+  const accessToken = getAccessToken()
+  const payload = decodeAccessToken(accessToken)
+  return isAccessTokenPayloadValid(payload)
 }

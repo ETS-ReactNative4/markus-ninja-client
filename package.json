@@ -29,6 +29,7 @@
     "@material/top-app-bar": "^0.38.1",
     "@material/typography": "^0.38.0",
     "base64url": "^3.0.0",
+    "browser-cookies": "^1.2.0",
     "classnames": "^2.2.6",
     "draft-js": "^0.10.5",
     "graphql": "^0.13.2",

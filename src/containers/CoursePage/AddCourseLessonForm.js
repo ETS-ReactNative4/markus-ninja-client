@@ -7,7 +7,7 @@ import {
 import { withRouter } from 'react-router'
 import AddCourseLessonMutation from 'mutations/AddCourseLessonMutation'
 import StudyLessonSelect from 'components/StudyLessonSelect'
-import { get, isNil } from 'utils'
+import {get, isEmpty, isNil} from 'utils'
 
 class AddCourseLessonForm extends React.Component {
   state = {
@@ -18,6 +18,10 @@ class AddCourseLessonForm extends React.Component {
   get classes() {
     const {className} = this.props
     return cls("AddCourseLessonForm flex items-center", className)
+  }
+
+  get formSubmittable() {
+    return !isEmpty(this.state.lessonId)
   }
 
   render() {
@@ -32,7 +36,11 @@ class AddCourseLessonForm extends React.Component {
           study={get(course, "study", null)}
           onChange={this.handleChangeLesson}
         />
-        <button className="mdc-button mdc-button--unelevated ml2" type="submit">
+        <button
+          className="mdc-button mdc-button--unelevated ml2"
+          type="submit"
+          disabled={!this.formSubmittable}
+        >
           Add lesson
         </button>
       </form>

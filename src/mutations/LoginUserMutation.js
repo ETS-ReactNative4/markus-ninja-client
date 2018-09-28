@@ -15,6 +15,7 @@ const mutation = graphql`
       }
       user {
         id
+        isVerified
         ...Header_viewer
       }
     }
