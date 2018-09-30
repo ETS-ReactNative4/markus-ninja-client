@@ -116,6 +116,7 @@ class UserAssetHeader extends React.Component {
             <span>/</span>
             <StudyLink className="rn-link" study={get(asset, "study", null)} />
             <span>/</span>
+            <i className="material-icons v-mid mr1">image</i>
             <span className="fw5">{asset.name}</span>
           </h5>
           {asset.viewerCanUpdate &&

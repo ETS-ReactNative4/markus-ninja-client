@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import { withRouter } from 'react-router'
 import queryString from 'query-string'
@@ -34,6 +35,7 @@ class LoginForm extends React.Component {
           return
         }
         login(token.token)
+        this.props.onLogin()
         const search = queryString.parse(get(this.props, "location.search", ""))
         const returnTo = get(search, "return_to", undefined)
         this.props.history.replace(returnTo || "/")
@@ -91,6 +93,14 @@ class LoginForm extends React.Component {
       </form>
     )
   }
+}
+
+LoginForm.propTypes = {
+  onLogin: PropTypes.func,
+}
+
+LoginForm.defaultProps = {
+  onLogin: () => {},
 }
 
 export default withRouter(LoginForm)

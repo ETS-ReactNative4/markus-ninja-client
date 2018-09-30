@@ -50,6 +50,7 @@ class SearchNav extends React.Component {
               as={Link}
               to={{pathname, search: searchCourses}}
             >
+              <span className="mdc-list-item__graphic material-icons">library_books</span>
               Courses
               <Counter>{counts.course}</Counter>
             </ListItem>
@@ -58,6 +59,7 @@ class SearchNav extends React.Component {
               as={Link}
               to={{pathname, search: searchLessons}}
             >
+              <span className="mdc-list-item__graphic material-icons">subject</span>
               Lessons
               <Counter>{counts.lesson}</Counter>
             </ListItem>
@@ -66,6 +68,7 @@ class SearchNav extends React.Component {
               as={Link}
               to={{pathname, search: searchStudies}}
             >
+              <span className="mdc-list-item__graphic material-icons">local_library</span>
               Studies
               <Counter>{counts.study}</Counter>
             </ListItem>
@@ -74,6 +77,7 @@ class SearchNav extends React.Component {
               as={Link}
               to={{pathname, search: searchTopics}}
             >
+              <span className="mdc-list-item__graphic material-icons">bookmark</span>
               Topics
               <Counter>{counts.topic}</Counter>
             </ListItem>
@@ -82,6 +86,7 @@ class SearchNav extends React.Component {
               as={Link}
               to={{pathname, search: searchUsers}}
             >
+              <span className="mdc-list-item__graphic material-icons">person</span>
               Users
               <Counter>{counts.user}</Counter>
             </ListItem>
@@ -90,6 +95,7 @@ class SearchNav extends React.Component {
               as={Link}
               to={{pathname, search: searchUserAssets}}
             >
+              <span className="mdc-list-item__graphic material-icons">image</span>
               Assets
               <Counter>{counts.userAsset}</Counter>
             </ListItem>

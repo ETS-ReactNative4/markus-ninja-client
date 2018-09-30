@@ -4,9 +4,8 @@ import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import CreateLessonLink from 'components/CreateLessonLink'
 import LessonPreview from 'components/LessonPreview'
-import {get, isEmpty} from 'utils'
+import {get} from 'utils'
 
 import { LESSONS_PER_PAGE } from 'consts'
 
@@ -34,31 +33,26 @@ class CourseLessons extends React.Component {
     const lessonEdges = get(course, "lessons.edges", [])
     return (
       <React.Fragment>
-        {isEmpty(lessonEdges)
-        ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <CreateLessonLink study={course.study}>
-              Create a lesson
-            </CreateLessonLink>
-          </div>
-        : <React.Fragment>
-            {lessonEdges.map(({node}) => (
-              node &&
-              <React.Fragment key={node.id}>
-                <LessonPreview.Course
-                  className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                  lesson={node}
-                />
-                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-              </React.Fragment>
-            ))}
-            {this.props.relay.hasMore() &&
-            <button
-              className="CourseLessons__more"
-              onClick={this._loadMore}
-            >
-              More
-            </button>}
-          </React.Fragment>}
+        {lessonEdges.map(({node}) => (
+          node &&
+          <React.Fragment key={node.id}>
+            <LessonPreview.Course
+              className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+              lesson={node}
+            />
+            <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+          </React.Fragment>
+        ))}
+        {this.props.relay.hasMore() &&
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <button
+            className="mdc-button mdc-button--unelevated"
+            type="button"
+            onClick={this._loadMore}
+          >
+            More
+          </button>
+        </div>}
       </React.Fragment>
     )
   }
@@ -83,9 +77,6 @@ export default createPaginationContainer(CourseLessons,
             hasNextPage
             endCursor
           }
-        }
-        study {
-          ...CreateLessonLink_study
         }
       }
     `,

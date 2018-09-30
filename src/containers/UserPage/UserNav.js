@@ -6,6 +6,8 @@ import {
 import cls from 'classnames'
 import queryString from 'query-string'
 import { Link, withRouter } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faApple } from '@fortawesome/free-brands-svg-icons'
 import Counter from 'components/Counter'
 import Tab from 'components/Tab'
 import TabBar from 'components/TabBar'
@@ -47,6 +49,7 @@ class UserNav extends React.Component {
           to={user.resourcePath + "?tab=studies"}
         >
           <span className="mdc-tab__content">
+            <span className="mdc-tab__icon material-icons">local_library</span>
             <span className="mdc-tab__text-label">
               Studies
               <Counter>{get(user, "studies.totalCount", 0)}</Counter>
@@ -59,6 +62,11 @@ class UserNav extends React.Component {
           to={user.resourcePath + "?tab=apples"}
         >
           <span className="mdc-tab__content">
+            <FontAwesomeIcon
+              className="mdc-tab__icon"
+              icon={faApple}
+              size="2x"
+            />
             <span className="mdc-tab__text-label">
               Apples
               <Counter>{get(user, "appled.studyCount", 0)}</Counter>
@@ -71,6 +79,7 @@ class UserNav extends React.Component {
           to={user.resourcePath + "?tab=pupils"}
         >
           <span className="mdc-tab__content">
+            <span className="mdc-tab__icon material-icons">person</span>
             <span className="mdc-tab__text-label">
               Pupils
               <Counter>{get(user, "enrollees.totalCount", 0)}</Counter>
@@ -83,6 +92,7 @@ class UserNav extends React.Component {
           to={user.resourcePath + "?tab=tutors"}
         >
           <span className="mdc-tab__content">
+            <span className="mdc-tab__icon material-icons">person</span>
             <span className="mdc-tab__text-label">
               Tutors
               <Counter>{get(user, "enrolled.userCount", 0)}</Counter>

@@ -14,7 +14,7 @@ class SignupPage extends React.Component {
         <div className="mdc-layout-grid__inner">
           <header className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             <h4>Join RkusNinja</h4>
-            <p className="mdc-typography--subtitle1">Start teaching today.</p>
+            <p className="mdc-typography--subtitle1">Start learning/teaching today.</p>
           </header>
           <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             Create your account

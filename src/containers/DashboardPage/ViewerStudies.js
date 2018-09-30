@@ -19,12 +19,14 @@ class ViewerStudies extends React.Component {
           node && <StudyPreview.Link className="mdc-list-item" key={node.id} study={node} />
         ))}
         {hasMore &&
-        <button
-          className="mdc-button mdc-button--unelevated"
-          onClick={loadMore}
-        >
-          More
-        </button>}
+        <div className="mdc-list-item">
+          <button
+            className="mdc-button mdc-button--unelevated"
+            onClick={loadMore}
+          >
+            More
+          </button>
+        </div>}
       </div>
     )
   }

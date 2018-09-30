@@ -44,7 +44,7 @@ class LessonPreview extends React.Component {
     const lesson = get(this.props, "lesson", {})
     return (
       <span className={this.classes}>
-        <Link className="link" to={lesson.resourcePath}>
+        <Link className="rn-link" to={lesson.resourcePath}>
           <span className="mdc-typography--headline6">
             {lesson.title}
           </span>

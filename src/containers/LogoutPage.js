@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
 import LogoutUserMutation from 'mutations/LogoutUserMutation'
 import {logout} from 'auth'
@@ -17,6 +18,7 @@ class LogoutPage extends React.Component {
           return
         }
         logout()
+        this.props.onLogout()
         this.setState({ loggedOut: true })
       },
     )
@@ -29,6 +31,14 @@ class LogoutPage extends React.Component {
 
     return null
   }
+}
+
+LogoutPage.propTypes = {
+  onLogout: PropTypes.func,
+}
+
+LogoutPage.defaultProps = {
+  onLogout: () => {},
 }
 
 export default LogoutPage

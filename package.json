@@ -33,6 +33,7 @@
     "classnames": "^2.2.6",
     "draft-js": "^0.10.5",
     "graphql": "^0.13.2",
+    "highlightjs": "^9.10.0",
     "hoist-non-react-statics": "^3.0.1",
     "htmr": "^0.7.0",
     "moment": "^2.22.2",

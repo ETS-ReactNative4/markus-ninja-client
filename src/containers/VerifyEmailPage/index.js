@@ -33,6 +33,21 @@ class VerifyEmailPage extends React.Component {
               <VerifyEmailForm />
             </div>
           </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <p className="mdc-card pa3">
+              <span>
+                You must have at least one verified email to use this site.
+                If you would like to do this later, please
+                <Link
+                  className="rn-link rn-link--underlined mh1"
+                  to="/logout"
+                >
+                  logout
+                </Link>
+                to go back to the website.
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     )

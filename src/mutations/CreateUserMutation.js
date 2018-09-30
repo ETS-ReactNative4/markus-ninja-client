@@ -14,9 +14,6 @@ const mutation = graphql`
       token {
         token
       }
-      user {
-        id
-      }
     }
   }
 `

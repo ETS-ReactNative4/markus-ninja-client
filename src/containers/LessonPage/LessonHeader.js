@@ -110,6 +110,7 @@ class LessonHeader extends React.Component {
         <span>/</span>
         <StudyLink className="rn-link" study={get(lesson, "study", null)} />
         <span>/</span>
+        <i className="material-icons v-mid mr1">subject</i>
         <span className="fw5">{lesson.title}</span>
         <span className="mdc-theme--text-hint-on-light ml2">#{lesson.number}</span>
         <div className="rn-header__meta">

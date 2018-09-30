@@ -40,6 +40,7 @@ class StudyNav extends React.Component {
           to={study.resourcePath + "/lessons"}
         >
           <span className="mdc-tab__content">
+            <span className="mdc-tab__icon material-icons">subject</span>
             <span className="mdc-tab__text-label">
               Lessons
               <Counter>{study.lessonCount}</Counter>
@@ -52,6 +53,7 @@ class StudyNav extends React.Component {
           to={study.resourcePath + "/courses"}
         >
           <span className="mdc-tab__content">
+            <span className="mdc-tab__icon material-icons">library_books</span>
             <span className="mdc-tab__text-label">
               Courses
               <Counter>{get(study, "courses.totalCount", 0)}</Counter>
@@ -64,6 +66,7 @@ class StudyNav extends React.Component {
           to={study.resourcePath + "/assets"}
         >
           <span className="mdc-tab__content">
+            <span className="mdc-tab__icon material-icons">image</span>
             <span className="mdc-tab__text-label">
               Assets
               <Counter>{get(study, "assets.totalCount", 0)}</Counter>
@@ -77,6 +80,7 @@ class StudyNav extends React.Component {
           to={study.resourcePath + "/settings"}
         >
           <span className="mdc-tab__content">
+            <span className="mdc-tab__icon material-icons">settings</span>
             <span className="mdc-tab__text-label">
               Settings
             </span>

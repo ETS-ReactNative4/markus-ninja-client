@@ -7,7 +7,7 @@ import {
 import { withRouter } from 'react-router'
 import environment from 'Environment'
 import SearchContainer, {SearchProp, SearchPropDefaults} from './SearchContainer'
-import {isEmpty} from 'utils'
+import {get, isEmpty} from 'utils'
 
 import { SEARCH_RESULTS_PER_PAGE } from 'consts'
 
@@ -53,7 +53,7 @@ class Search extends React.Component {
         environment={environment}
         query={SearchQuery}
         variables={{
-          count: SEARCH_RESULTS_PER_PAGE,
+          count: get(this.props, "count", SEARCH_RESULTS_PER_PAGE),
           query,
           type,
           orderBy,

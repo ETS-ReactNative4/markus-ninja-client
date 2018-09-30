@@ -3,7 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import { get, isNil } from 'utils'
+import {get} from 'utils'
 
 const mutation = graphql`
   mutation LoginUserMutation($input: LoginUserInput!) {
@@ -12,11 +12,6 @@ const mutation = graphql`
         expiresAt
         issuedAt
         token
-      }
-      user {
-        id
-        isVerified
-        ...Header_viewer
       }
     }
   }
@@ -35,14 +30,6 @@ export default (login, password, callback) => {
     {
       mutation,
       variables,
-      updater: (proxyStore) => {
-        const loginUserField = proxyStore.getRootField('loginUser')
-        if (!isNil(loginUserField)) {
-          const newViewer = loginUserField.getLinkedRecord('user')
-          const root = proxyStore.getRoot();
-          root.setLinkedRecord(newViewer, 'viewer')
-        }
-      },
       onCompleted: (response, error) => {
         callback(get(response, "loginUser.token", null), error)
       },

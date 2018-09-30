@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -30,7 +31,7 @@ class LoginPage extends React.Component {
           </div>
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             <div className="mdc-card pa4">
-              <LoginForm />
+              <LoginForm onLogin={this.props.onLogin} />
             </div>
           </div>
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
@@ -50,6 +51,14 @@ class LoginPage extends React.Component {
       </div>
     )
   }
+}
+
+LoginPage.propTypes = {
+  onLogin: PropTypes.func,
+}
+
+LoginPage.defaultProps = {
+  onLogin: () => {},
 }
 
 export default LoginPage

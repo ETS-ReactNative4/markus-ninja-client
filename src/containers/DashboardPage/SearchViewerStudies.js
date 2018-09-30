@@ -40,7 +40,7 @@ class SearchViewerStudies extends React.Component {
         <div className="mdc-list-item">
           {this.renderInput()}
         </div>
-        <Search type="STUDY" query={q} within={viewerId}>
+        <Search type="STUDY" count={3} query={q} within={viewerId}>
           <ViewerStudies />
         </Search>
       </div>

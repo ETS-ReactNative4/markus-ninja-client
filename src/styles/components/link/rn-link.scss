@@ -9,10 +9,6 @@
   &:hover {
     color: var(--mdc-theme-text-secondary-on-light);
 
-    &.rn-link--underlined {
-      text-decoration: underline;
-    }
-
     &.rn-link--secondary {
       color: var(--mdc-theme-text-primary-on-light);
     }
@@ -42,3 +38,8 @@
     }
   }
 }
+
+.rn-link--underlined {
+  text-decoration: underline;
+}
+
