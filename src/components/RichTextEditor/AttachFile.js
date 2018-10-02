@@ -134,6 +134,7 @@ class AttachFile extends React.Component {
             id={`file-input${uid}`}
             className="dn"
             type="file"
+            accept=".jpg,jpeg,.png,.gif"
             onChange={(e) => this.setState({file: e.target.files[0]})}
           />
         </label>

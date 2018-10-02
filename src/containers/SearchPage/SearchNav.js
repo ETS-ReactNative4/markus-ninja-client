@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import cls from 'classnames'
 import queryString from 'query-string'
 import { Link, withRouter } from 'react-router-dom'
+import Icon from 'components/Icon'
 import Counter from 'components/Counter'
 import ListItem from 'components/ListItem'
 import { get } from 'utils'
@@ -50,7 +51,7 @@ class SearchNav extends React.Component {
               as={Link}
               to={{pathname, search: searchCourses}}
             >
-              <span className="mdc-list-item__graphic material-icons">library_books</span>
+              <Icon as="span" className="mdc-list-item__graphic" icon="course" />
               Courses
               <Counter>{counts.course}</Counter>
             </ListItem>
@@ -59,7 +60,7 @@ class SearchNav extends React.Component {
               as={Link}
               to={{pathname, search: searchLessons}}
             >
-              <span className="mdc-list-item__graphic material-icons">subject</span>
+              <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
               Lessons
               <Counter>{counts.lesson}</Counter>
             </ListItem>
@@ -68,7 +69,7 @@ class SearchNav extends React.Component {
               as={Link}
               to={{pathname, search: searchStudies}}
             >
-              <span className="mdc-list-item__graphic material-icons">local_library</span>
+              <Icon as="span" className="mdc-list-item__graphic" icon="study" />
               Studies
               <Counter>{counts.study}</Counter>
             </ListItem>
@@ -77,7 +78,7 @@ class SearchNav extends React.Component {
               as={Link}
               to={{pathname, search: searchTopics}}
             >
-              <span className="mdc-list-item__graphic material-icons">bookmark</span>
+              <Icon as="span" className="mdc-list-item__graphic" icon="topic" />
               Topics
               <Counter>{counts.topic}</Counter>
             </ListItem>
@@ -86,7 +87,7 @@ class SearchNav extends React.Component {
               as={Link}
               to={{pathname, search: searchUsers}}
             >
-              <span className="mdc-list-item__graphic material-icons">person</span>
+              <Icon as="span" className="mdc-list-item__graphic" icon="user" />
               Users
               <Counter>{counts.user}</Counter>
             </ListItem>
@@ -95,7 +96,7 @@ class SearchNav extends React.Component {
               as={Link}
               to={{pathname, search: searchUserAssets}}
             >
-              <span className="mdc-list-item__graphic material-icons">image</span>
+              <Icon as="span" className="mdc-list-item__graphic" icon="asset" />
               Assets
               <Counter>{counts.userAsset}</Counter>
             </ListItem>

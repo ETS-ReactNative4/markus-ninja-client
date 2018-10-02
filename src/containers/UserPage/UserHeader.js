@@ -121,7 +121,7 @@ class UserHeader extends React.Component {
             </h4>
             <div className="mdc-typography--subtitle2 mdc-theme--text-secondary-on-light">
               {email &&
-              <div className="User__email">email</div>}
+              <div className="User__email">{email}</div>}
               Joined on {moment(user.createdAt).format("MMM D, YYYY")}
             </div>
           </div>

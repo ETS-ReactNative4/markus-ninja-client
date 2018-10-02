@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import { Link, withRouter } from 'react-router-dom';
 import TextField, {Input} from '@material/react-text-field'
+import Icon from 'components/Icon'
 import CourseLink from 'components/CourseLink'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
@@ -110,7 +111,7 @@ class LessonHeader extends React.Component {
         <span>/</span>
         <StudyLink className="rn-link" study={get(lesson, "study", null)} />
         <span>/</span>
-        <i className="material-icons v-mid mr1">subject</i>
+        <Icon className="v-mid mr1" icon="lesson" />
         <span className="fw5">{lesson.title}</span>
         <span className="mdc-theme--text-hint-on-light ml2">#{lesson.number}</span>
         <div className="rn-header__meta">
@@ -134,13 +135,14 @@ class LessonHeader extends React.Component {
     return (
       <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
         <span>
+          <Icon className="v-mid mr1" icon="course" />
           <CourseLink className="rn-link mdc-typography--headline6" course={get(lesson, "course", null)} />
           <span className="mdc-theme--text-hint-on-light ml2">#{lesson.courseNumber}</span>
         </span>
         {previousLesson &&
-        <Link className="mdc-button mdc-button--outlined ml2" to={previousLesson.resourcePath}>Previous</Link>}
+        <Link className="mdc-button mdc-button--outlined ml2" to={previousLesson.resourcePath}>Previous lesson</Link>}
         {nextLesson &&
-        <Link className="mdc-button mdc-button--unelevated ml2" to={nextLesson.resourcePath}>Next</Link>}
+        <Link className="mdc-button mdc-button--unelevated ml2" to={nextLesson.resourcePath}>Next lesson</Link>}
       </div>
     )
   }

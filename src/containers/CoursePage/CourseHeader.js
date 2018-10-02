@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import TextField, {Input} from '@material/react-text-field'
+import Icon from 'components/Icon'
 import AppleButton from 'components/AppleButton'
 import StudyLink from 'components/StudyLink'
 import UpdateCourseMutation from 'mutations/UpdateCourseMutation'
@@ -70,7 +71,7 @@ class CourseHeader extends React.Component {
         <StudyLink className="rn-link" study={get(course, "study", null)} />
         <span>/</span>
         <span>
-          <i className="material-icons v-mid mr1">library_books</i>
+          <Icon className="v-mid mr1" icon="course" />
           <span className="fw5">{get(course, "name", "")}</span>
           <span className="mdc-theme--text-hint-on-light ml2">#{get(course, "number", 0)}</span>
         </span>

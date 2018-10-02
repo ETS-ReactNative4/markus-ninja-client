@@ -6,6 +6,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router-dom';
 import TextField, {Input} from '@material/react-text-field'
+import Icon from 'components/Icon'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
 import UpdateUserAssetMutation from 'mutations/UpdateUserAssetMutation'
@@ -116,7 +117,7 @@ class UserAssetHeader extends React.Component {
             <span>/</span>
             <StudyLink className="rn-link" study={get(asset, "study", null)} />
             <span>/</span>
-            <i className="material-icons v-mid mr1">image</i>
+            <Icon className="v-mid mr1" icon="asset" />
             <span className="fw5">{asset.name}</span>
           </h5>
           {asset.viewerCanUpdate &&

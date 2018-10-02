@@ -17,6 +17,27 @@ class UserProfileForm extends React.Component {
     error: null,
   }
 
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const { bio, emailId, name } = this.state
+    UpdateViewerProfileMutation(
+      bio,
+      emailId,
+      name,
+      (error) => {
+        if (!isNil(error)) {
+          this.setState({ error: error.message })
+        }
+      },
+    )
+  }
+
   get classes() {
     const {className} = this.props
     return cls("UserProfileForm mdc-layout-grid__inner", className)
@@ -60,6 +81,7 @@ class UserProfileForm extends React.Component {
             className="rn-select"
             outlined
             label="Public email"
+            name="emailId"
             value={emailId}
             onChange={this.handleChange}
             disabled={isEmpty(emailEdges)}
@@ -89,27 +111,6 @@ class UserProfileForm extends React.Component {
           </button>
         </div>
       </form>
-    )
-  }
-
-  handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    })
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const { bio, emailId, name } = this.state
-    UpdateViewerProfileMutation(
-      bio,
-      emailId,
-      name,
-      (error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
-        }
-      },
     )
   }
 }

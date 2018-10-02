@@ -107,7 +107,7 @@ class StudyOverviewPage extends React.Component {
                 </div>}
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   {props.study.lessonCount < 1 &&
-                  <CreateLessonLink className="rn-link">
+                  <CreateLessonLink className="rn-link" study={props.study} >
                     Create a lesson
                   </CreateLessonLink>}
                 </div>

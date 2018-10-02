@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import cls from 'classnames'
 import { Link, matchPath, withRouter } from 'react-router-dom'
+import Icon from 'components/Icon'
 import Counter from 'components/Counter'
 import Tab from 'components/Tab'
 import TabBar from 'components/TabBar'
@@ -40,7 +41,7 @@ class StudyNav extends React.Component {
           to={study.resourcePath + "/lessons"}
         >
           <span className="mdc-tab__content">
-            <span className="mdc-tab__icon material-icons">subject</span>
+            <Icon as="span" className="mdc-tab__icon" icon="lesson" />
             <span className="mdc-tab__text-label">
               Lessons
               <Counter>{study.lessonCount}</Counter>
@@ -53,7 +54,7 @@ class StudyNav extends React.Component {
           to={study.resourcePath + "/courses"}
         >
           <span className="mdc-tab__content">
-            <span className="mdc-tab__icon material-icons">library_books</span>
+            <Icon as="span" className="mdc-tab__icon" icon="course" />
             <span className="mdc-tab__text-label">
               Courses
               <Counter>{get(study, "courses.totalCount", 0)}</Counter>
@@ -66,7 +67,7 @@ class StudyNav extends React.Component {
           to={study.resourcePath + "/assets"}
         >
           <span className="mdc-tab__content">
-            <span className="mdc-tab__icon material-icons">image</span>
+            <Icon as="span" className="mdc-tab__icon" icon="asset" />
             <span className="mdc-tab__text-label">
               Assets
               <Counter>{get(study, "assets.totalCount", 0)}</Counter>
@@ -80,7 +81,7 @@ class StudyNav extends React.Component {
           to={study.resourcePath + "/settings"}
         >
           <span className="mdc-tab__content">
-            <span className="mdc-tab__icon material-icons">settings</span>
+            <Icon as="span" className="mdc-tab__icon">settings</Icon>
             <span className="mdc-tab__text-label">
               Settings
             </span>

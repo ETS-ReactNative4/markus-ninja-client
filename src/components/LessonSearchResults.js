@@ -31,6 +31,7 @@ class LessonSearchResults extends React.Component {
               <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                 <button
                   className="mdc-button mdc-button--unelevated"
+                  type="button"
                   onClick={loadMore}
                 >
                   More

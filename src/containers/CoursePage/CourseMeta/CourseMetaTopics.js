@@ -47,6 +47,11 @@ class CourseMetaTopics extends React.Component {
           this.setState({ error, invalidTopicNames })
         } else {
           this.handleToggleOpen()
+          this.setState({
+            error: null,
+            initialValues: {topics},
+            invalidTopicNames: null,
+          })
         }
       },
     )
@@ -57,7 +62,10 @@ class CourseMetaTopics extends React.Component {
 
     this.setState({ open, error: null })
     this.props.onOpen(open)
+  }
 
+  handleCancel = () => {
+    this.handleToggleOpen()
     this.reset_()
   }
 
@@ -123,7 +131,7 @@ class CourseMetaTopics extends React.Component {
               <span
                 className="pointer pa2 underline-hover"
                 role="button"
-                onClick={this.handleToggleOpen}
+                onClick={this.handleCancel}
               >
                 Cancel
               </span>
