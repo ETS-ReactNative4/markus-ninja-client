@@ -40,6 +40,9 @@ const StudyPageQuery = graphql`
       ...StudySearchPage_study
       ...StudySettingsPage_study
     }
+    viewer {
+      id
+    }
   }
 `
 
@@ -65,6 +68,9 @@ class StudyPage extends React.Component {
             if (isNil(props.study)) {
               return <NotFound />
             }
+
+            const authenticated = !isNil(props.viewer)
+
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
@@ -85,6 +91,7 @@ class StudyPage extends React.Component {
                       <PrivateRoute
                         exact
                         path="/:owner/:name/courses/new"
+                        authenticated={authenticated}
                         render={(routeProps) => <CreateCoursePage {...routeProps} study={props.study} />}
                       />
                       <Route
@@ -110,6 +117,7 @@ class StudyPage extends React.Component {
                       <PrivateRoute
                         exact
                         path="/:owner/:name/lessons/new"
+                        authenticated={authenticated}
                         render={(routeProps) => <CreateLessonPage {...routeProps} study={props.study} />}
                       />
                       <Route
@@ -125,6 +133,7 @@ class StudyPage extends React.Component {
                       <PrivateRoute
                         exact
                         path="/:owner/:name/settings"
+                        authenticated={authenticated}
                         render={(routeProps) => <StudySettingsPage {...routeProps} study={props.study} />}
                       />
                     </Switch>

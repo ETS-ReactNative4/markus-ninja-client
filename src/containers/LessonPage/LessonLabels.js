@@ -52,7 +52,7 @@ class LessonLabels extends React.Component {
     }
 
     return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+      <div className="mv3">
         <LabelSet selectedLabelIds={selectedLabelIds}>
           {studyLabelEdges.map(({node}) =>
             node &&
@@ -67,6 +67,7 @@ class LessonLabels extends React.Component {
         {this._hasMore &&
         <button
           className="mdc-button mdc-button--unelevated"
+          type="button"
           onClick={this._loadMore}
         >
           More

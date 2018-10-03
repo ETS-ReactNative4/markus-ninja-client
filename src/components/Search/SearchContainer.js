@@ -8,6 +8,7 @@ import { debounce, get, isNil, isEmpty } from 'utils'
 
 class SearchContainer extends React.Component {
   state = {
+    dataIsStale: false,
     error: null,
     loading: false,
     type: this.props.type,
@@ -37,9 +38,11 @@ class SearchContainer extends React.Component {
   }
 
   _refetch = debounce((query, after) => {
+    const {type: prevType} = this.state
     const {orderBy, relay, type, within} = this.props
 
     this.setState({
+      dataIsStale: prevType !== type,
       loading: true,
       type,
     })
@@ -58,11 +61,14 @@ class SearchContainer extends React.Component {
         if (!isNil(error)) {
           console.log(error)
         }
-        this.setState({ loading: false })
+        this.setState({
+          dataIsStale: false,
+          loading: false,
+        })
       },
       {force: true},
     )
-  }, 300)
+  }, 200)
 
   get _hasMore() {
     return get(this.props, "results.search.pageInfo.hasNextPage", false)
@@ -82,6 +88,13 @@ class SearchContainer extends React.Component {
     }
   }
 
+  get _edges() {
+    if (this.state.dataIsStale) {
+      return []
+    }
+    return get(this.props, "results.search.edges", [])
+  }
+
   render() {
     const child = React.Children.only(this.props.children)
     const {loading, type} = this.state
@@ -89,7 +102,7 @@ class SearchContainer extends React.Component {
     return React.cloneElement(child, {
       search: {
         type,
-        edges: get(this.props, "results.search.edges", []),
+        edges: this._edges,
         counts: this._counts,
         hasMore: this._hasMore,
         isLoading: loading,

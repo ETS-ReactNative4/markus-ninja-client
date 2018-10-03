@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
@@ -19,11 +18,6 @@ const AccountSettingsQuery = graphql`
 `
 
 class AccountSettings extends React.Component {
-  get classes() {
-    const {className} = this.props
-    return cls("AccountSettings mdc-layout-grid", className)
-  }
-
   render() {
     return (
       <QueryRenderer
@@ -34,31 +28,29 @@ class AccountSettings extends React.Component {
             return <div>{error.message}</div>
           } else if (props) {
             return (
-              <div className={this.classes}>
-                <div className="mdc-layout-grid__inner">
-                  <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    Change password
-                  </h5>
-                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <ChangePassword />
-                  </div>
-                  <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    Change username
-                  </h5>
-                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <ChangeUsername user={props.viewer} />
-                  </div>
-                  <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    Delete account
-                  </h5>
-                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <DeleteAccount />
-                  </div>
+              <React.Fragment>
+                <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  Change password
+                </h5>
+                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <ChangePassword />
                 </div>
-              </div>
+                <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  Change username
+                </h5>
+                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <ChangeUsername user={props.viewer} />
+                </div>
+                <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  Delete account
+                </h5>
+                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <DeleteAccount />
+                </div>
+              </React.Fragment>
             )
           }
           return <div>Loading</div>

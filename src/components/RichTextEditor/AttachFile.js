@@ -8,7 +8,6 @@ import { withUID } from 'components/UniqueId'
 import UserAssetNameInput from 'components/UserAssetNameInput'
 import CreateUserAssetMutation from 'mutations/CreateUserAssetMutation'
 import { get, isNil, makeCancelable } from 'utils'
-import { getAuthHeader } from 'auth'
 
 class AttachFile extends React.Component {
   state = {

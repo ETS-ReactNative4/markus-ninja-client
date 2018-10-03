@@ -1,46 +1,21 @@
 import * as React from 'react'
 import {withRouter} from 'react-router-dom'
-import queryString from 'query-string'
 import {SearchProp, SearchPropDefaults} from 'components/Search'
 import TopicPreview from 'components/TopicPreview'
-import {debounce, get, isEmpty} from 'utils'
+import {isEmpty} from 'utils'
 
 class TopicSearchResults extends React.Component {
-  constructor(props) {
-    super(props)
-
-    const searchQuery = queryString.parse(get(this.props, "location.search", ""))
-    const q = get(searchQuery, "q", "")
-
-    this.state = {q}
-  }
-
-  handleChange = (e) => {
-    this.setState({q: e.target.value})
-    this._redirect()
-  }
-
-  _redirect = debounce(() => {
-    const {location, history} = this.props
-    const {q} = this.state
-
-    const searchQuery = queryString.parse(get(location, "search", ""))
-    searchQuery.q = isEmpty(q) ? undefined : q
-
-    const search = queryString.stringify(searchQuery)
-
-    history.replace({pathname: location.pathname, search})
-  }, 300)
-
   render() {
     const {search} = this.props
     const {edges, hasMore, isLoading, loadMore} = search
 
+    const noResults = isEmpty(edges)
+
     return (
       <React.Fragment>
-        {isLoading
+        {isLoading && noResults
         ? <div>Loading</div>
-        : isEmpty(edges)
+        : noResults
           ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               No topics were found.
             </div>

@@ -8,6 +8,7 @@ import environment from 'Environment'
 import NotFound from 'components/NotFound'
 import StudyLabels from 'components/StudyLabels'
 import LoginLink from 'components/LoginLink'
+import LessonCourse from './LessonCourse'
 import LessonHeader from './LessonHeader'
 import LessonLabels from './LessonLabels'
 import LessonBody from './LessonBody'
@@ -17,11 +18,15 @@ import {get, isNil} from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
 
+import "./styles.css"
+
 const LessonPageQuery = graphql`
   query LessonPageQuery($owner: String!, $name: String!, $number: Int!, $count: Int!, $after: String, $filename: String!) {
     study(owner: $owner, name: $name) {
       lesson(number: $number) {
         id
+        isCourseLesson
+        ...LessonCourse_lesson
         ...LessonHeader_lesson
         ...LessonLabels_lesson
         ...LessonBody_lesson
@@ -67,16 +72,25 @@ class LessonPage extends React.Component {
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
                   <LessonHeader lesson={lesson}/>
-                  <StudyLabels>
-                    <LessonLabels lesson={lesson}/>
-                  </StudyLabels>
                   <LessonBody lesson={lesson}/>
-                  {isNil(props.viewer)
-                  ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                      <LoginLink>Login to leave a comment</LoginLink>
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <div className="center mw8">
+                      <StudyLabels>
+                        <LessonLabels lesson={lesson}/>
+                      </StudyLabels>
+                      {lesson.isCourseLesson && <LessonCourse lesson={lesson} />}
                     </div>
-                  : <AddLessonCommentForm className="mt3" lesson={lesson} />}
-                  <LessonTimeline lesson={lesson} />
+                  </div>
+                  <div className="LessonPage__comments mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <div className="LessonPage__comments__container mdc-layout-grid__inner mw8">
+                      {isNil(props.viewer)
+                      ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                          <LoginLink>Login to leave a comment</LoginLink>
+                        </div>
+                      : <AddLessonCommentForm className="mt3" lesson={lesson} />}
+                      <LessonTimeline lesson={lesson} />
+                    </div>
+                  </div>
                 </div>
               </div>
             )

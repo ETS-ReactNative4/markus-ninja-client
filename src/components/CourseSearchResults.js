@@ -8,11 +8,13 @@ class CourseSearchResults extends React.Component {
     const {search} = this.props
     const {edges, hasMore, isLoading, loadMore} = search
 
+    const noResults = isEmpty(edges)
+
     return (
       <React.Fragment>
-        {isLoading
+        {isLoading && noResults
         ? <div>Loading...</div>
-        : (isEmpty(edges)
+        : (noResults
           ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               No courses were found.
             </div>

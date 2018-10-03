@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
@@ -38,6 +39,24 @@ class StudyLessonPreview extends React.Component {
         </Link>
       </div>
     )
+  }
+}
+
+StudyLessonPreview.propTypes = {
+  lesson: PropTypes.shape({
+    createdAt: PropTypes.string,
+    number: PropTypes.number,
+    resourcePath: PropTypes.string,
+    title: PropTypes.string,
+  })
+}
+
+StudyLessonPreview.defaultProps = {
+  lesson: {
+    createdAt: "",
+    number: 0,
+    resourcePath: "",
+    title: "",
   }
 }
 

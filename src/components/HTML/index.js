@@ -24,10 +24,12 @@ class HTML extends React.Component {
   }
 
   highlightCode() {
-    const nodes = this.node.current.querySelectorAll('pre code');
+    if (this.node && this.node.current) {
+      const nodes = this.node.current.querySelectorAll('pre code');
 
-    for (let i = 0; i < nodes.length; i++) {
-      hljs.highlightBlock(nodes[i])
+      for (let i = 0; i < nodes.length; i++) {
+        hljs.highlightBlock(nodes[i])
+      }
     }
   }
 

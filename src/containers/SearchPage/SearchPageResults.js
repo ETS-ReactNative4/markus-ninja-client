@@ -32,7 +32,7 @@ class SearchPageResults extends React.Component {
     const search = queryString.stringify(searchQuery)
 
     history.replace({pathname: location.pathname, search})
-  }, 300)
+  }, 100)
 
   get classes() {
     const {className} = this.props

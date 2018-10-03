@@ -79,6 +79,7 @@ class UserProfileForm extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <Select
             className="rn-select"
+            floatingLabelClassName={!isEmpty(emailId) ? "mdc-floating-label--float-above" : ""}
             outlined
             label="Public email"
             name="emailId"

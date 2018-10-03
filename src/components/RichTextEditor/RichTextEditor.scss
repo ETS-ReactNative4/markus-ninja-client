@@ -1,4 +1,9 @@
+@import "@material/theme/mixins";
+
 .RichTextEditor {
+  @include mdc-theme-prop(background-color, background);
+  @include mdc-theme-prop(color, text-primary-on-light);
+
   display: flex;
   flex-direction: column;
   border-width: 1px;

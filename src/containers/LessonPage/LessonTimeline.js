@@ -37,12 +37,16 @@ class LessonTimeline extends Component {
           />
         ))}
         {this.props.relay.hasMore() &&
-        <button
-          className="mdc-button mdc-button--unelevated"
-          onClick={this._loadMore}
-        >
-          More
-        </button>}
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <div className="flex justify-center">
+            <button
+              className="mdc-button mdc-button--unelevated"
+              onClick={this._loadMore}
+            >
+              Load More
+            </button>
+          </div>
+        </div>}
       </React.Fragment>
     )
   }

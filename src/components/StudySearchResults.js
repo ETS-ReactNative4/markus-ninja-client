@@ -7,11 +7,13 @@ class StudySearchResults extends React.Component {
   render() {
     const {edges, hasMore, isLoading, loadMore} = this.props.search
 
+    const noResults = isEmpty(edges)
+
     return (
       <React.Fragment>
-        {isLoading
+        {isLoading && noResults
         ? <div>Loading...</div>
-        : (isEmpty(edges)
+        : (noResults
           ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               No studies were found.
             </div>

@@ -14,11 +14,13 @@ class AssetSearchResults extends React.Component {
     const {search} = this.props
     const {edges, hasMore, isLoading, loadMore} = search
 
+    const noResults = isEmpty(edges)
+
     return (
       <div className={this.classes}>
-        {isLoading
+        {isLoading && noResults
         ? <div>Loading...</div>
-        : (isEmpty(edges)
+        : (noResults
           ? <React.Fragment>
               <span className="mr1">
                 No assets were found.

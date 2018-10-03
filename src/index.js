@@ -10,7 +10,10 @@ import WebFontLoader from 'webfontloader';
 
 WebFontLoader.load({
   google: {
-    families: ['Roboto:300,400,500,700'],
+    families: [
+      'Roboto:300,400,500,700',
+      'Abril Fatface:300,400,500,700',
+    ],
   },
 })
 

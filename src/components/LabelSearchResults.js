@@ -10,15 +10,17 @@ class LabelSearchResults extends React.Component {
     const {edges, hasMore, isLoading, loadMore} = search
     const labelCount = get(search, "counts.label", 0)
 
+    const noResults = isEmpty(edges)
+
     return (
       <React.Fragment>
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           Labels
           <Counter className="ml1">{labelCount}</Counter>
         </h5>
-        {isLoading
+        {isLoading && noResults
         ? <div>Loading...</div>
-        : (isEmpty(edges)
+        : (noResults
           ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               No labels were found.
             </div>

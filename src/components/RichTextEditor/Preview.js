@@ -2,7 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
 import HTML from 'components/HTML'
-import { isNil, makeCancelable } from 'utils'
+import {makeCancelable} from 'utils'
 
 class Preview extends React.Component {
   state = {

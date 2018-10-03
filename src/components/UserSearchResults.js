@@ -7,11 +7,13 @@ class UserSearchResults extends React.Component {
   render() {
     const {edges, hasMore, isLoading, loadMore} = this.props.search
 
+    const noResults = isEmpty(edges)
+
     return (
       <React.Fragment>
-        {isLoading
+        {isLoading && noResults
         ? <div>Loading...</div>
-        : (isEmpty(edges)
+        : (noResults
           ? <span className="mr1">
               No users were found.
             </span>

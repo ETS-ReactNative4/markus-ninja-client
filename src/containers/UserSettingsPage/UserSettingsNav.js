@@ -1,13 +1,20 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import { Link, matchPath, withRouter } from 'react-router-dom'
-import ListItem from 'components/ListItem'
+import TabBar from 'components/TabBar'
+import Tab from 'components/Tab'
 import { get } from 'utils'
 
 import './styles.css'
 
 const SETTINGS_PATH = "/settings"
 
-class UserSettingsNav extends Component {
+class UserSettingsNav extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("UserSettingsNav mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+  }
+
   render() {
     const pathname = get(this.props, "location.pathname", "")
     const profilePath = matchPath(pathname, { path: SETTINGS_PATH+"/profile", exact: true })
@@ -16,49 +23,41 @@ class UserSettingsNav extends Component {
     // const notificationsPath = matchPath(pathname, { path: SETTINGS_PATH+"/notifications", exact: true })
 
     return (
-      <aside className="UserSettingsNav mdc-drawer mdc-drawer--permanent mdc-typography">
-        <div className="mdc-drawer___toolbar-spacer"></div>
-        <nav className="mdc-drawer__drawer">
-          <header className="mdc-drawer__header">
-            <div className="mdc-drawer__header-content">
-              <h5>
-                User Settings
-              </h5>
-            </div>
-          </header>
-          <nav className="mdc-drawer__content mdc-list">
-            <div role="separator" className="mdc-list-divider"></div>
-            <ListItem
-              selected={profilePath && profilePath.isExact}
-              as={Link}
-              to={SETTINGS_PATH + "/profile"}
-            >
-              Profile
-            </ListItem>
-            <ListItem
-              selected={accountPath && accountPath.isExact}
-              as={Link}
-              to={SETTINGS_PATH + "/account"}
-            >
-              Account
-            </ListItem>
-            <ListItem
-              selected={emailsPath && emailsPath.isExact}
-              as={Link}
-              to={SETTINGS_PATH + "/emails"}
-            >
-              Emails
-            </ListItem>
-            {/*<ListItem
-              selected={notificationsPath && notificationsPath.isExact}
-              as={Link}
-              to={SETTINGS_PATH + "/notifications"}
-            >
-              Notifications
-            </ListItem>*/}
-          </nav>
-        </nav>
-      </aside>
+      <TabBar className={this.classes}>
+        <Tab
+          active={profilePath && profilePath.isExact}
+          minWidth
+          as={Link}
+          to={SETTINGS_PATH + "/profile"}
+        >
+          <span className="mdc-tab__content">
+            <span className="mdc-tab__icon material-icons">person</span>
+            <span className="mdc-tab__text-label">Profile</span>
+          </span>
+        </Tab>
+        <Tab
+          active={accountPath && accountPath.isExact}
+          minWidth
+          as={Link}
+          to={SETTINGS_PATH + "/account"}
+        >
+          <span className="mdc-tab__content">
+            <span className="mdc-tab__icon material-icons">account_box</span>
+            <span className="mdc-tab__text-label">Account</span>
+          </span>
+        </Tab>
+        <Tab
+          active={emailsPath && emailsPath.isExact}
+          minWidth
+          as={Link}
+          to={SETTINGS_PATH + "/emails"}
+        >
+          <span className="mdc-tab__content">
+            <span className="mdc-tab__icon material-icons">email</span>
+            <span className="mdc-tab__text-label">Emails</span>
+          </span>
+        </Tab>
+      </TabBar>
     )
   }
 }

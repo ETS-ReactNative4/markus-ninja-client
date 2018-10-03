@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import UserSettingsNav from './UserSettingsNav'
 import ProfileSettings from './ProfileSettings'
@@ -7,15 +8,20 @@ import EmailSettings from './EmailSettings'
 
 import './styles.css'
 
-class UserSettingsPage extends Component {
+class UserSettingsPage extends React.Component {
+  get classes() {
+    const {className} = this.props
+    return cls("UserSettingsPage mdc-layout-grid mw8", className)
+  }
+
   render() {
     if (this.props.match.isExact) {
       return <Redirect to="/settings/profile" />
     }
     return (
-      <div className="UserSettingsPage flex w-100">
-        <UserSettingsNav />
-        <div className="flex-auto">
+      <div className={this.classes}>
+        <div className="mdc-layout-grid__inner">
+          <UserSettingsNav />
           <Switch>
             <Route
               exact

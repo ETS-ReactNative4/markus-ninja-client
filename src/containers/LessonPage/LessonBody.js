@@ -40,11 +40,13 @@ class LessonBody extends React.Component {
     const {edit} = this.state
 
     return (
-      <React.Fragment>
-        {edit
-        ? this.renderForm()
-        : this.renderBody()}
-      </React.Fragment>
+      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <div className="center mw7 ph3">
+          {edit
+          ? this.renderForm()
+          : this.renderBody()}
+        </div>
+      </div>
     )
   }
 
@@ -52,19 +54,19 @@ class LessonBody extends React.Component {
     const lesson = get(this.props, "lesson", {})
 
     return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <div className="mdc-card mdc-card--outlined">
-          <HTML className="mh3" html={lesson.bodyHTML} />
-          {lesson.viewerCanUpdate &&
-          <div className="mdc-card__actions">
-            <div className="mdc-card__actions-icons">
-              <button className="material-icons mdc-icon-button mdc-card__action--icon" onClick={this.handleToggleEdit}>
-                edit
-              </button>
-            </div>
-          </div>}
-        </div>
-      </div>
+      <React.Fragment>
+        <HTML html={lesson.bodyHTML} />
+        {lesson.viewerCanUpdate &&
+        <div className="mt2">
+          <button
+            className="mdc-button mdc-button--outlined"
+            type="button"
+            onClick={this.handleToggleEdit}
+          >
+            Edit lesson
+          </button>
+        </div>}
+      </React.Fragment>
     )
   }
 
@@ -73,10 +75,7 @@ class LessonBody extends React.Component {
     const {body} = this.state
 
     return (
-      <form
-        className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-        onSubmit={this.handleSubmit}
-      >
+      <form onSubmit={this.handleSubmit}>
         <RichTextEditor
           id="LessonBody__body"
           onChange={(body) => this.setState({body})}

@@ -51,7 +51,7 @@ class LessonComment extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("LessonComment mdc-card mdc-card--outlined", className)
+    return cls("LessonComment", className)
   }
 
   render() {
@@ -73,7 +73,7 @@ class LessonComment extends React.Component {
     return (
       <div
         id={`lesson_comment${moment(comment.createdAt).unix()}`}
-        className={this.classes}
+        className="mdc-card mdc-card--outlined"
       >
         <div className="mdc-typography--subtitle2 mdc-theme--text-secondary-on-light pa3">
           <UserLink className="rn-link rn-link--secondary" user={get(comment, "author", null)} />
@@ -126,13 +126,21 @@ class LessonComment extends React.Component {
           study={study}
           onChange={this.handleChange}
         />
-        <button
-          className="mdc-button mdc-button--unelevated"
-          type="submit"
-        >
-          Update comment
-        </button>
-        <button onClick={this.handleToggleEdit}>Cancel</button>
+        <div className="mt2">
+          <button
+            className="mdc-button mdc-button--unelevated"
+            type="submit"
+          >
+            Update comment
+          </button>
+          <button
+            className="mdc-button mdc-button--outlined ml2"
+            type="button"
+            onClick={this.handleToggleEdit}
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     )
   }
