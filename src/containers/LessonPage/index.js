@@ -13,8 +13,7 @@ import LessonLabels from './LessonLabels'
 import LessonBody from './LessonBody'
 import AddLessonCommentForm from './AddLessonCommentForm'
 import LessonTimeline from './LessonTimeline'
-import {isAuthenticated} from 'auth'
-import { get } from 'utils'
+import {get, isNil} from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
 
@@ -29,6 +28,9 @@ const LessonPageQuery = graphql`
         ...LessonTimeline_lesson
         ...AddLessonCommentForm_lesson
       }
+    }
+    viewer {
+      id
     }
   }
 `
@@ -69,11 +71,11 @@ class LessonPage extends React.Component {
                     <LessonLabels lesson={lesson}/>
                   </StudyLabels>
                   <LessonBody lesson={lesson}/>
-                  {isAuthenticated()
-                  ? <AddLessonCommentForm className="mt3" lesson={lesson} />
-                  : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  {isNil(props.viewer)
+                  ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                       <LoginLink>Login to leave a comment</LoginLink>
-                    </div>}
+                    </div>
+                  : <AddLessonCommentForm className="mt3" lesson={lesson} />}
                   <LessonTimeline lesson={lesson} />
                 </div>
               </div>

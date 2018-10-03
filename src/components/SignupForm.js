@@ -1,10 +1,10 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import {withRouter} from 'react-router-dom'
 import TextField, {Input, HelperText} from '@material/react-text-field'
 import CreateUserMutation from 'mutations/CreateUserMutation'
 import {isNil} from 'utils'
-import {login} from 'auth'
 
 class SignupForm extends React.Component {
   state = {
@@ -31,8 +31,22 @@ class SignupForm extends React.Component {
         if (!isNil(errors)) {
           console.error(errors[0].message)
         }
-        login(token.token)
-        this.props.history.push("/")
+
+        const credentials = btoa(username + ":" + password)
+        return fetch(process.env.REACT_APP_API_URL + "/token", {
+          method: "GET",
+          headers: {
+            "Authorization": "Basic " + credentials,
+          },
+          credentials: "include",
+        }).then((response) => {
+          if (!response.ok) {
+            console.error("failed to login")
+            return
+          }
+          this.props.onLogin()
+          this.props.history.replace("/")
+        })
       }
     )
   }
@@ -54,7 +68,7 @@ class SignupForm extends React.Component {
             className="w-100"
             outlined
             label="Username"
-            helperText={<HelperText persistent>This will be your username.</HelperText>}
+            helperText={<HelperText persistent>Your name by which other users will know you.</HelperText>}
           >
             <Input
               name="username"
@@ -70,8 +84,8 @@ class SignupForm extends React.Component {
             label="Email address"
             helperText={
               <HelperText persistent>
-                You will occasionally receive updates about your account to this inbox.
-                Your email address will never shared with anyone.
+                Your primary email address for account related communication.
+                We will never share your email address with anyone.
               </HelperText>
             }
           >
@@ -112,6 +126,14 @@ class SignupForm extends React.Component {
       </form>
     )
   }
+}
+
+SignupForm.propTypes = {
+  onLogin: PropTypes.func,
+}
+
+SignupForm.defaultProps = {
+  onLogin: () => {},
 }
 
 export default withRouter(SignupForm)

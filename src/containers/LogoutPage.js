@@ -1,9 +1,6 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
-import LogoutUserMutation from 'mutations/LogoutUserMutation'
-import {logout} from 'auth'
-import { isNil } from 'utils'
 
 class LogoutPage extends React.Component {
   state = {
@@ -11,17 +8,17 @@ class LogoutPage extends React.Component {
   }
 
   componentDidMount() {
-    LogoutUserMutation(
-      (error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error[0].message })
-          return
-        }
-        logout()
-        this.props.onLogout()
-        this.setState({ loggedOut: true })
-      },
-    )
+    return fetch(process.env.REACT_APP_API_URL + "/remove_token", {
+      method: "GET",
+      credentials: "include",
+    }).then((response) => {
+      if (!response.ok) {
+        console.error("failed to logout")
+        return
+      }
+      this.props.onLogout()
+      this.setState({ loggedOut: true })
+    })
   }
 
   render() {

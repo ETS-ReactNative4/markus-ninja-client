@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import cls from 'classnames'
 import HTML from 'components/HTML'
 import { isNil, makeCancelable } from 'utils'
-import { getAuthHeader } from 'auth'
 
 class Preview extends React.Component {
   state = {
@@ -36,8 +35,6 @@ class Preview extends React.Component {
     this.setState({loading: true})
     const {studyId, text} = this.props
 
-    const Authorization = getAuthHeader()
-    if (isNil(Authorization)) { return }
     const formData = new FormData()
 
     formData.append("text", text)
@@ -46,10 +43,8 @@ class Preview extends React.Component {
       process.env.REACT_APP_API_URL + "/preview?study=" + studyId,
       {
         method: "POST",
-        headers: {
-          Authorization,
-        },
         body: formData,
+        credentials: "include",
       }
     ))
     this.setState({request})

@@ -9,8 +9,7 @@ import MediaQuery from 'react-responsive'
 import IconLink from 'components/IconLink'
 import LoginLink from 'components/LoginLink'
 import SearchBar from './SearchBar'
-import {isAuthenticated} from 'auth'
-import { get } from 'utils'
+import {get, isNil} from 'utils'
 
 import './styles.css'
 
@@ -28,7 +27,7 @@ class Header extends Component {
   }
 
   render() {
-    const authenticated = isAuthenticated()
+    const authenticated = !isNil(this.props.viewer)
     const {open} = this.state
 
     return (

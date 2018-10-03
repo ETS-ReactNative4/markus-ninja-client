@@ -26,7 +26,7 @@ class LoginPage extends React.Component {
                   size="3x"
                 />
               </Link>
-              <h1 className="mdc-typography--headline5">Sign in to RkusNinja</h1>
+              <h5>Sign in to RkusNinja</h5>
             </header>
           </div>
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">

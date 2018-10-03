@@ -4,9 +4,7 @@ import cls from 'classnames'
 import { withRouter } from 'react-router'
 import queryString from 'query-string'
 import TextField, {Input} from '@material/react-text-field'
-import LoginUserMutation from 'mutations/LoginUserMutation'
-import {login} from 'auth'
-import { get, isNil } from 'utils'
+import {get} from 'utils'
 
 import './styles.css'
 
@@ -26,21 +24,23 @@ class LoginForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { username, password } = this.state
-    LoginUserMutation(
-      username,
-      password,
-      (token, error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error[0].message })
-          return
-        }
-        login(token.token)
-        this.props.onLogin()
-        const search = queryString.parse(get(this.props, "location.search", ""))
-        const returnTo = get(search, "return_to", undefined)
-        this.props.history.replace(returnTo || "/")
+    const credentials = btoa(username + ":" + password)
+    return fetch(process.env.REACT_APP_API_URL + "/token", {
+      method: "GET",
+      headers: {
+        "Authorization": "Basic " + credentials,
       },
-    )
+      credentials: "include",
+    }).then((response) => {
+      if (!response.ok) {
+        console.error("failed to login")
+        return
+      }
+      this.props.onLogin()
+      const search = queryString.parse(get(this.props, "location.search", ""))
+      const returnTo = get(search, "return_to", undefined)
+      this.props.history.replace(returnTo || "/")
+    })
   }
 
   get classes() {

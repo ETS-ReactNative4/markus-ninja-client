@@ -14,11 +14,11 @@ function decodeAccessToken(accessToken) {
 }
 
 function removeAccessToken() {
-  cookies.erase("accessToken")
+  document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
 }
 
 function getAccessToken() {
-  return cookies.get("accessToken")
+  return cookies.get("access_token")
 }
 
 function isAccessTokenPayloadValid(payload) {
@@ -42,7 +42,7 @@ function setAccessToken(accessToken) {
       return
     }
     return cookies.set(
-      "accessToken",
+      "access_token",
       accessToken,
       {
         expires: moment.unix(payload.Exp).toDate(),
@@ -71,17 +71,9 @@ export function getAuthHeader() {
   return
 }
 
-export function getViewerId() {
-  const accessToken = getAccessToken()
-  const payload = decodeAccessToken(accessToken)
-  if (payload) {
-    return payload.Sub
-  }
-  return
-}
-
 export function isAuthenticated() {
   const accessToken = getAccessToken()
+  console.log(accessToken)
   const payload = decodeAccessToken(accessToken)
   return isAccessTokenPayloadValid(payload)
 }

@@ -4,8 +4,7 @@ const {
   RecordSource,
   Store,
 } = require('relay-runtime')
-const { isEmpty, isNil } = require('utils')
-const { getAuthHeader } = require('auth')
+const {isNil} = require('utils')
 
 const store = new Store(new RecordSource())
 
@@ -14,13 +13,10 @@ const network = Network.create((operation, variables) => {
     "Accept": "application/json",
     "Content-Type": "application/json",
   }
-  const accessToken = getAuthHeader()
-  if (!isEmpty(accessToken)) {
-    headers.Authorization = accessToken
-  }
   return fetch(process.env.REACT_APP_API_URL + "/graphql", {
     method: "POST",
     headers,
+    credentials: "include",
     body: JSON.stringify({
       query: operation.text,
       variables,

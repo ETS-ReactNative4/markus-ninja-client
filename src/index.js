@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { UIDProvider } from 'components/UniqueId';
 import 'styles/index.css';
 import App from 'containers/App';
-import AuthProvider from 'containers/AuthProvider'
 import registerServiceWorker from './registerServiceWorker';
 
 import WebFontLoader from 'webfontloader';
@@ -18,9 +17,7 @@ WebFontLoader.load({
 ReactDOM.render(
   <BrowserRouter>
     <UIDProvider>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <App />
     </UIDProvider>
   </BrowserRouter>,
   document.getElementById('root'),

@@ -9,7 +9,6 @@ import { withRouter } from 'react-router-dom';
 import UserAssetNameInput from 'components/UserAssetNameInput/index'
 import CreateUserAssetMutation from 'mutations/CreateUserAssetMutation'
 import { get, isNil, makeCancelable } from 'utils'
-import { getAuthHeader } from 'auth'
 
 class CreateUserAssetForm extends React.Component {
   state = {
@@ -39,8 +38,6 @@ class CreateUserAssetForm extends React.Component {
   handleSubmit = (e) => {
     const {file} = this.state
     if (!isNil(file)) {
-      const Authorization = getAuthHeader()
-      if (isNil(Authorization)) { return }
       const formData = new FormData()
 
       formData.append("save", true)
@@ -51,10 +48,8 @@ class CreateUserAssetForm extends React.Component {
 
       const request = makeCancelable(fetch(process.env.REACT_APP_API_URL + "/upload/assets", {
         method: "POST",
-        headers: {
-          Authorization,
-        },
-        body: formData
+        body: formData,
+        credentials: "include",
       }))
       this.setState({request})
 

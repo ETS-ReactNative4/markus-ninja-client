@@ -1,15 +1,17 @@
 import * as React from 'react'
 import DashboardPage from 'containers/DashboardPage'
 import WelcomePage from 'containers/WelcomePage'
-import {isAuthenticated} from 'auth'
+import {get, isNil} from 'utils'
 
 class HomePage extends React.Component {
   render() {
+    const viewer = get(this.props, "viewer", null)
+
     return (
       <div className="HomePage">
-        {isAuthenticated()
-        ? <DashboardPage />
-        : <WelcomePage />}
+        {isNil(viewer)
+        ? <WelcomePage />
+        : <DashboardPage />}
       </div>
     )
   }

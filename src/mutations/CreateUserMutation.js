@@ -5,27 +5,17 @@ import {
 import environment from 'Environment'
 
 const mutation = graphql`
-  mutation CreateUserMutation($createUserInput: CreateUserInput! $loginUserInput: LoginUserInput!) {
-    createUser(input: $createUserInput) {
+  mutation CreateUserMutation($input: CreateUserInput!) {
+    createUser(input: $input) {
       id
-    }
-
-    loginUser(input: $loginUserInput) {
-      token {
-        token
-      }
     }
   }
 `
 
 export default (email, login, password, callback) => {
   const variables = {
-    createUserInput: {
+    input: {
       email,
-      login,
-      password,
-    },
-    loginUserInput: {
       login,
       password,
     },
@@ -37,7 +27,7 @@ export default (email, login, password, callback) => {
       mutation,
       variables,
       onCompleted: (response, error) => {
-        callback(response.loginUser.token, error)
+        callback(response.createUser, error)
       },
       onError: err => console.error(err),
     },

@@ -35,8 +35,6 @@ class AttachFile extends React.Component {
   handleAttachFile = (e) => {
     const { file, save } = this.state
     if (!isNil(file)) {
-      const Authorization = getAuthHeader()
-      if (isNil(Authorization)) { return }
       const formData = new FormData()
 
       formData.append("save", save)
@@ -47,10 +45,8 @@ class AttachFile extends React.Component {
 
       const request = makeCancelable(fetch(process.env.REACT_APP_API_URL + "/upload/assets", {
         method: "POST",
-        headers: {
-          Authorization,
-        },
-        body: formData
+        body: formData,
+        credentials: "include",
       }))
       this.setState({request})
 
