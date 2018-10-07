@@ -4,30 +4,84 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import TextField, {Icon, Input} from '@material/react-text-field'
+import queryString from 'query-string'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
-import Search from 'components/Search'
-import StudySearchResults from 'components/StudySearchResults'
-import {get} from 'utils'
+import UserStudies from 'components/UserStudies'
+import UserStudiesTabStudies from './UserStudiesTabStudies'
+import {debounce, get, isEmpty} from 'utils'
 
 class UserStudiesTab extends React.Component {
-  state = {
-    q: "",
+  constructor(props) {
+    super(props)
+
+    const searchQuery = queryString.parse(get(this.props, "location.search", ""))
+    const {o, q, s} = searchQuery
+
+    this.state = {o, q, s}
   }
 
   handleChange = (e) => {
-    this.setState({q: e.target.value})
+    const q = e.target.value
+    this.setState({q})
+    this._redirect(q)
   }
+
+  _redirect = debounce((q) => {
+    const {location, history} = this.props
+
+    const searchQuery = queryString.parse(get(location, "search", ""))
+    searchQuery.q = isEmpty(q) ? undefined : q
+
+    const search = queryString.stringify(searchQuery)
+
+    history.replace({pathname: location.pathname, search})
+  }, 300)
 
   get classes() {
     const {className} = this.props
     return cls("UserStudiesTab mdc-layout-grid__inner", className)
   }
 
-  render() {
+  get _filterBy() {
     const {q} = this.state
-    const userId = get(this.props, "user.id", "")
+    return {search: q}
+  }
 
+  get _orderBy() {
+    const {o, s} = this.state
+    const direction = (() => {
+      switch (s) {
+      case "asc":
+        return "ASC"
+      case "desc":
+        return "DESC"
+      default:
+        return "ASC"
+      }
+    })()
+    const field = (() => {
+      switch (o) {
+      case "advanced":
+        return "ADVANCED_AT"
+      case "created":
+        return "CREATED_AT"
+      case "lessons":
+        return "LESSON_COUNT"
+      case "NAME":
+        return "NAME"
+      case "updated":
+        return "UPDATED_AT"
+      default:
+        return "ADVANCED_AT"
+      }
+    })()
+
+    return {direction, field}
+  }
+
+  render() {
     return (
       <div className={this.classes}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
@@ -37,9 +91,9 @@ class UserStudiesTab extends React.Component {
           </div>
         </div>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-        <Search type="STUDY" query={q} within={userId}>
-          <StudySearchResults />
-        </Search>
+        <UserStudies filterBy={this._filterBy} orderBy={this._orderBy}>
+          <UserStudiesTabStudies />
+        </UserStudies>
       </div>
     )
   }
@@ -48,33 +102,25 @@ class UserStudiesTab extends React.Component {
     const {q} = this.state
 
     return (
-      <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
-        <input
-          className="mdc-text-field__input"
-          autoComplete="off"
-          type="text"
+      <TextField
+        fullWidth
+        label="Find a study..."
+        trailingIcon={<Icon><i className="material-icons">search</i></Icon>}
+      >
+        <Input
           name="q"
+          autoComplete="off"
           placeholder="Find a study..."
           value={q}
           onChange={this.handleChange}
         />
-        <div className="mdc-notched-outline mdc-theme--background z-behind">
-          <svg>
-            <path className="mdc-notched-outline__path"></path>
-          </svg>
-        </div>
-        <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
-        <i className="material-icons mdc-text-field__icon">
-          search
-        </i>
-      </div>
+      </TextField>
     )
   }
 }
 
 export default withRouter(createFragmentContainer(UserStudiesTab, graphql`
   fragment UserStudiesTab_user on User {
-    id
     isViewer
   }
 `))

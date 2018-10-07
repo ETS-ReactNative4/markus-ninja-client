@@ -729,12 +729,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "Study",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "Course",
 							"ofType": null
 						}
 					]
@@ -744,6 +744,22 @@
 					"name": "AppleableConnection",
 					"description": "A list of appleables.",
 					"fields": [
+						{
+							"name": "courseCount",
+							"description": "The number of courses associated with the connection.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
 						{
 							"name": "edges",
 							"description": "A list of edges.",
@@ -794,7 +810,7 @@
 						},
 						{
 							"name": "studyCount",
-							"description": "The number of studies associated with the apple.",
+							"description": "The number of studies associated with the connection.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -1286,42 +1302,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "UserConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CourseConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "AppleGiverConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "StudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAssetConnection",
+							"name": "TopicConnection",
 							"ofType": null
 						},
 						{
@@ -1331,12 +1317,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "NotificationConnection",
+							"name": "EmailConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EmailConnection",
+							"name": "EventConnection",
 							"ofType": null
 						},
 						{
@@ -1346,7 +1332,37 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "TopicConnection",
+							"name": "StudyConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CourseConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAssetConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabelConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserConnection",
 							"ofType": null
 						}
 					]
@@ -1496,105 +1512,6 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "enrolleeCount",
-							"description": "The number of users that have enrolled in this enrollable.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "enrollees",
-							"description": "Returns a list users who have enrolled in this enrollable.",
-							"args": [
-								{
-									"name": "after",
-									"description": "Returns the elements in the list that come after the specified global ID.",
-									"type": {
-										"kind": "SCALAR",
-										"name": "String",
-										"ofType": null
-									},
-									"defaultValue": null
-								},
-								{
-									"name": "before",
-									"description": "Returns the elements in the list that come before the specified global ID.",
-									"type": {
-										"kind": "SCALAR",
-										"name": "String",
-										"ofType": null
-									},
-									"defaultValue": null
-								},
-								{
-									"name": "first",
-									"description": "Returns the first n elements form the list.",
-									"type": {
-										"kind": "SCALAR",
-										"name": "Int",
-										"ofType": null
-									},
-									"defaultValue": null
-								},
-								{
-									"name": "last",
-									"description": "Returns the last n elements form the list.",
-									"type": {
-										"kind": "SCALAR",
-										"name": "Int",
-										"ofType": null
-									},
-									"defaultValue": null
-								},
-								{
-									"name": "orderBy",
-									"description": "Order for connection.",
-									"type": {
-										"kind": "INPUT_OBJECT",
-										"name": "EnrolleeOrder",
-										"ofType": null
-									},
-									"defaultValue": null
-								}
-							],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "OBJECT",
-									"name": "EnrolleeConnection",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "enrollmentStatus",
-							"description": "Is the viewer dismissed, enrolled, or ignoring this enrollable.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "ENUM",
-									"name": "EnrollmentStatus",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
 							"name": "id",
 							"description": null,
 							"args": [],
@@ -1657,6 +1574,16 @@
 									"type": {
 										"kind": "SCALAR",
 										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "filterBy",
+									"description": "Filtering options for lessons returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "LessonFilters",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -1841,6 +1768,16 @@
 									"defaultValue": null
 								},
 								{
+									"name": "filterBy",
+									"description": "Filtering options for topics returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "TopicFilters",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
 									"name": "first",
 									"description": "Returns the first n elements form the list.",
 									"type": {
@@ -1948,22 +1885,6 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "viewerCanEnroll",
-							"description": "Can the viewer enroll in this enrollable.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Boolean",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
 							"name": "viewerHasAppled",
 							"description": "Has the viewer appled this appleable?",
 							"args": [],
@@ -1990,11 +1911,6 @@
 						{
 							"kind": "INTERFACE",
 							"name": "Createable",
-							"ofType": null
-						},
-						{
-							"kind": "INTERFACE",
-							"name": "Enrollable",
 							"ofType": null
 						},
 						{
@@ -2154,6 +2070,45 @@
 				},
 				{
 					"kind": "INPUT_OBJECT",
+					"name": "CourseFilters",
+					"description": "Ways in which to filter lists of courses.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "topics",
+							"description": "List courses where the list of topic names exists on the course.",
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "NON_NULL",
+									"name": null,
+									"ofType": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									}
+								}
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "search",
+							"description": "Query to search courses by.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
 					"name": "CourseOrder",
 					"description": "Ways in which courses can be ordered upon return.",
 					"fields": null,
@@ -2202,6 +2157,12 @@
 						{
 							"name": "ADVANCED_AT",
 							"description": "Order courses by advance time.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "APPLE_COUNT",
+							"description": "Order items by number of apples given.",
 							"isDeprecated": false,
 							"deprecationReason": null
 						},
@@ -2830,7 +2791,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
@@ -2840,7 +2801,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Course",
 							"ofType": null
 						}
 					]
@@ -3506,7 +3467,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -3516,7 +3477,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -3610,42 +3571,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "UserEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CourseEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "AppleGiverEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "StudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAssetEdge",
+							"name": "TopicEdge",
 							"ofType": null
 						},
 						{
@@ -3655,12 +3586,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "NotificationEdge",
+							"name": "EmailEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EmailEdge",
+							"name": "EventEdge",
 							"ofType": null
 						},
 						{
@@ -3670,7 +3601,37 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "TopicEdge",
+							"name": "StudyEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CourseEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAssetEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabelEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserEdge",
 							"ofType": null
 						}
 					]
@@ -3927,6 +3888,45 @@
 					"possibleTypes": null
 				},
 				{
+					"kind": "INPUT_OBJECT",
+					"name": "EmailFilters",
+					"description": "Ways in which to filter lists of emails.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "isVerified",
+							"description": "List emails that are verified.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "Boolean",
+								"ofType": null
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "types",
+							"description": "List emails that have a type in this list.",
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "NON_NULL",
+									"name": null,
+									"ofType": {
+										"kind": "ENUM",
+										"name": "EmailType",
+										"ofType": null
+									}
+								}
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
 					"kind": "ENUM",
 					"name": "EmailType",
 					"description": "Possible types of emails.",
@@ -4031,12 +4031,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "User",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Course",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
@@ -4046,7 +4041,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "User",
 							"ofType": null
 						}
 					]
@@ -5330,6 +5325,37 @@
 				},
 				{
 					"kind": "INPUT_OBJECT",
+					"name": "LabelFilters",
+					"description": "Ways in which to filter lists of labels.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "isDefault",
+							"description": "List labels that default to each study.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "Boolean",
+								"ofType": null
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "search",
+							"description": "Query to search labels by.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
 					"name": "LabelOrder",
 					"description": "Ways in which labels can be ordered upon return.",
 					"fields": null,
@@ -5418,12 +5444,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -5443,6 +5469,38 @@
 								"ofType": {
 									"kind": "OBJECT",
 									"name": "LabelableEdge",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "lessonCount",
+							"description": "The number of lessons associated with the label.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "lessonCommentCount",
+							"description": "The number of lesson comments associated with the label.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
 									"ofType": null
 								}
 							},
@@ -5475,22 +5533,6 @@
 								"ofType": {
 									"kind": "OBJECT",
 									"name": "PageInfo",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "studyCount",
-							"description": "The number of studies associated with the label.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
 									"ofType": null
 								}
 							},
@@ -5737,6 +5779,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "commentCount",
+							"description": "The number of comments on this lesson.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "comments",
 							"description": "Returns a list of comments for the current lesson.",
 							"args": [
@@ -5868,6 +5926,16 @@
 									"defaultValue": null
 								},
 								{
+									"name": "filterBy",
+									"description": "Filtering options for users returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "UserFilters",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
 									"name": "first",
 									"description": "Returns the first n elements form the list.",
 									"type": {
@@ -5978,6 +6046,16 @@
 									"type": {
 										"kind": "SCALAR",
 										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "filterBy",
+									"description": "Filtering options for labels returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "LabelFilters",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -6450,6 +6528,16 @@
 									"type": {
 										"kind": "SCALAR",
 										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "filterBy",
+									"description": "Filtering options for labels returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "LabelFilters",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -7000,6 +7088,55 @@
 				},
 				{
 					"kind": "INPUT_OBJECT",
+					"name": "LessonFilters",
+					"description": "Ways in which to filter lists of lessons.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "isCourseLesson",
+							"description": "List lessons that are part of a course.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "Boolean",
+								"ofType": null
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "labels",
+							"description": "List lessons where the list of label names exists on the lesson.",
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "NON_NULL",
+									"name": null,
+									"ofType": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									}
+								}
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "search",
+							"description": "Query to search lessons by.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
 					"name": "LessonOrder",
 					"description": "Ways in which lessons can be ordered upon return.",
 					"fields": null,
@@ -7361,41 +7498,6 @@
 									"name": "ID",
 									"ofType": null
 								}
-							},
-							"defaultValue": null
-						}
-					],
-					"interfaces": null,
-					"enumValues": null,
-					"possibleTypes": null
-				},
-				{
-					"kind": "INPUT_OBJECT",
-					"name": "MoveLessonInput",
-					"description": "Input type for MoveLesson.",
-					"fields": null,
-					"inputFields": [
-						{
-							"name": "lessonId",
-							"description": "The ID of the lesson.",
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "ID",
-									"ofType": null
-								}
-							},
-							"defaultValue": null
-						},
-						{
-							"name": "number",
-							"description": "Place the lesson at this numbered position (must be greater than 0). Pass null to place it at the front.",
-							"type": {
-								"kind": "SCALAR",
-								"name": "Int",
-								"ofType": null
 							},
 							"defaultValue": null
 						}
@@ -8563,7 +8665,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Topic",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Email",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CreatedEvent",
 							"ofType": null
 						},
 						{
@@ -8573,12 +8685,37 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "ReferencedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Course",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Notification",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
 							"ofType": null
 						},
 						{
@@ -8593,47 +8730,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "UnappledEvent",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CreatedEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Notification",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Email",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
+							"name": "User",
 							"ofType": null
 						}
 					]
@@ -9166,7 +9268,7 @@
 						},
 						{
 							"name": "node",
-							"description": "events(\n  # Returns the elements in the list that come after the specified global ID.\n  after: String\n\n  # Returns the elements in the list that come before the specified global ID.\n  before: String\n\n  # Returns the first n elements form the list.\n  first: Int\n\n  # Returns the last n elements form the list.\n  last: Int\n\n  # Ordering options for items returned from the connection.\n  orderBy: EventOrder\n\n  # The ID of the node to search within.\n  within: ID\n): EventConnection!\nLookup node by ID.",
+							"description": "Lookup node by ID.",
 							"args": [
 								{
 									"name": "id",
@@ -9329,16 +9431,6 @@
 											"name": "SearchType",
 											"ofType": null
 										}
-									},
-									"defaultValue": null
-								},
-								{
-									"name": "within",
-									"description": "The ID of the node to search within.",
-									"type": {
-										"kind": "SCALAR",
-										"name": "ID",
-										"ofType": null
 									},
 									"defaultValue": null
 								}
@@ -9552,12 +9644,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "UserAsset",
 							"ofType": null
 						}
 					]
@@ -10155,27 +10247,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "User",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Course",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Topic",
 							"ofType": null
 						},
 						{
@@ -10185,7 +10257,27 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Topic",
+							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Course",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "User",
 							"ofType": null
 						}
 					]
@@ -10562,6 +10654,16 @@
 									"defaultValue": null
 								},
 								{
+									"name": "filterBy",
+									"description": "Filtering options for user assets returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "UserAssetFilters",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
 									"name": "first",
 									"description": "Returns the first n elements form the list.",
 									"type": {
@@ -10651,6 +10753,16 @@
 									"type": {
 										"kind": "SCALAR",
 										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "filterBy",
+									"description": "Filtering options for courses returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "CourseFilters",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -10787,6 +10899,16 @@
 									"defaultValue": null
 								},
 								{
+									"name": "filterBy",
+									"description": "Filtering options for users returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "UserFilters",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
 									"name": "first",
 									"description": "Returns the first n elements form the list.",
 									"type": {
@@ -10902,6 +11024,16 @@
 									"defaultValue": null
 								},
 								{
+									"name": "filterBy",
+									"description": "Filtering options for labels returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "LabelFilters",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
 									"name": "first",
 									"description": "Returns the first n elements form the list.",
 									"type": {
@@ -10917,16 +11049,6 @@
 									"type": {
 										"kind": "SCALAR",
 										"name": "Int",
-										"ofType": null
-									},
-									"defaultValue": null
-								},
-								{
-									"name": "query",
-									"description": "If provided, search labels by name and description.",
-									"type": {
-										"kind": "SCALAR",
-										"name": "String",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -10972,6 +11094,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "lessonCount",
+							"description": "How many lessons there are in this study.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "lessons",
 							"description": "Returns a list of lessons from the current study.",
 							"args": [
@@ -10996,21 +11134,21 @@
 									"defaultValue": null
 								},
 								{
-									"name": "first",
-									"description": "Returns the first n elements form the list.",
+									"name": "filterBy",
+									"description": "Filtering options for lessons returned from the connection.",
 									"type": {
-										"kind": "SCALAR",
-										"name": "Int",
+										"kind": "INPUT_OBJECT",
+										"name": "LessonFilters",
 										"ofType": null
 									},
 									"defaultValue": null
 								},
 								{
-									"name": "isCourseLesson",
-									"description": "If non-null, filters lessons according to whether they are part of a\ncourse.",
+									"name": "first",
+									"description": "Returns the first n elements form the list.",
 									"type": {
 										"kind": "SCALAR",
-										"name": "Boolean",
+										"name": "Int",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -11042,6 +11180,22 @@
 								"ofType": {
 									"kind": "OBJECT",
 									"name": "LessonConnection",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "lessonCommentCount",
+							"description": "How many lesson comments there are in this study.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
 									"ofType": null
 								}
 							},
@@ -11099,22 +11253,6 @@
 								"ofType": {
 									"kind": "OBJECT",
 									"name": "LessonCommentConnection",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "lessonCount",
-							"description": "How many lessons there are in this study.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
 									"ofType": null
 								}
 							},
@@ -11205,6 +11343,16 @@
 									"type": {
 										"kind": "SCALAR",
 										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "filterBy",
+									"description": "Filtering options for topics returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "TopicFilters",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -11517,6 +11665,45 @@
 					"possibleTypes": null
 				},
 				{
+					"kind": "INPUT_OBJECT",
+					"name": "StudyFilters",
+					"description": "Ways in which to filter lists of studies.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "topics",
+							"description": "List studies where the list of topic names exists on the study.",
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "NON_NULL",
+									"name": null,
+									"ofType": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									}
+								}
+							},
+							"defaultValue": null
+						},
+						{
+							"name": "search",
+							"description": "Query to search studies by.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
 					"kind": "INTERFACE",
 					"name": "StudyNode",
 					"description": null,
@@ -11544,17 +11731,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Course",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
 							"ofType": null
 						},
 						{
@@ -11564,7 +11746,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -11619,6 +11806,12 @@
 						{
 							"name": "ADVANCED_AT",
 							"description": "Order studies by advance time.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "APPLE_COUNT",
+							"description": "Order items by number of apples given.",
 							"isDeprecated": false,
 							"deprecationReason": null
 						},
@@ -11853,12 +12046,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "PRT",
+							"name": "EVT",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EVT",
+							"name": "PRT",
 							"ofType": null
 						}
 					]
@@ -11998,6 +12191,16 @@
 									"type": {
 										"kind": "INPUT_OBJECT",
 										"name": "TopicableOrder",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "search",
+									"description": "Query to search topicables by.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -12227,6 +12430,27 @@
 				},
 				{
 					"kind": "INPUT_OBJECT",
+					"name": "TopicFilters",
+					"description": "Ways in which to filter lists of topics.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "search",
+							"description": "Query to search topics by.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
 					"name": "TopicOrder",
 					"description": "Ways in which topics can be ordered upon return.",
 					"fields": null,
@@ -12315,12 +12539,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "Study",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "Course",
 							"ofType": null
 						}
 					]
@@ -12698,32 +12922,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "User",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Course",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Topic",
 							"ofType": null
 						},
 						{
@@ -12733,7 +12932,32 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Topic",
+							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Course",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "User",
 							"ofType": null
 						}
 					]
@@ -13341,12 +13565,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
@@ -13356,7 +13575,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -13451,7 +13675,7 @@
 						},
 						{
 							"name": "appled",
-							"description": "A list of studies the user has appled.",
+							"description": "A list of appleables the user has appled.",
 							"args": [
 								{
 									"name": "after",
@@ -13495,10 +13719,20 @@
 								},
 								{
 									"name": "orderBy",
-									"description": "Ordering options for studies returned from the connection.",
+									"description": "Ordering options for appleables returned from the connection.",
 									"type": {
 										"kind": "INPUT_OBJECT",
 										"name": "AppleableOrder",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "search",
+									"description": "Query to search appleds by.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -13550,6 +13784,16 @@
 									"type": {
 										"kind": "SCALAR",
 										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "filterBy",
+									"description": "Filtering options for user assets returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "UserAssetFilters",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -13646,6 +13890,83 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "courses",
+							"description": "A list of courses that the user owns.",
+							"args": [
+								{
+									"name": "after",
+									"description": "Returns the elements in the list that come after the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "before",
+									"description": "Returns the elements in the list that come before the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "filterBy",
+									"description": "Filtering options for courses returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "CourseFilters",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "first",
+									"description": "Returns the first n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "last",
+									"description": "Returns the last n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "orderBy",
+									"description": "Ordering options for courses returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "CourseOrder",
+										"ofType": null
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "CourseConnection",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "email",
 							"description": "The user's public profile email.",
 							"args": [],
@@ -13682,21 +14003,21 @@
 									"defaultValue": null
 								},
 								{
-									"name": "first",
-									"description": "Returns the first n elements form the list.",
+									"name": "filterBy",
+									"description": "Filtering options for emails returned from the connection.",
 									"type": {
-										"kind": "SCALAR",
-										"name": "Int",
+										"kind": "INPUT_OBJECT",
+										"name": "EmailFilters",
 										"ofType": null
 									},
 									"defaultValue": null
 								},
 								{
-									"name": "isVerified",
-									"description": "If non-null, then filter emails by whether they have been verified.",
+									"name": "first",
+									"description": "Returns the first n elements form the list.",
 									"type": {
 										"kind": "SCALAR",
-										"name": "Boolean",
+										"name": "Int",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -13708,24 +14029,6 @@
 										"kind": "SCALAR",
 										"name": "Int",
 										"ofType": null
-									},
-									"defaultValue": null
-								},
-								{
-									"name": "type",
-									"description": "If non-null, then filter emails by type.",
-									"type": {
-										"kind": "LIST",
-										"name": null,
-										"ofType": {
-											"kind": "NON_NULL",
-											"name": null,
-											"ofType": {
-												"kind": "ENUM",
-												"name": "EmailType",
-												"ofType": null
-											}
-										}
 									},
 									"defaultValue": null
 								}
@@ -13797,6 +14100,16 @@
 									"defaultValue": null
 								},
 								{
+									"name": "search",
+									"description": "Query to search enrolleds by.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
 									"name": "type",
 									"description": "The types of enrollables to retrieve",
 									"type": {
@@ -13859,6 +14172,16 @@
 									"type": {
 										"kind": "SCALAR",
 										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "filterBy",
+									"description": "Filtering options for users returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "UserFilters",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -14006,6 +14329,16 @@
 									"type": {
 										"kind": "SCALAR",
 										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "filterBy",
+									"description": "Filtering options for lessons returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "LessonFilters",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -14228,7 +14561,7 @@
 								"name": null,
 								"ofType": {
 									"kind": "OBJECT",
-									"name": "UserActivityConnection",
+									"name": "UserReceivedActivityConnection",
 									"ofType": null
 								}
 							},
@@ -14298,6 +14631,16 @@
 									"type": {
 										"kind": "SCALAR",
 										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "filterBy",
+									"description": "Filtering options for studies returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "StudyFilters",
 										"ofType": null
 									},
 									"defaultValue": null
@@ -14507,17 +14850,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "CreatedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "AppledEvent",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "UnappledEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CreatedEvent",
 							"ofType": null
 						}
 					]
@@ -15055,6 +15398,27 @@
 				},
 				{
 					"kind": "INPUT_OBJECT",
+					"name": "UserAssetFilters",
+					"description": "Ways in which to filter lists of user assets.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "search",
+							"description": "Query to search user assets by.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
 					"name": "UserAssetOrder",
 					"description": "Ways in which assets can be ordered upon return.",
 					"fields": null,
@@ -15395,6 +15759,102 @@
 							"ofType": null
 						}
 					],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INPUT_OBJECT",
+					"name": "UserFilters",
+					"description": "Ways in which to filter lists of users.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "search",
+							"description": "Query to search users by.",
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "OBJECT",
+					"name": "UserReceivedActivityConnection",
+					"description": "A connection type for UserActivityEvent.",
+					"fields": [
+						{
+							"name": "pageInfo",
+							"description": "Information to aid in pagination.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "PageInfo",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "edges",
+							"description": "A list of edges.",
+							"args": [],
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "UserActivityEventEdge",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "nodes",
+							"description": "A list of nodes.",
+							"args": [],
+							"type": {
+								"kind": "LIST",
+								"name": null,
+								"ofType": {
+									"kind": "INTERFACE",
+									"name": "UserActivityEvent",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "totalCount",
+							"description": "The total count of items in the connection.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Int",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [],
 					"enumValues": null,
 					"possibleTypes": null
 				},

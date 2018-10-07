@@ -1,6 +1,5 @@
 import * as React from 'react'
 import {
-  createFragmentContainer,
   QueryRenderer,
   graphql,
 } from 'react-relay'
@@ -18,9 +17,8 @@ const SearchStudyQuery = graphql`
     $after: String,
     $query: String!,
     $type: SearchType!,
-    $within: ID!
   ) {
-    ...SearchStudyResults_query @arguments(count: $count, after: $after, query: $query, type: $type, within: $within)
+    ...SearchStudyResults_query @arguments(count: $count, after: $after, query: $query, type: $type)
   }
 `
 
@@ -37,7 +35,6 @@ class SearchStudy extends React.Component {
           count: SEARCH_RESULTS_PER_PAGE,
           query,
           type: this.props.type,
-          within: this.props.study.id,
         }}
         render={({error,  props}) => {
           if (error) {
@@ -48,7 +45,6 @@ class SearchStudy extends React.Component {
                 <SearchStudyResults
                   query={props}
                   type={this.props.type}
-                  studyId={this.props.study.id}
                 >
                   {this.props.children}
                 </SearchStudyResults>
@@ -62,8 +58,4 @@ class SearchStudy extends React.Component {
   }
 }
 
-export default withRouter(createFragmentContainer(SearchStudy, graphql`
-  fragment SearchStudy_study on Study {
-    id
-  }
-`))
+export default withRouter(SearchStudy)

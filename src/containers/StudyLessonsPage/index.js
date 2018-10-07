@@ -4,11 +4,12 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
 import StudyLabelsLink from 'components/StudyLabelsLink'
 import CreateLessonLink from 'components/CreateLessonLink'
-import Search from 'components/Search'
-import LessonSearchResults from 'components/LessonSearchResults'
+import StudyLessons from 'components/StudyLessons'
+import StudyLessonsPageLessons from './StudyLessonsPageLessons'
 import {debounce, get, isEmpty} from 'utils'
 
 class StudyLessonsPage extends React.Component {
@@ -22,13 +23,13 @@ class StudyLessonsPage extends React.Component {
   }
 
   handleChange = (e) => {
-    this.setState({q: e.target.value})
-    this._redirect()
+    const q = e.target.value
+    this.setState({q})
+    this._redirect(q)
   }
 
-  _redirect = debounce(() => {
+  _redirect = debounce((q) => {
     const {location, history} = this.props
-    const {q} = this.state
 
     const searchQuery = queryString.parse(get(location, "search", ""))
     searchQuery.q = isEmpty(q) ? undefined : q
@@ -43,23 +44,25 @@ class StudyLessonsPage extends React.Component {
     return cls("StudyLessonsPage mdc-layout-grid__inner", className)
   }
 
-  get _order() {
-    const searchQuery = queryString.parse(get(this.props, "location.search", ""))
-    const {s} = searchQuery
-    switch (s) {
+  get _filterBy() {
+    const {q} = this.state
+    return {search: q}
+  }
+
+  get _orderBy() {
+    const {o, s} = this.state
+    const direction = (() => {
+      switch (s) {
       case "asc":
         return "ASC"
       case "desc":
         return "DESC"
       default:
         return "ASC"
-    }
-  }
-
-  get _sort() {
-    const searchQuery = queryString.parse(get(this.props, "location.search", ""))
-    const {o} = searchQuery
-    switch (o) {
+      }
+    })()
+    const field = (() => {
+      switch (o) {
       case "created":
         return "CREATED_AT"
       case "comments":
@@ -70,16 +73,14 @@ class StudyLessonsPage extends React.Component {
         return "UPDATED_AT"
       default:
         return "NUMBER"
-    }
+      }
+    })()
+
+    return {direction, field}
   }
 
   render() {
     const study = get(this.props, "study", null)
-    const {q} = this.state
-    const orderBy = {
-      direction: this._order,
-      field: this._sort,
-    }
 
     return (
       <div className={this.classes}>
@@ -102,9 +103,9 @@ class StudyLessonsPage extends React.Component {
           </div>
         </div>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-        <Search type="LESSON" query={q} within={study.id} orderBy={orderBy}>
-          <LessonSearchResults study={study} />
-        </Search>
+        <StudyLessons filterBy={this._filterBy} orderBy={this._orderBy}>
+          <StudyLessonsPageLessons />
+        </StudyLessons>
       </div>
     )
   }
@@ -113,26 +114,19 @@ class StudyLessonsPage extends React.Component {
     const {q} = this.state
 
     return (
-      <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
-        <input
-          className="mdc-text-field__input"
-          autoComplete="off"
-          type="text"
+      <TextField
+        fullWidth
+        label="Find a lesson..."
+        trailingIcon={<Icon><i className="material-icons">search</i></Icon>}
+      >
+        <Input
           name="q"
+          autoComplete="off"
           placeholder="Find a lesson..."
           value={q}
           onChange={this.handleChange}
         />
-        <div className="mdc-notched-outline mdc-theme--background z-behind">
-          <svg>
-            <path className="mdc-notched-outline__path"></path>
-          </svg>
-        </div>
-        <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
-        <i className="material-icons mdc-text-field__icon">
-          search
-        </i>
-      </div>
+      </TextField>
     )
   }
 }
@@ -141,7 +135,6 @@ export default createFragmentContainer(StudyLessonsPage, graphql`
   fragment StudyLessonsPage_study on Study {
     ...CreateLessonLink_study
     ...StudyLabelsLink_study
-    id
     viewerCanAdmin
   }
 `)

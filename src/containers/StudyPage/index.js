@@ -36,7 +36,6 @@ const StudyPageQuery = graphql`
       ...StudyLessonsPage_study
       ...StudyAssetsPage_study
       ...StudyCoursesPage_study
-      ...StudyOverviewPage_study
       ...StudySearchPage_study
       ...StudySettingsPage_study
     }

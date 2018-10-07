@@ -15,9 +15,7 @@ const FRAGMENT = graphql`
     author {
       ...UserLink_user
     }
-    comments(first: 0) {
-      totalCount
-    }
+    commentCount
     course {
       viewerCanAdmin
     }

@@ -102,9 +102,9 @@ export default createPaginationContainer(ViewerPrimaryEmail,
     viewer: graphql`
       fragment ViewerPrimaryEmail_viewer on User {
         primaryEmailOptions: emails(
-          first: $count,
           after: $after,
-          isVerified: true,
+          first: $count,
+          filterBy:{isVerified: true},
         ) @connection(key: "ViewerPrimaryEmail_primaryEmailOptions") {
           edges {
             node {

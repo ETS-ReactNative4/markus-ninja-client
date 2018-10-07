@@ -34,7 +34,7 @@ class StudyLessonPreview extends React.Component {
         >
           <i className="material-icons mr1">chat_bubble_outline</i>
           <span className="mdc-typography--subtitle2">
-            {get(lesson, "comments.totalCount", 0)}
+            {get(lesson, "commentCount", 0)}
           </span>
         </Link>
       </div>

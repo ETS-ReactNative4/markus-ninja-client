@@ -22,36 +22,58 @@ const UserPageQuery = graphql`
       id
       ...UserHeader_user
       ...UserNav_user
-      ...UserOverviewTab_user
       ...UserStudiesTab_user
     }
   }
 `
 
 class UserPage extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      tab: this._tab,
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const prevQuery = queryString.parse(get(prevProps, "location.search", ""))
+    const newQuery = queryString.parse(get(this.props, "location.search", ""))
+    const prevTab = get(prevQuery, "tab", "")
+    const newTab = get(newQuery, "tab", "")
+
+    if (prevTab !== newTab) {
+      this.setState({tab: this._tab})
+    }
+  }
+
+  get _tab() {
+    const query = queryString.parse(get(this.props, "location.search", ""))
+    const tab = get(query, "tab", "")
+    return (() => {
+      switch (tab.toLowerCase()) {
+      case "apples":
+        return UserApplesTab
+      case "pupils":
+        return UserPupilsTab
+      case "studies":
+        return UserStudiesTab
+      case "tutors":
+        return UserTutorsTab
+      default:
+        return UserOverviewTab
+      }
+    })()
+  }
+
   get classes() {
     const {className} = this.props
     return cls("UserPage mdc-layout-grid", className)
   }
 
   render() {
-    const { location, match } = this.props
-    const Tab = (props) => {
-      const query = queryString.parse(get(location, "search", ""))
-      const tab = get(query, "tab", "")
-      switch (tab.toLowerCase()) {
-        case "apples":
-          return <UserApplesTab {...props} />
-        case "pupils":
-          return <UserPupilsTab {...props} />
-        case "studies":
-          return <UserStudiesTab {...props} />
-        case "tutors":
-          return <UserTutorsTab {...props} />
-        default:
-          return <UserOverviewTab {...props} />
-      }
-    }
+    const {match} = this.props
+
     return (
       <QueryRenderer
         environment={environment}
@@ -66,6 +88,7 @@ class UserPage extends React.Component {
             if (isNil(props.user)) {
               return <NotFound />
             }
+            const Tab = this.state.tab
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">

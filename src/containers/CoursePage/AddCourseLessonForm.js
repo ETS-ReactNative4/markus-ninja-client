@@ -32,7 +32,9 @@ class AddCourseLessonForm extends React.Component {
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
         <StudyLessonSelect
-          isCourseLesson={false}
+          filterBy={{
+            isCourseLesson: false,
+          }}
           study={get(course, "study", null)}
           onChange={this.handleChangeLesson}
         />
@@ -67,10 +69,18 @@ class AddCourseLessonForm extends React.Component {
 }
 
 export default withRouter(createFragmentContainer(AddCourseLessonForm, graphql`
-  fragment AddCourseLessonForm_course on Course {
+  fragment AddCourseLessonForm_course on Course @argumentDefinitions(
+    after: {type: "String"},
+    count: {type: "Int!"},
+    filterBy: {type: "LessonFilters"},
+  ) {
     id
     study {
-      ...StudyLessonSelect_study
+      ...StudyLessonSelect_study @arguments(
+        after: $after,
+        count: $count,
+        filterBy: $filterBy,
+      )
     }
     viewerCanAdmin
   }

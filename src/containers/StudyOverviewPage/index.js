@@ -1,7 +1,6 @@
 import * as React from 'react'
 import cls from 'classnames'
 import {
-  createFragmentContainer,
   QueryRenderer,
   graphql,
 } from 'react-relay'
@@ -15,30 +14,30 @@ import {get, isEmpty} from 'utils'
 import { TOPICS_PER_PAGE } from 'consts'
 
 const StudyOverviewPageQuery = graphql`
-  query StudyOverviewPageQuery($owner: String!, $name: String!, $count: Int!, $after: String, $within: ID!) {
-    popularCourses: search(first: 6, query: "*", type: COURSE, orderBy:{direction:DESC, field:APPLE_COUNT}, within: $within) {
-      edges {
-        node {
-          id
-          ...on Course {
-            ...CoursePreview_course
-          }
-        }
-      }
-    }
-    popularLessons: search(first: 6, query: "*", type: LESSON, orderBy:{direction:DESC, field:COMMENT_COUNT}, within: $within) {
-      edges {
-        node {
-          id
-          ...on Lesson {
-            ...LessonPreview_lesson
-          }
-        }
-      }
-    }
+  query StudyOverviewPageQuery($owner: String!, $name: String!, $count: Int!, $after: String) {
     study(owner: $owner, name: $name) {
       ...CreateLessonLink_study
       ...StudyMeta_study
+      courses(first: 6, orderBy:{direction:DESC, field:APPLE_COUNT}) {
+        edges {
+          node {
+            id
+            ...on Course {
+              ...CoursePreview_course
+            }
+          }
+        }
+      }
+      lessons(first: 6, orderBy:{direction:DESC, field:COMMENT_COUNT}) {
+        edges {
+          node {
+            id
+            ...on Lesson {
+              ...LessonPreview_lesson
+            }
+          }
+        }
+      }
       lessonCount
     }
   }
@@ -60,27 +59,26 @@ class StudyOverviewPage extends React.Component {
           owner: match.params.owner,
           name: match.params.name,
           count: TOPICS_PER_PAGE,
-          within: get(this.props, "study.id", ""),
         }}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            const popularCourseEdges = get(props, "popularCourses.edges", [])
-            const popularLessonEdges = get(props, "popularLessons.edges", [])
+            const courses = get(props, "study.courses.edges", [])
+            const lessons = get(props, "study.lessons.edges", [])
 
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   <StudyMeta study={props.study}  />
                 </div>
-                {!isEmpty(popularLessonEdges) &&
+                {!isEmpty(lessons) &&
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   <div className="mdc-layout-grid__inner">
                     <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                       Popular lessons
                     </h5>
-                    {popularLessonEdges.map(({node}) => (
+                    {lessons.map(({node}) => (
                       node &&
                       <div key={node.id} className="mdc-layout-grid__cell">
                         <LessonPreview.Study className="mdc-card mdc-card--outlined pa3 h-100" lesson={node} />
@@ -88,13 +86,13 @@ class StudyOverviewPage extends React.Component {
                     ))}
                   </div>
                 </div>}
-                {!isEmpty(popularCourseEdges) &&
+                {!isEmpty(courses) &&
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   <div className="mdc-layout-grid__inner">
                     <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                       Popular courses
                     </h5>
-                    {popularCourseEdges.map(({node}) => (
+                    {courses.map(({node}) => (
                       node &&
                       <div key={node.id} className="mdc-layout-grid__cell">
                         <CoursePreview.Study
@@ -121,8 +119,4 @@ class StudyOverviewPage extends React.Component {
   }
 }
 
-export default withRouter(createFragmentContainer(StudyOverviewPage, graphql`
-  fragment StudyOverviewPage_study on Study {
-    id
-  }
-`))
+export default withRouter(StudyOverviewPage)

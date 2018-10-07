@@ -82,11 +82,15 @@ class StudyLessonSelect extends React.Component {
 export default createPaginationContainer(StudyLessonSelect,
   {
     study: graphql`
-      fragment StudyLessonSelect_study on Study {
+      fragment StudyLessonSelect_study on Study @argumentDefinitions(
+        after: {type: "String"},
+        count: {type: "Int!"},
+        filterBy: {type: "LessonFilters"},
+      ) {
         lessons(
-          first: $count,
           after: $after,
-          isCourseLesson: $isCourseLesson,
+          first: $count,
+          filterBy: $filterBy,
           orderBy:{direction: ASC field:NUMBER}
         ) @connection(key: "StudyLessonSelect_lessons", filters: []) {
           edges {
@@ -111,11 +115,15 @@ export default createPaginationContainer(StudyLessonSelect,
         $owner: String!,
         $name: String!,
         $count: Int!,
-        $after: String
-        $isCourseLesson: Boolean
+        $after: String,
+        $filterBy: LessonFilters,
       ) {
         study(owner: $owner, name: $name) {
-          ...StudyLessonSelect_study
+          ...StudyLessonSelect_study @arguments(
+            after: $after,
+            count: $count,
+            filterBy: $filterBy,
+          )
         }
       }
     `,
@@ -134,7 +142,7 @@ export default createPaginationContainer(StudyLessonSelect,
         name: props.match.params.name,
         count: paginationInfo.count,
         after: paginationInfo.cursor,
-        isCourseLesson: props.isCourseLesson,
+        filterBy: props.filterBy,
       }
     },
   },

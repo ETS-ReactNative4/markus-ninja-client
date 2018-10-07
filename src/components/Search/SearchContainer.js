@@ -39,7 +39,7 @@ class SearchContainer extends React.Component {
 
   _refetch = debounce((query, after) => {
     const {type: prevType} = this.state
-    const {orderBy, relay, type, within} = this.props
+    const {orderBy, relay, type} = this.props
 
     this.setState({
       dataIsStale: prevType !== type,
@@ -54,7 +54,6 @@ class SearchContainer extends React.Component {
         query: isEmpty(query) ? "*" : query,
         orderBy,
         type,
-        within,
       },
       null,
       (error) => {
@@ -115,7 +114,6 @@ class SearchContainer extends React.Component {
 SearchContainer.propTypes = {
   query: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  within: PropTypes.string,
 }
 
 SearchContainer.defaultProps = {
@@ -166,10 +164,9 @@ const refetchContainer = createRefetchContainer(SearchContainer,
         orderBy: {type: "SearchOrder"},
         query: {type: "String!"},
         type: {type: "SearchType!"},
-        within: {type: "ID"}
       ) {
-        search(first: $count, after: $after, orderBy: $orderBy, query: $query, type: $type, within: $within)
-        @connection(key: "SearchContainer_search", filters: ["orderBy", "type", "within"]) {
+        search(first: $count, after: $after, orderBy: $orderBy, query: $query, type: $type)
+        @connection(key: "SearchContainer_search", filters: ["orderBy", "type"]) {
           edges {
             cursor
             node {
@@ -219,7 +216,6 @@ const refetchContainer = createRefetchContainer(SearchContainer,
       $orderBy: SearchOrder,
       $query: String!,
       $type: SearchType!,
-      $within: ID
     ) {
       ...SearchContainer_results @arguments(
         count: $count,
@@ -227,7 +223,6 @@ const refetchContainer = createRefetchContainer(SearchContainer,
         orderBy: $orderBy,
         query: $query,
         type: $type,
-        within: $within,
       )
     }
   `,

@@ -61,7 +61,10 @@ class CourseLessons extends React.Component {
 export default createPaginationContainer(CourseLessons,
   {
     course: graphql`
-      fragment CourseLessons_course on Course {
+      fragment CourseLessons_course on Course @argumentDefinitions(
+        after: {type: "String"},
+        count: {type: "Int!"},
+      ) {
         lessons(
           first: $count,
           after: $after,
@@ -93,7 +96,10 @@ export default createPaginationContainer(CourseLessons,
       ) {
         study(owner: $owner, name: $name) {
           course(number: $number) {
-            ...CourseLessons_course
+            ...CourseLessons_course @arguments(
+              after: $after,
+              count: $count,
+            )
           }
         }
       }

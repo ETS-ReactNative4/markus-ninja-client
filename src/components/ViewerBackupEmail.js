@@ -119,10 +119,9 @@ export default createPaginationContainer(ViewerBackupEmail,
     viewer: graphql`
       fragment ViewerBackupEmail_viewer on User {
         backupEmailOptions: emails(
-          first: $count,
           after: $after,
-          isVerified: true,
-          type: [BACKUP, EXTRA]
+          first: $count,
+          filterBy:{isVerified: true, types: [BACKUP, EXTRA]},
         ) @connection(key: "ViewerBackupEmail_backupEmailOptions") {
           edges {
             node {

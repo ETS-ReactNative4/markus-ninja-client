@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {
   QueryRenderer,
-  createFragmentContainer,
   graphql,
 } from 'react-relay'
 import { Link } from 'react-router-dom'
@@ -21,9 +20,8 @@ const StudySearchQuery = graphql`
     $orderBy: SearchOrder,
     $query: String!,
     $type: SearchType!,
-    $within: ID!,
   ) {
-    search(first: $count, after: $after, orderBy: $orderBy, query: $query, type: $type, within: $within) {
+    search(first: $count, after: $after, orderBy: $orderBy, query: $query, type: $type) {
       edges {
         node {
           __typename
@@ -78,7 +76,6 @@ class StudySearch extends Component {
           orderBy,
           query,
           type,
-          within: get(this.props, "study.id", ""),
         }}
         render={({error,  props}) => {
           if (error) {
@@ -116,10 +113,4 @@ class StudySearch extends Component {
   }
 }
 
-export default withRouter(createFragmentContainer(StudySearch, graphql`
-  fragment StudySearch_study on Study {
-    id
-    nameWithOwner
-    resourcePath
-  }
-`))
+export default withRouter(StudySearch)

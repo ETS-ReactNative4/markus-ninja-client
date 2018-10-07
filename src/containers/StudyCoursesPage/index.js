@@ -4,10 +4,11 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
 import CreateCourseLink from 'components/CreateCourseLink'
-import Search from 'components/Search'
-import CourseSearchResults from 'components/CourseSearchResults'
+import StudyCourses from 'components/StudyCourses'
+import StudyCoursesPageCourses from './StudyCoursesPageCourses'
 import {debounce, get, isEmpty} from 'utils'
 
 class StudyCoursesPage extends React.Component {
@@ -15,19 +16,19 @@ class StudyCoursesPage extends React.Component {
     super(props)
 
     const searchQuery = queryString.parse(get(this.props, "location.search", ""))
-    const q = get(searchQuery, "q", "")
+    const {o, q, s} = searchQuery
 
-    this.state = {q}
+    this.state = {o, q, s}
   }
 
   handleChange = (e) => {
-    this.setState({q: e.target.value})
-    this._redirect()
+    const q = e.target.value
+    this.setState({q})
+    this._redirect(q)
   }
 
-  _redirect = debounce(() => {
+  _redirect = debounce((q) => {
     const {location, history} = this.props
-    const {q} = this.state
 
     const searchQuery = queryString.parse(get(location, "search", ""))
     searchQuery.q = isEmpty(q) ? undefined : q
@@ -42,8 +43,42 @@ class StudyCoursesPage extends React.Component {
     return cls("StudyCoursesPage mdc-layout-grid__inner", className)
   }
 
-  render() {
+  get _filterBy() {
     const {q} = this.state
+    return {search: q}
+  }
+
+  get _orderBy() {
+    const {o, s} = this.state
+    const direction = (() => {
+      switch (s) {
+      case "asc":
+        return "ASC"
+      case "desc":
+        return "DESC"
+      default:
+        return "ASC"
+      }
+    })()
+    const field = (() => {
+      switch (o) {
+      case "created":
+        return "CREATED_AT"
+      case "comments":
+        return "COMMENT_COUNT"
+      case "number":
+        return "NUMBER"
+      case "updated":
+        return "UPDATED_AT"
+      default:
+        return "NUMBER"
+      }
+    })()
+
+    return {direction, field}
+  }
+
+  render() {
     const study = get(this.props, "study", null)
 
     return (
@@ -63,9 +98,9 @@ class StudyCoursesPage extends React.Component {
           </div>
         </div>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-        <Search type="COURSE" query={q} within={study.id}>
-          <CourseSearchResults study={study} />
-        </Search>
+        <StudyCourses filterBy={this._filterBy} orderBy={this._orderBy}>
+          <StudyCoursesPageCourses />
+        </StudyCourses>
       </div>
     )
   }
@@ -74,27 +109,19 @@ class StudyCoursesPage extends React.Component {
     const {q} = this.state
 
     return (
-      <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
-        <input
-          id="courses-query"
-          className="mdc-text-field__input"
-          autoComplete="off"
-          type="text"
+      <TextField
+        fullWidth
+        label="Find a course..."
+        trailingIcon={<Icon><i className="material-icons">search</i></Icon>}
+      >
+        <Input
           name="q"
+          autoComplete="off"
           placeholder="Find a course..."
           value={q}
           onChange={this.handleChange}
         />
-        <div className="mdc-notched-outline mdc-theme--background z-behind">
-          <svg>
-            <path className="mdc-notched-outline__path"></path>
-          </svg>
-        </div>
-        <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
-        <i className="material-icons mdc-text-field__icon">
-          search
-        </i>
-      </div>
+      </TextField>
     )
   }
 }
@@ -102,7 +129,6 @@ class StudyCoursesPage extends React.Component {
 export default createFragmentContainer(StudyCoursesPage, graphql`
   fragment StudyCoursesPage_study on Study {
     ...CreateCourseLink_study
-    id
     viewerCanAdmin
   }
 `)

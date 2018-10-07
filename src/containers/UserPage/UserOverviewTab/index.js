@@ -2,7 +2,6 @@ import * as React from 'react'
 import cls from 'classnames'
 import {
   QueryRenderer,
-  createFragmentContainer,
   graphql,
 } from 'react-relay'
 import {withRouter} from 'react-router'
@@ -14,14 +13,10 @@ import {get} from 'utils'
 import {USER_ACTIVITY_PER_PAGE} from 'consts'
 
 const UserOverviewTabQuery = graphql`
-  query UserOverviewTabQuery($login: String!, $count: Int!, $after: String, $within: ID!) {
-    ...UserPopularCourses_query @arguments(
-      within: $within,
-    )
-    ...UserPopularStudies_query @arguments(
-      within: $within,
-    )
+  query UserOverviewTabQuery($login: String!, $count: Int!, $after: String) {
     user(login: $login) {
+      ...UserPopularCourses_user
+      ...UserPopularStudies_user
       ...UserActivity_user @arguments(
         count: $count,
         after: $after,
@@ -46,7 +41,6 @@ class UserOverviewTab extends React.Component {
         variables={{
           count: USER_ACTIVITY_PER_PAGE,
           login: get(match.params, "login", ""),
-          within: get(this.props, "user.id", ""),
         }}
         render={({error,  props}) => {
           if (error) {
@@ -55,10 +49,10 @@ class UserOverviewTab extends React.Component {
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <UserPopularCourses query={props} />
+                  <UserPopularCourses user={props.user} />
                 </div>
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <UserPopularStudies query={props} />
+                  <UserPopularStudies user={props.user} />
                 </div>
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   <UserActivity user={props.user} />
@@ -73,8 +67,4 @@ class UserOverviewTab extends React.Component {
   }
 }
 
-export default withRouter(createFragmentContainer(UserOverviewTab, graphql`
-  fragment UserOverviewTab_user on User {
-    id
-  }
-`))
+export default withRouter(UserOverviewTab)

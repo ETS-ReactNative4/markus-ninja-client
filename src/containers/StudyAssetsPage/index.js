@@ -4,10 +4,11 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
 import CreateUserAssetForm from './CreateUserAssetForm'
-import Search from 'components/Search'
-import AssetSearchResults from 'components/AssetSearchResults'
+import StudyAssets from 'components/StudyAssets'
+import StudyAssetsPageAssets from './StudyAssetsPageAssets'
 import {debounce, get, isEmpty} from 'utils'
 
 class StudyAssetsPage extends React.Component {
@@ -15,22 +16,24 @@ class StudyAssetsPage extends React.Component {
     super(props)
 
     const searchQuery = queryString.parse(get(this.props, "location.search", ""))
-    const q = get(searchQuery, "q", "")
+    const {o, q, s} = searchQuery
 
     this.state = {
       open: false,
+      o,
       q,
+      s,
     }
   }
 
   handleChange = (e) => {
-    this.setState({q: e.target.value})
-    this._redirect()
+    const q = e.target.value
+    this.setState({q})
+    this._redirect(q)
   }
 
-  _redirect = debounce(() => {
+  _redirect = debounce((q) => {
     const {location, history} = this.props
-    const {q} = this.state
 
     const searchQuery = queryString.parse(get(location, "search", ""))
     searchQuery.q = isEmpty(q) ? undefined : q
@@ -45,8 +48,43 @@ class StudyAssetsPage extends React.Component {
     return cls("StudyAssetsPage mdc-layout-grid__inner", className)
   }
 
+  get _filterBy() {
+    const {q} = this.state
+    return {search: q}
+  }
+
+  get _orderBy() {
+    const {o, s} = this.state
+    const direction = (() => {
+      switch (s) {
+      case "asc":
+        return "ASC"
+      case "desc":
+        return "DESC"
+      default:
+        return "ASC"
+      }
+    })()
+    const field = (() => {
+      switch (o) {
+      case "created":
+        return "CREATED_AT"
+      case "comments":
+        return "COMMENT_COUNT"
+      case "number":
+        return "NUMBER"
+      case "updated":
+        return "UPDATED_AT"
+      default:
+        return "NUMBER"
+      }
+    })()
+
+    return {direction, field}
+  }
+
   render() {
-    const {open, q} = this.state
+    const {open} = this.state
     const study = get(this.props, "study", null)
 
     return (
@@ -74,9 +112,9 @@ class StudyAssetsPage extends React.Component {
           </div>
         </div>}
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-        <Search type="USER_ASSET" query={q} within={study.id}>
-          <AssetSearchResults />
-        </Search>
+        <StudyAssets filterBy={this._filterBy} orderBy={this._orderBy}>
+          <StudyAssetsPageAssets />
+        </StudyAssets>
       </div>
     )
   }
@@ -85,26 +123,19 @@ class StudyAssetsPage extends React.Component {
     const {q} = this.state
 
     return (
-      <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
-        <input
-          className="mdc-text-field__input"
-          autoComplete="off"
-          type="text"
+      <TextField
+        fullWidth
+        label="Find an asset..."
+        trailingIcon={<Icon><i className="material-icons">search</i></Icon>}
+      >
+        <Input
           name="q"
-          placeholder="Find a asset..."
+          autoComplete="off"
+          placeholder="Find an asset..."
           value={q}
           onChange={this.handleChange}
         />
-        <div className="mdc-notched-outline mdc-theme--background z-behind">
-          <svg>
-            <path className="mdc-notched-outline__path"></path>
-          </svg>
-        </div>
-        <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
-        <i className="material-icons mdc-text-field__icon">
-          search
-        </i>
-      </div>
+      </TextField>
     )
   }
 }

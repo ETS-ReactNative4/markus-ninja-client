@@ -124,7 +124,7 @@ export default createFragmentContainer(UserProfileForm, graphql`
       id
       value
     }
-    emails(first: 5, isVerified: true) {
+    emails(first: 5, filterBy:{isVerified: true}) {
       edges {
         node {
           id

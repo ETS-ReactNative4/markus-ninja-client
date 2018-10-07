@@ -18,7 +18,6 @@ const SearchQuery = graphql`
     $orderBy: SearchOrder,
     $query: String!,
     $type: SearchType!,
-    $within: ID,
   ) {
     ...SearchContainer_results @arguments(
       count: $count,
@@ -26,7 +25,6 @@ const SearchQuery = graphql`
       orderBy: $orderBy,
       query: $query,
       type: $type,
-      within: $within,
     )
   }
 `
@@ -45,7 +43,6 @@ class Search extends React.Component {
   }
 
   render() {
-    const {within} = this.props
     const {orderBy, query, type} = this.state
 
     return (
@@ -57,7 +54,6 @@ class Search extends React.Component {
           query,
           type,
           orderBy,
-          within,
         }}
         render={({error,  props}) => {
           if (error) {
@@ -71,7 +67,6 @@ class Search extends React.Component {
                 query={query}
                 results={props}
                 type={type}
-                within={within}
               >
                 {children}
               </SearchContainer>
@@ -91,7 +86,6 @@ Search.propTypes = {
   }),
   query: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  within: PropTypes.string,
 }
 
 Search.defaultProps = {

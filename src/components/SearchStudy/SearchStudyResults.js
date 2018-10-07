@@ -66,10 +66,9 @@ export default withRouter(createPaginationContainer(SearchStudyResults,
         after: {type: "String"},
         query: {type: "String!"},
         type: {type: "SearchType!"},
-        within: {type: "ID!"}
       ) {
-        search(first: $count, after: $after, query: $query, type: $type, within: $within)
-          @connection(key: "SearchStudy_search", filters: ["type" , "within"]) {
+        search(first: $count, after: $after, query: $query, type: $type)
+          @connection(key: "SearchStudy_search", filters: ["type"]) {
           edges {
             node {
               id
@@ -107,9 +106,8 @@ export default withRouter(createPaginationContainer(SearchStudyResults,
         $after: String,
         $query: String!,
         $type: SearchType!,
-        $within: ID!
       ) {
-        ...SearchStudyResults_query @arguments(count: $count, after: $after, query: $query, type: $type, within: $within)
+        ...SearchStudyResults_query @arguments(count: $count, after: $after, query: $query, type: $type)
       }
     `,
     getConnectionFromProps(props) {
@@ -129,7 +127,6 @@ export default withRouter(createPaginationContainer(SearchStudyResults,
         after: paginationInfo.cursor,
         query,
         type: props.type,
-        within: props.studyId,
       }
     },
   },

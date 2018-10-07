@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import * as React from 'react'
 import cls from 'classnames'
 import {
   QueryRenderer,
@@ -22,20 +22,22 @@ const CoursePageQuery = graphql`
     $number: Int!,
     $count: Int!,
     $after: String,
-    $isCourseLesson: Boolean
   ) {
     study(owner: $owner, name: $name) {
       course(number: $number) {
         id
         ...CourseHeader_course
         ...CourseMeta_course
-        ...Course_course
+        ...Course_course @arguments(
+          after: $after,
+          count: $count,
+        )
       }
     }
   }
 `
 
-class CoursePage extends Component {
+class CoursePage extends React.Component {
   get classes() {
     const {className} = this.props
     return cls("CoursePage mdc-layout-grid", className)
@@ -51,7 +53,6 @@ class CoursePage extends Component {
           name: this.props.match.params.name,
           number: parseInt(this.props.match.params.number, 10),
           count: LESSONS_PER_PAGE,
-          isCourseLesson: false,
         }}
         render={({error,  props}) => {
           if (error) {
