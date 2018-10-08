@@ -21,7 +21,7 @@ import { EVENTS_PER_PAGE } from 'consts'
 import "./styles.css"
 
 const LessonPageQuery = graphql`
-  query LessonPageQuery($owner: String!, $name: String!, $number: Int!, $count: Int!, $after: String, $filename: String!) {
+  query LessonPageQuery($owner: String!, $name: String!, $number: Int!, $count: Int!, $after: String) {
     study(owner: $owner, name: $name) {
       lesson(number: $number) {
         id
@@ -56,7 +56,6 @@ class LessonPage extends React.Component {
           name: this.props.match.params.name,
           number: parseInt(this.props.match.params.number, 10),
           count: EVENTS_PER_PAGE,
-          filename: "",
         }}
         render={({error,  props}) => {
           if (error) {

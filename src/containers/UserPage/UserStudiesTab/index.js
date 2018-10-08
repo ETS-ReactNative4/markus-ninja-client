@@ -6,8 +6,7 @@ import {
 } from 'react-relay'
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
-import { Link } from 'react-router-dom'
-import { withRouter } from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import UserStudies from 'components/UserStudies'
 import UserStudiesTabStudies from './UserStudiesTabStudies'
 import {debounce, get, isEmpty} from 'utils'
@@ -90,7 +89,6 @@ class UserStudiesTab extends React.Component {
             <Link className="mdc-button mdc-button--unelevated ml3" to="/new">New</Link>
           </div>
         </div>
-        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <UserStudies filterBy={this._filterBy} orderBy={this._orderBy}>
           <UserStudiesTabStudies />
         </UserStudies>

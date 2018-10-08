@@ -57,7 +57,7 @@ class StudyNav extends React.Component {
             <Icon as="span" className="mdc-tab__icon" icon="course" />
             <span className="mdc-tab__text-label">
               Courses
-              <Counter>{get(study, "courses.totalCount", 0)}</Counter>
+              <Counter>{get(study, "courseCount", 0)}</Counter>
             </span>
           </span>
         </Tab>
@@ -70,7 +70,7 @@ class StudyNav extends React.Component {
             <Icon as="span" className="mdc-tab__icon" icon="asset" />
             <span className="mdc-tab__text-label">
               Assets
-              <Counter>{get(study, "assets.totalCount", 0)}</Counter>
+              <Counter>{get(study, "assetCount", 0)}</Counter>
             </span>
           </span>
         </Tab>
@@ -94,12 +94,8 @@ class StudyNav extends React.Component {
 
 export default withRouter(createFragmentContainer(StudyNav, graphql`
   fragment StudyNav_study on Study {
-    assets(first: 0) {
-      totalCount
-    }
-    courses(first: 0) {
-      totalCount
-    }
+    assetCount
+    courseCount
     lessonCount
     resourcePath
     viewerCanAdmin

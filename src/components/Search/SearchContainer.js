@@ -100,33 +100,27 @@ class SearchContainer extends React.Component {
 
     return React.cloneElement(child, {
       search: {
-        type,
-        edges: this._edges,
         counts: this._counts,
+        edges: this._edges,
         hasMore: this._hasMore,
         isLoading: loading,
         loadMore: this._loadMore,
+        type,
       },
     })
   }
 }
 
 SearchContainer.propTypes = {
-  query: PropTypes.string.isRequired,
+  query: PropTypes.string,
   type: PropTypes.string.isRequired,
 }
 
 SearchContainer.defaultProps = {
-  query: "",
-  type: "",
+  query: "*",
 }
 
 export const SearchProp = PropTypes.shape({
-  type: PropTypes.string,
-  edges: PropTypes.array,
-  idLoading: PropTypes.bool,
-  hasMore: PropTypes.bool,
-  loadMore: PropTypes.func,
   counts: PropTypes.shape({
     course: PropTypes.number,
     label: PropTypes.number,
@@ -136,14 +130,14 @@ export const SearchProp = PropTypes.shape({
     user: PropTypes.number,
     userAsset: PropTypes.number,
   }),
+  edges: PropTypes.array,
+  idLoading: PropTypes.bool,
+  hasMore: PropTypes.bool,
+  loadMore: PropTypes.func,
+  type: PropTypes.string.isRequired,
 })
 
 export const SearchPropDefaults = {
-  type: "",
-  edges: [],
-  isLoading: false,
-  hasMore: false,
-  loadMore: () => {},
   counts: {
     course: 0,
     label: 0,
@@ -153,6 +147,10 @@ export const SearchPropDefaults = {
     user: 0,
     userAsset: 0,
   },
+  edges: [],
+  isLoading: false,
+  hasMore: false,
+  loadMore: () => {},
 }
 
 const refetchContainer = createRefetchContainer(SearchContainer,

@@ -125,7 +125,7 @@ const refetchContainer = createRefetchContainer(UserEnrolleesContainer,
         count: {type: "Int!"},
         after: {type: "String"},
         filterBy: {type: "UserFilters"},
-        orderBy: {type: "UserOrder"},
+        orderBy: {type: "EnrolleeOrder"},
       ) {
         enrollees(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
         @connection(key: "UserEnrolleesContainer_enrollees", filters: ["filterBy", "orderBy"]) {
@@ -153,7 +153,7 @@ const refetchContainer = createRefetchContainer(UserEnrolleesContainer,
       $count: Int!,
       $after: String,
       $filterBy: UserFilters,
-      $orderBy: UserOrder,
+      $orderBy: EnrolleeOrder,
     ) {
       user(login: $login) {
         ...UserEnrolleesContainer_user @arguments(

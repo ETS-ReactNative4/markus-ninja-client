@@ -4,26 +4,31 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
-import Search from 'components/Search'
-import LabelSearchResults from 'components/LabelSearchResults'
+import StudyLabels from 'components/StudyLabels'
+import StudyLabelsPageLabels from './StudyLabelsPageLabels'
 import CreateLabelForm from './CreateLabelForm'
 import {debounce, get, isEmpty} from 'utils'
 
 class StudyLabelsPage extends React.Component {
-  state = {
-    open: false,
-    q: "",
+  constructor(props) {
+    super(props)
+
+    const searchQuery = queryString.parse(get(this.props, "location.search", ""))
+    const {o, q, s} = searchQuery
+
+    this.state = {o, q, s}
   }
 
   handleChange = (e) => {
-    this.setState({q: e.target.value})
-    this._redirect()
+    const q = e.target.value
+    this.setState({q})
+    this._redirect(q)
   }
 
-  _redirect = debounce(() => {
+  _redirect = debounce((q) => {
     const {location, history} = this.props
-    const {q} = this.state
 
     const searchQuery = queryString.parse(get(location, "search", ""))
     searchQuery.q = isEmpty(q) ? undefined : q
@@ -38,8 +43,39 @@ class StudyLabelsPage extends React.Component {
     return cls("StudyLabelsPage mdc-layout-grid__inner", className)
   }
 
+  get _filterBy() {
+    const {q} = this.state
+    return {search: q}
+  }
+
+  get _orderBy() {
+    const {o, s} = this.state
+    const direction = (() => {
+      switch (s) {
+      case "asc":
+        return "ASC"
+      case "desc":
+        return "DESC"
+      default:
+        return "ASC"
+      }
+    })()
+    const field = (() => {
+      switch (o) {
+      case "labeled":
+        return "LABELED_AT"
+      case "name":
+        return "NAME"
+      default:
+        return "NAME"
+      }
+    })()
+
+    return {direction, field}
+  }
+
   render() {
-    const {open, q} = this.state
+    const {open} = this.state
     const study = get(this.props, "study", null)
 
     return (
@@ -65,14 +101,9 @@ class StudyLabelsPage extends React.Component {
             />
           </div>
         </div>}
-        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-        <Search
-          type="LABEL"
-          query={q}
-          within={study.id}
-        >
-          <LabelSearchResults />
-        </Search>
+        <StudyLabels filterBy={this._filterBy} orderBy={this._orderBy}>
+          <StudyLabelsPageLabels />
+        </StudyLabels>
       </div>
     )
   }
@@ -81,26 +112,19 @@ class StudyLabelsPage extends React.Component {
     const {q} = this.state
 
     return (
-      <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
-        <input
-          className="mdc-text-field__input"
-          autoComplete="off"
-          type="text"
+      <TextField
+        fullWidth
+        label="Find a label..."
+        trailingIcon={<Icon><i className="material-icons">search</i></Icon>}
+      >
+        <Input
           name="q"
-          placeholder="Search..."
+          autoComplete="off"
+          placeholder="Find a label..."
           value={q}
           onChange={this.handleChange}
         />
-        <div className="mdc-notched-outline mdc-theme--background z-behind">
-          <svg>
-            <path className="mdc-notched-outline__path"></path>
-          </svg>
-        </div>
-        <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
-        <i className="material-icons mdc-text-field__icon">
-          search
-        </i>
-      </div>
+      </TextField>
     )
   }
 }

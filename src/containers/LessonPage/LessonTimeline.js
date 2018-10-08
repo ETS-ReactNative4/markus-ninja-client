@@ -90,7 +90,6 @@ export default withRouter(createPaginationContainer(LessonTimeline,
         $number: Int!,
         $count: Int!,
         $after: String,
-        $filename: String!,
       ) {
         study(owner: $owner, name: $name) {
           lesson(number: $number) {
@@ -115,7 +114,6 @@ export default withRouter(createPaginationContainer(LessonTimeline,
         number: parseInt(props.match.params.number, 10),
         count: paginationInfo.count,
         after: paginationInfo.cursor,
-        filename: "",
       }
     },
   },

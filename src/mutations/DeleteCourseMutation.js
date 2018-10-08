@@ -11,9 +11,7 @@ const mutation = graphql`
       deletedCourseId
       study {
         id
-        courses(first: 0) {
-          totalCount
-        }
+        courseCount
       }
     }
   }
@@ -37,9 +35,9 @@ export default (courseId, callback) => {
           const deletedCourseId = deleteCourseField.getValue('deletedCourseId')
           const courseStudy = deleteCourseField.getLinkedRecord('study')
           const courseStudyId = courseStudy.getValue('id')
-          const courseStudyCourses = courseStudy.getLinkedRecord('courses', {first: 0})
+          const studyCourseCount = courseStudy.getValue('courseCount')
           const study = proxyStore.get(courseStudyId)
-          study.setLinkedRecord(courseStudyCourses, 'courses', {first: 0})
+          study.setValue(studyCourseCount, 'courseCount')
 
           proxyStore.delete(deletedCourseId)
         }

@@ -7,7 +7,7 @@ import {
 import { withRouter } from 'react-router'
 import environment from 'Environment'
 import SearchContainer, {SearchProp, SearchPropDefaults} from './SearchContainer'
-import {get, isEmpty} from 'utils'
+import {isEmpty} from 'utils'
 
 import { SEARCH_RESULTS_PER_PAGE } from 'consts'
 
@@ -44,13 +44,14 @@ class Search extends React.Component {
 
   render() {
     const {orderBy, query, type} = this.state
+    const {count} = this.props
 
     return (
       <QueryRenderer
         environment={environment}
         query={SearchQuery}
         variables={{
-          count: get(this.props, "count", SEARCH_RESULTS_PER_PAGE),
+          count,
           query,
           type,
           orderBy,
@@ -63,6 +64,7 @@ class Search extends React.Component {
 
             return (
               <SearchContainer
+                count={count}
                 orderBy={orderBy}
                 query={query}
                 results={props}
@@ -80,6 +82,7 @@ class Search extends React.Component {
 }
 
 Search.propTypes = {
+  count: PropTypes.number,
   orderBy: PropTypes.shape({
     direction: PropTypes.string,
     field: PropTypes.string,
@@ -89,8 +92,8 @@ Search.propTypes = {
 }
 
 Search.defaultProps = {
-  query: "",
-  type: "",
+  count: SEARCH_RESULTS_PER_PAGE,
+  query: "*",
 }
 
 export {SearchProp, SearchPropDefaults}

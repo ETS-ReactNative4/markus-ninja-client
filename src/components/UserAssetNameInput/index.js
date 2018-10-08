@@ -5,7 +5,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
-import StudyAssetNameInput from './StudyAssetNameInput'
+import UserAssetNameInputContainer from './UserAssetNameInputContainer'
 import {get, isEmpty} from 'utils'
 
 const UserAssetNameInputQuery = graphql`
@@ -15,15 +15,27 @@ const UserAssetNameInputQuery = graphql`
     $filename: String!
     $skip: Boolean!
   ) {
-    study(owner: $owner, name: $name) @skip(if: $skip){
-      ...StudyAssetNameInput_study
-    }
+    ...UserAssetNameInputContainer_query @arguments(
+      owner: $owner,
+      name: $name,
+      filename: $filename,
+      skip: $skip,
+    )
   }
 `
 
 class UserAssetNameInput extends React.Component {
+  constructor(props) {
+    super(props)
+
+    const {value} = this.props
+
+    this.state = {value}
+  }
+
   render() {
-    const {className, match, value} = this.props
+    const {match} = this.props
+    const {value} = this.state
 
     return (
       <QueryRenderer
@@ -39,11 +51,16 @@ class UserAssetNameInput extends React.Component {
           if (error) {
             return <div>{error.message}</div>
           } else {
+            const {className, disabled, onChange, placeholder, value} = this.props
+
             return (
-              <StudyAssetNameInput
+              <UserAssetNameInputContainer
                 className={className}
+                disabled={disabled}
+                onChange={onChange}
+                placeholder={placeholder}
                 value={value}
-                study={get(props, "study", null)}
+                query={props}
               />
             )
           }

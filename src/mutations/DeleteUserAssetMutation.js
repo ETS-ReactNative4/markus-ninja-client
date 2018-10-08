@@ -12,9 +12,7 @@ const mutation = graphql`
       deletedUserAssetId
       study {
         id
-        assets(first: 0) {
-          totalCount
-        }
+        assetCount
       }
     }
   }
@@ -37,10 +35,10 @@ export default (userAssetId, callback) => {
         if (!isNil(deleteUserAssetField)) {
           const deletedUserAssetId = deleteUserAssetField.getValue('deletedUserAssetId')
           const userAssetStudy = deleteUserAssetField.getLinkedRecord('study')
-          const userAssetStudyAssets = userAssetStudy.getLinkedRecord('assets', {first: 0})
-          const userAssetStudyId = deleteUserAssetField.getLinkedRecord('study').getValue('id')
-          const study = proxyStore.get(userAssetStudyId)
-          study.setLinkedRecord(userAssetStudyAssets, 'assets', {first: 0})
+          const studyAssetCount = userAssetStudy.getValue('assetCount')
+          const studyId = userAssetStudy.getValue('id')
+          const study = proxyStore.get(studyId)
+          study.setValue(studyAssetCount, 'assetCount')
 
           const studyAssets = ConnectionHandler.getConnection(
             study,

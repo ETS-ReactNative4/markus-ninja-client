@@ -12,9 +12,7 @@ const mutation = graphql`
       deletedLabelId
       study {
         id
-        labels(first: 0) {
-          totalCount
-        }
+        labelCount
       }
     }
   }
@@ -43,9 +41,8 @@ export default (labelId, callback) => {
             {type: "LABEL", within: labelStudyId},
           )
 
-          const labelStudyLabels = labelStudy.getLinkedRecord('labels', {first: 0})
-          const labelCount = labelStudyLabels.getValue("totalCount")
-          searchStudy && searchStudy.setValue(labelCount, "labelCount")
+          const studyLabelCount = labelStudy.getValue('labelCount')
+          searchStudy && searchStudy.setValue(studyLabelCount, "labelCount")
 
           const deletedLabelId = deleteLabelField.getValue("deletedLabelId")
           searchStudy && ConnectionHandler.deleteNode(searchStudy, deletedLabelId)

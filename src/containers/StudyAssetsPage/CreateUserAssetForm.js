@@ -5,7 +5,6 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import { withRouter } from 'react-router-dom';
 import UserAssetNameInput from 'components/UserAssetNameInput/index'
 import CreateUserAssetMutation from 'mutations/CreateUserAssetMutation'
 import { get, isNil, makeCancelable } from 'utils'
@@ -18,6 +17,10 @@ class CreateUserAssetForm extends React.Component {
     file: null,
     name: "",
     submittable: false,
+  }
+
+  componentWillUnmount() {
+    this.state.request.cancel()
   }
 
   handleChange = (e) => {
@@ -91,33 +94,35 @@ class CreateUserAssetForm extends React.Component {
   }
 
   render() {
-    const {name} = this.state
+    const {file, name, submittable} = this.state
 
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
         <label
           className="mdc-button mdc-button--outlined mt2"
-          htmlFor={"file-input"}
+          htmlFor="file-input"
           title="Attach file"
           aria-label="Attach file"
         >
           File
           <input
-            id={"file-input"}
+            id="file-input"
             className="dn"
             type="file"
+            accept=".jpg,jpeg,.png,.gif"
             onChange={this.handleChangeFile}
           />
         </label>
         <UserAssetNameInput
           className="mh2"
           value={name}
-          study={get(this.props, "study", null)}
+          onChange={(name, submittable) => this.setState({name, submittable})}
         />
         <div className="flex-stable">
           <button
             className="mdc-button mdc-button--unelevated mt2"
             type="submit"
+            disabled={isNil(file) || !submittable}
           >
             Create asset
           </button>
@@ -142,8 +147,8 @@ CreateUserAssetForm.defaultProps = {
   onCancel: () => {},
 }
 
-export default withRouter(createFragmentContainer(CreateUserAssetForm, graphql`
+export default createFragmentContainer(CreateUserAssetForm, graphql`
   fragment CreateUserAssetForm_study on Study {
     id
   }
-`))
+`)

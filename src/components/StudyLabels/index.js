@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import {
   QueryRenderer,
   graphql,
@@ -15,34 +16,61 @@ const StudyLabelsQuery = graphql`
     $name: String!,
     $count: Int!,
     $after: String,
+    $filterBy: LabelFilters,
+    $orderBy: LabelOrder,
   ) {
     study(owner: $owner, name: $name) {
       ...StudyLabelsContainer_study @arguments(
-        count: $count,
         after: $after,
+        count: $count,
+        filterBy: $filterBy,
+        orderBy: $orderBy,
       )
     }
   }
 `
 
 class StudyLabels extends React.Component {
+  constructor(props) {
+    super(props)
+
+    const {filterBy, orderBy} = this.props
+
+    this.state = {
+      orderBy,
+      filterBy,
+    }
+  }
+
   render() {
+    const {orderBy, filterBy} = this.state
+    const {count, match} = this.props
+
     return (
       <QueryRenderer
         environment={environment}
         query={StudyLabelsQuery}
         variables={{
-          owner: this.props.match.params.owner,
-          name: this.props.match.params.name,
-          count: LABELS_PER_PAGE,
+          owner: match.params.owner,
+          name: match.params.name,
+          count,
+          filterBy,
+          orderBy,
         }}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            const {children, orderBy, filterBy} = this.props
+
             return (
-              <StudyLabelsContainer study={props.study}>
-                {this.props.children}
+              <StudyLabelsContainer
+                count={count}
+                filterBy={filterBy}
+                orderBy={orderBy}
+                study={props.study}
+              >
+                {children}
               </StudyLabelsContainer>
             )
           }
@@ -51,6 +79,22 @@ class StudyLabels extends React.Component {
       />
     )
   }
+}
+
+StudyLabels.propTypes = {
+  count: PropTypes.number,
+  orderBy: PropTypes.shape({
+    direction: PropTypes.string,
+    field: PropTypes.string,
+  }),
+  filterBy: PropTypes.shape({
+    isDefault: PropTypes.bool,
+    search: PropTypes.string,
+  }),
+}
+
+StudyLabels.defaultProps = {
+  count: LABELS_PER_PAGE,
 }
 
 export {StudyLabelsProp, StudyLabelsPropDefaults}

@@ -19,9 +19,7 @@ const mutation = graphql`
       }
       study {
         id
-        courses(first: 0) {
-          totalCount
-        }
+        courseCount
       }
     }
   }
@@ -46,9 +44,9 @@ export default (studyId, name, description, callback) => {
         if (!isNil(createCourseField)) {
           const courseStudy = createCourseField.getLinkedRecord('study')
           const courseStudyId = courseStudy.getValue('id')
-          const courseStudyCourses = courseStudy.getLinkedRecord('courses', {first: 0})
+          const studyCourseCount = courseStudy.getValue('courseCount')
           const study = proxyStore.get(courseStudyId)
-          study.setLinkedRecord(courseStudyCourses, 'courses', {first: 0})
+          study.setValue(studyCourseCount, 'courseCount')
         }
       },
       onCompleted: (response, error) => {

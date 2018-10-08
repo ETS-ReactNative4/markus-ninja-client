@@ -102,7 +102,6 @@ class StudyLessonsPage extends React.Component {
             </CreateLessonLink>}
           </div>
         </div>
-        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <StudyLessons filterBy={this._filterBy} orderBy={this._orderBy}>
           <StudyLessonsPageLessons />
         </StudyLessons>

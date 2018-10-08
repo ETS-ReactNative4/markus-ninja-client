@@ -5,7 +5,7 @@ import {
   graphql,
 } from 'react-relay'
 import { withUID } from 'components/UniqueId'
-import UserAssetNameInput from 'components/UserAssetNameInput'
+import UserAssetNameInput from 'components/UserAssetNameInput/index'
 import CreateUserAssetMutation from 'mutations/CreateUserAssetMutation'
 import { get, isNil, makeCancelable } from 'utils'
 
@@ -28,6 +28,14 @@ class AttachFile extends React.Component {
     this.setState({
       name,
       submittable,
+    })
+  }
+
+  handleChangeFile = (e) => {
+    const file = e.target.files[0]
+    this.setState({
+      file,
+      name: file.name
     })
   }
 
@@ -100,8 +108,7 @@ class AttachFile extends React.Component {
 
   render() {
     const { uid } = this.props
-    const { file, save, submittable } = this.state
-    const filename = get(this.state, "file.name", "")
+    const { file, name, save, submittable } = this.state
 
     return (
       <div className={this.classes}>
@@ -130,15 +137,14 @@ class AttachFile extends React.Component {
             className="dn"
             type="file"
             accept=".jpg,jpeg,.png,.gif"
-            onChange={(e) => this.setState({file: e.target.files[0]})}
+            onChange={this.handleChangeFile}
           />
         </label>
         <UserAssetNameInput
           className={cls("AttachFile__name-input", {open: save})}
-          study={get(this.props, "study", null)}
           disabled={!save}
           placeholder="No file chosen"
-          value={filename}
+          value={name}
           onChange={this.handleChangeName}
         />
         <input
@@ -146,7 +152,7 @@ class AttachFile extends React.Component {
           className={cls("AttachFile__name", {open: !save})}
           placeholder="No file chosen"
           disabled
-          value={filename}
+          value={get(file, "name", "")}
         />
         <button
           className="mdc-button mdc-button--unelevated ml2"
@@ -164,6 +170,5 @@ class AttachFile extends React.Component {
 export default withUID((getUID) => ({ uid: getUID() }))(createFragmentContainer(AttachFile, graphql`
   fragment AttachFile_study on Study {
     id
-    ...UserAssetNameInput_study
   }
 `))

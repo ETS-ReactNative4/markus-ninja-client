@@ -6,70 +6,75 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
-import UserEnrolleesContainer, {UserEnrolleesProp, UserEnrolleesPropDefaults} from './UserEnrolleesContainer'
+import UserEnrolledContainer, {UserEnrolledProp, UserEnrolledPropDefaults} from './UserEnrolledContainer'
 
-import { USERS_PER_PAGE } from 'consts'
+import { ENROLLEDS_PER_PAGE } from 'consts'
 
-const UserEnrolleesQuery = graphql`
-  query UserEnrolleesQuery(
+const UserEnrolledQuery = graphql`
+  query UserEnrolledQuery(
     $login: String!,
     $after: String,
     $count: Int!,
-    $filterBy: UserFilters,
-    $orderBy: EnrolleeOrder,
+    $orderBy: EnrollableOrder,
+    $search: String,
+    $type: EnrollableType!
   ) {
     user(login: $login) {
-      ...UserEnrolleesContainer_user @arguments(
+      ...UserEnrolledContainer_user @arguments(
         after: $after,
         count: $count,
-        filterBy: $filterBy,
         orderBy: $orderBy,
+        search: $search,
+        type: $type,
       )
     }
   }
 `
 
-class UserEnrollees extends React.Component {
+class UserEnrolled extends React.Component {
   constructor(props) {
     super(props)
 
-    const {filterBy, orderBy} = this.props
+    const {orderBy, search, type} = this.props
 
     this.state = {
       orderBy,
-      filterBy,
+      search,
+      type,
     }
   }
 
   render() {
-    const {orderBy, filterBy} = this.state
+    const {orderBy, search, type} = this.state
     const {count, match} = this.props
 
     return (
       <QueryRenderer
         environment={environment}
-        query={UserEnrolleesQuery}
+        query={UserEnrolledQuery}
         variables={{
           login: match.params.login,
           count,
-          filterBy,
           orderBy,
+          search,
+          type,
         }}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            const {children, orderBy, filterBy} = this.props
+            const {children, orderBy, search, type} = this.props
 
             return (
-              <UserEnrolleesContainer
+              <UserEnrolledContainer
                 count={count}
                 orderBy={orderBy}
-                filterBy={filterBy}
+                search={search}
+                type={type}
                 user={props.user}
               >
                 {children}
-              </UserEnrolleesContainer>
+              </UserEnrolledContainer>
             )
           }
           return <div>Loading</div>
@@ -79,20 +84,19 @@ class UserEnrollees extends React.Component {
   }
 }
 
-UserEnrollees.propTypes = {
+UserEnrolled.propTypes = {
   count: PropTypes.number,
   orderBy: PropTypes.shape({
     direction: PropTypes.string,
     field: PropTypes.string,
   }),
-  filterBy: PropTypes.shape({
-    search: PropTypes.string,
-  }),
+  search: PropTypes.string,
+  type: PropTypes.string.isRequired,
 }
 
-UserEnrollees.defaultProps = {
-  count: USERS_PER_PAGE,
+UserEnrolled.defaultProps = {
+  count: ENROLLEDS_PER_PAGE,
 }
 
-export {UserEnrolleesProp, UserEnrolleesPropDefaults}
-export default withRouter(UserEnrollees)
+export {UserEnrolledProp, UserEnrolledPropDefaults}
+export default withRouter(UserEnrolled)

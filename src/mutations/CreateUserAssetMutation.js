@@ -17,9 +17,7 @@ const mutation = graphql`
         }
       }
       study {
-        assets(first: 0) {
-          totalCount
-        }
+        assetCount
       }
     }
   }
@@ -43,9 +41,9 @@ export default (assetId, studyId, name, callback) => {
         const createUserAssetField = proxyStore.getRootField('createUserAsset')
         if (!isNil(createUserAssetField)) {
           const userAssetStudy = createUserAssetField.getLinkedRecord('study')
-          const userAssetStudyAssets = userAssetStudy.getLinkedRecord('assets', {first: 0})
+          const studyAssetCount = userAssetStudy.getValue('assetCount')
           const study = proxyStore.get(studyId)
-          study.setLinkedRecord(userAssetStudyAssets, 'assets', {first: 0})
+          study.setValue(studyAssetCount, 'assetCount')
 
           const userAssetEdge = createUserAssetField.getLinkedRecord('userAssetEdge')
           const studyAssets = ConnectionHandler.getConnection(

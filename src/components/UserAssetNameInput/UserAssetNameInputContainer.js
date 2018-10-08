@@ -9,7 +9,7 @@ import TextField, {Input, HelperText} from '@material/react-text-field'
 import { withRouter } from 'react-router'
 import { debounce, get, isEmpty, isNil } from 'utils'
 
-class StudyAssetNameInput extends React.Component {
+class UserAssetNameInputContainer extends React.Component {
   constructor(props) {
     super(props)
 
@@ -38,12 +38,13 @@ class StudyAssetNameInput extends React.Component {
   }
 
   _refetch = debounce((name) => {
-    if (!this.props.disabled && !isEmpty(name)) {
+    const {disabled, relay} = this.props
+    if (!disabled && !isEmpty(name)) {
       this.setState({
         fetched: true,
         loading: true,
       })
-      this.props.relay.refetch(
+      relay.refetch(
         {
           owner: this.props.match.params.owner,
           name: this.props.match.params.name,
@@ -56,7 +57,7 @@ class StudyAssetNameInput extends React.Component {
             console.error(error)
           }
           this.setState({ loading: false })
-          const submittable = isNil(get(this.props, "study.asset"))
+          const submittable = isNil(get(this.props, "query.study.asset"))
           this.props.onChange(this.state.name, submittable)
         },
         {force: true},
@@ -66,7 +67,7 @@ class StudyAssetNameInput extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyAssetNameInput", className)
+    return cls("UserAssetNameInputContainer", className)
   }
 
   get placeholder() {
@@ -81,7 +82,6 @@ class StudyAssetNameInput extends React.Component {
     return (
       <div className={this.classes}>
         <TextField
-          className="w-100"
           outlined
           label={this.placeholder}
           helperText={this.renderHelperText()}
@@ -99,7 +99,7 @@ class StudyAssetNameInput extends React.Component {
 
   renderHelperText() {
     const { fetched, loading, name } = this.state
-    const asset = get(this.props, "study.asset", undefined)
+    const asset = get(this.props, "query.study.asset", undefined)
     const nameTaken = !isEmpty(name) && fetched
 
     return (
@@ -114,34 +114,47 @@ class StudyAssetNameInput extends React.Component {
   }
 }
 
-StudyAssetNameInput.propTypes = {
+UserAssetNameInputContainer.propTypes = {
   onChange: PropTypes.func,
 }
 
-StudyAssetNameInput.defaultProps = {
+UserAssetNameInputContainer.defaultProps = {
   onChange: () => {},
 }
 
-export default withRouter(createRefetchContainer(StudyAssetNameInput,
+const refetchContainer = createRefetchContainer(UserAssetNameInputContainer,
   {
-    study: graphql`
-      fragment StudyAssetNameInput_study on Study {
-        asset(name: $filename) {
-          id
+    query: graphql`
+      fragment UserAssetNameInputContainer_query on Query @argumentDefinitions(
+        owner: {type: "String!"},
+        name: {type: "String!"},
+        filename: {type: "String!"},
+        skip: {type: "Boolean!"},
+      ) {
+        study(owner: $owner, name: $name) @skip(if: $skip) {
+          asset(name: $filename) {
+            id
+          }
         }
       }
     `
   },
   graphql`
-    query StudyAssetNameInputRefetchQuery(
+    query UserAssetNameInputContainerRefetchQuery(
       $owner: String!,
       $name: String!,
       $filename: String!
       $skip: Boolean!
     ) {
-      study(owner: $owner, name: $name) @skip(if: $skip) {
-        ...StudyAssetNameInput_study
-      }
+    ...UserAssetNameInputContainer_query @arguments(
+      owner: $owner,
+      name: $name,
+      filename: $filename,
+      skip: $skip,
+    )
     }
   `,
-))
+)
+
+
+export default withRouter(refetchContainer)

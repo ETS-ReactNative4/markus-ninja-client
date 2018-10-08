@@ -69,14 +69,12 @@ class StudyAssetsPage extends React.Component {
       switch (o) {
       case "created":
         return "CREATED_AT"
-      case "comments":
-        return "COMMENT_COUNT"
-      case "number":
-        return "NUMBER"
+      case "name":
+        return "NAME"
       case "updated":
         return "UPDATED_AT"
       default:
-        return "NUMBER"
+        return "NAME"
       }
     })()
 
@@ -111,7 +109,6 @@ class StudyAssetsPage extends React.Component {
             />
           </div>
         </div>}
-        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <StudyAssets filterBy={this._filterBy} orderBy={this._orderBy}>
           <StudyAssetsPageAssets />
         </StudyAssets>

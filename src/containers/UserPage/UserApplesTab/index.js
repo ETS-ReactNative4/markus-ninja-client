@@ -9,18 +9,24 @@ import environment from 'Environment'
 import UserCourseApples from './UserCourseApples'
 import UserStudyApples from './UserStudyApples'
 import {get} from 'utils'
-import { USERS_PER_PAGE } from 'consts'
+import {COURSES_PER_PAGE, STUDIES_PER_PAGE} from 'consts'
 
 const UserApplesTabQuery = graphql`
-  query UserApplesTabQuery($login: String!, $count: Int!, $after: String) {
+  query UserApplesTabQuery(
+    $login: String!,
+    $courseCount: Int!,
+    $studyCount: Int!,
+    $afterCourse: String,
+    $afterStudy: String,
+  ) {
     user(login: $login) {
       ...UserCourseApples_user @arguments(
-        count: $count,
-        after: $after,
+        count: $courseCount,
+        after: $afterCourse,
       )
       ...UserStudyApples_user @arguments(
-        count: $count,
-        after: $after,
+        count: $studyCount,
+        after: $afterStudy,
       )
     }
   }
@@ -40,7 +46,8 @@ class UserApplesTab extends React.Component {
         query={UserApplesTabQuery}
         variables={{
           login: get(match.params, "login", ""),
-          count: USERS_PER_PAGE,
+          courseCount: COURSES_PER_PAGE,
+          studyCount: STUDIES_PER_PAGE,
         }}
         render={({error,  props}) => {
           if (error) {

@@ -14,7 +14,7 @@ import { COURSES_PER_PAGE } from 'consts'
 import "./styles.css"
 
 const CreateLessonPageQuery = graphql`
-  query CreateLessonPageQuery($owner: String!, $name: String!, $count: Int!, $after: String, $filename: String!) {
+  query CreateLessonPageQuery($owner: String!, $name: String!, $count: Int!, $after: String) {
     study(owner: $owner, name: $name) {
       ...CreateLessonForm_study
     }
@@ -42,7 +42,6 @@ class CreateLessonPage extends React.Component {
           owner: match.params.owner,
           name: match.params.name,
           count: COURSES_PER_PAGE,
-          filename: "",
         }}
         render={({error,  props}) => {
           if (error) {
