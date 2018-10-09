@@ -6,6 +6,7 @@ import {
 } from 'react-relay'
 import { withUID } from 'components/UniqueId'
 import UserAssetNameInput from 'components/UserAssetNameInput/index'
+import Dialog from 'components/Dialog'
 import CreateUserAssetMutation from 'mutations/CreateUserAssetMutation'
 import { get, isNil, makeCancelable } from 'utils'
 
@@ -16,12 +17,22 @@ class AttachFile extends React.Component {
     },
     file: null,
     name: "",
+    open: false,
     save: false,
     submittable: false,
   }
 
   componentWillUnmount() {
     this.state.request.cancel()
+  }
+
+  handleCancel = () => {
+    this.setState({
+      file: null,
+      name: "",
+      open: false,
+      submittable: false,
+    })
   }
 
   handleChangeName = (name, submittable) => {
@@ -39,8 +50,19 @@ class AttachFile extends React.Component {
     })
   }
 
-  handleAttachFile = (e) => {
-    const { file, save } = this.state
+  handleToggleSaveForm = (e) => {
+    const {open} = this.state
+    this.setState({
+      open: !open,
+    })
+  }
+
+  handleSaveFile = () => {
+    const {file} = this.state
+    this.handleAttachFile(file, true)
+  }
+
+  handleAttachFile = (file, save) => {
     if (!isNil(file)) {
       const formData = new FormData()
 
@@ -103,66 +125,103 @@ class AttachFile extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("AttachFile flex items-center", className)
+    return cls("mdc-card__actions", className)
   }
 
   render() {
     const { uid } = this.props
-    const { file, name, save, submittable } = this.state
 
     return (
       <div className={this.classes}>
-        <label
-          htmlFor={`file-save${uid}`}
-          title="Save file to study assets"
-          aria-label="Save file to study assets"
-        >
-          <input
-            id={`file-save${uid}`}
-            type="checkbox"
-            name="save"
-            checked={this.state.save}
-            onChange={(e) => this.setState({ save: e.target.checked })}
-          />
-        </label>
-        <label
-          className="material-icons pointer"
-          htmlFor={`file-input${uid}`}
-          title="Attach file"
-          aria-label="Attach file"
-        >
-          attach_file
-          <input
-            id={`file-input${uid}`}
-            className="dn"
-            type="file"
-            accept=".jpg,jpeg,.png,.gif"
-            onChange={this.handleChangeFile}
-          />
-        </label>
-        <UserAssetNameInput
-          className={cls("AttachFile__name-input", {open: save})}
-          disabled={!save}
-          placeholder="No file chosen"
-          value={name}
-          onChange={this.handleChangeName}
-        />
-        <input
-          id={`file-name${uid}`}
-          className={cls("AttachFile__name", {open: !save})}
-          placeholder="No file chosen"
-          disabled
-          value={get(file, "name", "")}
-        />
-        <button
-          className="mdc-button mdc-button--unelevated ml2"
-          type="button"
-          onClick={this.handleAttachFile}
-          disabled={isNil(file) || (save && !submittable)}
-        >
-          {save ? "Attach & Save" : "Attach"}
-        </button>
+        <div className="mdc-card__actions-icons">
+          <label
+            className="material-icons mdc-icon-button mdc-card__action--icon"
+            htmlFor={`file-input${uid}`}
+            title="Attach file"
+            aria-label="Attach file"
+          >
+            attach_file
+            <input
+              id={`file-input${uid}`}
+              className="dn"
+              type="file"
+              accept=".jpg,jpeg,.png,.gif"
+              onChange={(e) => this.handleAttachFile(e.target.files[0], false)}
+            />
+          </label>
+          <button
+            className="material-icons mdc-icon-button mdc-card__action--icon"
+            type="button"
+            onClick={this.handleToggleSaveForm}
+            aria-label="Attach & Save file"
+            title="Attach & Save file"
+          >
+            save
+          </button>
+        </div>
+        {this.renderSaveForm()}
       </div>
+    )
+  }
+
+  renderSaveForm() {
+    const {file, open, submittable} = this.state
+
+    return (
+      <Dialog
+        open={open}
+        onClose={this.handleCancel}
+        title={<Dialog.Title>Attach & Save file</Dialog.Title>}
+        content={
+          <Dialog.Content>
+            <div className="flex flex-column mw5">
+              <p>
+                The selected file will be saved to the study's assets.
+                A reference will be attached in the text body,
+                which will translate into an image link.
+              </p>
+              <label
+                className="mdc-button mdc-button--outlined mb2"
+                htmlFor="file-input"
+              >
+                File
+                <input
+                  id="file-input"
+                  className="dn"
+                  type="file"
+                  accept=".jpg,jpeg,.png,.gif"
+                  onChange={this.handleChangeFile}
+                />
+              </label>
+              <UserAssetNameInput
+                initialValue={get(file, "name", "")}
+                placeholder="No file chosen"
+                onChange={this.handleChangeName}
+                disabled={isNil(file)}
+              />
+            </div>
+          </Dialog.Content>
+        }
+        actions={
+          <Dialog.Actions>
+            <button
+              type="button"
+              className="mdc-button"
+              data-mdc-dialog-action="close"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="mdc-button mdc-button--unelevated"
+              onClick={this.handleSaveFile}
+              disabled={isNil(file) || !submittable}
+              data-mdc-dialog-action="save"
+            >
+              Save
+            </button>
+          </Dialog.Actions>}
+        />
     )
   }
 }

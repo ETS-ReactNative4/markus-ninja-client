@@ -17,17 +17,14 @@ class UserAssetNameInputContainer extends React.Component {
       error: null,
       fetched: false,
       loading: false,
-      name: get(props, "value", ""),
+      name: get(props, "initialValue", ""),
     }
   }
 
   componentDidUpdate(prevProps) {
-    const name = this.props.value
-    if (this.props.value !== prevProps.value) {
+    const name = this.props.initialValue
+    if (this.props.initialValue !== prevProps.initialValue) {
       this.handleChange(name)
-    }
-    if (this.props.disabled !== prevProps.disabled) {
-      this.handleChange(this.state.name)
     }
   }
 
@@ -58,7 +55,7 @@ class UserAssetNameInputContainer extends React.Component {
           }
           this.setState({ loading: false })
           const submittable = isNil(get(this.props, "query.study.asset"))
-          this.props.onChange(this.state.name, submittable)
+          this.props.onChange(name, submittable)
         },
         {force: true},
       )
@@ -82,12 +79,13 @@ class UserAssetNameInputContainer extends React.Component {
     return (
       <div className={this.classes}>
         <TextField
-          outlined
+          fullWidth
           label={this.placeholder}
           helperText={this.renderHelperText()}
         >
           <Input
             name="name"
+            placeholder={this.placeholder}
             disabled={disabled}
             value={name}
             onChange={(e) => this.handleChange(e.target.value)}

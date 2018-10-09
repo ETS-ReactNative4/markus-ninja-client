@@ -28,14 +28,14 @@ class UserAssetNameInput extends React.Component {
   constructor(props) {
     super(props)
 
-    const {value} = this.props
+    const {initialValue} = this.props
 
-    this.state = {value}
+    this.state = {initialValue}
   }
 
   render() {
     const {match} = this.props
-    const {value} = this.state
+    const {initialValue} = this.state
 
     return (
       <QueryRenderer
@@ -44,14 +44,14 @@ class UserAssetNameInput extends React.Component {
         variables={{
           owner: get(match, "params.owner", ""),
           name: get(match, "params.name", ""),
-          filename: value,
-          skip: isEmpty(value),
+          filename: initialValue,
+          skip: isEmpty(initialValue),
         }}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
           } else {
-            const {className, disabled, onChange, placeholder, value} = this.props
+            const {className, disabled, onChange, placeholder, initialValue} = this.props
 
             return (
               <UserAssetNameInputContainer
@@ -59,7 +59,7 @@ class UserAssetNameInput extends React.Component {
                 disabled={disabled}
                 onChange={onChange}
                 placeholder={placeholder}
-                value={value}
+                initialValue={initialValue}
                 query={props}
               />
             )

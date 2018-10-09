@@ -58,7 +58,7 @@ class RichTextEditor extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("RichTextEditor", className)
+    return cls("mdc-card mdc-card--outlined", className)
   }
 
   render() {
@@ -67,7 +67,7 @@ class RichTextEditor extends React.Component {
 
     return (
       <div className={this.classes}>
-        <div className="flex-auto" onClick={() => this.focus()}>
+        <div className="pa3 text" onClick={() => this.focus()}>
           <Editor
             editorState={editorState}
             readOnly={loadingFile}

@@ -6,7 +6,7 @@ import {
 } from 'react-relay'
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
-import CreateUserAssetForm from './CreateUserAssetForm'
+import CreateUserAssetForm from 'components/CreateUserAssetForm'
 import StudyAssets from 'components/StudyAssets'
 import StudyAssetsPageAssets from './StudyAssetsPageAssets'
 import {debounce, get, isEmpty} from 'utils'
