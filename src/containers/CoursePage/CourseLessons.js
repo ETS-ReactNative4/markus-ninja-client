@@ -30,29 +30,28 @@ class CourseLessons extends React.Component {
 
   render() {
     const course = get(this.props, "course", null)
-    const lessonEdges = get(course, "lessons.edges", [])
+    const edges = get(course, "lessons.edges", [])
+
     return (
       <React.Fragment>
-        {lessonEdges.map(({node}) => (
-          node &&
-          <React.Fragment key={node.id}>
-            <LessonPreview.Course
-              className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-              lesson={node}
-            />
-            <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-          </React.Fragment>
-        ))}
-        {this.props.relay.hasMore() &&
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <button
-            className="mdc-button mdc-button--unelevated"
-            type="button"
-            onClick={this._loadMore}
-          >
-            More
-          </button>
-        </div>}
+          <ul className="mdc-list mdc-list--two-line">
+            {edges.map(({node}) => (
+              node &&
+              <LessonPreview.Course key={node.id} lesson={node} />
+            ))}
+          </ul>
+          {this.props.relay.hasMore() &&
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <button
+              className="mdc-button mdc-button--unelevated"
+              type="button"
+              onClick={this._loadMore}
+            >
+              More
+            </button>
+          </div>}
+        </div>
       </React.Fragment>
     )
   }

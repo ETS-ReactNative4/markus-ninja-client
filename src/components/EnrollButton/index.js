@@ -88,7 +88,7 @@ export class EnrollButton extends React.Component {
   get classes() {
     const {classList} = this.state
     const {className} = this.props;
-    return cls('mdc-button mdc-button--outlined', Array.from(classList), className, {
+    return cls("mdc-button", Array.from(classList), className, {
       [BUTTON_ON]: this.isEnrolled,
     })
   }

@@ -33,10 +33,7 @@ class UserPopularStudies extends React.Component {
             "mdc-layout-grid__cell--span-4-tablet",
             "mdc-layout-grid__cell--span-2-phone",
           )}>
-            <StudyPreview.User
-              className="mdc-card mdc-card--outlined pa3 h-100"
-              study={node}
-            />
+            <StudyPreview.Card className="h-100" study={node} />
           </div>)}
       </div>
     )

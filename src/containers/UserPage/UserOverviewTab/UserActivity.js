@@ -30,25 +30,24 @@ class UserActivity extends React.Component {
   }
 
   render() {
-    const activityEdges = get(this.props, "user.activity.edges", [])
+    const edges = get(this.props, "user.activity.edges", [])
+
     return (
       <div className={this.classes}>
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           Recent activity
         </h5>
-        {isEmpty(activityEdges)
+        {isEmpty(edges)
         ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             This user has no recent activity.
           </div>
-        : <React.Fragment>
-            {activityEdges.map(({node}) => (
-              node &&
-              <UserActivityEvent
-                key={node.id}
-                className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                event={node}
-              />
-            ))}
+        : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <ul className="mdc-list mdc-list--two-line">
+              {edges.map(({node}) => (
+                node &&
+                <UserActivityEvent key={node.id} withUser event={node} />
+              ))}
+            </ul>
             {this.props.relay.hasMore() &&
             <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               <button
@@ -58,7 +57,7 @@ class UserActivity extends React.Component {
                 Load more activity
               </button>
             </div>}
-          </React.Fragment>}
+          </div>}
       </div>
     )
   }

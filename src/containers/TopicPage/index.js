@@ -4,7 +4,6 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
-import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
 import environment from 'Environment'
 import TopicHeader from './TopicHeader'

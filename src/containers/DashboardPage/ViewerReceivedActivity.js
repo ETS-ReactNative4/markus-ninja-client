@@ -11,42 +11,6 @@ import { get, isEmpty } from 'utils'
 import { EVENTS_PER_PAGE } from 'consts'
 
 class ViewerReceivedActivity extends React.Component {
-  get classes() {
-    const {className} = this.props
-    return cls("ViewerReceivedActivity mdc-layout-grid", className)
-  }
-
-  render() {
-    const activityEdges = get(this.props, "viewer.receivedActivity.edges", [])
-    return (
-      <div className={this.classes}>
-        <div className="mdc-layout-grid__inner">
-          <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            Recent activity
-          </h5>
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            {isEmpty(activityEdges)
-            ? <div>There is no recent activity.</div>
-            : <React.Fragment>
-                {activityEdges.map(({node}) => (
-                  node
-                  ? <UserActivityEvent key={node.id} withUser event={node} />
-                  : null
-                ))}
-                {this.props.relay.hasMore() &&
-                <button
-                  className="mdc-button mdc-button--unelevated"
-                  onClick={this._loadMore}
-                >
-                  Load more activity
-                </button>}
-              </React.Fragment>}
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   _loadMore = () => {
     const relay = get(this.props, "relay")
     if (!relay.hasMore()) {
@@ -58,6 +22,43 @@ class ViewerReceivedActivity extends React.Component {
     }
 
     relay.loadMore(EVENTS_PER_PAGE)
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("ViewerReceivedActivity mdc-layout-grid", className)
+  }
+
+  render() {
+    const edges = get(this.props, "viewer.receivedActivity.edges", [])
+    return (
+      <div className={this.classes}>
+        <div className="mdc-layout-grid__inner">
+          <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            Recent activity
+          </h5>
+          {isEmpty(edges)
+            ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                There is no recent activity.
+              </div>
+            : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                <ul className="mdc-list mdc-list--two-line">
+                  {edges.map(({node}) => (
+                    node &&
+                    <UserActivityEvent key={node.id} withUser event={node} />
+                  ))}
+                </ul>
+                {this.props.relay.hasMore() &&
+                <button
+                  className="mdc-button mdc-button--unelevated"
+                  onClick={this._loadMore}
+                >
+                  Load more activity
+                </button>}
+              </div>}
+          </div>
+      </div>
+    )
   }
 }
 

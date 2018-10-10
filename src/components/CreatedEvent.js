@@ -6,76 +6,75 @@ import {
 } from 'react-relay'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
+import Icon from 'components/Icon'
 import UserLink from 'components/UserLink'
-import CoursePreview from 'components/CoursePreview'
-import LessonPreview from 'components/LessonPreview'
-import StudyPreview from 'components/StudyPreview'
 import {get} from 'utils'
 
 class CreatedEvent extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("CreatedEvent", className)
+    return cls("CreatedEvent mdc-list-item", className)
+  }
+
+  get createableType() {
+    switch (get(this.props, "event.createable.__typename", "")) {
+      case "Course":
+        return "course"
+      case "Lesson":
+        return "lesson"
+      case "Study":
+        return "study"
+      default:
+        return ""
+    }
+  }
+
+  get createableLink() {
+    const createable = get(this.props, "event.createable", {})
+    switch (createable.__typename) {
+      case "Course":
+        return createable.name
+      case "Lesson":
+        return createable.title
+      case "Study":
+        return createable.name
+      default:
+        return ""
+    }
   }
 
   render() {
     const {withUser} = this.props
     const event = get(this.props, "event", {})
-    const createable = get(event, "createable", null)
+    const createable = get(event, "createable", {})
 
     return (
-      <div className={this.classes}>
-        <div>
-          {withUser &&
-          <UserLink className="rn-link fw5" user={get(event, "user", null)} />}
-          <span className="ml1">
-            {withUser ? 'c' : 'C'}reated a {createable.__typename.toLowerCase()}
+      <li className={this.classes}>
+        <Icon className="mdc-list-item__graphic">create</Icon>
+        <span className="mdc-list-item__text">
+          <span className="mdc-list-item__primary-text">
+            {withUser &&
+            <UserLink className="rn-link fw5" user={get(event, "user", null)} />}
+            <span className="ml1">
+              {withUser ? 'c' : 'C'}reated a {this.createableType}
+            </span>
+            <Link className="rn-link fw5 ml1" to={createable.resourcePath}>
+              {this.createableLink}
+            </Link>
           </span>
-          {(() => {
-            switch(createable.__typename) {
-              case "Course":
-                return (
-                  <Link className="rn-link fw5 ml1" to={get(createable, "resourcePath")}>
-                    {get(createable, "name")}
-                  </Link>
-                )
-              case "Lesson":
-                return (
-                  <Link className="rn-link fw5 ml1" to={get(createable, "resourcePath")}>
-                    {get(createable, "title")}
-                  </Link>
-                )
-              case "Study":
-                return (
-                  <Link className="rn-link fw5 ml1" to={get(createable, "resourcePath")}>
-                    {get(createable, "name")}
-                  </Link>
-                )
-              default:
-                return null
-            }
-          })()}
-          <span className="ml1">
-            on {moment(event.createdAt).format("MMM D")}
+          <span className="mdc-list-item__secondary-text">
+            Created on {moment(event.createdAt).format("MMM D, YYYY")}
           </span>
-        </div>
-        <div className="pl2 pv2">
-          <div className="mdc-card mdc-card--outlined pa3">
-            {(() => {
-              switch(createable.__typename) {
-                case "Course":
-                  return <CoursePreview course={createable} />
-                case "Lesson":
-                  return <LessonPreview lesson={createable} />
-                case "Study":
-                  return <StudyPreview.User study={createable} />
-                default:
-                  return null
-              }
-            })()}
-          </div>
-        </div>
-      </div>
+        </span>
+        <span className="mdc-list-item__meta">
+          <Link
+            className="mdc-icon-button"
+            to={createable.resourcePath}
+          >
+            <Icon className="rn-icon-link__icon" icon={this.createableType} />
+          </Link>
+        </span>
+      </li>
     )
   }
 }
@@ -85,17 +84,14 @@ export default createFragmentContainer(CreatedEvent, graphql`
     createable {
       __typename
       ...on Course {
-        ...CoursePreview_course
         name
         resourcePath
       }
       ...on Lesson {
-        ...LessonPreview_lesson
         resourcePath
         title
       }
       ...on Study {
-        ...StudyPreview_study
         name
         resourcePath
       }

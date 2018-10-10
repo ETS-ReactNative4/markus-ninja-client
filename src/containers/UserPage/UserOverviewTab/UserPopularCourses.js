@@ -33,10 +33,7 @@ class UserPopularCourses extends React.Component {
             "mdc-layout-grid__cell--span-4-tablet",
             "mdc-layout-grid__cell--span-2-phone",
           )}>
-            <CoursePreview.User
-              className="mdc-card mdc-card--outlined pa3 h-100"
-              course={node}
-            />
+            <CoursePreview.Card className="h-100" course={node} />
           </div>)}
       </div>
     )

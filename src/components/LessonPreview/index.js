@@ -6,6 +6,7 @@ import Relay, {
 import hoistNonReactStatic from 'hoist-non-react-statics'
 import { Link } from 'react-router-dom'
 import { get } from 'utils'
+import CardLessonPreview from './CardLessonPreview'
 import CourseLessonPreview from './CourseLessonPreview'
 import SearchLessonPreview from './SearchLessonPreview'
 import StudyLessonPreview from './StudyLessonPreview'
@@ -14,8 +15,10 @@ import './styles.css'
 
 const FRAGMENT = graphql`
   fragment LessonPreview_lesson on Lesson {
+    ...EnrollButton_enrollable
     author {
       ...UserLink_user
+      login
     }
     commentCount
     course {
@@ -37,6 +40,7 @@ const FRAGMENT = graphql`
 `
 
 class LessonPreview extends React.Component {
+  static Card = Relay.createFragmentContainer(CardLessonPreview, FRAGMENT)
   static Course = Relay.createFragmentContainer(CourseLessonPreview, FRAGMENT)
   static Search = Relay.createFragmentContainer(SearchLessonPreview, FRAGMENT)
   static Study = Relay.createFragmentContainer(StudyLessonPreview, FRAGMENT)

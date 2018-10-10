@@ -78,7 +78,7 @@ class ResearchPage extends React.Component {
                       </h5>
                       {popularCourseEdges.map(({node}) => (
                         <div key={node.id} className="mdc-layout-grid__cell">
-                          <CoursePreview.Apple className="mdc-card mdc-card--outlined pa3 h-100" course={node} />
+                          <CoursePreview.Card className="h-100" course={node} />
                         </div>
                       ))}
                     </div>
@@ -90,7 +90,7 @@ class ResearchPage extends React.Component {
                       </h5>
                       {popularStudyEdges.map(({node}) => (
                         <div key={node.id} className="mdc-layout-grid__cell">
-                          <StudyPreview.Apple className="mdc-card mdc-card--outlined pa3 h-100" study={node} />
+                          <StudyPreview.Card className="h-100" study={node} />
                         </div>
                       ))}
                     </div>
@@ -102,13 +102,7 @@ class ResearchPage extends React.Component {
                       </h5>
                       {popularTopicEdges.map(({node}) => (
                         <div key={node.id} className="mdc-layout-grid__cell">
-                          <div className="mdc-card mdc-card--outlined h-100">
-                            <TopicPreview
-                              className="mdc-card__primary-action pa3 h-100"
-                              key={node.id}
-                              topic={node}
-                            />
-                          </div>
+                          <TopicPreview.Card className="h-100" key={node.id} topic={node} />
                         </div>
                       ))}
                     </div>

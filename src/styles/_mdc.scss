@@ -77,12 +77,6 @@
   }
 }
 
-.mdc-text-field {
-  &.mdc-text-field--inline {
-    height: 100%;
-  }
-}
-
 .mdc-list-item__tags {
   display: flex;
   align-items: center;
@@ -99,6 +93,12 @@
 
   @include mdc-layout-grid-media-query_(phone) {
     display: none;
+  }
+}
+
+.mdc-text-field {
+  &.mdc-text-field--inline {
+    height: 100%;
   }
 }
 

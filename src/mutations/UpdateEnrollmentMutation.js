@@ -31,17 +31,20 @@ export default (enrollableId, status, callback) => {
       variables,
       optimisticUpdater: proxyStore => {
         const enrollable = proxyStore.get(enrollableId)
-        let enrolleeCount = enrollable.getValue('enrolleeCount')
-        const enrollmentStatus = enrollable.getValue('enrollmentStatus')
-        if (enrollmentStatus === 'ENROLLED' &&
-          (status === 'IGNORED' || status === 'UNENROLLED')) {
-          enrolleeCount--
-        } else if ((enrollmentStatus === 'IGNORED' || enrollmentStatus === 'UNENROLLED') &&
-          (status === 'ENROLLED')) {
-          enrolleeCount++
-        }
+        if (enrollable) {
+          let enrolleeCount = enrollable.getValue('enrolleeCount')
+          const enrollmentStatus = enrollable.getValue('enrollmentStatus')
+          if (enrollmentStatus === 'ENROLLED' &&
+            (status === 'IGNORED' || status === 'UNENROLLED')) {
+            enrolleeCount--
+          } else if ((enrollmentStatus === 'IGNORED' || enrollmentStatus === 'UNENROLLED') &&
+            (status === 'ENROLLED')) {
+            enrolleeCount++
+          }
 
-        enrollable && enrollable.setValue(enrolleeCount, 'enrolleeCount')
+          enrollable.setValue(enrolleeCount, 'enrolleeCount')
+          enrollable.setValue(status, 'enrollmentStatus')
+        }
       },
       updater: proxyStore => {
         const updateEnrollmentField = proxyStore.getRootField('updateEnrollment')

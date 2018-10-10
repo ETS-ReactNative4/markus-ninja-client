@@ -12,7 +12,7 @@ class Icon extends React.PureComponent {
 
   get icon() {
     const {children, icon} = this.props
-    switch (icon) {
+    switch (icon.toLowerCase()) {
       case "asset":
         return "image"
       case "comment":

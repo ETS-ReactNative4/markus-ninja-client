@@ -7,11 +7,12 @@
   position: relative;
   align-items: center;
   justify-content: center;
-  padding: 4px;
+  padding: 12px 4px;
   box-sizing: border-box;
   text-decoration: none;
   transition: color $rn-icon-link-transition-duration;
-  color: inherit;
+  color: currentColor;
+  will-change: transform, color;
 
   &:hover {
     color: var(--mdc-theme-text-secondary-on-light);

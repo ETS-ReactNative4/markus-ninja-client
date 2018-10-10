@@ -81,7 +81,7 @@ class StudyOverviewPage extends React.Component {
                     {lessons.map(({node}) => (
                       node &&
                       <div key={node.id} className="mdc-layout-grid__cell">
-                        <LessonPreview.Study className="mdc-card mdc-card--outlined pa3 h-100" lesson={node} />
+                        <LessonPreview.Card className="h-100" lesson={node} />
                       </div>
                     ))}
                   </div>
@@ -95,10 +95,7 @@ class StudyOverviewPage extends React.Component {
                     {courses.map(({node}) => (
                       node &&
                       <div key={node.id} className="mdc-layout-grid__cell">
-                        <CoursePreview.Study
-                          className="mdc-card mdc-card--outlined pa3 h-100"
-                          course={node}
-                        />
+                        <CoursePreview.Card className="h-100" course={node} />
                       </div>
                     ))}
                   </div>
