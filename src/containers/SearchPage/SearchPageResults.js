@@ -1,6 +1,7 @@
 import * as React from 'react'
 import cls from 'classnames'
 import {withRouter} from 'react-router-dom'
+import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
 import {SearchProp, SearchPropDefaults} from 'components/Search'
 import SearchNav from './SearchNav'
@@ -63,26 +64,19 @@ class SearchPageResults extends React.Component {
     const {q} = this.state
 
     return (
-      <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
-        <input
-          className="mdc-text-field__input"
-          autoComplete="off"
-          type="text"
+      <TextField
+        fullWidth
+        label="Search..."
+        trailingIcon={<Icon><i className="material-icons">search</i></Icon>}
+      >
+        <Input
           name="q"
+          autoComplete="off"
           placeholder="Search..."
           value={q}
           onChange={this.handleChange}
         />
-        <div className="mdc-notched-outline mdc-theme--background z-behind">
-          <svg>
-            <path className="mdc-notched-outline__path"></path>
-          </svg>
-        </div>
-        <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
-        <i className="material-icons mdc-text-field__icon">
-          search
-        </i>
-      </div>
+      </TextField>
     )
   }
 }

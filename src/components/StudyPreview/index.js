@@ -25,6 +25,9 @@ const FRAGMENT = graphql`
     lessonCount
     name
     nameWithOwner
+    owner {
+      ...UserLink_user
+    }
     resourcePath
     topics(first: 5) {
       nodes {

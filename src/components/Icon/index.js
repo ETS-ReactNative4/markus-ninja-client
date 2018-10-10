@@ -15,8 +15,12 @@ class Icon extends React.PureComponent {
     switch (icon) {
       case "asset":
         return "image"
+      case "comment":
+        return "comment"
       case "course":
         return "library_books"
+      case "label":
+        return "label"
       case "lesson":
         return "subject"
       case "study":
@@ -37,6 +41,10 @@ class Icon extends React.PureComponent {
         return "Asset"
       case "course":
         return "Course"
+      case "comment":
+        return "Comment"
+      case "label":
+        return "Label"
       case "lesson":
         return "Lesson"
       case "study":

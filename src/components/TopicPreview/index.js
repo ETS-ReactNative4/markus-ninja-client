@@ -9,9 +9,11 @@ import SearchTopicPreview from './SearchTopicPreview'
 const FRAGMENT = graphql`
   fragment TopicPreview_topic on Topic {
     createdAt
+    courseCount
     description
     name
     resourcePath
+    studyCount
   }
 `
 class TopicPreview extends React.Component {

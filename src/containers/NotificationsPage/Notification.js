@@ -5,6 +5,7 @@ import {
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router'
+import Icon from 'components/Icon'
 import NotificationButton from 'components/NotificationButton'
 import MarkNotificationAsReadMutation from 'mutations/MarkNotificationAsReadMutation'
 import UpdateEnrollmentMutation from 'mutations/UpdateEnrollmentMutation'
@@ -48,7 +49,7 @@ class Notification extends React.Component {
 
     return (
       <li className={this.classes}>
-        <span className="mdc-list-item__graphic material-icons">subject</span>
+        <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
         <span className="mdc-list-item__text pointer" onClick={this.handleMarkAsRead}>
           <span className="mdc-list-item__primary-text">{subject.title}</span>
           <span className="mdc-list-item__secondary-text">

@@ -74,7 +74,7 @@ class ViewerNotifications extends React.Component {
                   Mark all as read
                 </button>
               </div>
-              <div className="mdc-list mdc-list--two-line mdc-list--avatar-list">
+              <div className="mdc-list mdc-list--two-line">
                 <li role="separator" className="mdc-list-divider" />
                 {notificationsByStudy[key].map(({node}) => (
                   <Notification key={node.id} notification={node} />

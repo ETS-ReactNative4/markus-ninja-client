@@ -4,11 +4,12 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
 import environment from 'Environment'
-import Search from 'components/Search'
 import TopicHeader from './TopicHeader'
-import TopicPageResults from './TopicPageResults'
+import TopicTopicables from 'components/TopicTopicables'
+import TopicPageTopicables from './TopicPageTopicables'
 import NotFound from 'components/NotFound'
 import {get, isNil} from 'utils'
 
@@ -16,51 +17,57 @@ const TopicPageQuery = graphql`
   query TopicPageQuery($name: String!) {
     topic(name: $name) {
       ...TopicHeader_topic
-      id
     }
   }
 `
 
 class TopicPage extends React.Component {
+  constructor(props) {
+    super(props)
+
+    const searchQuery = queryString.parse(get(this.props, "location.search", ""))
+    const {o, q, s, t} = searchQuery
+
+    this.state = {o, q, s, t}
+  }
+
+  componentDidUpdate(prevProps) {
+    const prevSearch = get(prevProps, "location.search", "")
+    const newSearch = get(this.props, "location.search", "")
+    if (prevSearch !== newSearch) {
+      const searchQuery = queryString.parse(get(this.props, "location.search", ""))
+      const {o, q, s, t} = searchQuery
+      this.setState({o, q, s, t})
+    }
+  }
+
   get classes() {
     const {className} = this.props
     return cls("TopicPage mdc-layout-grid", className)
   }
 
-  get _query() {
-    const searchQuery = queryString.parse(get(this.props, "location.search", ""))
-    const direction = get(searchQuery, "o", "desc").toUpperCase()
-    const query = get(searchQuery, "q", "")
-    const type = get(searchQuery, "t", "study").toUpperCase()
+  get _orderBy() {
+    const {o, s} = this.state
+    const direction = (() => {
+      switch (s) {
+      case "asc":
+        return "ASC"
+      case "desc":
+        return "DESC"
+      default:
+        return "DESC"
+      }
+    })()
     const field = (() => {
-      switch (get(searchQuery, "s", "").toLowerCase()) {
-        case "advanced":
-          return "ADVANCED_AT"
-        case "apples":
-          return "APPLE_COUNT"
-        case "created":
-          return "CREATED_AT"
-        case "comments":
-          return "COMMENT_COUNT"
-        case "lessons":
-          return "LESSON_COUNT"
-        case "studies":
-          return "STUDY_COUNT"
-        case "updated":
-          return "UPDATED_AT"
-        default:
-          return "BEST_MATCH"
+      switch (o) {
+      case "topiced":
+        return "TOPICED_AT"
+      default:
+        return "TOPICED_AT"
       }
     })()
 
-    return {
-      orderBy: {
-        direction,
-        field,
-      },
-      query,
-      type,
-    }
+    return {direction, field}
   }
 
   render() {
@@ -79,21 +86,15 @@ class TopicPage extends React.Component {
               return <NotFound />
             }
 
-            const query = this._query
-            const topicId = get(props, "topic.id", "")
+            const {q, t} = this.state
 
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
                   <TopicHeader topic={get(props, "topic", null)} />
-                  <Search
-                    type={query.type}
-                    query={query.query}
-                    orderBy={query.orderBy}
-                    within={topicId}
-                  >
-                    <TopicPageResults />
-                  </Search>
+                  <TopicTopicables orderBy={this._orderBy} search={q} type={t.toUpperCase()}>
+                    <TopicPageTopicables />
+                  </TopicTopicables>
                 </div>
               </div>
             )

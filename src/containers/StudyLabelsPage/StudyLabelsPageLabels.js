@@ -18,17 +18,13 @@ class StudyLabelsPageLabels extends React.Component {
           ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               No labels were found.
             </div>
-          : <React.Fragment>
-              {edges.map(({node}) => (
-                node &&
-                <React.Fragment key={node.id}>
-                  <LabelPreview.Study
-                    className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                    label={node}
-                  />
-                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                </React.Fragment>
-              ))}
+          : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              <ul className="mdc-list">
+                {edges.map(({node}) => (
+                  node &&
+                  <LabelPreview.Study key={node.id} label={node} />
+                ))}
+              </ul>
               {hasMore &&
               <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                 <button
@@ -39,7 +35,7 @@ class StudyLabelsPageLabels extends React.Component {
                   More
                 </button>
               </div>}
-            </React.Fragment>)}
+            </div>)}
       </React.Fragment>
     )
   }

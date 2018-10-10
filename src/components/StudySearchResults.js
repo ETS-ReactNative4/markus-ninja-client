@@ -17,17 +17,13 @@ class StudySearchResults extends React.Component {
           ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               No studies were found.
             </div>
-          : <React.Fragment>
-              {edges.map(({node}) => (
-                node &&
-                <React.Fragment key={node.id}>
-                  <StudyPreview.Search
-                    className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                    study={node}
-                  />
-                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                </React.Fragment>
-              ))}
+          : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              <ul className="mdc-list mdc-list--two-line">
+                {edges.map(({node}) => (
+                  node &&
+                  <StudyPreview.Search key={node.id} study={node} />
+                ))}
+              </ul>
               {hasMore &&
               <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                 <button
@@ -37,7 +33,7 @@ class StudySearchResults extends React.Component {
                   More
                 </button>
               </div>}
-          </React.Fragment>)}
+            </div>)}
       </React.Fragment>
     )
   }

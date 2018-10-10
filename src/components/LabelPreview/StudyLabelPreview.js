@@ -1,8 +1,8 @@
 import * as React from 'react'
 import cls from 'classnames'
-import moment from 'moment'
 import DeleteLabelMutation from 'mutations/DeleteLabelMutation'
-import {get, isEmpty, isNil} from 'utils'
+import {get, isNil} from 'utils'
+import Icon from 'components/Icon'
 import Label from 'components/Label'
 
 class StudyLabelPreview extends React.Component {
@@ -23,37 +23,33 @@ class StudyLabelPreview extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyLabelPreview flex relative items-center content-start ph2 overflow-hidden", className)
+    return cls("StudyLabelPreview mdc-list-item", className)
   }
 
   render() {
     const label = get(this.props, "label", {})
     return (
-      <div className={this.classes}>
-        <span className="inline-flex items-center flex-stable content-center mr2">
-          <Label className="self-start" selected label={label} />
-        </span>
-        <span className="self-start truncate">
-          <span className="truncate mt0 db mdc-typography--subtitle1 mdc-theme--text-primary-on-light ml2">
-            {isEmpty(label.description) ? "No description provided" : label.description}
-          </span>
-          <span className="truncate mt0 db mdc-typography--subtitle2 mdc-theme--text-secondary-on-light ml2">
-            Created on
-            <span className="mh1">{moment(label.createdAt).format("MMM D")}</span>
+      <li className={this.classes}>
+        <Icon as="span" className="mdc-list-item__graphic" icon="label" />
+        <span className="mdc-list-item__text">
+          <Label selected label={label} />
+          <span className="ml2">
+            {label.description}
           </span>
         </span>
-        <span className="ml-auto mr0">
+        <span className="mdc-list-item__meta">
+          {label.viewerCanDelete &&
           <button
-            className="material-icons mdc-icon-button mb1"
+            className="material-icons mdc-icon-button"
             type="button"
             onClick={this.handleDelete}
             aria-label="Delete label"
             title="Delete label"
           >
             delete
-          </button>
+          </button>}
         </span>
-      </div>
+      </li>
     )
   }
 }

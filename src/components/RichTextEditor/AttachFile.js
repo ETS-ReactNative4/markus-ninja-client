@@ -129,7 +129,8 @@ class AttachFile extends React.Component {
   }
 
   render() {
-    const { uid } = this.props
+    const {study, uid} = this.props
+    const viewerCanAdmin = get(study, "viewerCanAdmin", false)
 
     return (
       <div className={this.classes}>
@@ -149,6 +150,7 @@ class AttachFile extends React.Component {
               onChange={(e) => this.handleAttachFile(e.target.files[0], false)}
             />
           </label>
+          {viewerCanAdmin &&
           <button
             className="material-icons mdc-icon-button mdc-card__action--icon"
             type="button"
@@ -157,9 +159,9 @@ class AttachFile extends React.Component {
             title="Attach & Save file"
           >
             save
-          </button>
+          </button>}
         </div>
-        {this.renderSaveForm()}
+        {viewerCanAdmin && this.renderSaveForm()}
       </div>
     )
   }
@@ -229,5 +231,6 @@ class AttachFile extends React.Component {
 export default withUID((getUID) => ({ uid: getUID() }))(createFragmentContainer(AttachFile, graphql`
   fragment AttachFile_study on Study {
     id
+    viewerCanAdmin
   }
 `))

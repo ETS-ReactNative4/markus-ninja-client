@@ -18,17 +18,13 @@ class StudyCoursesPageCourses extends React.Component {
           ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               No courses were found.
             </div>
-          : <React.Fragment>
-              {edges.map(({node}) => (
-                node &&
-                <React.Fragment key={node.id}>
-                  <CoursePreview.Study
-                    className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                    course={node}
-                  />
-                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                </React.Fragment>
-              ))}
+          : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              <div className="mdc-list mdc-list--two-line">
+                {edges.map(({node}) => (
+                  node &&
+                  <CoursePreview.Study key={node.id} course={node} />
+                ))}
+              </div>
               {hasMore &&
               <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                 <button
@@ -39,7 +35,7 @@ class StudyCoursesPageCourses extends React.Component {
                   More
                 </button>
               </div>}
-            </React.Fragment>)}
+            </div>)}
       </React.Fragment>
     )
   }

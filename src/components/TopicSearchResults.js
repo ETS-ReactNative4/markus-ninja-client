@@ -19,18 +19,13 @@ class TopicSearchResults extends React.Component {
           ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               No topics were found.
             </div>
-        : <React.Fragment>
-            {edges.map(({node}) => (
-              node &&
-              <div key={node.id} className="mdc-layout-grid__cell">
-                <div className="mdc-card mdc-card--outlined">
-                  <TopicPreview.Search
-                    className="mdc-card__primary-action pa3 h-100"
-                    topic={node}
-                  />
-                </div>
-              </div>
-            ))}
+          : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              <ul className="mdc-list mdc-list--two-line">
+                {edges.map(({node}) => (
+                  node &&
+                  <TopicPreview.Search key={node.id} topic={node} />
+                ))}
+              </ul>
             {hasMore &&
             <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               <button
@@ -41,7 +36,7 @@ class TopicSearchResults extends React.Component {
                 More
               </button>
             </div>}
-          </React.Fragment>}
+          </div>}
       </React.Fragment>
     )
   }

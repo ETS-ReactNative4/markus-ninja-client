@@ -5,14 +5,14 @@ import {
 } from 'react-relay'
 import {withRouter} from 'react-router-dom';
 import {StudyLabelsProp, StudyLabelsPropDefaults} from 'components/StudyLabels'
-import Label from 'components/Label'
+import LabelPreview from 'components/LabelPreview'
 import LabelSet from 'components/LabelSet'
 import {get, isEmpty} from 'utils'
 import { LABELS_PER_PAGE } from 'consts'
 
 class LessonLabels extends React.Component {
   _loadMore = () => {
-    const {loadMore} = this.props.studyLabels
+    const {loadMore} = this.props.labels
     loadMore(LABELS_PER_PAGE)
 
     const relay = get(this.props, "relay")
@@ -28,12 +28,12 @@ class LessonLabels extends React.Component {
   }
 
   get _hasMore() {
-    const {hasMore} = this.props.studyLabels
+    const {hasMore} = this.props.labels
     return hasMore || this.props.relay.hasMore()
   }
 
   render() {
-    let {edges: studyLabelEdges} = this.props.studyLabels
+    let {edges: studyLabelEdges} = this.props.labels
 
     const lessonId = get(this.props, "lesson.id", "")
     const viewerCanUpdate = get(this.props, "lesson.viewerCanUpdate", false)
@@ -56,7 +56,7 @@ class LessonLabels extends React.Component {
         <LabelSet selectedLabelIds={selectedLabelIds}>
           {studyLabelEdges.map(({node}) =>
             node &&
-            <Label
+            <LabelPreview
               key={node.id}
               id={node.id}
               label={node}
@@ -78,11 +78,11 @@ class LessonLabels extends React.Component {
 }
 
 LessonLabels.propTypes = {
-  studyLabels: StudyLabelsProp,
+  labels: StudyLabelsProp,
 }
 
 LessonLabels.defaultProps = {
-  studyLabels: StudyLabelsPropDefaults,
+  labels: StudyLabelsPropDefaults,
 }
 
 

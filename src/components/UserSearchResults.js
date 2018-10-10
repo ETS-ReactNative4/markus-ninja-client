@@ -17,16 +17,13 @@ class UserSearchResults extends React.Component {
           ? <span className="mr1">
               No users were found.
             </span>
-          : <React.Fragment>
-              {edges.map(({node}) => (
-                node &&
-                <div key={node.id} className="mdc-layout-grid__cell">
-                  <div className="flex flex-column h-100">
-                    <UserPreview.Search className="flex-auto" user={node} />
-                    <div className="rn-divider mt4" />
-                  </div>
-                </div>
-              ))}
+          : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              <ul className="mdc-list mdc-list--two-line">
+                {edges.map(({node}) => (
+                  node &&
+                  <UserPreview.Search key={node.id} user={node} />
+                ))}
+              </ul>
               {hasMore &&
               <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                 <button
@@ -36,7 +33,7 @@ class UserSearchResults extends React.Component {
                   More
                 </button>
               </div>}
-          </React.Fragment>)}
+            </div>)}
       </React.Fragment>
     )
   }

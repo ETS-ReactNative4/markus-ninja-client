@@ -1,0 +1,49 @@
+@import '@material/list/mixins';
+@import '@material/rtl/mixins';
+@import '@material/typography/mixins';
+
+.StudyLessonPreview {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 16px;
+  overflow: hidden;
+  height: 72px;
+}
+
+.StudyLessonPreview__graphic {
+  @include mdc-list-graphic-size_(40px);
+
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  fill: currentColor;
+}
+
+.StudyLessonPreview__meta {
+  @include mdc-rtl-reflexive-property(margin, auto, 0, ".StudyLessonPreview");
+}
+
+.StudyLessonPreview__text {
+  @include mdc-typography-overflow-ellipsis;
+
+  align-self: flex-start;
+}
+
+.StudyLessonPreview__primary-text {
+  @include mdc-typography-overflow-ellipsis;
+  @include mdc-typography-baseline-top(32px);
+  @include mdc-typography-baseline-bottom(20px);
+
+  display: block;
+}
+
+.StudyLessonPreview__secondary-text {
+  @include mdc-typography(body2);
+  @include mdc-typography-overflow-ellipsis;
+  @include mdc-typography-baseline-top(20px);
+
+  display: block;
+}

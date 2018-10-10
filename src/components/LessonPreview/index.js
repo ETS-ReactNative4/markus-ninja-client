@@ -10,6 +10,8 @@ import CourseLessonPreview from './CourseLessonPreview'
 import SearchLessonPreview from './SearchLessonPreview'
 import StudyLessonPreview from './StudyLessonPreview'
 
+import './styles.css'
+
 const FRAGMENT = graphql`
   fragment LessonPreview_lesson on Lesson {
     author {
@@ -22,6 +24,12 @@ const FRAGMENT = graphql`
     courseNumber
     createdAt
     id
+    labels(first: 5) {
+      nodes {
+        id
+        ...Label_label
+      }
+    }
     number
     resourcePath
     title

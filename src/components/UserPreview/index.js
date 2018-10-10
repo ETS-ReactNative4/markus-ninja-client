@@ -13,13 +13,13 @@ import TutorUserPreview from './TutorUserPreview'
 const FRAGMENT = graphql`
   fragment UserPreview_user on User {
     ...EnrollmentSelect_enrollable
-    ...UserLink_user
     bio
     createdAt
     isViewer
     login
     name
     resourcePath
+    studyCount
     viewerCanEnroll
   }
 `

@@ -1,3 +1,4 @@
+@import "@material/layout-grid/mixins";
 @import "@material/theme/variables";
 
 // Fixes size of FontAwesomeIcon within mdc-icon-button
@@ -79,6 +80,25 @@
 .mdc-text-field {
   &.mdc-text-field--inline {
     height: 100%;
+  }
+}
+
+.mdc-list-item__tags {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  padding: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  > * {
+    margin: 4px;
+  }
+
+  @include mdc-layout-grid-media-query_(phone) {
+    display: none;
   }
 }
 

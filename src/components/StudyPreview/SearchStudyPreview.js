@@ -2,14 +2,15 @@ import * as React from 'react'
 import cls from 'classnames'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
-import HTML from 'components/HTML'
+import Icon from 'components/Icon'
+import UserLink from 'components/UserLink'
 import TopicLink from 'components/TopicLink'
 import {get} from 'utils'
 
 class SearchStudyPreview extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("SearchStudyPreview", className)
+    return cls("SearchStudyPreview mdc-list-item", className)
   }
 
   get timestamp() {
@@ -26,41 +27,39 @@ class SearchStudyPreview extends React.Component {
   render() {
     const study = get(this.props, "study", {})
     const topicNodes = get(study, "topics.nodes", [])
+
     return (
-      <div className={this.classes}>
-        <div className="flex">
-          <div className="inline-flex flex-column flex-auto">
-            <Link
-              className="rn-link mdc-typography--headline5 self-start"
-              to={study.resourcePath}
-            >
-              {study.name}
-            </Link>
-            <HTML html={study.descriptionHTML} />
-            <div className="flex mv2">
-              {topicNodes.map((node) =>
-                node &&
-                <TopicLink
-                  key={node.id}
-                  className="mdc-button mdc-button--outlined mr1 mb1"
-                  topic={node}
-                />)}
-            </div>
-            <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light">
-              {this.timestamp}
-            </div>
-          </div>
+      <li className={this.classes}>
+        <Icon as="span" className="mdc-list-item__graphic" icon="study" />
+        <span className="mdc-list-item__text">
+          <Link className="mdc-list-item__primary-text" to={study.resourcePath}>
+            {study.name}
+          </Link>
+          <span className="mdc-list-item__secondary-text">
+            <span className="mr1">{this.timestamp}</span>
+            by
+            <UserLink className="rn-link rn-link--secondary ml1" user={get(study, "owner", null)} />
+          </span>
+        </span>
+        <span className="mdc-list-item__tags">
+          {topicNodes.map((node) =>
+            node &&
+            <TopicLink
+              key={node.id}
+              className="mdc-button mdc-button--outlined"
+              topic={node}
+            />)}
+        </span>
+        <span className="mdc-list-item__meta">
           <Link
-            className="rn-link inline-flex items-center self-start"
+            className="rn-icon-link"
             to={study.resourcePath+"/lessons"}
           >
-            <i className="material-icons mr1">subject</i>
-            <span className="mdc-typography--subtitle2">
-              {study.lessonCount}
-            </span>
+            <Icon className="rn-icon-link__icon" icon="lesson" />
+            {get(study, "lessonCount", 0)}
           </Link>
-        </div>
-      </div>
+        </span>
+      </li>
     )
   }
 }

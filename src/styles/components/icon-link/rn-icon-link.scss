@@ -1,0 +1,26 @@
+@import '@material/rtl/mixins';
+@import "@material/theme/variables";
+@import "./variables";
+
+.rn-icon-link {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  box-sizing: border-box;
+  text-decoration: none;
+  transition: color $rn-icon-link-transition-duration;
+  color: inherit;
+
+  &:hover {
+    color: var(--mdc-theme-text-secondary-on-light);
+  }
+}
+
+.rn-icon-link__icon {
+  @include mdc-rtl-reflexive-property(margin, right, 6px);
+
+  display: inline-block;
+  vertical-align: top;
+}

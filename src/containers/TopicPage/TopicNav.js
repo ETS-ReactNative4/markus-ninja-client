@@ -12,7 +12,7 @@ class TopicNav extends React.Component {
   componentDidMount() {
     const query = queryString.parse(get(this.props, "location.search", ""))
     const t = query.t
-    if (t && (t !== "study" || t !== "course")) {
+    if (t && t !== "study" && t !== "course") {
       query.t = "study"
       const pathname = get(this.props, "location.pathname", "")
       const search = queryString.stringify(query)
