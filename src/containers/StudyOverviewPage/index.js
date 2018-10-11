@@ -14,10 +14,18 @@ import {get, isEmpty} from 'utils'
 import { TOPICS_PER_PAGE } from 'consts'
 
 const StudyOverviewPageQuery = graphql`
-  query StudyOverviewPageQuery($owner: String!, $name: String!, $count: Int!, $after: String) {
+  query StudyOverviewPageQuery(
+    $owner: String!,
+    $name: String!,
+    $topicCount: Int!,
+    $afterTopic: String,
+  ) {
     study(owner: $owner, name: $name) {
       ...CreateLessonLink_study
-      ...StudyMeta_study
+      ...StudyMeta_study @arguments(
+        after: $afterTopic,
+        count: $topicCount,
+      )
       courses(first: 6, orderBy:{direction:DESC, field:APPLE_COUNT}) {
         edges {
           node {
@@ -58,7 +66,7 @@ class StudyOverviewPage extends React.Component {
         variables={{
           owner: match.params.owner,
           name: match.params.name,
-          count: TOPICS_PER_PAGE,
+          topicCount: TOPICS_PER_PAGE,
         }}
         render={({error,  props}) => {
           if (error) {
@@ -69,9 +77,7 @@ class StudyOverviewPage extends React.Component {
 
             return (
               <div className={this.classes}>
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <StudyMeta study={props.study}  />
-                </div>
+                <StudyMeta study={props.study}  />
                 {!isEmpty(lessons) &&
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   <div className="mdc-layout-grid__inner">

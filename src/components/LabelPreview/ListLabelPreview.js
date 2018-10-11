@@ -5,7 +5,7 @@ import {get, isNil} from 'utils'
 import Icon from 'components/Icon'
 import Label from 'components/Label'
 
-class StudyLabelPreview extends React.Component {
+class ListLabelPreview extends React.Component {
   state = {
     error: null,
   }
@@ -23,7 +23,7 @@ class StudyLabelPreview extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyLabelPreview mdc-list-item", className)
+    return cls("ListLabelPreview mdc-list-item", className)
   }
 
   render() {
@@ -54,4 +54,4 @@ class StudyLabelPreview extends React.Component {
   }
 }
 
-export default StudyLabelPreview
+export default ListLabelPreview

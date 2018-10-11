@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql
@@ -16,32 +15,29 @@ class StudyMeta extends React.Component {
     topicsOpen: false,
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("StudyMeta mdc-layout-inner", className)
-  }
-
   render() {
     const study = get(this.props, "study", null)
     const {detailsOpen, topicsOpen} = this.state
     return (
-      <div className="StudyMeta">
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          {!topicsOpen &&
-          <StudyMetaDetails onOpen={(open) => this.setState({ detailsOpen: open })} study={study} />}
-        </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          {!detailsOpen &&
-          <StudyMetaTopics onOpen={(open) => this.setState({ topicsOpen: open })} study={study} />}
-        </div>
-      </div>
+      <React.Fragment>
+        {!topicsOpen &&
+        <StudyMetaDetails onOpen={(open) => this.setState({ detailsOpen: open })} study={study} />}
+        {!detailsOpen &&
+        <StudyMetaTopics onOpen={(open) => this.setState({ topicsOpen: open })} study={study} />}
+      </React.Fragment>
     )
   }
 }
 
 export default createFragmentContainer(StudyMeta, graphql`
-  fragment StudyMeta_study on Study {
+  fragment StudyMeta_study on Study @argumentDefinitions(
+    after: {type: "String"},
+    count: {type: "Int!"},
+  ) {
     ...StudyMetaDetails_study
-    ...StudyMetaTopics_study
+    ...StudyMetaTopics_study @arguments(
+      after: $after,
+      count: $count,
+    )
   }
 `)

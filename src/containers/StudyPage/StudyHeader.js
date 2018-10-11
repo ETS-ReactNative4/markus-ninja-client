@@ -48,7 +48,7 @@ class StudyHeader extends React.Component {
               className="rn-combo-button__count"
               to={study.resourcePath+"/applegivers"}
             >
-              {get(study, "appleGivers.totalCount", 0)}
+              {get(study, "appleGiverCount", 0)}
             </Link>
           </div>
         </div>
@@ -64,9 +64,7 @@ export default withRouter(createFragmentContainer(StudyHeader, graphql`
     ...EnrollmentSelect_enrollable
     id
     advancedAt
-    appleGivers(first: 0) {
-      totalCount
-    }
+    appleGiverCount
     createdAt
     enrolleeCount
     name

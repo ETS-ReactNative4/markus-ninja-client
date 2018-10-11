@@ -21,7 +21,7 @@ class UserSearchResults extends React.Component {
               <ul className="mdc-list mdc-list--two-line">
                 {edges.map(({node}) => (
                   node &&
-                  <UserPreview.Search key={node.id} user={node} />
+                  <UserPreview.List key={node.id} user={node} />
                 ))}
               </ul>
               {hasMore &&

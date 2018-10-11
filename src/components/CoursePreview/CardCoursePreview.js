@@ -2,6 +2,8 @@ import * as React from 'react'
 import cls from 'classnames'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faApple } from '@fortawesome/free-brands-svg-icons'
 import AppleButton from 'components/AppleButton'
 import Icon from 'components/Icon'
 import { get } from 'utils'
@@ -44,6 +46,13 @@ class CardCoursePreview extends React.Component {
             />
           </div>
           <div className="mdc-card__action-icons">
+            <Link
+              className="rn-icon-link mdc-card__action mdc-card__action--icon"
+              to={course.resourcePath+"/applegivers"}
+            >
+              <FontAwesomeIcon className="rn-icon-link__icon" icon={faApple} />
+              {get(course, "appleGiverCount", 0)}
+            </Link>
             <Link
               className="rn-icon-link mdc-card__action mdc-card__action--icon"
               to={course.resourcePath}

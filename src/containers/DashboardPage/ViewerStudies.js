@@ -1,7 +1,7 @@
 import * as React from 'react'
 import cls from 'classnames'
-import {SearchProp, SearchPropDefaults} from 'components/Search'
-import StudyPreview from 'components/StudyPreview'
+import {UserStudiesProp, UserStudiesPropDefaults} from 'components/UserStudies'
+import StudyLink from 'components/StudyLink'
 
 class ViewerStudies extends React.Component {
   get classes() {
@@ -10,13 +10,13 @@ class ViewerStudies extends React.Component {
   }
 
   render() {
-    const {search} = this.props
-    const {edges, hasMore, loadMore} = search
+    const {studies} = this.props
+    const {edges, hasMore, loadMore} = studies
 
     return (
       <div className={this.classes}>
         {edges.map(({node}) => (
-          node && <StudyPreview.Link className="mdc-list-item" key={node.id} study={node} />
+          node && <StudyLink className="mdc-list-item" key={node.id} study={node} />
         ))}
         {hasMore &&
         <div className="mdc-list-item">
@@ -33,11 +33,11 @@ class ViewerStudies extends React.Component {
 }
 
 ViewerStudies.propTypes = {
-  search: SearchProp,
+  studies: UserStudiesProp,
 }
 
 ViewerStudies.defaultProps = {
-  search: SearchPropDefaults,
+  studies: UserStudiesPropDefaults,
 }
 
 export default ViewerStudies

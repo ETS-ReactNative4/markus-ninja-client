@@ -23,7 +23,7 @@ class TopicSearchResults extends React.Component {
               <ul className="mdc-list mdc-list--two-line">
                 {edges.map(({node}) => (
                   node &&
-                  <TopicPreview.Search key={node.id} topic={node} />
+                  <TopicPreview.List key={node.id} topic={node} />
                 ))}
               </ul>
             {hasMore &&

@@ -5,10 +5,10 @@ import {Link} from 'react-router-dom'
 import Icon from 'components/Icon'
 import { get } from 'utils'
 
-class SearchTopicPreview extends React.Component {
+class ListTopicPreview extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("SearchTopicPreview mdc-list-item", className)
+    return cls("ListTopicPreview mdc-list-item", className)
   }
 
   render() {
@@ -47,4 +47,4 @@ class SearchTopicPreview extends React.Component {
   }
 }
 
-export default SearchTopicPreview
+export default ListTopicPreview

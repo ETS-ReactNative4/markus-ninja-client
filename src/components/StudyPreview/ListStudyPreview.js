@@ -2,15 +2,16 @@ import * as React from 'react'
 import cls from 'classnames'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
+import AppleButton from 'components/AppleButton'
 import Icon from 'components/Icon'
 import UserLink from 'components/UserLink'
 import TopicLink from 'components/TopicLink'
 import {get} from 'utils'
 
-class SearchStudyPreview extends React.Component {
+class ListStudyPreview extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("SearchStudyPreview mdc-list-item", className)
+    return cls("ListStudyPreview mdc-list-item", className)
   }
 
   get timestamp() {
@@ -51,17 +52,20 @@ class SearchStudyPreview extends React.Component {
             />)}
         </span>
         <span className="mdc-list-item__meta">
-          <Link
-            className="rn-icon-link"
-            to={study.resourcePath+"/lessons"}
-          >
-            <Icon className="rn-icon-link__icon" icon="lesson" />
-            {get(study, "lessonCount", 0)}
-          </Link>
+          <div className="mdc-list-item__meta-actions">
+            <AppleButton appleable={get(this.props, "study", null)} />
+            <Link
+              className="rn-icon-link"
+              to={study.resourcePath+"/lessons"}
+            >
+              <Icon className="rn-icon-link__icon" icon="lesson" />
+              {get(study, "lessonCount", 0)}
+            </Link>
+          </div>
         </span>
       </li>
     )
   }
 }
 
-export default SearchStudyPreview
+export default ListStudyPreview

@@ -1,14 +1,15 @@
 import * as React from 'react'
+import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import UserPreview from 'components/UserPreview'
+import LessonPreview from 'components/LessonPreview'
 import {get} from 'utils'
 
-import { USERS_PER_PAGE } from 'consts'
+import { LESSONS_PER_PAGE } from 'consts'
 
-class StudyEnrollees extends React.Component {
+class CourseLessons extends React.Component {
   _loadMore = () => {
     const relay = get(this.props, "relay")
     if (!relay.hasMore()) {
@@ -19,51 +20,59 @@ class StudyEnrollees extends React.Component {
       return
     }
 
-    relay.loadMore(USERS_PER_PAGE)
+    relay.loadMore(LESSONS_PER_PAGE)
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("CourseLessons ", className)
   }
 
   render() {
-    const study = get(this.props, "study", null)
-    const enrolleeEdges = get(study, "enrollees.edges", [])
+    const course = get(this.props, "course", null)
+    const edges = get(course, "lessons.edges", [])
+
     return (
       <React.Fragment>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <ul className="mdc-list mdc-list--two-line">
-            {enrolleeEdges.map(({node}) => (
-              node && <UserPreview.List key={node.id} user={node} />
+            {edges.map(({node}) => (
+              node &&
+              <LessonPreview.List key={node.id} lesson={node} />
             ))}
           </ul>
+          {this.props.relay.hasMore() &&
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <button
+              className="mdc-button mdc-button--unelevated"
+              type="button"
+              onClick={this._loadMore}
+            >
+              More
+            </button>
+          </div>}
         </div>
-        {this.props.relay.hasMore() &&
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <button
-            className="mdc-button mdc-button--unelevated"
-            onClick={this._loadMore}
-          >
-            More
-          </button>
-        </div>}
       </React.Fragment>
     )
   }
 }
 
-export default createPaginationContainer(StudyEnrollees,
+export default createPaginationContainer(CourseLessons,
   {
-    study: graphql`
-      fragment StudyEnrollees_study on Study @argumentDefinitions(
-        count: {type: "Int!"},
+    course: graphql`
+      fragment CourseLessons_course on Course @argumentDefinitions(
         after: {type: "String"},
+        count: {type: "Int!"},
       ) {
-        enrollees(
+        lessons(
           first: $count,
           after: $after,
-          orderBy:{direction: DESC field: ENROLLED_AT}
-        ) @connection(key: "StudyEnrollees_enrollees", filters: []) {
+          orderBy:{direction: ASC field: COURSE_NUMBER}
+        ) @connection(key: "CourseLessons_lessons", filters: []) {
           edges {
             node {
               id
-              ...UserPreview_user
+              ...LessonPreview_lesson
             }
           }
           pageInfo {
@@ -77,22 +86,25 @@ export default createPaginationContainer(StudyEnrollees,
   {
     direction: 'forward',
     query: graphql`
-      query StudyEnrolleesForwardQuery(
+      query CourseLessonsForwardQuery(
         $owner: String!,
         $name: String!,
+        $number: Int!,
         $count: Int!,
         $after: String
       ) {
         study(owner: $owner, name: $name) {
-          ...StudyEnrollees_study @arguments(
-            count: $count,
-            after: $after,
-          )
+          course(number: $number) {
+            ...CourseLessons_course @arguments(
+              after: $after,
+              count: $count,
+            )
+          }
         }
       }
     `,
     getConnectionFromProps(props) {
-      return get(props, "study.enrollees")
+      return get(props, "course.lessons")
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {
@@ -104,6 +116,7 @@ export default createPaginationContainer(StudyEnrollees,
       return {
         owner: props.match.params.owner,
         name: props.match.params.name,
+        number: parseInt(this.props.match.params.number, 10),
         count: paginationInfo.count,
         after: paginationInfo.cursor,
       }

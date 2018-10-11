@@ -49,13 +49,12 @@ class UserCourseApples extends React.Component {
         : <React.Fragment>
             {appledEdges.map(({node}) => (
               node &&
-              <React.Fragment key={node.id}>
-                <CoursePreview.Apple
-                  className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                  course={node}
-                />
-                <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-              </React.Fragment>
+              <div
+                key={get(node, "id", "")}
+                className="mdc-layout-grid__cell mdc-layout-grid__cell--span-4"
+              >
+                <CoursePreview.Card className="h-100" course={node} />
+              </div>
             ))}
             {this.props.relay.hasMore() &&
             <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">

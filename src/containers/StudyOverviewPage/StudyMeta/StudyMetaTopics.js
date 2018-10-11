@@ -84,7 +84,7 @@ class StudyMetaTopics extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyMetaTopics mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+    return cls("mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {
@@ -106,7 +106,7 @@ class StudyMetaTopics extends React.Component {
     const {topics} = this.state
 
     return (
-      <form className="StudyMeta__form inline-flex w-100" onSubmit={this.handleSubmit}>
+      <form className="inline-flex w-100" onSubmit={this.handleSubmit}>
         <div className="flex-auto">
           <TextField
             className="w-100"
@@ -198,12 +198,13 @@ StudyMetaTopics.defaulProps = {
 export default withRouter(createPaginationContainer(StudyMetaTopics,
   {
     study: graphql`
-      fragment StudyMetaTopics_study on Study {
+      fragment StudyMetaTopics_study on Study @argumentDefinitions(
+        after: {type: "String"},
+        count: {type: "Int!"},
+      ) {
         id
-        topics(
-          first: $count,
-          after: $after,
-        ) @connection(key: "StudyMetaTopics_topics", filters: []) {
+        topics(first: $count, after: $after)
+        @connection(key: "StudyMetaTopics_topics", filters: []) {
           edges {
             node {
               id
@@ -230,7 +231,10 @@ export default withRouter(createPaginationContainer(StudyMetaTopics,
         $after: String
       ) {
         study(owner: $owner, name: $name) {
-          ...StudyMetaTopics_study
+          ...StudyMetaTopics_study @arguments(
+            after: $after,
+            count: $count,
+          )
         }
       }
     `,

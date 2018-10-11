@@ -27,13 +27,13 @@ class StudyAppleGivers extends React.Component {
     const enrolleeEdges = get(study, "appleGivers.edges", [])
     return (
       <React.Fragment>
-        {enrolleeEdges.map(({node}) => (
-          node &&
-          <div key={node.id} className="mdc-layout-grid__cell">
-            <UserPreview.Study user={node} />
-            <div className="rn-divider mt4" />
-          </div>
-        ))}
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <ul className="mdc-list mdc-list--two-line">
+            {enrolleeEdges.map(({node}) => (
+              node && <UserPreview.List key={node.id} user={node} />
+            ))}
+          </ul>
+        </div>
         {this.props.relay.hasMore() &&
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <button

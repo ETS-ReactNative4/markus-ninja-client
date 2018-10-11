@@ -61,9 +61,9 @@ class TopicPageTopicables extends React.Component {
                   }
                   switch(node.__typename) {
                     case "Course":
-                      return <CoursePreview.Search key={node.id} course={node} />
+                      return <CoursePreview.List key={node.id} course={node} />
                     case "Study":
-                      return <StudyPreview.Search key={node.id} study={node} />
+                      return <StudyPreview.List key={node.id} study={node} />
                     default:
                       return null
                   }

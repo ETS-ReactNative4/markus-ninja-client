@@ -18,14 +18,13 @@ class UserTutorsTabTutors extends React.Component {
           ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               No tutors were found.
             </div>
-          : <React.Fragment>
-              {edges.map(({node}) => (
-                node &&
-                <div key={node.id} className="mdc-layout-grid__cell">
-                  <UserPreview.Tutor user={node} />
-                  <div className="rn-divider mt4" />
-                </div>
-              ))}
+          : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              <ul className="mdc-list mdc-list--two-line">
+                {edges.map(({node}) => (
+                  node &&
+                  <UserPreview.List key={node.id} user={node} />
+                ))}
+              </ul>
               {hasMore &&
               <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                 <button
@@ -36,7 +35,7 @@ class UserTutorsTabTutors extends React.Component {
                   More
                 </button>
               </div>}
-            </React.Fragment>)}
+            </div>)}
       </React.Fragment>
     )
   }

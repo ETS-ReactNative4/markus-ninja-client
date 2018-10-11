@@ -6,10 +6,10 @@ import Icon from 'components/Icon'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import {get} from 'utils'
 
-class SearchUserPreview extends React.Component {
+class ListUserPreview extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("SearchUserPreview mdc-list-item", className)
+    return cls("ListUserPreview mdc-list-item", className)
   }
 
   render() {
@@ -27,22 +27,22 @@ class SearchUserPreview extends React.Component {
             <span className="ml1">{moment(user.createdAt).format("MMM D, YYYY")}</span>
           </span>
         </span>
-        <span className="mdc-list-item__tags">
-          {user.viewerCanEnroll && !user.isViewer &&
-          <EnrollmentSelect enrollable={user} />}
-        </span>
         <span className="mdc-list-item__meta">
-          <Link
-            className="rn-icon-link"
-            to={user.resourcePath+"?tab=studies"}
-          >
-            <Icon className="rn-icon-link__icon" icon="study" />
-            {get(user, "studyCount", 0)}
-          </Link>
+          <div className="mdc-list-item__meta-actions">
+            {user.viewerCanEnroll && !user.isViewer &&
+            <EnrollmentSelect enrollable={user} />}
+            <Link
+              className="rn-icon-link"
+              to={user.resourcePath+"?tab=studies"}
+            >
+              <Icon className="rn-icon-link__icon" icon="study" />
+              {get(user, "studyCount", 0)}
+            </Link>
+          </div>
         </span>
       </li>
     )
   }
 }
 
-export default SearchUserPreview
+export default ListUserPreview

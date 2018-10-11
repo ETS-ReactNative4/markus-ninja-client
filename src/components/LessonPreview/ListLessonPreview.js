@@ -6,10 +6,10 @@ import Icon from 'components/Icon'
 import UserLink from 'components/UserLink'
 import {get} from 'utils'
 
-class SearchLessonPreview extends React.Component {
+class ListLessonPreview extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("SearchLessonPreview mdc-list-item", className)
+    return cls("ListLessonPreview mdc-list-item", className)
   }
 
   render() {
@@ -44,4 +44,4 @@ class SearchLessonPreview extends React.Component {
   }
 }
 
-export default SearchLessonPreview
+export default ListLessonPreview

@@ -30,8 +30,14 @@ class CourseMeta extends React.Component {
 }
 
 export default createFragmentContainer(CourseMeta, graphql`
-  fragment CourseMeta_course on Course {
+  fragment CourseMeta_course on Course @argumentDefinitions(
+    after: {type: "String"},
+    count: {type: "Int!"},
+  ) {
     ...CourseMetaDetails_course
-    ...CourseMetaTopics_course
+    ...CourseMetaTopics_course @arguments(
+      after: $after,
+      count: $count,
+    )
   }
 `)

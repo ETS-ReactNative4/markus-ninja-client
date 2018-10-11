@@ -21,8 +21,7 @@ class StudyLabelsPageLabels extends React.Component {
           : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               <ul className="mdc-list">
                 {edges.map(({node}) => (
-                  node &&
-                  <LabelPreview.Study key={node.id} label={node} />
+                  node && <LabelPreview.List key={node.id} label={node} />
                 ))}
               </ul>
               {hasMore &&

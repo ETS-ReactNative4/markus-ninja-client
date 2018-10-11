@@ -39,7 +39,7 @@ class UserStudiesContainer extends React.Component {
   }
 
   _refetch = debounce((after) => {
-    const {count, filterBy, orderBy, relay} = this.props
+    const {count, filterBy, isViewer, orderBy, relay} = this.props
 
     this.setState({
       loading: true,
@@ -50,6 +50,8 @@ class UserStudiesContainer extends React.Component {
         after,
         count,
         filterBy,
+        isUser: !isViewer,
+        isViewer,
         orderBy,
       },
       null,
@@ -96,10 +98,12 @@ UserStudiesContainer.propTypes = {
     topics: PropTypes.arrayOf(PropTypes.string),
     search: PropTypes.string,
   }),
+  isViewer: PropTypes.bool,
 }
 
 UserStudiesContainer.defaultProps = {
   count: STUDIES_PER_PAGE,
+  isViewer: false,
 }
 
 export const UserStudiesProp = PropTypes.shape({
@@ -126,6 +130,8 @@ const refetchContainer = createRefetchContainer(UserStudiesContainer,
         after: {type: "String"},
         filterBy: {type: "StudyFilters"},
         orderBy: {type: "StudyOrder"},
+        withLink: {type: "Boolean!"},
+        withPreview: {type: "Boolean!"},
       ) {
         studies(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
         @connection(key: "UserStudiesContainer_studies", filters: ["filterBy", "orderBy"]) {
@@ -134,7 +140,8 @@ const refetchContainer = createRefetchContainer(UserStudiesContainer,
             node {
               id
               ...on Study {
-                ...StudyPreview_study
+                ...StudyLink_study @include(if: $withLink)
+                ...StudyPreview_study @include(if: $withPreview)
               }
             }
           }
@@ -154,13 +161,29 @@ const refetchContainer = createRefetchContainer(UserStudiesContainer,
       $after: String,
       $filterBy: StudyFilters,
       $orderBy: StudyOrder,
+      $isUser: Boolean!,
+      $isViewer: Boolean!,
+      $withLink: Boolean!,
+      $withPreview: Boolean!,
     ) {
-      user(login: $login) {
+      user(login: $login) @skip(if: $isViewer) {
         ...UserStudiesContainer_user @arguments(
-          count: $count,
           after: $after,
+          count: $count,
           filterBy: $filterBy,
           orderBy: $orderBy,
+          withLink: $withLink,
+          withPreview: $withPreview,
+        )
+      }
+      viewer @skip(if: $isUser) {
+        ...UserStudiesContainer_user @arguments(
+          after: $after,
+          count: $count,
+          filterBy: $filterBy,
+          orderBy: $orderBy,
+          withLink: $withLink,
+          withPreview: $withPreview,
         )
       }
     }

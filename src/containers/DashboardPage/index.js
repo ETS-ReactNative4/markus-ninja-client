@@ -16,7 +16,6 @@ const DashboardPageQuery = graphql`
   query DashboardPageQuery($count: Int!, $after: String) {
     viewer {
       ...UserLink_user
-      ...SearchViewerStudies_viewer
       ...ViewerReceivedActivity_viewer @arguments(
         count: $count,
         after: $after
@@ -52,7 +51,7 @@ class DashboardPage extends React.Component {
                         <div className="mdc-list-item">
                           <UserLink className="rn-link mdc-typography--headline5" user={props.viewer} />
                         </div>
-                        <SearchViewerStudies viewer={props.viewer} />
+                        <SearchViewerStudies />
                       </div>
                     </nav>
                   </nav>

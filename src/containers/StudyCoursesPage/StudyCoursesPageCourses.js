@@ -21,8 +21,7 @@ class StudyCoursesPageCourses extends React.Component {
           : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               <div className="mdc-list mdc-list--two-line">
                 {edges.map(({node}) => (
-                  node &&
-                  <CoursePreview.Study key={node.id} course={node} />
+                  node && <CoursePreview.List key={node.id} course={node} />
                 ))}
               </div>
               {hasMore &&

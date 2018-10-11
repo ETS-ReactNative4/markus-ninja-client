@@ -5,7 +5,7 @@ import hoistNonReactStatic from 'hoist-non-react-statics'
 import { Link } from 'react-router-dom'
 import { get } from 'utils'
 import CardTopicPreview from './CardTopicPreview'
-import SearchTopicPreview from './SearchTopicPreview'
+import ListTopicPreview from './ListTopicPreview'
 
 const FRAGMENT = graphql`
   fragment TopicPreview_topic on Topic {
@@ -19,7 +19,7 @@ const FRAGMENT = graphql`
 `
 class TopicPreview extends React.Component {
   static Card = Relay.createFragmentContainer(CardTopicPreview, FRAGMENT)
-  static Search = Relay.createFragmentContainer(SearchTopicPreview, FRAGMENT)
+  static List = Relay.createFragmentContainer(ListTopicPreview, FRAGMENT)
 
   get classes() {
     const {className} = this.props

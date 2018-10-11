@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import cls from 'classnames'
 import PropTypes from 'prop-types'
 import {
   createFragmentContainer,
@@ -6,15 +7,14 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router-dom';
 import TextField, {Input, HelperText} from '@material/react-text-field'
-import UpdateStudyMutation from 'mutations/UpdateStudyMutation'
+import UpdateCourseMutation from 'mutations/UpdateCourseMutation'
 import { get, isEmpty, isNil } from 'utils'
-import cls from 'classnames'
 
-class StudyMetaDetails extends Component {
+class CourseMetaDetails extends React.Component {
   constructor(props) {
     super(props)
 
-    const description = get(this.props, "study.description", "")
+    const description = get(this.props, "course.description", "")
 
     this.state = {
       error: null,
@@ -23,6 +23,7 @@ class StudyMetaDetails extends Component {
         description,
       },
       open: false,
+      submitted: false,
     }
   }
 
@@ -35,13 +36,16 @@ class StudyMetaDetails extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { description } = this.state
-    UpdateStudyMutation(
-      this.props.study.id,
+
+    this.setState({submitted: true})
+
+    UpdateCourseMutation(
+      this.props.course.id,
       description,
       null,
-      (error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
+      (errors) => {
+        if (!isNil(errors)) {
+          this.setState({ error: errors[0].message })
         }
         this.handleToggleOpen()
       },
@@ -54,12 +58,15 @@ class StudyMetaDetails extends Component {
     this.setState({ open })
     this.props.onOpen(open)
 
-    this.reset_()
+    if (!this.state.submitted) {
+      this.reset_()
+    }
   }
 
   reset_ = () => {
     this.setState({
       error: null,
+      submitted: false,
       ...this.state.initialValues,
     })
   }
@@ -70,12 +77,12 @@ class StudyMetaDetails extends Component {
   }
 
   render() {
-    const study = get(this.props, "study", {})
+    const course = get(this.props, "course", {})
     const {open} = this.state
 
     return (
       <div className={this.classes}>
-        {open && study.viewerCanAdmin
+        {open && course.viewerCanAdmin
         ? this.renderForm()
         : this.renderDetails()}
       </div>
@@ -84,7 +91,7 @@ class StudyMetaDetails extends Component {
 
   renderHelperText() {
     return (
-      <HelperText persistent>Give a brief description of the course.</HelperText>
+      <HelperText>Give a brief description of the course.</HelperText>
     )
   }
 
@@ -129,21 +136,23 @@ class StudyMetaDetails extends Component {
   }
 
   renderDetails() {
-    const study = get(this.props, "study", {})
+    const course = get(this.props, "course", {})
 
     return (
       <div className="inline-flex items-center w-100">
-        <div className={cls("mdc-theme--subtitle1 flex-auto", {
-          "mdc-theme--text-secondary-on-light": !study.description,
+        <span className={cls("mdc-theme--subtitle1 flex-auto", {
+          "mdc-theme--text-secondary-on-light": !course.description,
         })}>
-          {study.description || "No description provided"}
-        </div>
-        {study.viewerCanAdmin &&
+          {course.description || "No description provided"}
+        </span>
+        {course.viewerCanAdmin &&
         <div className="inline-flex">
           <button
             className="material-icons mdc-icon-button"
             type="button"
             onClick={this.handleToggleOpen}
+            aria-label="Edit description"
+            title="Edit description"
           >
             edit
           </button>
@@ -153,16 +162,16 @@ class StudyMetaDetails extends Component {
   }
 }
 
-StudyMetaDetails.propTypes = {
+CourseMetaDetails.propTypes = {
   onOpen: PropTypes.func,
 }
 
-StudyMetaDetails.defaulProps = {
+CourseMetaDetails.defaulProps = {
   onOpen: () => {}
 }
 
-export default withRouter(createFragmentContainer(StudyMetaDetails, graphql`
-  fragment StudyMetaDetails_study on Study {
+export default withRouter(createFragmentContainer(CourseMetaDetails, graphql`
+  fragment CourseMetaDetails_course on Course {
     description
     id
     viewerCanAdmin

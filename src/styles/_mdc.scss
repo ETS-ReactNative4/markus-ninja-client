@@ -96,6 +96,19 @@
   }
 }
 
+
+.mdc-list-item__meta-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  overflow: hidden;
+
+  > * {
+    margin: 4px;
+  }
+}
+
 .mdc-text-field {
   &.mdc-text-field--inline {
     height: 100%;

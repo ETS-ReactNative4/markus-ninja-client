@@ -4,7 +4,7 @@ import Relay, {
 } from 'react-relay'
 import hoistNonReactStatic from 'hoist-non-react-statics'
 import Label from 'components/Label'
-import StudyLabelPreview from './StudyLabelPreview'
+import ListLabelPreview from './ListLabelPreview'
 
 const FRAGMENT = graphql`
   fragment LabelPreview_label on Label {
@@ -21,7 +21,7 @@ const FRAGMENT = graphql`
 `
 
 class LabelPreview extends React.Component {
-  static Study = Relay.createFragmentContainer(StudyLabelPreview, FRAGMENT)
+  static List = Relay.createFragmentContainer(ListLabelPreview, FRAGMENT)
 
   render() {
     return <Label {...this.props} />

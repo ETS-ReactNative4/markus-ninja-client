@@ -1,15 +1,14 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
 } from 'react-relay'
-import LessonPreview from 'components/LessonPreview'
+import UserPreview from 'components/UserPreview'
 import {get} from 'utils'
 
-import { LESSONS_PER_PAGE } from 'consts'
+import { USERS_PER_PAGE } from 'consts'
 
-class CourseLessons extends React.Component {
+class CourseAppleGivers extends React.Component {
   _loadMore = () => {
     const relay = get(this.props, "relay")
     if (!relay.hasMore()) {
@@ -20,59 +19,51 @@ class CourseLessons extends React.Component {
       return
     }
 
-    relay.loadMore(LESSONS_PER_PAGE)
-  }
-
-  get classes() {
-    const {className} = this.props
-    return cls("CourseLessons ", className)
+    relay.loadMore(USERS_PER_PAGE)
   }
 
   render() {
     const course = get(this.props, "course", null)
-    const edges = get(course, "lessons.edges", [])
-
+    const enrolleeEdges = get(course, "appleGivers.edges", [])
     return (
       <React.Fragment>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <ul className="mdc-list mdc-list--two-line">
-            {edges.map(({node}) => (
-              node &&
-              <LessonPreview.Course key={node.id} lesson={node} />
+            {enrolleeEdges.map(({node}) => (
+              node && <UserPreview.List key={node.id} user={node} />
             ))}
           </ul>
-          {this.props.relay.hasMore() &&
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <button
-              className="mdc-button mdc-button--unelevated"
-              type="button"
-              onClick={this._loadMore}
-            >
-              More
-            </button>
-          </div>}
         </div>
+        {this.props.relay.hasMore() &&
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <button
+            className="mdc-button mdc-button--unelevated"
+            onClick={this._loadMore}
+          >
+            More
+          </button>
+        </div>}
       </React.Fragment>
     )
   }
 }
 
-export default createPaginationContainer(CourseLessons,
+export default createPaginationContainer(CourseAppleGivers,
   {
     course: graphql`
-      fragment CourseLessons_course on Course @argumentDefinitions(
-        after: {type: "String"},
+      fragment CourseAppleGivers_course on Course @argumentDefinitions(
         count: {type: "Int!"},
+        after: {type: "String"},
       ) {
-        lessons(
+        appleGivers(
           first: $count,
           after: $after,
-          orderBy:{direction: ASC field: COURSE_NUMBER}
-        ) @connection(key: "CourseLessons_lessons", filters: []) {
+          orderBy:{direction: DESC field: APPLED_AT}
+        ) @connection(key: "CourseAppleGivers_appleGivers", filters: []) {
           edges {
             node {
               id
-              ...LessonPreview_lesson
+              ...UserPreview_user
             }
           }
           pageInfo {
@@ -86,7 +77,7 @@ export default createPaginationContainer(CourseLessons,
   {
     direction: 'forward',
     query: graphql`
-      query CourseLessonsForwardQuery(
+      query CourseAppleGiversForwardQuery(
         $owner: String!,
         $name: String!,
         $number: Int!,
@@ -95,16 +86,16 @@ export default createPaginationContainer(CourseLessons,
       ) {
         study(owner: $owner, name: $name) {
           course(number: $number) {
-            ...CourseLessons_course @arguments(
-              after: $after,
+            ...CourseAppleGivers_course @arguments(
               count: $count,
+              after: $after,
             )
           }
         }
       }
     `,
     getConnectionFromProps(props) {
-      return get(props, "course.lessons")
+      return get(props, "course.appleGivers")
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {

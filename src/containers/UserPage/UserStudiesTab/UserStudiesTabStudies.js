@@ -22,7 +22,7 @@ class UserStudiesTabStudies extends React.Component {
               <ul className="mdc-list mdc-list--two-line">
                 {edges.map(({node}) => (
                   node &&
-                  <StudyPreview.User key={node.id} study={node} />
+                  <StudyPreview.List key={node.id} study={node} />
                 ))}
               </ul>
               {hasMore &&

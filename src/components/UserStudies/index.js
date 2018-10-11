@@ -6,6 +6,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
+import {get} from 'utils'
 import UserStudiesContainer, {UserStudiesProp, UserStudiesPropDefaults} from './UserStudiesContainer'
 
 import { USERS_PER_PAGE } from 'consts'
@@ -17,13 +18,29 @@ const UserStudiesQuery = graphql`
     $count: Int!,
     $filterBy: StudyFilters,
     $orderBy: StudyOrder,
+    $isUser: Boolean!,
+    $isViewer: Boolean!,
+    $withLink: Boolean!,
+    $withPreview: Boolean!,
   ) {
-    user(login: $login) {
+    user(login: $login) @skip(if: $isViewer) {
       ...UserStudiesContainer_user @arguments(
         after: $after,
         count: $count,
         filterBy: $filterBy,
         orderBy: $orderBy,
+        withLink: $withLink,
+        withPreview: $withPreview,
+      )
+    }
+    viewer @skip(if: $isUser) {
+      ...UserStudiesContainer_user @arguments(
+        after: $after,
+        count: $count,
+        filterBy: $filterBy,
+        orderBy: $orderBy,
+        withLink: $withLink,
+        withPreview: $withPreview,
       )
     }
   }
@@ -43,30 +60,36 @@ class UserStudies extends React.Component {
 
   render() {
     const {orderBy, filterBy} = this.state
-    const {count, match} = this.props
+    const {count, fragment, isViewer, match} = this.props
 
     return (
       <QueryRenderer
         environment={environment}
         query={UserStudiesQuery}
         variables={{
-          login: match.params.login,
+          login: get(match, "params.login", ""),
           count,
           filterBy,
           orderBy,
+          isUser: !isViewer,
+          isViewer,
+          withLink: fragment === "link",
+          withPreview: fragment === "preview",
         }}
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            const {children, orderBy, filterBy} = this.props
+            const {children, orderBy, filterBy, isViewer} = this.props
+            const user = isViewer ? props.viewer : props.user
 
             return (
               <UserStudiesContainer
                 count={count}
                 orderBy={orderBy}
                 filterBy={filterBy}
-                user={props.user}
+                isViewer={isViewer}
+                user={user}
               >
                 {children}
               </UserStudiesContainer>
@@ -89,10 +112,14 @@ UserStudies.propTypes = {
     topics: PropTypes.arrayOf(PropTypes.string),
     search: PropTypes.string,
   }),
+  fragment: PropTypes.oneOf(["link", "preview"]),
+  isViewer: PropTypes.bool,
 }
 
 UserStudies.defaultProps = {
   count: USERS_PER_PAGE,
+  fragment: "preview",
+  isViewer: false,
 }
 
 export {UserStudiesProp, UserStudiesPropDefaults}

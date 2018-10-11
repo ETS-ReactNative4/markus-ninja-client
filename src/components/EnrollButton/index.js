@@ -111,11 +111,11 @@ export class EnrollButton extends React.Component {
         disabled={disabled}
         onClick={this.handleClick}
       >
-        <i className="mdc-button__icon o-40 material-icons">
+        <i className="mdc-button__icon material-icons">
           school
         </i>
         <i
-          className="mdc-button__icon mdc-button__icon--on material-icons"
+          className="mdc-button__icon mdc-button__icon--on material-icons mdc-theme--secondary"
         >
           school
         </i>

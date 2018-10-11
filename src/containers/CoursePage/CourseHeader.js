@@ -3,7 +3,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import { withRouter } from 'react-router'
+import { Link, withRouter } from 'react-router-dom'
 import TextField, {Input} from '@material/react-text-field'
 import Icon from 'components/Icon'
 import AppleButton from 'components/AppleButton'
@@ -78,9 +78,12 @@ class CourseHeader extends React.Component {
         <div className="rn-header__meta">
           <div className="rn-combo-button">
             <AppleButton appleable={course} />
-            <button className="rn-combo-button__count">
-              {get(course, "appleGivers.totalCount", 0)}
-            </button>
+            <Link
+              className="rn-combo-button__count"
+              to={course.resourcePath+"/applegivers"}
+            >
+              {get(course, "appleGiverCount", 0)}
+            </Link>
           </div>
           {course.viewerCanAdmin &&
           <button
@@ -141,15 +144,13 @@ export default withRouter(createFragmentContainer(CourseHeader, graphql`
     ...AppleButton_appleable
     id
     advancedAt
-    appleGivers(first: 0) {
-      totalCount
-    }
+    appleGiverCount
     createdAt
     name
     number
+    resourcePath
     study {
       ...StudyLink_study
-      resourcePath
       owner {
         ...UserLink_user
       }

@@ -138,17 +138,14 @@ class AppContainer extends React.Component {
                     <Route exact path="/topics/:name" component={TopicPage} />
                     <Route exact path="/:login" component={UserPage} />
                     <Route
-                      exact
                       path="/:owner/:name/asset/:filename"
                       component={UserAssetPage}
                     />
                     <Route
-                      exact
                       path="/:owner/:name/course/:number"
                       component={CoursePage}
                     />
                     <Route
-                      exact
                       path="/:owner/:name/lesson/:number"
                       component={LessonPage}
                     />

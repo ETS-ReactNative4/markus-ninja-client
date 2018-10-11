@@ -97,73 +97,56 @@ class CourseMetaTopics extends React.Component {
 
   render() {
     const course = get(this.props, "course", {})
-    const topicEdges = get(course, "topics.edges", [])
-    const pageInfo = get(course, "topics.pageInfo", {})
-    const {open, topics} = this.state
+    const {open} = this.state
+
     return (
       <div className={this.classes}>
-        {open
-        ? course.viewerCanAdmin &&
-          <form className="CourseMeta__form inline-flex w-100" onSubmit={this.handleSubmit}>
-            <div className="flex-auto">
-              <TextField
-                className="w-100"
-                outlined
-                label="Topics (separate with spaces)"
-                helperText={this.renderHelperText()}
-                floatingLabelClassName={!isEmpty(topicEdges) ? "mdc-floating-label--float-above" : ""}
-              >
-                <Input
-                  name="topics"
-                  value={topics}
-                  onChange={this.handleChange}
-                />
-              </TextField>
-            </div>
-            <div className="inline-flex items-center pa2 mb4">
-              <button
-                className="mdc-button mdc-button--unelevated"
-                type="submit"
-                onClick={this.handleSubmit}
-              >
-                Save
-              </button>
-              <span
-                className="pointer pa2 underline-hover"
-                role="button"
-                onClick={this.handleCancel}
-              >
-                Cancel
-              </span>
-            </div>
-          </form>
-        : <div className="inline-flex items-center w-100">
-            {topicEdges.map(({node}) => node
-            ? <Link
-                className="mdc-button mdc-button--outlined mr1 mb1"
-                key={node.id}
-                to={node.resourcePath}
-              >
-                {node.name}
-              </Link>
-            : null)}
-            {pageInfo.hasNextPage &&
-            <button
-              className="material-icons mdc-icon-button mr1 mb1"
-              onClick={this._loadMore}
-            >
-              more
-            </button>}
-            {course.viewerCanAdmin &&
-            <button
-              className="mdc-button mdc-button--unelevated mr1 mb1"
-              type="button"
-              onClick={this.handleToggleOpen}
-            >
-              Manage topics
-            </button>}
-          </div>}
+        {open && course.viewerCanAdmin
+        ? this.renderForm()
+        : this.renderTopics()}
       </div>
+    )
+  }
+
+  renderForm() {
+    const course = get(this.props, "course", {})
+    const topicEdges = get(course, "topics.edges", [])
+    const {topics} = this.state
+
+    return (
+      <form className="CourseMeta__form inline-flex w-100" onSubmit={this.handleSubmit}>
+        <div className="flex-auto">
+          <TextField
+            className="w-100"
+            outlined
+            label="Topics (separate with spaces)"
+            helperText={this.renderHelperText()}
+            floatingLabelClassName={!isEmpty(topicEdges) ? "mdc-floating-label--float-above" : ""}
+          >
+            <Input
+              name="topics"
+              value={topics}
+              onChange={this.handleChange}
+            />
+          </TextField>
+        </div>
+        <div className="inline-flex items-center pa2 mb4">
+          <button
+            className="mdc-button mdc-button--unelevated"
+            type="submit"
+            onClick={this.handleSubmit}
+          >
+            Save
+          </button>
+          <span
+            className="pointer pa2 underline-hover"
+            role="button"
+            onClick={this.handleCancel}
+          >
+            Cancel
+          </span>
+        </div>
+      </form>
     )
   }
 
@@ -172,6 +155,41 @@ class CourseMetaTopics extends React.Component {
       <HelperText>
         Add topics to categorize your course and make it more discoverable.
       </HelperText>
+    )
+  }
+
+  renderTopics() {
+    const course = get(this.props, "course", {})
+    const topicEdges = get(course, "topics.edges", [])
+    const pageInfo = get(course, "topics.pageInfo", {})
+
+    return (
+      <div className="inline-flex items-center w-100">
+        {topicEdges.map(({node}) => node
+        ? <Link
+            className="mdc-button mdc-button--outlined mr1 mb1"
+            key={node.id}
+            to={node.resourcePath}
+          >
+            {node.name}
+          </Link>
+        : null)}
+        {pageInfo.hasNextPage &&
+        <button
+          className="material-icons mdc-icon-button mr1 mb1"
+          onClick={this._loadMore}
+        >
+          more
+        </button>}
+        {course.viewerCanAdmin &&
+        <button
+          className="mdc-button mdc-button--unelevated mr1 mb1"
+          type="button"
+          onClick={this.handleToggleOpen}
+        >
+          Manage topics
+        </button>}
+      </div>
     )
   }
 }
@@ -187,12 +205,13 @@ CourseMetaTopics.defaulProps = {
 export default withRouter(createPaginationContainer(CourseMetaTopics,
   {
     course: graphql`
-      fragment CourseMetaTopics_course on Course {
+      fragment CourseMetaTopics_course on Course @argumentDefinitions(
+        after: {type: "String"},
+        count: {type: "Int!"},
+      ) {
         id
-        topics(
-          first: $count,
-          after: $after,
-        ) @connection(key: "CourseMetaTopics_topics", filters: []) {
+        topics(first: $count, after: $after)
+        @connection(key: "CourseMetaTopics_topics", filters: []) {
           edges {
             node {
               id
@@ -217,11 +236,14 @@ export default withRouter(createPaginationContainer(CourseMetaTopics,
         $name: String!,
         $number: Int!,
         $count: Int!,
-        $after: String
+        $after: String,
       ) {
         study(owner: $owner, name: $name) {
           course(number: $number) {
-            ...CourseMetaTopics_course
+            ...CourseMetaTopics_course @arguments(
+              after: $after,
+              count: $count,
+            )
           }
         }
       }

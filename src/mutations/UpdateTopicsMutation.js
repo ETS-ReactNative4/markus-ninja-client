@@ -7,17 +7,29 @@ import { get, isNil } from 'utils'
 import { TOPICS_PER_PAGE } from 'consts'
 
 const mutation = graphql`
-  mutation UpdateTopicsMutation($input: UpdateTopicsInput!, $count: Int!, $after: String) {
+  mutation UpdateTopicsMutation(
+    $input: UpdateTopicsInput!,
+    $studyTopicCount: Int!,
+    $afterStudyTopic: String,
+    $courseTopicCount: Int!,
+    $afterCourseTopic: String,
+  ) {
     updateTopics(input: $input) {
       invalidTopicNames
       message
       topicable {
         id
         ...on Course {
-          ...CourseMetaTopics_course
+          ...CourseMetaTopics_course @arguments(
+            after: $afterCourseTopic
+            count: $courseTopicCount
+          )
         }
         ...on Study {
-          ...StudyMetaTopics_study
+          ...StudyMetaTopics_study @arguments(
+            after: $afterStudyTopic
+            count: $studyTopicCount
+          )
         }
       }
     }
@@ -26,7 +38,8 @@ const mutation = graphql`
 
 export default (topicableId, topicNames, callback) => {
   const variables = {
-    count: TOPICS_PER_PAGE,
+    courseTopicCount: TOPICS_PER_PAGE,
+    studyTopicCount: TOPICS_PER_PAGE,
     input: {
       topicableId,
       topicNames,

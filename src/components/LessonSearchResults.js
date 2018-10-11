@@ -22,7 +22,7 @@ class LessonSearchResults extends React.Component {
               <ul className="mdc-list mdc-list--two-line">
                 {edges.map(({node}) => (
                   node &&
-                  <LessonPreview.Search key={node.id} lesson={node} />
+                  <LessonPreview.List key={node.id} lesson={node} />
                 ))}
               </ul>
               {hasMore &&

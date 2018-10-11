@@ -7,19 +7,14 @@ import hoistNonReactStatic from 'hoist-non-react-statics'
 import { Link } from 'react-router-dom'
 import pluralize from 'pluralize'
 import { get, isNil, timeDifferenceForDate } from 'utils'
-import AppleCoursePreview from './AppleCoursePreview'
 import CardCoursePreview from './CardCoursePreview'
-import StudyCoursePreview from './StudyCoursePreview'
-import SearchCoursePreview from './SearchCoursePreview'
-import UserCoursePreview from './UserCoursePreview'
+import ListCoursePreview from './ListCoursePreview'
 
 const FRAGMENT =  graphql`
   fragment CoursePreview_course on Course {
     ...AppleButton_appleable
     advancedAt
-    appleGivers(first: 0) {
-      totalCount
-    }
+    appleGiverCount
     createdAt
     description
     descriptionHTML
@@ -48,11 +43,8 @@ const FRAGMENT =  graphql`
 `
 
 class CoursePreview extends React.Component {
-  static Apple = Relay.createFragmentContainer(AppleCoursePreview, FRAGMENT)
   static Card = Relay.createFragmentContainer(CardCoursePreview, FRAGMENT)
-  static Study = Relay.createFragmentContainer(StudyCoursePreview, FRAGMENT)
-  static Search = Relay.createFragmentContainer(SearchCoursePreview, FRAGMENT)
-  static User = Relay.createFragmentContainer(UserCoursePreview, FRAGMENT)
+  static List = Relay.createFragmentContainer(ListCoursePreview, FRAGMENT)
 
   get classes() {
     const {className} = this.props

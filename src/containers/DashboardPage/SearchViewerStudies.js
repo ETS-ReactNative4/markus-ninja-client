@@ -1,13 +1,8 @@
 import * as React from 'react'
 import cls from 'classnames'
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay'
 import { Link } from 'react-router-dom'
-import Search from 'components/Search'
+import UserStudies from 'components/UserStudies'
 import ViewerStudies from './ViewerStudies'
-import {get} from 'utils'
 
 class SearchViewerStudies extends React.Component {
   state = {
@@ -24,10 +19,12 @@ class SearchViewerStudies extends React.Component {
     return cls("SearchViewerStudies mdc-list mdc-list--non-interactive", className)
   }
 
-  render() {
+  get _filterBy() {
     const {q} = this.state
-    const viewerId = get(this.props, "viewer.id", "")
+    return {search: q}
+  }
 
+  render() {
     return (
       <div className={this.classes}>
         <div role="separator" className="mdc-list-divider"></div>
@@ -40,9 +37,9 @@ class SearchViewerStudies extends React.Component {
         <div className="mdc-list-item">
           {this.renderInput()}
         </div>
-        <Search type="STUDY" count={3} query={q} within={viewerId}>
+        <UserStudies isViewer fragment="link" count={3} filterBy={this._filterBy}>
           <ViewerStudies />
-        </Search>
+        </UserStudies>
       </div>
     )
   }
@@ -75,8 +72,4 @@ class SearchViewerStudies extends React.Component {
   }
 }
 
-export default createFragmentContainer(SearchViewerStudies, graphql`
-  fragment SearchViewerStudies_viewer on User {
-    id
-  }
-`)
+export default SearchViewerStudies

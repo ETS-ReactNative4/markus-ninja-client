@@ -4,14 +4,14 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
+import {Route, Switch} from 'react-router-dom'
 import environment from 'Environment'
-import Course from './Course'
 import CourseHeader from './CourseHeader'
-import CourseMeta from './CourseMeta'
+import CourseNav from './CourseNav'
+import CourseOverviewPage from 'containers/CourseOverviewPage'
+import CourseAppleGiversPage from 'containers/CourseAppleGiversPage'
 import NotFound from 'components/NotFound'
 import { get, isNil } from 'utils'
-
-import { LESSONS_PER_PAGE } from 'consts'
 
 import "./styles.css"
 
@@ -20,18 +20,12 @@ const CoursePageQuery = graphql`
     $owner: String!,
     $name: String!,
     $number: Int!,
-    $count: Int!,
-    $after: String,
   ) {
     study(owner: $owner, name: $name) {
       course(number: $number) {
         id
         ...CourseHeader_course
-        ...CourseMeta_course
-        ...Course_course @arguments(
-          after: $after,
-          count: $count,
-        )
+        ...CourseNav_course
       }
     }
   }
@@ -52,7 +46,6 @@ class CoursePage extends React.Component {
           owner: this.props.match.params.owner,
           name: this.props.match.params.name,
           number: parseInt(this.props.match.params.number, 10),
-          count: LESSONS_PER_PAGE,
         }}
         render={({error,  props}) => {
           if (error) {
@@ -66,8 +59,21 @@ class CoursePage extends React.Component {
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
                   <CourseHeader course={course} />
-                  <CourseMeta course={course} />
-                  <Course course={course} />
+                  <CourseNav course={course} />
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <Switch>
+                      <Route
+                        exact
+                        path="/:owner/:name/course/:number"
+                        render={(routeProps) => <CourseOverviewPage {...routeProps} course={course} />}
+                      />
+                      <Route
+                        exact
+                        path="/:owner/:name/course/:number/applegivers"
+                        component={CourseAppleGiversPage}
+                      />
+                    </Switch>
+                  </div>
                 </div>
               </div>
             )

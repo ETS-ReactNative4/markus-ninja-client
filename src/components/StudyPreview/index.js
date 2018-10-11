@@ -6,20 +6,14 @@ import Relay, {
 import hoistNonReactStatic from 'hoist-non-react-statics'
 import {Link} from 'react-router-dom'
 import { get } from 'utils'
-import AppleStudyPreview from './AppleStudyPreview'
 import CardStudyPreview from './CardStudyPreview'
-import ResearchStudyPreview from './ResearchStudyPreview'
-import StudyPreviewLink from './StudyPreviewLink'
-import SearchStudyPreview from './SearchStudyPreview'
-import UserStudyPreview from './UserStudyPreview'
+import ListStudyPreview from './ListStudyPreview'
 
 const FRAGMENT = graphql`
   fragment StudyPreview_study on Study {
     ...AppleButton_appleable
     advancedAt
-    appleGivers(first: 0) {
-      totalCount
-    }
+    appleGiverCount
     createdAt
     descriptionHTML
     description
@@ -44,12 +38,8 @@ const FRAGMENT = graphql`
 `
 
 class StudyPreview extends React.Component {
-  static Apple = Relay.createFragmentContainer(AppleStudyPreview, FRAGMENT)
   static Card = Relay.createFragmentContainer(CardStudyPreview, FRAGMENT)
-  static Link = Relay.createFragmentContainer(StudyPreviewLink, FRAGMENT)
-  static Research = Relay.createFragmentContainer(ResearchStudyPreview, FRAGMENT)
-  static Search = Relay.createFragmentContainer(SearchStudyPreview, FRAGMENT)
-  static User = Relay.createFragmentContainer(UserStudyPreview, FRAGMENT)
+  static List = Relay.createFragmentContainer(ListStudyPreview, FRAGMENT)
 
   get classes() {
     const {className} = this.props
@@ -61,8 +51,6 @@ class StudyPreview extends React.Component {
     return (
       <div className={this.classes}>
         <Link to={study.resourcePath}>{study.nameWithOwner}</Link>
-        <span className="ml1">{study.lessonCount} lessons</span>
-        <span className="ml1">{study.description}</span>
       </div>
     )
   }
