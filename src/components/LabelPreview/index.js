@@ -3,12 +3,12 @@ import Relay, {
   graphql,
 } from 'react-relay'
 import hoistNonReactStatic from 'hoist-non-react-statics'
-import Label from 'components/Label'
+import LabelLink from 'components/LabelLink'
 import ListLabelPreview from './ListLabelPreview'
 
 const FRAGMENT = graphql`
   fragment LabelPreview_label on Label {
-    ...Label_label
+    ...LabelLink_label
     color
     createdAt
     description
@@ -24,7 +24,7 @@ class LabelPreview extends React.Component {
   static List = Relay.createFragmentContainer(ListLabelPreview, FRAGMENT)
 
   render() {
-    return <Label {...this.props} />
+    return <LabelLink {...this.props} />
   }
 }
 

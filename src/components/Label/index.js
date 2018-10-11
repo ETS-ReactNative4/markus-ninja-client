@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import tinycolor from 'tinycolor2'
 import {
@@ -92,6 +93,16 @@ class Label extends React.Component {
       </div>
     )
   }
+}
+
+Label.propTypes = {
+  disabled: PropTypes.bool,
+  selected: PropTypes.bool,
+}
+
+Label.defaultProps = {
+  disabled: false,
+  selected: true
 }
 
 export default createFragmentContainer(Label, graphql`

@@ -1,0 +1,15 @@
+@import "@material/chips/mixins";
+@import "@material/chips/variables";
+@import "@material/typography/mixins";
+
+.LabelLink {
+  vertical-align: middle;
+}
+
+.LabelLink--dark {
+  @include mdc-chip-ink-color(text-primary-on-dark);
+}
+
+.LabelLink--light {
+  @include mdc-chip-ink-color(text-primary-on-light);
+}

@@ -6,11 +6,13 @@ import {
 } from 'react-relay'
 import {Route, Switch} from 'react-router-dom'
 import environment from 'Environment'
-import CourseHeader from './CourseHeader'
-import CourseNav from './CourseNav'
+import PrivateRoute from 'components/PrivateRoute'
 import CourseOverviewPage from 'containers/CourseOverviewPage'
 import CourseAppleGiversPage from 'containers/CourseAppleGiversPage'
+import CourseSettingsPage from 'containers/CourseSettingsPage'
 import NotFound from 'components/NotFound'
+import CourseHeader from './CourseHeader'
+import CourseNav from './CourseNav'
 import { get, isNil } from 'utils'
 
 import "./styles.css"
@@ -26,7 +28,11 @@ const CoursePageQuery = graphql`
         id
         ...CourseHeader_course
         ...CourseNav_course
+        ...CourseSettingsPage_course
       }
+    }
+    viewer {
+      id
     }
   }
 `
@@ -38,14 +44,16 @@ class CoursePage extends React.Component {
   }
 
   render() {
+    const {match} = this.props
+
     return (
       <QueryRenderer
         environment={environment}
         query={CoursePageQuery}
         variables={{
-          owner: this.props.match.params.owner,
-          name: this.props.match.params.name,
-          number: parseInt(this.props.match.params.number, 10),
+          owner: match.params.owner,
+          name: match.params.name,
+          number: parseInt(match.params.number, 10),
         }}
         render={({error,  props}) => {
           if (error) {
@@ -55,6 +63,9 @@ class CoursePage extends React.Component {
             if (isNil(course)) {
               return <NotFound />
             }
+
+            const authenticated = !isNil(props.viewer)
+
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
@@ -71,6 +82,12 @@ class CoursePage extends React.Component {
                         exact
                         path="/:owner/:name/course/:number/applegivers"
                         component={CourseAppleGiversPage}
+                      />
+                      <PrivateRoute
+                        exact
+                        path="/:owner/:name/course/:number/settings"
+                        authenticated={authenticated}
+                        render={(routeProps) => <CourseSettingsPage {...routeProps} course={course} />}
                       />
                     </Switch>
                   </div>

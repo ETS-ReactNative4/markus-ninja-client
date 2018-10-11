@@ -8,7 +8,7 @@ import {
 import {Redirect} from 'react-router-dom'
 import environment from 'Environment'
 import NotFound from 'components/NotFound'
-import StudySettings from 'components/StudySettings'
+import StudySettings from './StudySettings'
 import {get, isNil} from 'utils'
 
 const StudySettingsPageQuery = graphql`

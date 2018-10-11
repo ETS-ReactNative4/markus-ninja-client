@@ -28,7 +28,7 @@ const FRAGMENT = graphql`
     labels(first: 5) {
       nodes {
         id
-        ...Label_label
+        ...LabelLink_label
       }
     }
     number

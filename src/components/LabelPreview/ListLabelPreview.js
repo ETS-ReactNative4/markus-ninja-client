@@ -3,7 +3,7 @@ import cls from 'classnames'
 import DeleteLabelMutation from 'mutations/DeleteLabelMutation'
 import {get, isNil} from 'utils'
 import Icon from 'components/Icon'
-import Label from 'components/Label'
+import LabelLink from 'components/LabelLink'
 
 class ListLabelPreview extends React.Component {
   state = {
@@ -32,7 +32,7 @@ class ListLabelPreview extends React.Component {
       <li className={this.classes}>
         <Icon as="span" className="mdc-list-item__graphic" icon="label" />
         <span className="mdc-list-item__text">
-          <Label selected label={label} />
+          <LabelLink label={label} />
           <span className="ml2">
             {label.description}
           </span>

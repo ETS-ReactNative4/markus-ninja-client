@@ -5,8 +5,8 @@ import {
   graphql,
 } from 'react-relay'
 import { get } from 'utils'
-import UpdateStudyNameForm from 'components/UpdateStudyNameForm'
-import StudyDangerZone from 'components/StudyDangerZone'
+import UpdateStudyNameForm from './UpdateStudyNameForm'
+import StudyDangerZone from './StudyDangerZone'
 
 class StudySettings extends React.Component {
   get classes() {

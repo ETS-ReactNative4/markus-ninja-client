@@ -6,12 +6,12 @@ import {
 } from 'react-relay'
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
-import StudyLabels from 'components/StudyLabels'
-import StudyLabelsPageLabels from './StudyLabelsPageLabels'
-import CreateLabelForm from './CreateLabelForm'
+import StudyLabelsLink from 'components/StudyLabelsLink'
+import StudyLessons from 'components/StudyLessons'
+import LabelPageLessons from './LabelPageLessons'
 import {debounce, get, isEmpty} from 'utils'
 
-class StudyLabelsPage extends React.Component {
+class LabelPage extends React.Component {
   constructor(props) {
     super(props)
 
@@ -40,12 +40,16 @@ class StudyLabelsPage extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyLabelsPage mdc-layout-grid__inner", className)
+    return cls("LabelPage mdc-layout-grid__inner", className)
   }
 
   get _filterBy() {
+    const {match} = this.props
     const {q} = this.state
-    return {search: q}
+    return {
+      search: q,
+      labels: [match.params.label],
+    }
   }
 
   get _orderBy() {
@@ -62,12 +66,16 @@ class StudyLabelsPage extends React.Component {
     })()
     const field = (() => {
       switch (o) {
-      case "labeled":
-        return "LABELED_AT"
-      case "name":
-        return "NAME"
+      case "created":
+        return "CREATED_AT"
+      case "comments":
+        return "COMMENT_COUNT"
+      case "number":
+        return "NUMBER"
+      case "updated":
+        return "UPDATED_AT"
       default:
-        return "NAME"
+        return "NUMBER"
       }
     })()
 
@@ -75,36 +83,24 @@ class StudyLabelsPage extends React.Component {
   }
 
   render() {
-    const {open} = this.state
-    const study = get(this.props, "study", {})
+    const study = get(this.props, "study", null)
 
     return (
       <div className={this.classes}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="flex items-center w-100">
             {this.renderInput()}
-            {study.viewerCanAdmin &&
-            <button
-              className="mdc-button mdc-button--unelevated flex-stable ml2"
-              type="button"
-              onClick={() => this.setState({open: !open})}
+            <StudyLabelsLink
+              className="mdc-button mdc-button--unelevated mh2"
+              study={study}
             >
-              New label
-            </button>}
+              Labels
+            </StudyLabelsLink>
           </div>
         </div>
-        {open && study.viewerCanAdmin &&
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <div className="flex items-center">
-            <CreateLabelForm
-              study={get(this.props, "study", null)}
-              onCancel={() => this.setState({open: false})}
-            />
-          </div>
-        </div>}
-        <StudyLabels filterBy={this._filterBy} orderBy={this._orderBy}>
-          <StudyLabelsPageLabels />
-        </StudyLabels>
+        <StudyLessons filterBy={this._filterBy} orderBy={this._orderBy}>
+          <LabelPageLessons />
+        </StudyLessons>
       </div>
     )
   }
@@ -115,13 +111,13 @@ class StudyLabelsPage extends React.Component {
     return (
       <TextField
         fullWidth
-        label="Find a label..."
+        label="Find a lesson..."
         trailingIcon={<Icon><i className="material-icons">search</i></Icon>}
       >
         <Input
           name="q"
           autoComplete="off"
-          placeholder="Find a label..."
+          placeholder="Find a lesson..."
           value={q}
           onChange={this.handleChange}
         />
@@ -130,10 +126,9 @@ class StudyLabelsPage extends React.Component {
   }
 }
 
-export default createFragmentContainer(StudyLabelsPage, graphql`
-  fragment StudyLabelsPage_study on Study {
-    ...CreateLabelForm_study
-    id
+export default createFragmentContainer(LabelPage, graphql`
+  fragment LabelPage_study on Study {
+    ...StudyLabelsLink_study
     viewerCanAdmin
   }
 `)

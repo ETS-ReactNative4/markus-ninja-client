@@ -38,7 +38,7 @@ class CourseLessons extends React.Component {
           <ul className="mdc-list mdc-list--two-line">
             {edges.map(({node}) => (
               node &&
-              <LessonPreview.List key={node.id} lesson={node} />
+              <LessonPreview.List isCourse key={node.id} lesson={node} />
             ))}
           </ul>
           {this.props.relay.hasMore() &&

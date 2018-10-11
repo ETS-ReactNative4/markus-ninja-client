@@ -91,7 +91,7 @@ TopicTopicables.propTypes = {
     field: PropTypes.string,
   }),
   search: PropTypes.string,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(["COURSE", "STUDY"]).isRequired,
 }
 
 TopicTopicables.defaultProps = {

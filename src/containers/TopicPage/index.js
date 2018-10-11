@@ -69,6 +69,18 @@ class TopicPage extends React.Component {
     return {direction, field}
   }
 
+  get _type() {
+    const {t} = this.state
+    switch ((t || "").toLowerCase()) {
+      case "course":
+        return "COURSE"
+      case "study":
+        return "STUDY"
+      default:
+        return "STUDY"
+    }
+  }
+
   render() {
     return (
       <QueryRenderer
@@ -85,13 +97,13 @@ class TopicPage extends React.Component {
               return <NotFound />
             }
 
-            const {q, t} = this.state
+            const {q} = this.state
 
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
                   <TopicHeader topic={get(props, "topic", null)} />
-                  <TopicTopicables orderBy={this._orderBy} search={q} type={t.toUpperCase()}>
+                  <TopicTopicables orderBy={this._orderBy} search={q} type={this._type}>
                     <TopicPageTopicables />
                   </TopicTopicables>
                 </div>

@@ -11,6 +11,7 @@ import StudyHeader from './StudyHeader'
 import StudyNav from './StudyNav'
 import CreateCoursePage from 'containers/CreateCoursePage'
 import CreateLessonPage from 'containers/CreateLessonPage'
+import LabelPage from 'containers/LabelPage'
 import StudyCoursesPage from 'containers/StudyCoursesPage'
 import StudyLabelsPage from 'containers/StudyLabelsPage'
 import StudyLessonsPage from 'containers/StudyLessonsPage'
@@ -18,7 +19,6 @@ import StudyAppleGiversPage from 'containers/StudyAppleGiversPage'
 import StudyAssetsPage from 'containers/StudyAssetsPage'
 import StudyEnrolleesPage from 'containers/StudyEnrolleesPage'
 import StudyOverviewPage from 'containers/StudyOverviewPage'
-import StudySearchPage from 'containers/StudySearchPage'
 import StudySettingsPage from 'containers/StudySettingsPage'
 import NotFound from 'components/NotFound'
 import { isNil } from 'utils'
@@ -30,13 +30,13 @@ const StudyPageQuery = graphql`
     study(owner: $owner, name: $name) {
       ...CreateCoursePage_study
       ...CreateLessonPage_study
+      ...LabelPage_study
       ...StudyHeader_study
       ...StudyNav_study
       ...StudyLabelsPage_study
       ...StudyLessonsPage_study
       ...StudyAssetsPage_study
       ...StudyCoursesPage_study
-      ...StudySearchPage_study
       ...StudySettingsPage_study
     }
     viewer {
@@ -110,6 +110,11 @@ class StudyPage extends React.Component {
                       />
                       <Route
                         exact
+                        path="/:owner/:name/labels/:label"
+                        render={(routeProps) => <LabelPage {...routeProps} study={props.study} />}
+                      />
+                      <Route
+                        exact
                         path="/:owner/:name/lessons"
                         render={(routeProps) => <StudyLessonsPage {...routeProps} study={props.study} />}
                       />
@@ -123,11 +128,6 @@ class StudyPage extends React.Component {
                         exact
                         path="/:owner/:name/assets"
                         render={(routeProps) => <StudyAssetsPage {...routeProps} study={props.study} />}
-                      />
-                      <Route
-                        exact
-                        path="/:owner/:name/search"
-                        render={(routeProps) => <StudySearchPage {...routeProps} study={props.study} />}
                       />
                       <PrivateRoute
                         exact

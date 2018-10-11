@@ -2,6 +2,7 @@ import * as React from 'react'
 import {withRouter} from 'react-router-dom'
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
+import pluralize from 'pluralize'
 import {TopicTopicablesProp, TopicTopicablesPropDefaults} from 'components/TopicTopicables'
 import CoursePreview from 'components/CoursePreview'
 import StudyPreview from 'components/StudyPreview'
@@ -37,7 +38,7 @@ class TopicPageTopicables extends React.Component {
 
   render() {
     const {topicables} = this.props
-    const {edges, hasMore, isLoading, loadMore} = topicables
+    const {edges, hasMore, isLoading, loadMore, type} = topicables
 
     const noResults = isEmpty(edges)
 
@@ -51,7 +52,7 @@ class TopicPageTopicables extends React.Component {
         ? <div>Loading...</div>
         : (noResults
           ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-              No topicables were found.
+              No {pluralize(type.toLowerCase())} were found.
             </div>
           : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               <ul className="mdc-list mdc-list--two-line">

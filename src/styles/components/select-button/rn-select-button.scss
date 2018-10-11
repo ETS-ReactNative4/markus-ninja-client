@@ -17,7 +17,7 @@
   @include mdc-button-outline-width(2px);
   @include mdc-button-outline-color(primary);
 
-  @include mdc-select-dd-arrow-svg-bg_($rn-select-button-arrow-color);
+  @include mdc-select-dd-arrow-svg-bg_($rn-select-button-arrow-color, $rn-select-button-dropdown-opacity);
 
   display: inline-flex;
   padding: 0;
@@ -61,7 +61,8 @@
 }
 
 .rn-select-button--disabled {
-  @include mdc-select-dd-arrow-svg-bg_($rn-select-button-disabled-arrow-color);
+  @include mdc-select-dd-arrow-svg-bg_($rn-select-button-disabled-arrow-color,
+  $rn-select-button-disabled-dropdown-opacity);
 
   .mdc-select-button__native-control {
   }
