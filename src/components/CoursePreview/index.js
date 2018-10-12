@@ -14,12 +14,16 @@ const FRAGMENT =  graphql`
   fragment CoursePreview_course on Course {
     ...AppleButton_appleable
     advancedAt
-    appleGiverCount
+    appleGivers(first: 0) {
+      totalCount
+    }
     createdAt
     description
     descriptionHTML
     id
-    lessonCount
+    lessons(first: 0) {
+      totalCount
+    }
     name
     number
     owner {
@@ -53,13 +57,16 @@ class CoursePreview extends React.Component {
 
   render() {
     const course = get(this.props, "course", {})
+    const lessonCount = get(course, "lessons.totalCount", 0)
     return (
       <div className={this.classes}>
         <div className="CoursePreview__info">
           <Link to={course.resourcePath}>
             {course.name}
           </Link>
-          <span className="ml1">({course.lessonCount} {pluralize("lesson", course.lessonCount)})</span>
+          <span className="ml1">
+            ({lessonCount} {pluralize("lesson", lessonCount)})
+          </span>
           {!isNil(course.advancedAt) &&
           <span className="ml1">Advanced {timeDifferenceForDate(course.advancedAt)}</span>}
         </div>

@@ -34,7 +34,7 @@ class CourseNav extends React.Component {
             <Icon as="span" className="mdc-tab__icon" icon="lesson" />
             <span className="mdc-tab__text-label">
               Lessons
-              <Counter>{course.lessonCount}</Counter>
+              <Counter>{get(course, "lessons.totalCount", 0)}</Counter>
             </span>
           </span>
         </Tab>
@@ -59,7 +59,9 @@ class CourseNav extends React.Component {
 
 export default withRouter(createFragmentContainer(CourseNav, graphql`
   fragment CourseNav_course on Course {
-    lessonCount
+    lessons(first: 0) {
+      totalCount
+    }
     resourcePath
     viewerCanAdmin
   }

@@ -36,7 +36,7 @@ class ListUserPreview extends React.Component {
               to={user.resourcePath+"?tab=studies"}
             >
               <Icon className="rn-icon-link__icon" icon="study" />
-              {get(user, "studyCount", 0)}
+              {get(user, "studies.totalCount", 0)}
             </Link>
           </div>
         </span>

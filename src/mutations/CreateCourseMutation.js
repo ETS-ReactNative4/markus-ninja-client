@@ -3,7 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import { get, isNil } from 'utils'
+import {get} from 'utils'
 
 const mutation = graphql`
   mutation CreateCourseMutation($input: CreateCourseInput!) {
@@ -19,7 +19,9 @@ const mutation = graphql`
       }
       study {
         id
-        courseCount
+        courses(first: 0) {
+          totalCount
+        }
       }
     }
   }
@@ -41,12 +43,14 @@ export default (studyId, name, description, callback) => {
       variables,
       updater: proxyStore => {
         const createCourseField = proxyStore.getRootField('createCourse')
-        if (!isNil(createCourseField)) {
+        if (createCourseField) {
           const courseStudy = createCourseField.getLinkedRecord('study')
-          const courseStudyId = courseStudy.getValue('id')
-          const studyCourseCount = courseStudy.getValue('courseCount')
-          const study = proxyStore.get(courseStudyId)
-          study.setValue(studyCourseCount, 'courseCount')
+          if (courseStudy) {
+            const courseStudyId = courseStudy.getValue('id')
+            const studyCourseCount = courseStudy.getLinkedRecord('courses', {first: 0})
+            const study = proxyStore.get(courseStudyId)
+            study && study.setLinkedRecord(studyCourseCount, 'courses', {first: 0})
+          }
         }
       },
       onCompleted: (response, error) => {

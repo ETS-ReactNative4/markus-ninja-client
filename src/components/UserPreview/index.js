@@ -17,7 +17,9 @@ const FRAGMENT = graphql`
     login
     name
     resourcePath
-    studyCount
+    studies(first: 0) {
+      totalCount
+    }
     viewerCanEnroll
   }
 `

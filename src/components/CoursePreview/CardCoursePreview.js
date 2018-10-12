@@ -51,14 +51,14 @@ class CardCoursePreview extends React.Component {
               to={course.resourcePath+"/applegivers"}
             >
               <FontAwesomeIcon className="rn-icon-link__icon" icon={faApple} />
-              {get(course, "appleGiverCount", 0)}
+              {get(course, "appleGivers.totalCount", 0)}
             </Link>
             <Link
               className="rn-icon-link mdc-card__action mdc-card__action--icon"
               to={course.resourcePath}
             >
               <Icon className="rn-icon-link__icon" icon="lesson" />
-              {get(course, "lessonCount", 0)}
+              {get(course, "lessons.totalCount", 0)}
             </Link>
           </div>
         </div>

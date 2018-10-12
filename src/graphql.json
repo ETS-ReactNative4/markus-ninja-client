@@ -608,22 +608,6 @@
 					"description": "Things that can be appled.",
 					"fields": [
 						{
-							"name": "appleGiverCount",
-							"description": "How many users have appled this appleable.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
 							"name": "appleGivers",
 							"description": "Returns a list users who have appled this appleable.",
 							"args": [
@@ -1323,42 +1307,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonCommentConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "TopicConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CourseConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonConnection",
+							"name": "AppleGiverConnection",
 							"ofType": null
 						},
 						{
@@ -1368,17 +1317,52 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "StudyConnection",
+							"name": "CourseConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AppleGiverConnection",
+							"name": "UserConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "TopicConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "EmailConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabelConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationConnection",
 							"ofType": null
 						}
 					]
@@ -1408,22 +1392,6 @@
 								"kind": "SCALAR",
 								"name": "Time",
 								"ofType": null
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "appleGiverCount",
-							"description": "How many users have appled this appleable.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
 							},
 							"isDeprecated": false,
 							"deprecationReason": null
@@ -1657,22 +1625,6 @@
 								"ofType": {
 									"kind": "OBJECT",
 									"name": "LessonConnection",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "lessonCount",
-							"description": "How many lessons there are in this course.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
 									"ofType": null
 								}
 							},
@@ -3504,12 +3456,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Label",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -3608,42 +3560,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonCommentEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "TopicEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CourseEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EnrolleeEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonEdge",
+							"name": "AppleGiverEdge",
 							"ofType": null
 						},
 						{
@@ -3653,17 +3570,52 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "StudyEdge",
+							"name": "CourseEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AppleGiverEdge",
+							"name": "UserEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "TopicEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "EmailEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabelEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonCommentEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationEdge",
 							"ofType": null
 						}
 					]
@@ -3993,15 +3945,76 @@
 					"description": "Things that can be enrolled in.",
 					"fields": [
 						{
-							"name": "enrolleeCount",
-							"description": "The number of users that have enrolled in this enrollable.",
-							"args": [],
+							"name": "enrollees",
+							"description": "Returns a list users who have enrolled in this enrollable.",
+							"args": [
+								{
+									"name": "after",
+									"description": "Returns the elements in the list that come after the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "before",
+									"description": "Returns the elements in the list that come before the specified global ID.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "filterBy",
+									"description": "Filtering options for users returned from the connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "UserFilters",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "first",
+									"description": "Returns the first n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "last",
+									"description": "Returns the last n elements form the list.",
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "orderBy",
+									"description": "Order for connection.",
+									"type": {
+										"kind": "INPUT_OBJECT",
+										"name": "EnrolleeOrder",
+										"ofType": null
+									},
+									"defaultValue": null
+								}
+							],
 							"type": {
 								"kind": "NON_NULL",
 								"name": null,
 								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
+									"kind": "OBJECT",
+									"name": "EnrolleeConnection",
 									"ofType": null
 								}
 							},
@@ -5446,12 +5459,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -5781,22 +5794,6 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "commentCount",
-							"description": "The number of comments on this lesson.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
 							"name": "comments",
 							"description": "Returns a list of comments for the current lesson.",
 							"args": [
@@ -5883,22 +5880,6 @@
 								"kind": "SCALAR",
 								"name": "Int",
 								"ofType": null
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "enrolleeCount",
-							"description": "The number of users that have enrolled in this enrollable.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
 							},
 							"isDeprecated": false,
 							"deprecationReason": null
@@ -7320,12 +7301,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "ReferencedEvent",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "ReferencedEvent",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -8667,7 +8648,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "CreatedEvent",
 							"ofType": null
 						},
 						{
@@ -8677,47 +8658,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "User",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Course",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UnappledEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Notification",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CreatedEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -8727,7 +8668,22 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "Course",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UnappledEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Topic",
 							"ofType": null
 						},
 						{
@@ -8738,6 +8694,31 @@
 						{
 							"kind": "OBJECT",
 							"name": "ReferencedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Notification",
 							"ofType": null
 						}
 					]
@@ -10254,12 +10235,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Course",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "User",
 							"ofType": null
 						},
 						{
@@ -10269,7 +10250,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "Label",
 							"ofType": null
 						},
 						{
@@ -10538,22 +10519,6 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "appleGiverCount",
-							"description": "How many users have appled this appleable.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
 							"name": "appleGivers",
 							"description": "Returns a list users who have appled this appleable.",
 							"args": [
@@ -10643,22 +10608,6 @@
 								"kind": "OBJECT",
 								"name": "UserAsset",
 								"ofType": null
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "assetCount",
-							"description": "How many assets there are in this study.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
 							},
 							"isDeprecated": false,
 							"deprecationReason": null
@@ -10763,22 +10712,6 @@
 								"kind": "OBJECT",
 								"name": "Course",
 								"ofType": null
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "courseCount",
-							"description": "How many courses there are in this study.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
 							},
 							"isDeprecated": false,
 							"deprecationReason": null
@@ -10902,22 +10835,6 @@
 								"ofType": {
 									"kind": "SCALAR",
 									"name": "HTML",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "enrolleeCount",
-							"description": "The number of users that have enrolled in this enrollable.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
 									"ofType": null
 								}
 							},
@@ -11050,22 +10967,6 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "labelCount",
-							"description": "How many labels there are in this study.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
 							"name": "labels",
 							"description": "Returns a list of labels from the current study.",
 							"args": [
@@ -11170,22 +11071,6 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "lessonCount",
-							"description": "How many lessons there are in this study.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
 							"name": "lessons",
 							"description": "Returns a list of lessons from the current study.",
 							"args": [
@@ -11256,22 +11141,6 @@
 								"ofType": {
 									"kind": "OBJECT",
 									"name": "LessonConnection",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "lessonCommentCount",
-							"description": "How many lesson comments there are in this study.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
 									"ofType": null
 								}
 							},
@@ -11812,7 +11681,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Course",
 							"ofType": null
 						},
 						{
@@ -11822,12 +11691,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -12117,7 +11986,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "PRT",
+							"name": "AccessToken",
 							"ofType": null
 						},
 						{
@@ -12127,7 +11996,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AccessToken",
+							"name": "PRT",
 							"ofType": null
 						}
 					]
@@ -12147,22 +12016,6 @@
 								"ofType": {
 									"kind": "SCALAR",
 									"name": "Time",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "courseCount",
-							"description": "The number of courses with this topic.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
 									"ofType": null
 								}
 							},
@@ -12227,22 +12080,6 @@
 								"ofType": {
 									"kind": "SCALAR",
 									"name": "URI",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
-							"name": "studyCount",
-							"description": "The number of studies with this topic.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
 									"ofType": null
 								}
 							},
@@ -12868,6 +12705,12 @@
 					"interfaces": null,
 					"enumValues": [
 						{
+							"name": "COURSE",
+							"description": "Returns courses.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "STUDY",
 							"description": "Returns studies.",
 							"isDeprecated": false,
@@ -13021,7 +12864,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Course",
 							"ofType": null
 						},
 						{
@@ -13031,17 +12874,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Topic",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "Label",
 							"ofType": null
 						},
 						{
@@ -13052,6 +12890,11 @@
 						{
 							"kind": "OBJECT",
 							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -13664,17 +13507,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Label",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -14231,22 +14074,6 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "enrolleeCount",
-							"description": "The number of users that have enrolled in this enrollable.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
 							"name": "enrollees",
 							"description": "A list of users who have enrolled in this enrollable.",
 							"args": [
@@ -14706,22 +14533,6 @@
 							"deprecationReason": null
 						},
 						{
-							"name": "studyCount",
-							"description": "The number of studies that the user has created.",
-							"args": [],
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "Int",
-									"ofType": null
-								}
-							},
-							"isDeprecated": false,
-							"deprecationReason": null
-						},
-						{
 							"name": "studies",
 							"description": "A list of studies that the user owns.",
 							"args": [
@@ -14960,17 +14771,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "CreatedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "AppledEvent",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "UnappledEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CreatedEvent",
 							"ofType": null
 						}
 					]

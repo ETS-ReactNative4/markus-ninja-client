@@ -34,6 +34,7 @@ class UserNav extends React.Component {
     return (
       <TabBar className={cls("UserNav", className)}>
         <Tab
+          minWidth
           active={isEmpty(tab)}
           as={Link}
           to={user.resourcePath}
@@ -45,6 +46,7 @@ class UserNav extends React.Component {
           </span>
         </Tab>
         <Tab
+          minWidth
           active={tab === "studies"}
           as={Link}
           to={user.resourcePath + "?tab=studies"}
@@ -58,6 +60,7 @@ class UserNav extends React.Component {
           </span>
         </Tab>
         <Tab
+          minWidth
           active={tab === "apples"}
           as={Link}
           to={user.resourcePath + "?tab=apples"}
@@ -70,11 +73,15 @@ class UserNav extends React.Component {
             />
             <span className="mdc-tab__text-label">
               Apples
-              <Counter>{get(user, "appled.studyCount", 0)}</Counter>
+              <Counter>{
+                get(user, "appled.courseCount", 0) +
+                get(user, "appled.studyCount", 0)
+              }</Counter>
             </span>
           </span>
         </Tab>
         <Tab
+          minWidth
           active={tab === "pupils"}
           as={Link}
           to={user.resourcePath + "?tab=pupils"}
@@ -88,6 +95,7 @@ class UserNav extends React.Component {
           </span>
         </Tab>
         <Tab
+          minWidth
           active={tab === "tutors"}
           as={Link}
           to={user.resourcePath + "?tab=tutors"}
@@ -108,6 +116,7 @@ class UserNav extends React.Component {
 export default withRouter(createFragmentContainer(UserNav, graphql`
   fragment UserNav_user on User {
     appled(first: 0 type: STUDY) {
+      courseCount
       studyCount
     }
     enrollees(first: 0) {

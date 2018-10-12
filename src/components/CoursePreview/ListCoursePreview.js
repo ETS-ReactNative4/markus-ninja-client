@@ -56,7 +56,7 @@ class ListCoursePreview extends React.Component {
             to={course.resourcePath}
           >
             <Icon className="rn-icon-link__icon" icon="lesson" />
-            {get(course, "lessonCount", 0)}
+            {get(course, "lessons.totalCount", 0)}
           </Link>
         </span>
       </li>

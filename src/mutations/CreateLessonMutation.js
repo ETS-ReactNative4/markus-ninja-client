@@ -17,14 +17,18 @@ const mutation = graphql`
           resourcePath
           title
           course {
-            lessonCount
+            lessons(first: 0) {
+              totalCount
+            }
           }
         }
       }
       study {
         id
         advancedAt
-        lessonCount
+        lessons(first: 0) {
+          totalCount
+        }
       }
     }
   }
@@ -50,19 +54,21 @@ export default (studyId, title, body, courseId, callback) => {
         if (!isNil(createLessonField)) {
           const lessonStudy = createLessonField.getLinkedRecord('study')
           const studyAdvancedAt = lessonStudy.getValue('advancedAt')
-          const studyLessonCount = lessonStudy.getValue('lessonCount')
+          const studyLessonCount = lessonStudy.getLinkedRecord('lessons', {first: 0})
 
           const study = proxyStore.get(studyId)
-          study.setValue(studyAdvancedAt, 'advancedAt')
-          study.setValue(studyLessonCount, 'lessonCount')
+          if (study) {
+            study.setValue(studyAdvancedAt, 'advancedAt')
+            study.setLinkedRecord(studyLessonCount, 'lessons', {first: 0})
+          }
 
           if (!isNil(courseId)) {
             const lessonEdge = createLessonField.getLinkedRecord('lessonEdge')
             const node = lessonEdge.getLinkedRecord('node')
             const lessonCourse = node && node.getLinkedRecord('course')
-            const lessonCount = lessonCourse && lessonCourse.getValue('lessonCount')
+            const courseLessonCount = lessonCourse && lessonCourse.getLinkedRecord('lessons', {first: 0})
             const course = proxyStore.get(courseId)
-            course && course.setValue(lessonCount, 'lessonCount')
+            course && course.setLinkedRecord(courseLessonCount, 'lessons', {first: 0})
           }
         }
       },

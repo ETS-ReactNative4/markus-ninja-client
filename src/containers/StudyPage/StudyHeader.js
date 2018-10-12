@@ -39,7 +39,7 @@ class StudyHeader extends React.Component {
               className="rn-combo-button__count"
               to={study.resourcePath+"/enrollees"}
             >
-              {get(study, "enrolleeCount", 0)}
+              {get(study, "enrollees.totalCount", 0)}
             </Link>
           </div>
           <div className="rn-combo-button">
@@ -48,7 +48,7 @@ class StudyHeader extends React.Component {
               className="rn-combo-button__count"
               to={study.resourcePath+"/applegivers"}
             >
-              {get(study, "appleGiverCount", 0)}
+              {get(study, "appleGivers.totalCount", 0)}
             </Link>
           </div>
         </div>
@@ -64,9 +64,13 @@ export default withRouter(createFragmentContainer(StudyHeader, graphql`
     ...EnrollmentSelect_enrollable
     id
     advancedAt
-    appleGiverCount
+    appleGivers(first: 0) {
+      totalCount
+    }
     createdAt
-    enrolleeCount
+    enrollees(first: 0) {
+      totalCount
+    }
     name
     owner {
       ...UserLink_user

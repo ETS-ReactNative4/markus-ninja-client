@@ -4,7 +4,6 @@ import {
 } from 'react-relay'
 import { ConnectionHandler } from 'relay-runtime'
 import environment from 'Environment'
-import { isNil } from 'utils'
 
 const mutation = graphql`
   mutation AddCourseLessonMutation($input: AddCourseLessonInput!) {
@@ -15,7 +14,9 @@ const mutation = graphql`
         }
       }
       course {
-        lessonCount
+        lessons(first: 0) {
+          totalCount
+        }
         study {
           id
         }
@@ -39,25 +40,29 @@ export default (courseId, lessonId, callback) => {
       variables,
       updater: proxyStore => {
         const addCourseLessonField = proxyStore.getRootField("addCourseLesson")
-        if (!isNil(addCourseLessonField)) {
-          const lessonCount = addCourseLessonField
-            .getLinkedRecord('course')
-            .getValue('lessonCount')
+        if (addCourseLessonField) {
+          const lessonCourse = addCourseLessonField.getLinkedRecord('course')
+          const courseLessonCount = lessonCourse &&
+            lessonCourse.getLinkedRecord('lessons', {first: 0})
           const course = proxyStore.get(courseId)
-          course.setValue(lessonCount, 'lessonCount')
-          const courseLessons = ConnectionHandler.getConnection(
-            course,
-            "CourseLessons_lessons",
-          )
-          const studyId = course.getLinkedRecord('study').getValue('id')
-          const study = proxyStore.get(studyId)
-          const studyLessonsSelect = ConnectionHandler.getConnection(
-            study,
-            "StudyLessonSelect_lessons",
-          )
-          const edge = addCourseLessonField.getLinkedRecord("lessonEdge")
-          courseLessons && ConnectionHandler.insertEdgeAfter(courseLessons, edge)
-          studyLessonsSelect && ConnectionHandler.deleteNode(studyLessonsSelect, lessonId)
+          if (course) {
+            course.setLinkedRecord(courseLessonCount, 'lessons', {first: 0})
+            const courseLessons = ConnectionHandler.getConnection(
+              course,
+              "CourseLessons_lessons",
+            )
+            const studyId = course.getLinkedRecord('study').getValue('id')
+            const study = proxyStore.get(studyId)
+            if (study) {
+              const studyLessonsSelect = ConnectionHandler.getConnection(
+                study,
+                "StudyLessonSelect_lessons",
+              )
+              const edge = addCourseLessonField.getLinkedRecord("lessonEdge")
+              courseLessons && ConnectionHandler.insertEdgeAfter(courseLessons, edge)
+              studyLessonsSelect && ConnectionHandler.deleteNode(studyLessonsSelect, lessonId)
+            }
+          }
         }
       },
       onCompleted: callback,

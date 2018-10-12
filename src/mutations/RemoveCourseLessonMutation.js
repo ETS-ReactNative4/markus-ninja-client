@@ -4,14 +4,15 @@ import {
 } from 'react-relay'
 import { ConnectionHandler } from 'relay-runtime'
 import environment from 'Environment'
-import { isNil } from 'utils'
 
 const mutation = graphql`
   mutation RemoveCourseLessonMutation($input: RemoveCourseLessonInput!) {
     removeCourseLesson(input: $input) {
       course {
         id
-        lessonCount
+        lessons(first: 0) {
+          totalCount
+        }
       }
       removedLessonId
       removedLessonEdge {
@@ -39,28 +40,32 @@ export default (lessonId, callback) => {
       variables,
       updater: proxyStore => {
         const removeCourseLessonField = proxyStore.getRootField('removeCourseLesson')
-        if (!isNil(removeCourseLessonField)) {
+        if (removeCourseLessonField) {
           const lessonCourse = removeCourseLessonField.getLinkedRecord('course')
-          const lessonCourseId = lessonCourse.getValue('id')
-          const lessonCount = lessonCourse.getValue('lessonCount')
-          const course = proxyStore.get(lessonCourseId)
-          course.setValue(lessonCount, 'lessonCount')
+          if (lessonCourse) {
+            const lessonCourseId = lessonCourse.getValue('id')
+            const courseLessonCount = lessonCourse.getLinkedRecord('lessons', {first: 0})
+            const course = proxyStore.get(lessonCourseId)
+            if (course) {
+              course.setLinkedRecord(courseLessonCount, 'lessons', {first: 0})
 
-          const removedLessonId = removeCourseLessonField.getValue('removedLessonId')
-          const courseLessons = ConnectionHandler.getConnection(
-            course,
-            "CourseLessons_lessons",
-          )
-          courseLessons && ConnectionHandler.deleteNode(courseLessons, removedLessonId)
+              const removedLessonId = removeCourseLessonField.getValue('removedLessonId')
+              const courseLessons = ConnectionHandler.getConnection(
+                course,
+                "CourseLessons_lessons",
+              )
+              courseLessons && ConnectionHandler.deleteNode(courseLessons, removedLessonId)
 
-          const studyId = course.getLinkedRecord('study').getValue('id')
-          const study = proxyStore.get(studyId)
-          const studyLessonsSelect = ConnectionHandler.getConnection(
-            study,
-            "StudyLessonSelect_lessons",
-          )
-          const edge = removeCourseLessonField.getLinkedRecord("removedLessonEdge")
-          studyLessonsSelect && ConnectionHandler.insertEdgeBefore(studyLessonsSelect, edge)
+              const studyId = course.getLinkedRecord('study').getValue('id')
+              const study = proxyStore.get(studyId)
+              const studyLessonsSelect = ConnectionHandler.getConnection(
+                study,
+                "StudyLessonSelect_lessons",
+              )
+              const edge = removeCourseLessonField.getLinkedRecord("removedLessonEdge")
+              studyLessonsSelect && ConnectionHandler.insertEdgeBefore(studyLessonsSelect, edge)
+            }
+          }
         }
       },
       onCompleted: callback,

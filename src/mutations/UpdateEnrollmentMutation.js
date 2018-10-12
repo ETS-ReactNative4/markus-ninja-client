@@ -3,12 +3,13 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import { isNil } from 'utils'
 
 const mutation = graphql`
   mutation UpdateEnrollmentMutation($input: UpdateEnrollmentInput!) {
     updateEnrollment(input: $input) {
-      enrolleeCount
+      enrollees(first: 0) {
+        totalCount
+      }
       enrollmentStatus
       id
       viewerCanEnroll
@@ -32,31 +33,37 @@ export default (enrollableId, status, callback) => {
       optimisticUpdater: proxyStore => {
         const enrollable = proxyStore.get(enrollableId)
         if (enrollable) {
-          let enrolleeCount = enrollable.getValue('enrolleeCount')
-          const enrollmentStatus = enrollable.getValue('enrollmentStatus')
-          if (enrollmentStatus === 'ENROLLED' &&
-            (status === 'IGNORED' || status === 'UNENROLLED')) {
-            enrolleeCount--
-          } else if ((enrollmentStatus === 'IGNORED' || enrollmentStatus === 'UNENROLLED') &&
-            (status === 'ENROLLED')) {
-            enrolleeCount++
-          }
+          const enrolleeCount = enrollable.getLinkedRecord('enrollees', {first: 0})
+          if (enrolleeCount) {
+            let totalCount = enrolleeCount.getValue('totalCount')
+            const enrollmentStatus = enrollable.getValue('enrollmentStatus')
+            if (enrollmentStatus === 'ENROLLED' &&
+              (status === 'IGNORED' || status === 'UNENROLLED')) {
+              totalCount--
+            } else if ((enrollmentStatus === 'IGNORED' || enrollmentStatus === 'UNENROLLED') &&
+              (status === 'ENROLLED')) {
+              totalCount++
+            }
+            enrolleeCount.setValue(totalCount, 'totalCount')
 
-          enrollable.setValue(enrolleeCount, 'enrolleeCount')
-          enrollable.setValue(status, 'enrollmentStatus')
+            enrollable.setLinkedRecord(enrolleeCount, 'enrollees', {first: 0})
+            enrollable.setValue(status, 'enrollmentStatus')
+          }
         }
       },
       updater: proxyStore => {
         const updateEnrollmentField = proxyStore.getRootField('updateEnrollment')
-        if (!isNil(updateEnrollmentField)) {
-          const enrolleeCount = updateEnrollmentField.getValue('enrolleeCount')
+        if (updateEnrollmentField) {
+          const enrolleeCount = updateEnrollmentField.getLinkedRecord('enrollees', {first: 0})
           const enrollmentStatus = updateEnrollmentField.getValue('enrollmentStatus')
           const viewerCanEnroll = updateEnrollmentField.getValue('viewerCanEnroll')
 
           const enrollable = proxyStore.get(enrollableId)
-          enrollable.setValue(enrolleeCount, 'enrolleeCount')
-          enrollable.setValue(enrollmentStatus, 'enrollmentStatus')
-          enrollable.setValue(viewerCanEnroll, 'viewerCanEnroll')
+          if (enrollable) {
+            enrollable.setLinkedRecord(enrolleeCount, 'enrollees', {first: 0})
+            enrollable.setValue(enrollmentStatus, 'enrollmentStatus')
+            enrollable.setValue(viewerCanEnroll, 'viewerCanEnroll')
+          }
         }
       },
       onCompleted: (response, error) => callback(error),

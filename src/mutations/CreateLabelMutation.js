@@ -16,7 +16,9 @@ const mutation = graphql`
         }
       }
       study {
-        labelCount
+        labels(first: 0) {
+          totalCount
+        }
       }
     }
   }
@@ -47,8 +49,8 @@ export default (studyId, name, description, color, callback) => {
           )
 
           const labelStudy = createLabelField.getLinkedRecord('study')
-          const studyLabelCount = labelStudy.getValue('labelCount')
-          searchStudy && searchStudy.setValue(studyLabelCount, "labelCount")
+          const studyLabelCount = labelStudy && labelStudy.getLinkedRecord('labels', {first:0})
+          searchStudy && searchStudy.setValue(studyLabelCount, "labels", {first: 0})
 
           const labelEdge = createLabelField.getLinkedRecord('labelEdge')
           searchStudy && ConnectionHandler.insertEdgeBefore(searchStudy, labelEdge)

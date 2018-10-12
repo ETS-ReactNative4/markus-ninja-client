@@ -25,6 +25,7 @@ class StudyNav extends React.Component {
     return (
       <TabBar className={this.classes}>
         <Tab
+          minWidth
           active={matchPath(pathname, { path: studyPath, exact: true })}
           as={Link}
           to={study.resourcePath}
@@ -36,6 +37,7 @@ class StudyNav extends React.Component {
           </span>
         </Tab>
         <Tab
+          minWidth
           active={matchPath(pathname, { path: studyPath+"/lessons", exact: true })}
           as={Link}
           to={study.resourcePath + "/lessons"}
@@ -44,11 +46,12 @@ class StudyNav extends React.Component {
             <Icon as="span" className="mdc-tab__icon" icon="lesson" />
             <span className="mdc-tab__text-label">
               Lessons
-              <Counter>{study.lessonCount}</Counter>
+              <Counter>{get(study, "lessons.totalCount", 0)}</Counter>
             </span>
           </span>
         </Tab>
         <Tab
+          minWidth
           active={matchPath(pathname, { path: studyPath+"/courses", exact: true })}
           as={Link}
           to={study.resourcePath + "/courses"}
@@ -57,11 +60,12 @@ class StudyNav extends React.Component {
             <Icon as="span" className="mdc-tab__icon" icon="course" />
             <span className="mdc-tab__text-label">
               Courses
-              <Counter>{get(study, "courseCount", 0)}</Counter>
+              <Counter>{get(study, "courses.totalCount", 0)}</Counter>
             </span>
           </span>
         </Tab>
         <Tab
+          minWidth
           active={matchPath(pathname, { path: studyPath+"/assets", exact: true })}
           as={Link}
           to={study.resourcePath + "/assets"}
@@ -70,12 +74,13 @@ class StudyNav extends React.Component {
             <Icon as="span" className="mdc-tab__icon" icon="asset" />
             <span className="mdc-tab__text-label">
               Assets
-              <Counter>{get(study, "assetCount", 0)}</Counter>
+              <Counter>{get(study, "assets.totalCount", 0)}</Counter>
             </span>
           </span>
         </Tab>
         {study.viewerCanAdmin &&
         <Tab
+          minWidth
           active={matchPath(pathname, { path: studyPath+"/settings", exact: true })}
           as={Link}
           to={study.resourcePath + "/settings"}
@@ -94,9 +99,15 @@ class StudyNav extends React.Component {
 
 export default withRouter(createFragmentContainer(StudyNav, graphql`
   fragment StudyNav_study on Study {
-    assetCount
-    courseCount
-    lessonCount
+    assets(first: 0) {
+      totalCount
+    }
+    courses(first: 0) {
+      totalCount
+    }
+    lessons(first: 0) {
+      totalCount
+    }
     resourcePath
     viewerCanAdmin
   }

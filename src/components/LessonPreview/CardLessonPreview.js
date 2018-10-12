@@ -46,7 +46,7 @@ class CardLessonPreview extends React.Component {
               to={lesson.resourcePath}
             >
               <Icon className="rn-icon-link__icon" icon="comment" />
-              {get(lesson, "commentCount", 0)}
+              {get(lesson, "comments.totalCount", 0)}
             </Link>
           </div>
         </div>

@@ -4,19 +4,49 @@ import cls from 'classnames'
 import {withRouter} from 'react-router-dom'
 import TextField, {Input, HelperText} from '@material/react-text-field'
 import CreateUserMutation from 'mutations/CreateUserMutation'
-import {isNil} from 'utils'
+import {isEmpty, isNil} from 'utils'
 
 class SignupForm extends React.Component {
   state = {
     error: null,
-    email: "",
-    username: "",
-    password: "",
+    email: {
+      dirty: false,
+      value: "",
+      visited: false,
+    },
+    username: {
+      dirty: false,
+      value: "",
+      visited: false,
+    },
+    password: {
+      dirty: false,
+      value: "",
+      visited: false,
+    },
   }
 
   handleChange = (e) => {
+    const name = e.target.name
+    const field = this.state[name]
+    const value = e.target.value
     this.setState({
-      [e.target.name]: e.target.value,
+      [name]: {
+        ...field,
+        dirty: true,
+        value,
+      }
+    })
+  }
+
+  handleFocus = (e) => {
+    const name = e.target.name
+    const field = this.state[name]
+    this.setState({
+      [name]: {
+        ...field,
+        visited: true,
+      }
     })
   }
 
@@ -24,9 +54,9 @@ class SignupForm extends React.Component {
     e.preventDefault()
     const { email, username, password } = this.state
     CreateUserMutation(
-      email,
-      username,
-      password,
+      email.value,
+      username.value,
+      password.value,
       (token, errors) => {
         if (!isNil(errors)) {
           console.error(errors[0].message)
@@ -56,6 +86,14 @@ class SignupForm extends React.Component {
     return cls("SignupForm mdc-layout-grid__inner", className)
   }
 
+  get formIsValid() {
+    const {email, username, password} = this.state
+
+    return !isEmpty(email.value) &&
+      !isEmpty(username.value) &&
+      !isEmpty(password.value)
+  }
+
   render() {
     const {email, username, password} = this.state
     return (
@@ -71,9 +109,11 @@ class SignupForm extends React.Component {
             helperText={<HelperText persistent>Your name by which other users will know you.</HelperText>}
           >
             <Input
+              required={username.visited}
               name="username"
-              value={username}
+              value={username.value}
               onChange={this.handleChange}
+              onFocus={this.handleFocus}
             />
           </TextField>
         </div>
@@ -90,9 +130,11 @@ class SignupForm extends React.Component {
             }
           >
             <Input
+              required={email.visited}
               name="email"
-              value={email}
+              value={email.value}
               onChange={this.handleChange}
+              onFocus={this.handleFocus}
             />
           </TextField>
         </div>
@@ -108,17 +150,20 @@ class SignupForm extends React.Component {
             }
           >
             <Input
+              required={password.visited}
               type="password"
               name="password"
-              value={password}
+              value={password.value}
               onChange={this.handleChange}
+              onFocus={this.handleFocus}
             />
           </TextField>
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <button
-            className="mdc-button mdc-button--unelevated"
             type="submit"
+            className="mdc-button mdc-button--unelevated"
+            disabled={!this.formIsValid}
           >
             Create an account
           </button>

@@ -3,7 +3,6 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import { isNil } from 'utils'
 
 const mutation = graphql`
   mutation DeleteCourseMutation($input: DeleteCourseInput!) {
@@ -11,7 +10,9 @@ const mutation = graphql`
       deletedCourseId
       study {
         id
-        courseCount
+        courses(first: 0) {
+          totalCount
+        }
       }
     }
   }
@@ -31,15 +32,17 @@ export default (courseId, callback) => {
       variables,
       updater: proxyStore => {
         const deleteCourseField = proxyStore.getRootField('deleteCourse')
-        if (!isNil(deleteCourseField)) {
+        if (deleteCourseField) {
           const deletedCourseId = deleteCourseField.getValue('deletedCourseId')
           const courseStudy = deleteCourseField.getLinkedRecord('study')
-          const courseStudyId = courseStudy.getValue('id')
-          const studyCourseCount = courseStudy.getValue('courseCount')
-          const study = proxyStore.get(courseStudyId)
-          study.setValue(studyCourseCount, 'courseCount')
+          if (courseStudy) {
+            const courseStudyId = courseStudy.getValue('id')
+            const studyCourseCount = courseStudy.getLinkedRecord('courses', {first: 0})
+            const study = proxyStore.get(courseStudyId)
+            study && study.setLinkedRecord(studyCourseCount, 'courses', {first: 0})
 
-          proxyStore.delete(deletedCourseId)
+            proxyStore.delete(deletedCourseId)
+          }
         }
       },
       onCompleted: callback,

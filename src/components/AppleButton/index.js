@@ -80,9 +80,9 @@ export class AppleButton extends React.Component {
 
       GiveAppleMutation(
         this.props.appleable.id,
-        (viewerHasAppled, error) => {
-          if (!isNil(error)) {
-            console.error(error[0].message)
+        (viewerHasAppled, errors) => {
+          if (!isNil(errors)) {
+            console.errors(errors[0].message)
             this.adapter.removeClass(BUTTON_ON)
             return
           } else if(viewerHasAppled) {

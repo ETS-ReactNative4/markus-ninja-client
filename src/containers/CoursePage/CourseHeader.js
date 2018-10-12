@@ -32,7 +32,7 @@ class CourseHeader extends React.Component {
               className="rn-combo-button__count"
               to={course.resourcePath+"/applegivers"}
             >
-              {get(course, "appleGiverCount", 0)}
+              {get(course, "appleGivers.totalCount", 0)}
             </Link>
           </div>
         </div>
@@ -46,7 +46,9 @@ export default withRouter(createFragmentContainer(CourseHeader, graphql`
     ...AppleButton_appleable
     id
     advancedAt
-    appleGiverCount
+    appleGivers(first: 0) {
+      totalCount
+    }
     createdAt
     name
     number

@@ -10,11 +10,13 @@ import ListTopicPreview from './ListTopicPreview'
 const FRAGMENT = graphql`
   fragment TopicPreview_topic on Topic {
     createdAt
-    courseCount
+    topicables(first: 0, type: COURSE) {
+      courseCount
+      studyCount
+    }
     description
     name
     resourcePath
-    studyCount
   }
 `
 class TopicPreview extends React.Component {

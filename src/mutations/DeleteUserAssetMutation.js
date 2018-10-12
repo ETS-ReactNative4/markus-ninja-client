@@ -4,7 +4,7 @@ import {
 } from 'react-relay'
 import { ConnectionHandler } from 'relay-runtime'
 import environment from 'Environment'
-import { get, isNil } from 'utils'
+import {get} from 'utils'
 
 const mutation = graphql`
   mutation DeleteUserAssetMutation($input: DeleteUserAssetInput!) {
@@ -12,7 +12,9 @@ const mutation = graphql`
       deletedUserAssetId
       study {
         id
-        assetCount
+        assets(first: 0) {
+          totalCount
+        }
       }
     }
   }
@@ -32,20 +34,24 @@ export default (userAssetId, callback) => {
       variables,
       updater: proxyStore => {
         const deleteUserAssetField = proxyStore.getRootField('deleteUserAsset')
-        if (!isNil(deleteUserAssetField)) {
+        if (deleteUserAssetField) {
           const deletedUserAssetId = deleteUserAssetField.getValue('deletedUserAssetId')
           const userAssetStudy = deleteUserAssetField.getLinkedRecord('study')
-          const studyAssetCount = userAssetStudy.getValue('assetCount')
-          const studyId = userAssetStudy.getValue('id')
-          const study = proxyStore.get(studyId)
-          study.setValue(studyAssetCount, 'assetCount')
+          if (userAssetStudy) {
+            const studyAssetCount = userAssetStudy.getLinkedRecord('assets', {first: 0})
+            const studyId = userAssetStudy.getValue('id')
+            const study = proxyStore.get(studyId)
+            if (study) {
+              study.setLinkedRecord(studyAssetCount, 'assets', {first: 0})
 
-          const studyAssets = ConnectionHandler.getConnection(
-            study,
-            "StudyAssets_assets",
-          )
-          studyAssets && ConnectionHandler.deleteNode(studyAssets, deletedUserAssetId)
-          proxyStore.delete(deletedUserAssetId)
+              const studyAssets = ConnectionHandler.getConnection(
+                study,
+                "StudyAssets_assets",
+              )
+              studyAssets && ConnectionHandler.deleteNode(studyAssets, deletedUserAssetId)
+              proxyStore.delete(deletedUserAssetId)
+            }
+          }
         }
       },
       onCompleted: (response, error) => {

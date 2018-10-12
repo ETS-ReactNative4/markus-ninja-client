@@ -4,7 +4,6 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import { isNil } from 'utils'
 
 const mutation = graphql`
   mutation DeleteLabelMutation($input: DeleteLabelInput!) {
@@ -12,7 +11,9 @@ const mutation = graphql`
       deletedLabelId
       study {
         id
-        labelCount
+        labels(first: 0) {
+          totalCount
+        }
       }
     }
   }
@@ -32,22 +33,24 @@ export default (labelId, callback) => {
       variables,
       updater: proxyStore => {
         const deleteLabelField = proxyStore.getRootField('deleteLabel')
-        if (!isNil(deleteLabelField)) {
+        if (deleteLabelField) {
           const labelStudy = deleteLabelField.getLinkedRecord('study')
-          const labelStudyId = labelStudy.getValue('id')
-          const searchStudy = ConnectionHandler.getConnection(
-            proxyStore.getRoot(),
-            "SearchStudy_search",
-            {type: "LABEL", within: labelStudyId},
-          )
+          if (labelStudy) {
+            const labelStudyId = labelStudy.getValue('id')
+            const searchStudy = ConnectionHandler.getConnection(
+              proxyStore.getRoot(),
+              "SearchStudy_search",
+              {type: "LABEL", within: labelStudyId},
+            )
 
-          const studyLabelCount = labelStudy.getValue('labelCount')
-          searchStudy && searchStudy.setValue(studyLabelCount, "labelCount")
+            const studyLabelCount = labelStudy.getLinkedRecord('labels', {first: 0})
+            searchStudy && searchStudy.setValue(studyLabelCount, "labels", {first: 0})
 
-          const deletedLabelId = deleteLabelField.getValue("deletedLabelId")
-          searchStudy && ConnectionHandler.deleteNode(searchStudy, deletedLabelId)
+            const deletedLabelId = deleteLabelField.getValue("deletedLabelId")
+            searchStudy && ConnectionHandler.deleteNode(searchStudy, deletedLabelId)
 
-          proxyStore.delete(labelId)
+            proxyStore.delete(labelId)
+          }
         }
       },
       onCompleted: callback,

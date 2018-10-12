@@ -13,12 +13,16 @@ const FRAGMENT = graphql`
   fragment StudyPreview_study on Study {
     ...AppleButton_appleable
     advancedAt
-    appleGiverCount
+    appleGivers(first: 0) {
+      totalCount
+    }
     createdAt
     descriptionHTML
     description
     isPrivate
-    lessonCount
+    lessons(first: 0) {
+      totalCount
+    }
     name
     nameWithOwner
     owner {

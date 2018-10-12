@@ -18,7 +18,9 @@ const FRAGMENT = graphql`
       ...UserLink_user
       login
     }
-    commentCount
+    comments(first: 0) {
+      totalCount
+    }
     course {
       viewerCanAdmin
     }

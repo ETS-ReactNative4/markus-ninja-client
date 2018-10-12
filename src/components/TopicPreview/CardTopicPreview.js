@@ -42,14 +42,14 @@ class CardTopicPreview extends React.Component {
               to={topic.resourcePath+"?t=course"}
             >
               <Icon className="rn-icon-link__icon" icon="course" />
-              {get(topic, "courseCount", 0)}
+              {get(topic, "topicables.courseCount", 0)}
             </Link>
             <Link
               className="rn-icon-link mdc-card__action mdc-card__action--icon"
               to={topic.resourcePath+"?t=study"}
             >
               <Icon className="rn-icon-link__icon" icon="study" />
-              {get(topic, "studyCount", 0)}
+              {get(topic, "topicables.studyCount", 0)}
             </Link>
           </div>
         </div>
