@@ -109,9 +109,11 @@ class SignupForm extends React.Component {
             helperText={<HelperText persistent>Your name by which other users will know you.</HelperText>}
           >
             <Input
-              required={username.visited}
               name="username"
               value={username.value}
+              required={username.visited}
+              pattern="^([a-zA-Z0-9]+-)*[a-zA-Z0-9]+$"
+              maxLength={39}
               onChange={this.handleChange}
               onFocus={this.handleFocus}
             />
@@ -130,9 +132,10 @@ class SignupForm extends React.Component {
             }
           >
             <Input
-              required={email.visited}
+              type="email"
               name="email"
               value={email.value}
+              required={email.visited}
               onChange={this.handleChange}
               onFocus={this.handleFocus}
             />
@@ -150,10 +153,10 @@ class SignupForm extends React.Component {
             }
           >
             <Input
-              required={password.visited}
               type="password"
               name="password"
               value={password.value}
+              required={password.visited}
               onChange={this.handleChange}
               onFocus={this.handleFocus}
             />
