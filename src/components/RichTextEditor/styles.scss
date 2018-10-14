@@ -1,19 +1,8 @@
 @import "@material/theme/mixins";
 
 .RichTextEditor {
-  @include mdc-theme-prop(background-color, background);
-  @include mdc-theme-prop(color, text-primary-on-light);
-
   display: flex;
   flex-direction: column;
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgba(0, 0, 0, 0.24);
-  border-radius: 4px;
-  cursor: text;
-  font-size: 16;
-  min-height: 125px;
-  padding: 10px;
 }
 
 .RichTextEditor__at {
@@ -46,11 +35,35 @@
   display: inline-block;
 }
 
-.Preview {
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgba(0, 0, 0, 0.24);
-  border-radius: 4px;
+.RichTextEditor__write {
+  @include mdc-theme-prop(background-color, background);
+  @include mdc-theme-prop(color, text-primary-on-light);
+
+  display: block;
+}
+
+.RichTextEditor__write-text {
+  cursor: text;
+  min-height: calc(125px - 54.5px);
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.RichTextEditor__preview {
+  @include mdc-theme-prop(background-color, background);
+  @include mdc-theme-prop(color, text-primary-on-light);
+
+  display: none;
   min-height: 125px;
   padding: 10px;
+}
+
+.RichTextEditor.RichTextEditor--preview {
+  .RichTextEditor__write {
+    display: none;
+  }
+
+  .RichTextEditor__preview {
+    display: block;
+  }
 }

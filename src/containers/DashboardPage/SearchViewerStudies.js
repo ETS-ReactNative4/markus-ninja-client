@@ -1,6 +1,6 @@
 import * as React from 'react'
 import cls from 'classnames'
-import { Link } from 'react-router-dom'
+import TextField, {Icon, Input} from '@material/react-text-field'
 import UserStudies from 'components/UserStudies'
 import ViewerStudies from './ViewerStudies'
 
@@ -16,7 +16,7 @@ class SearchViewerStudies extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("SearchViewerStudies mdc-list mdc-list--non-interactive", className)
+    return cls("SearchViewerStudies", className)
   }
 
   get _filterBy() {
@@ -27,14 +27,7 @@ class SearchViewerStudies extends React.Component {
   render() {
     return (
       <div className={this.classes}>
-        <div role="separator" className="mdc-list-divider"></div>
-        <div className="mdc-list-item">
-          <div className="flex justify-between items-center w-100">
-            <h6>Studies</h6>
-            <Link className="mdc-button mdc-button--unelevated" to="/new">New</Link>
-          </div>
-        </div>
-        <div className="mdc-list-item">
+        <div className="mh3">
           {this.renderInput()}
         </div>
         <UserStudies isViewer fragment="link" count={3} filterBy={this._filterBy}>
@@ -48,26 +41,19 @@ class SearchViewerStudies extends React.Component {
     const {q} = this.state
 
     return (
-      <div className="mdc-text-field mdc-text-field--outlined w-100 mdc-text-field--inline mdc-text-field--with-trailing-icon">
-        <input
-          className="mdc-text-field__input"
-          autoComplete="off"
-          type="text"
+      <TextField
+        fullWidth
+        label="Find a study..."
+        trailingIcon={<Icon><i className="material-icons">search</i></Icon>}
+      >
+        <Input
           name="q"
+          autoComplete="off"
           placeholder="Find a study..."
           value={q}
           onChange={this.handleChange}
         />
-        <div className="mdc-notched-outline mdc-theme--background z-behind">
-          <svg>
-            <path className="mdc-notched-outline__path"></path>
-          </svg>
-        </div>
-        <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
-        <i className="material-icons mdc-text-field__icon">
-          search
-        </i>
-      </div>
+      </TextField>
     )
   }
 }

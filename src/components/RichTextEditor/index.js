@@ -11,9 +11,12 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import Tab from 'components/Tab'
+import TabBar from 'components/TabBar'
 import { get, isNil } from 'utils'
 import AttachFile from './AttachFile'
-import './RichTextEditor.css'
+import Preview from './Preview'
+import './styles.css'
 
 class RichTextEditor extends React.Component {
   constructor(props) {
@@ -56,35 +59,6 @@ class RichTextEditor extends React.Component {
     }
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("mdc-card mdc-card--outlined", className)
-  }
-
-  render() {
-    const {editorState, loadingFile} = this.state
-    const { placeholder } = this.props
-
-    return (
-      <div className={this.classes}>
-        <div className="pa3 text" onClick={() => this.focus()}>
-          <Editor
-            editorState={editorState}
-            readOnly={loadingFile}
-            onChange={this.handleChange}
-            placeholder={placeholder || "Enter text"}
-            ref={this.editorElement}
-          />
-        </div>
-        <AttachFile
-          onChange={this.handleChangeFile}
-          onChangeComplete={this.handleChangeFileComplete}
-          study={get(this.props, "study", null)}
-        />
-      </div>
-    )
-  }
-
   handleChangeFile = (file) => {
     const { editorState } = this.state
     const selection = editorState.getSelection()
@@ -99,6 +73,7 @@ class RichTextEditor extends React.Component {
     this.setState({
       editorState: es,
       loadingFile: true,
+      preview: false,
     })
   }
 
@@ -132,6 +107,87 @@ class RichTextEditor extends React.Component {
     if (this.editorElement && this.editorElement.current) {
       this.editorElement.current.focus()
     }
+  }
+
+  get classes() {
+    const {preview} = this.state
+    const {className} = this.props
+    return cls("RichTextEditor", className, {
+      "RichTextEditor--preview": preview,
+    })
+  }
+
+  get text() {
+    return this.state.editorState.getCurrentContent().getPlainText()
+  }
+
+  render() {
+    const {editorState, loadingFile, preview} = this.state
+    const { placeholder } = this.props
+
+    return (
+      <div className={this.classes}>
+        {this.renderNav()}
+        <div className="RichTextEditor__preview mdc-card mdc-card--outlined">
+          <Preview
+            open={preview}
+            studyId={get(this.props, "study.id", "")}
+            text={this.text}
+          />
+        </div>
+        <div className="RichTextEditor__write mdc-card mdc-card--outlined">
+          <div className="RichTextEditor__write-text" onClick={() => this.focus()}>
+            <Editor
+              editorState={editorState}
+              readOnly={loadingFile}
+              onChange={this.handleChange}
+              placeholder={placeholder || "Enter text"}
+              ref={this.editorElement}
+            />
+          </div>
+          <AttachFile
+            onChange={this.handleChangeFile}
+            onChangeComplete={this.handleChangeFileComplete}
+            study={get(this.props, "study", null)}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  renderNav() {
+    const {preview} = this.state
+
+    return (
+      <TabBar className="mb2">
+        <Tab
+          active={!preview}
+          minWidth
+          as="button"
+          type="button"
+          onClick={() => this.setState({preview: false})}
+        >
+          <span className="mdc-tab__content">
+            <span className="mdc-tab__text-label">
+              Write
+            </span>
+          </span>
+        </Tab>
+        <Tab
+          active={preview}
+          minWidth
+          as="button"
+          type="button"
+          onClick={() => this.setState({preview: true})}
+        >
+          <span className="mdc-tab__content">
+            <span className="mdc-tab__text-label">
+              Preview
+            </span>
+          </span>
+        </Tab>
+      </TabBar>
+    )
   }
 }
 
@@ -200,6 +256,7 @@ const DollarSignSpan = (props) => {
 
 export default createFragmentContainer(RichTextEditor, graphql`
   fragment RichTextEditor_study on Study {
+    id
     ...AttachFile_study
   }
 `)

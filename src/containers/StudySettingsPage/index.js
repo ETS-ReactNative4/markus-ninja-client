@@ -52,9 +52,7 @@ class StudySettingsPage extends React.Component {
 
             return (
               <div className={this.classes}>
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <StudySettings study={props.study} />
-                </div>
+                <StudySettings study={props.study} />
               </div>
             )
           }

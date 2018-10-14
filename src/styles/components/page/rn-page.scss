@@ -1,4 +1,13 @@
+@import "@material/top-app-bar/variables";
+
 .rn-page {
-  position: relative;
-  padding: 0 12px;
+  min-height: calc(100vh - #{$mdc-top-app-bar-row-height});
+  display: flex;
+  align-items: stretch;
+  
+  &.mdc-layout-grid {
+    .mdc-layout-grid__inner {
+      width: 100%;
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -36,12 +37,17 @@ class LessonBody extends React.Component {
     this.setState({ edit: !this.state.edit })
   }
 
+  get classes() {
+    const {className} = this.props
+    return cls("mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+  }
+
   render() {
     const {edit} = this.state
 
     return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <div className="center mw7 ph3">
+      <div className={this.classes}>
+        <div className="center mw7 ph3 h-100">
           {edit
           ? this.renderForm()
           : this.renderBody()}
@@ -54,19 +60,25 @@ class LessonBody extends React.Component {
     const lesson = get(this.props, "lesson", {})
 
     return (
-      <React.Fragment>
-        <HTML html={lesson.bodyHTML} />
+      <div className="mdc-card h-100">
+        <div className="ph3 pv2">
+          <HTML html={lesson.bodyHTML} />
+        </div>
         {lesson.viewerCanUpdate &&
-        <div className="mt2">
-          <button
-            className="mdc-button mdc-button--outlined"
-            type="button"
-            onClick={this.handleToggleEdit}
-          >
-            Edit lesson
-          </button>
+        <div className="mdc-card__actions bottom">
+          <div className="mdc-card__actions-icons">
+            <button
+              className="material-icons mdc-icon-button mdc-card__action--icon"
+              type="button"
+              onClick={this.handleToggleEdit}
+              aria-label="Edit lesson"
+              title="Edit lesson"
+            >
+              edit
+            </button>
+          </div>
         </div>}
-      </React.Fragment>
+      </div>
     )
   }
 

@@ -7,6 +7,7 @@ import {
 import { Link, withRouter } from 'react-router-dom'
 import AppleButton from 'components/AppleButton'
 import EnrollmentSelect from 'components/EnrollmentSelect'
+import IconLink from 'components/IconLink'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
 import { get, isNil } from 'utils'
@@ -33,6 +34,15 @@ class StudyHeader extends React.Component {
         <span>/</span>
         <StudyLink className="rn-link" study={study} />
         <div className="rn-header__meta">
+          {get(study, "viewerCanAdmin", false) &&
+          <IconLink
+            className="mdc-icon-button"
+            to={study.resourcePath + "/lessons/new"}
+            aria-label="New lesson"
+            title="New lesson"
+          >
+            add
+          </IconLink>}
           <div className="rn-combo-button mr2">
             <EnrollmentSelect disabled={!study.viewerCanEnroll} enrollable={study} />
             <Link
@@ -77,6 +87,7 @@ export default withRouter(createFragmentContainer(StudyHeader, graphql`
     }
     resourcePath
     updatedAt
+    viewerCanAdmin
     viewerCanApple
     viewerCanEnroll
   }

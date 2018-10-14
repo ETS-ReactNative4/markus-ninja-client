@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import * as React from 'react'
 import {CONTEXT_NAME, CONTEXT_TYPES} from './constants'
 
 function createUniqueIDFunction() {
@@ -8,7 +8,7 @@ function createUniqueIDFunction() {
   }
 }
 
-export default class UniqueIDFunctionProvider extends Component {
+export default class UniqueIDFunctionProvider extends React.Component {
 
   static childContextTypes = CONTEXT_TYPES;
 
@@ -30,6 +30,6 @@ export default class UniqueIDFunctionProvider extends Component {
   }
 
   render() {
-    return <div>{this.props.children}</div>
+    return this.props.children
   }
 }

@@ -4,7 +4,7 @@ import {
   graphql,
 } from 'react-relay'
 import cls from 'classnames'
-import { Link, matchPath, withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import queryString from 'query-string'
 import SearchBarResult from './SearchBarResult'
 import StudyLink from 'components/StudyLink'
@@ -166,13 +166,13 @@ class SearchBarInput extends React.Component {
 
   render() {
     const { cursor, q, loading, focus } = this.state
-    const pathname = get(this.props, "location.pathname", "")
+    // const pathname = get(this.props, "location.pathname", "")
     const searchEdges = get(this.props, "query.search.edges", [])
-    const studyPath = matchPath(pathname, { path: '/:owner/:name' })
-    const isStudyPath =
-      studyPath &&
-      studyPath.params.owner !== 'topics' &&
-      studyPath.params.owner !== 'settings'
+    // const studyPath = matchPath(pathname, { path: '/:owner/:name' })
+    // const isStudyPath =
+    //   studyPath &&
+    //   studyPath.params.owner !== 'topics' &&
+    //   studyPath.params.owner !== 'settings'
 
     return (
       <div
@@ -218,32 +218,44 @@ class SearchBarInput extends React.Component {
             </div>
           // eslint-disable-next-line jsx-a11y/role-supports-aria-props
           : <div className="mdc-list" aria-orientation="vertical">
-              {isStudyPath &&
-                <SearchBarResult
-                  id="search-bar-this-study"
-                  selected={cursor === 0}
-                  as={Link}
-                  to={{
-                    pathname: studyPath.url + "/search",
-                    search: queryString.stringify({ q }),
-                  }}
+              {/*isStudyPath &&
+              <SearchBarResult
+                id="search-bar-this-study"
+                selected={cursor === 0}
+                as={Link}
+                to={{
+                  pathname: studyPath.url + "/search",
+                  search: queryString.stringify({ q }),
+                }}
+                onMouseEnter={this.handleMouseEnter}
+                onClick={() => this.setState({ focus: false })}
+              >
+                Search this study...
+              </SearchBarResult>*/}
+              <SearchBarResult
+                id="search-bar-whole-site"
+                selected={cursor === 0}
+                as={Link}
+                to={{
+                  pathname: "/search",
+                  search: queryString.stringify({ q }),
+                }}
+                onMouseEnter={this.handleMouseEnter}
+                onClick={() => this.setState({ focus: false })}
+              >
+                Search whole site...
+              </SearchBarResult>
+              {searchEdges.map(({node}, i) =>
+                node &&
+                <SearchBarResult key={node.id}
+                  id={node.id}
+                  selected={cursor === i+1}
+                  as={StudyLink}
+                  withOwner
+                  study={node}
                   onMouseEnter={this.handleMouseEnter}
                   onClick={() => this.setState({ focus: false })}
-                >
-                  Search this study...
-                </SearchBarResult>}
-                {searchEdges.map(({node}, i) =>
-                  node &&
-                  <SearchBarResult
-                    key={node.id}
-                    id={node.id}
-                    selected={cursor === i+1}
-                    as={StudyLink}
-                    withOwner
-                    study={node}
-                    onMouseEnter={this.handleMouseEnter}
-                    onClick={() => this.setState({ focus: false })}
-                  />)}
+                />)}
             </div>}
         </div>
       </div>

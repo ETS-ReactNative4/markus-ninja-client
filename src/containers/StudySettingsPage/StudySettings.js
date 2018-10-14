@@ -17,7 +17,7 @@ class StudySettings extends React.Component {
   render() {
     const study = get(this.props, "study", null)
     return (
-      <div className={this.classes}>
+      <React.Fragment>
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">Settings</h5>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
@@ -26,7 +26,7 @@ class StudySettings extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <StudyDangerZone study={study} />
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 }

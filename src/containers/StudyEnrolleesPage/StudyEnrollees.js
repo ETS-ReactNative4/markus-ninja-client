@@ -27,6 +27,8 @@ class StudyEnrollees extends React.Component {
     const enrolleeEdges = get(study, "enrollees.edges", [])
     return (
       <React.Fragment>
+        <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">Enrollees</h5>
+        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <ul className="mdc-list mdc-list--two-line">
             {enrolleeEdges.map(({node}) => (

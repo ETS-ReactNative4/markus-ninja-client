@@ -4,7 +4,7 @@ import cls from 'classnames'
 class WelcomePage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("WelcomePage mdc-layout-grid", className)
+    return cls("WelcomePage rn-page mdc-layout-grid", className)
   }
 
   render() {

@@ -67,24 +67,24 @@ class Preview extends React.Component {
     return cls("Preview", className)
   }
 
-  get preview() {
-    const {dirty, loading, preview} = this.state
-    if (loading) {
-      return "Loading..."
-    } else if (dirty) {
-      return ""
-    } else if (preview === "") {
-      return "Nothing to preview"
-    }
-    return preview
-  }
-
   render() {
     return (
       <div className={this.classes}>
-        <HTML html={this.preview} />
+        {this.renderPreview()}
       </div>
     )
+  }
+
+  renderPreview() {
+    const {dirty, loading, preview} = this.state
+    if (loading) {
+      return <div className="mdc-theme--text-hint-on-light">Loading...</div>
+    } else if (dirty) {
+      return <div />
+    } else if (preview === "") {
+      return <div className="mdc-theme--text-hint-on-light">Nothing to preview</div>
+    }
+    return <HTML html={preview} />
   }
 }
 

@@ -43,7 +43,7 @@ const LessonPageQuery = graphql`
 class LessonPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("LessonPage mdc-layout-grid", className)
+    return cls("LessonPage rn-page mdc-layout-grid", className)
   }
 
   render() {
@@ -69,10 +69,10 @@ class LessonPage extends React.Component {
 
             return (
               <div className={this.classes}>
-                <div className="mdc-layout-grid__inner">
-                  <LessonHeader lesson={lesson}/>
-                  <LessonBody lesson={lesson}/>
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                <div className="LessonPage__container mdc-layout-grid__inner">
+                  <LessonHeader className="LessonPage__header" lesson={lesson}/>
+                  <LessonBody className="LessonPage__body" lesson={lesson}/>
+                  <div className="LessonPage__meta mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <div className="center mw8">
                       <StudyLabels>
                         <LessonLabels lesson={lesson}/>

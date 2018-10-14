@@ -48,7 +48,7 @@ const StudyPageQuery = graphql`
 class StudyPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("StudyPage mdc-layout-grid", className)
+    return cls("StudyPage rn-page mdc-layout-grid", className)
   }
 
   render() {

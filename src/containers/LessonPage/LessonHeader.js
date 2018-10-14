@@ -1,4 +1,5 @@
 import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -47,16 +48,21 @@ class LessonHeader extends React.Component {
     this.setState({ open: !this.state.open })
   }
 
+  get classes() {
+    const {className} = this.props
+    return cls("mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+  }
+
   render() {
     const lesson = get(this.props, "lesson", {})
     const {open} = this.state
 
     return (
-      <React.Fragment>
+      <div className={this.classes}>
         {open && lesson.viewerCanUpdate
         ? this.renderForm()
         : this.renderHeader()}
-      </React.Fragment>
+      </div>
     )
   }
 
@@ -64,10 +70,7 @@ class LessonHeader extends React.Component {
     const {title} = this.state
 
     return (
-      <form
-        className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-        onSubmit={this.handleSubmit}
-      >
+      <form onSubmit={this.handleSubmit}>
         <div className="inline-flex items-center w-100">
           <TextField
             className="flex-auto"
@@ -104,7 +107,7 @@ class LessonHeader extends React.Component {
     const lesson = get(this.props, "lesson", {})
 
     return (
-      <header className="rn-header mdc-typography--headline5 mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+      <header className="rn-header mdc-typography--headline5">
         <UserLink className="rn-link" user={get(lesson, "study.owner", null)} />
         <span>/</span>
         <StudyLink className="rn-link" study={get(lesson, "study", null)} />

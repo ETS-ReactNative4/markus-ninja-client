@@ -148,7 +148,7 @@ class SignupForm extends React.Component {
             label="Password"
             helperText={
               <HelperText persistent>
-                Use at least one lowercase letter, one numeral, and seven characters.
+                Use at least one lowercase letter, one uppercase letter, one numeral, and seven characters.
               </HelperText>
             }
           >
@@ -157,6 +157,8 @@ class SignupForm extends React.Component {
               name="password"
               value={password.value}
               required={password.visited}
+              pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,255}$"
+              minLength={7}
               onChange={this.handleChange}
               onFocus={this.handleFocus}
             />

@@ -55,13 +55,17 @@ class AddLessonCommentForm extends React.Component {
         onSubmit={this.handleSubmit}
       >
         <RichTextEditor
-          id="AddLessonCommentForm__body"
           onChange={this.handleChangeBody}
           submit={submitted}
           placeholder="Leave a comment"
           study={get(this.props, "lesson.study", null)}
         />
-        <button className="mdc-button mdc-button--unelevated mt2" type="submit">Comment</button>
+        <button
+          className="mdc-button mdc-button--unelevated mt2"
+          type="submit"
+        >
+          Comment
+        </button>
       </form>
     )
   }
@@ -71,6 +75,7 @@ export default withRouter(createFragmentContainer(AddLessonCommentForm, graphql`
   fragment AddLessonCommentForm_lesson on Lesson {
     id
     study {
+      id
       ...RichTextEditor_study
     }
   }

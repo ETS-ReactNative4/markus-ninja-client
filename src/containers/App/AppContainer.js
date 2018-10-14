@@ -104,7 +104,7 @@ class AppContainer extends React.Component {
             return (
               <React.Fragment>
                 <Header viewer={viewer} />
-                <div className="mdc-top-app-bar--fixed-adjust mdc-theme--text-primary-on-light">
+                <div className="mdc-top-app-bar--fixed-adjust">
                   <Switch>
                     <Route
                       exact

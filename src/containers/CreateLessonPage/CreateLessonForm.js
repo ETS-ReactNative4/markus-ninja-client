@@ -6,11 +6,8 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import TextField, {Input} from '@material/react-text-field'
-import Tab from 'components/Tab'
-import TabBar from 'components/TabBar'
 import CreateLessonMutation from 'mutations/CreateLessonMutation'
 import RichTextEditor from 'components/RichTextEditor'
-import Preview from 'components/RichTextEditor/Preview'
 import StudyCourseSelect from 'components/StudyCourseSelect'
 import { get, isNil } from 'utils'
 
@@ -20,7 +17,6 @@ class CreateLessonForm extends React.Component {
     body: "",
     courseId: "",
     title: "",
-    preview: false,
   }
 
   handleSubmit = (e) => {
@@ -44,86 +40,52 @@ class CreateLessonForm extends React.Component {
 
   get classes() {
     const {className} = this.props
-    const {preview} = this.state
-    return cls("CreateLessonForm mdc-layout-grid__inner", className, {
-      "CreateLessonForm__preview--selected": preview,
-    })
+    return cls("CreateLessonForm mdc-layout-grid__inner", className)
   }
 
   render() {
-    const { body, title, error, preview } = this.state
+    const {title} = this.state
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <div className="mdc-layout-grid__inner mdc-card mdc-card--outlined pa2">
-            <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-              <TextField className="w-100" outlined label="Title">
-                <Input
-                  name="title"
-                  value={title}
-                  onChange={(e) => this.setState({title: e.target.value})}
-                />
-              </TextField>
-            </div>
-            <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-              <TabBar className="mb2">
-                <Tab
-                  active={!preview}
-                  minWidth
-                  as="button"
-                  type="button"
-                  onClick={() => this.setState({preview: false})}
-                >
-                  <span className="mdc-tab__content">
-                    <span className="mdc-tab__text-label">
-                      Write
-                    </span>
-                  </span>
-                </Tab>
-                <Tab
-                  active={preview}
-                  minWidth
-                  as="button"
-                  type="button"
-                  onClick={() => this.setState({preview: true})}
-                >
-                  <span className="mdc-tab__content">
-                    <span className="mdc-tab__text-label">
-                      Preview
-                    </span>
-                  </span>
-                </Tab>
-              </TabBar>
-              <div className="CreateLessonForm__input">
-                <RichTextEditor
-                  study={get(this.props, "study", null)}
-                  placeholder="Begin your lesson"
-                  onChange={(body) => this.setState({body})}
-                />
-              </div>
-              <div className="CreateLessonForm__preview">
-                <Preview open={preview} studyId={get(this.props, "study.id", "")} text={body} />
-              </div>
-            </div>
-          </div>
+          <TextField fullWidth label="Title">
+            <Input
+              name="title"
+              placeholder="Title"
+              value={title}
+              onChange={(e) => this.setState({title: e.target.value})}
+            />
+          </TextField>
         </div>
-        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <div className="mdc-typography--headline6">Add to existing course?</div>
-          <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light pb3">
-            Selecting a course will immediately add the lesson to the course.
-          </div>
-          <StudyCourseSelect
+          <RichTextEditor
             study={get(this.props, "study", null)}
-            onChange={(courseId) => this.setState({ courseId })}
+            placeholder="Begin your lesson"
+            onChange={(body) => this.setState({body})}
           />
         </div>
+        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+        {this.renderCourseSelect()}
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <div className="mdc-layout-grid__cell">
           <button className="mdc-button mdc-button--unelevated" type="submit">Create lesson</button>
         </div>
-        <span>{error}</span>
       </form>
+    )
+  }
+
+  renderCourseSelect() {
+    return (
+      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <div className="mdc-typography--headline6">Add to existing course?</div>
+        <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light pb3">
+          Selecting a course will immediately add the lesson to the course.
+        </div>
+        <StudyCourseSelect
+          study={get(this.props, "study", null)}
+          onChange={(courseId) => this.setState({ courseId })}
+        />
+      </div>
     )
   }
 }

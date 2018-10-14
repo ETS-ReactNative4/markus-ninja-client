@@ -1,9 +1,14 @@
+.LessonPage__container {
+  grid-template-rows: auto 1fr auto auto;
+}
+
 .LessonPage__comments {
   background-color: #fafafa;
   margin-left: -24px;
   margin-right: -24px;
   margin-bottom: -24px;
 }
+
 .LessonPage__comments__container {
   padding-left: 24px;
   padding-right: 24px;

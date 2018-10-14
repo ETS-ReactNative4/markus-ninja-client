@@ -5,6 +5,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
+import IconLink from 'components/IconLink'
 import UserLink from 'components/UserLink'
 import SearchViewerStudies from './SearchViewerStudies'
 import ViewerReceivedActivity from './ViewerReceivedActivity'
@@ -27,7 +28,7 @@ const DashboardPageQuery = graphql`
 class DashboardPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("DashboardPage flex", className)
+    return cls("DashboardPage rn-page", className)
   }
 
   render() {
@@ -44,17 +45,31 @@ class DashboardPage extends React.Component {
           } else if (props) {
             return (
               <div className={this.classes}>
-                <aside className="DashboardPage__nav mdc-drawer mdc-drawer--permanent">
-                  <nav className="mdc-drawer__drawer">
-                    <nav className="mdc-drawer__content">
-                      <div className="mdc-list mdc-list--non-interactive">
-                        <div className="mdc-list-item">
-                          <UserLink className="rn-link mdc-typography--headline5" user={props.viewer} />
-                        </div>
-                        <SearchViewerStudies />
+                <aside className="DashboardPage__nav mdc-drawer">
+                  <div className="mdc-drawer__header">
+                    <h4 className="mdc-drawer__title">
+                      <UserLink className="rn-link" user={props.viewer} />
+                    </h4>
+                    <h6 className="mdc-drawer__subtitle">
+                      <div className="flex relative items-center justify-start">
+                        <span>
+                          Studies
+                        </span>
+                        <span className="ml-auto mr0">
+                          <IconLink
+                            className="mdc-icon-button ml-auto mr0" to="/new"
+                            aria-label="New study"
+                            title="New study"
+                          >
+                            add
+                          </IconLink>
+                        </span>
                       </div>
-                    </nav>
-                  </nav>
+                    </h6>
+                  </div>
+                  <div className="mdc-drawer__content">
+                    <SearchViewerStudies />
+                  </div>
                 </aside>
                 <div className="flex-auto">
                   <ViewerReceivedActivity viewer={props.viewer} />

@@ -8,11 +8,11 @@ class HomePage extends React.Component {
     const viewer = get(this.props, "viewer", null)
 
     return (
-      <div className="HomePage">
+      <React.Fragment>
         {isNil(viewer)
         ? <WelcomePage />
         : <DashboardPage />}
-      </div>
+      </React.Fragment>
     )
   }
 }
