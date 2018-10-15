@@ -10,19 +10,14 @@
 }
 
 //====================================
-// This has not yet been added to the @material/icon-button release, but I need
-// to use it now.
+// Get FontAwesome icon to work with mdc
 .mdc-icon-button__icon {
-  display: inline-block;
-
   &.svg-inline--fa {
     display: block;
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
   &.mdc-icon-button__icon--on {
-    display: none;
-
     &.svg-inline--fa {
       display: none;
     }
@@ -31,16 +26,12 @@
 
 .mdc-icon-button--on {
   .mdc-icon-button__icon {
-    display: none;
-
     &.svg-inline--fa {
       display: none;
     }
 
     // stylelint-disable-next-line plugin/selector-bem-pattern
     &.mdc-icon-button__icon--on {
-      display: inline-block;
-
       &.svg-inline--fa {
         display: block;
       }
@@ -103,10 +94,6 @@
   justify-content: center;
   flex-wrap: nowrap;
   overflow: hidden;
-
-  > * {
-    margin: 4px;
-  }
 }
 
 .mdc-text-field {

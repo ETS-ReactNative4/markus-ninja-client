@@ -72,7 +72,7 @@ class StudyPage extends React.Component {
 
             return (
               <div className={this.classes}>
-                <div className="mdc-layout-grid__inner">
+                <div className="StudyPage__container mdc-layout-grid__inner">
                   <StudyHeader study={props.study} />
                   <StudyNav study={props.study} />
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">

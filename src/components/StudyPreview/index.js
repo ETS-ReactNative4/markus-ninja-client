@@ -11,7 +11,8 @@ import ListStudyPreview from './ListStudyPreview'
 
 const FRAGMENT = graphql`
   fragment StudyPreview_study on Study {
-    ...AppleButton_appleable
+    ...AppleIconButton_appleable
+    ...EnrollIconButton_enrollable
     advancedAt
     appleGivers(first: 0) {
       totalCount
@@ -24,19 +25,20 @@ const FRAGMENT = graphql`
       totalCount
     }
     name
-    nameWithOwner
     owner {
-      ...UserLink_user
       login
+      resourcePath
     }
     resourcePath
     topics(first: 5) {
       nodes {
         id
-        ...TopicLink_topic
+        name
+        resourcePath
       }
     }
     viewerCanApple
+    viewerCanEnroll
     viewerHasAppled
   }
 `
@@ -54,7 +56,7 @@ class StudyPreview extends React.Component {
     const study = get(this.props, "study", {})
     return (
       <div className={this.classes}>
-        <Link to={study.resourcePath}>{study.nameWithOwner}</Link>
+        <Link to={study.resourcePath}>{study.name}</Link>
       </div>
     )
   }

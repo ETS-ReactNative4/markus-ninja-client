@@ -13,7 +13,7 @@ import './styles.css'
 
 const FRAGMENT = graphql`
   fragment LessonPreview_lesson on Lesson {
-    ...EnrollButton_enrollable
+    ...EnrollIconButton_enrollable
     author {
       ...UserLink_user
       login

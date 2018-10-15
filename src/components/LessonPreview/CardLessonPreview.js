@@ -2,7 +2,7 @@ import * as React from 'react'
 import cls from 'classnames'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
-import EnrollButton from 'components/EnrollButton'
+import EnrollIconButton from 'components/EnrollIconButton'
 import Icon from 'components/Icon'
 import { get } from 'utils'
 
@@ -35,12 +35,12 @@ class CardLessonPreview extends React.Component {
             >
               Read
             </Link>
-            <EnrollButton
-              className="mdc-card__action mdc-card__action--button"
-              enrollable={get(this.props, "lesson", null)}
-            />
           </div>
           <div className="mdc-card__action-icons">
+            <EnrollIconButton
+              className="mdc-card__action mdc-card__action--icon"
+              enrollable={get(this.props, "lesson", null)}
+            />
             <Link
               className="rn-icon-link mdc-card__action mdc-card__action--icon"
               to={lesson.resourcePath}

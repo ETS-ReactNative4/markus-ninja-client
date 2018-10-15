@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import cls from 'classnames'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
+import EnrollIconButton from 'components/EnrollIconButton'
 import Icon from 'components/Icon'
 import LabelLink from 'components/LabelLink'
 import UserLink from 'components/UserLink'
@@ -49,13 +50,17 @@ class ListLessonPreview extends React.Component {
           )}
         </span>
         <span className="mdc-list-item__meta">
-          <Link
-            className="rn-icon-link"
-            to={lesson.resourcePath}
-          >
-            <Icon className="rn-icon-link__icon" icon="comment" />
-            {get(lesson, "comments.totalCount", 0)}
-          </Link>
+          <div className="mdc-list-item__meta-actions">
+            {lesson.viewerCanEnroll &&
+            <EnrollIconButton enrollable={get(this.props, "lesson", null)} />}
+            <Link
+              className="rn-icon-link"
+              to={lesson.resourcePath}
+            >
+              <Icon className="rn-icon-link__icon" icon="comment" />
+              {get(lesson, "comments.totalCount", 0)}
+            </Link>
+          </div>
         </span>
       </li>
     )

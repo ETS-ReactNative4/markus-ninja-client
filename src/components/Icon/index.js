@@ -1,6 +1,7 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
+import {isEmpty} from 'utils'
 
 import "./styles.css"
 
@@ -35,7 +36,10 @@ class Icon extends React.PureComponent {
   }
 
   get label() {
-    const {icon} = this.props
+    const {icon, label} = this.props
+    if (!isEmpty(label)) {
+      return label
+    }
     switch (icon) {
       case "asset":
         return "Asset"
@@ -78,6 +82,7 @@ Icon.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
   icon: PropTypes.string,
+  label: PropTypes.string,
 }
 
 Icon.defaultProps = {
@@ -85,6 +90,7 @@ Icon.defaultProps = {
   className: "",
   children: null,
   icon: "",
+  label: "",
 }
 
 export default Icon

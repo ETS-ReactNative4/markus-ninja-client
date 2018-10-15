@@ -2,9 +2,8 @@ import * as React from 'react'
 import cls from 'classnames'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
+import AppleIconButton from 'components/AppleIconButton'
 import Icon from 'components/Icon'
-import UserLink from 'components/UserLink'
-import TopicLink from 'components/TopicLink'
 import {get} from 'utils'
 
 class ListCoursePreview extends React.Component {
@@ -38,26 +37,38 @@ class ListCoursePreview extends React.Component {
           <span className="mdc-list-item__secondary-text">
             <span className="mr1">{this.timestamp}</span>
             by
-            <UserLink className="rn-link rn-link--secondary ml1" user={get(course, "owner", null)} />
+            <Link
+              className="rn-link rn-link--secondary ml1"
+              to={get(course, "owner.resourcePath", "")}
+            >
+              {get(course, "owner.login", "")}
+            </Link>
           </span>
         </span>
         <span className="mdc-list-item__tags">
           {topicNodes.map((node) =>
             node &&
-            <TopicLink
+            <Link
               key={node.id}
               className="mdc-button mdc-button--outlined"
-              topic={node}
-            />)}
+              to={node.resourcePath}
+            >
+              {node.name}
+            </Link>
+          )}
         </span>
         <span className="mdc-list-item__meta">
-          <Link
-            className="rn-icon-link"
-            to={course.resourcePath}
-          >
-            <Icon className="rn-icon-link__icon" icon="lesson" />
-            {get(course, "lessons.totalCount", 0)}
-          </Link>
+          <div className="mdc-list-item__meta-actions">
+            {course.viewerCanApple &&
+            <AppleIconButton appleable={get(this.props, "course", null)} />}
+            <Link
+              className="rn-icon-link"
+              to={course.resourcePath}
+            >
+              <Icon className="rn-icon-link__icon" icon="lesson" />
+              {get(course, "lessons.totalCount", 0)}
+            </Link>
+          </div>
         </span>
       </li>
     )

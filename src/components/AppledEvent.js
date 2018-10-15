@@ -36,7 +36,12 @@ class AppledEvent extends React.Component {
 
     return (
       <li className={this.classes}>
-        <FontAwesomeIcon className="mdc-list-item__graphic" icon={faApple} />
+        <FontAwesomeIcon
+          className="mdc-list-item__graphic"
+          aria-label="Appled"
+          title="Appled"
+          icon={faApple}
+        />
         <span className="mdc-list-item__text">
           <span className="mdc-list-item__primary-text">
             {withUser &&

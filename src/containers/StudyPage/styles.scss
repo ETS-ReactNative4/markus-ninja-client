@@ -1,5 +1,9 @@
 @import "@material/layout-grid/mixins";
 
+.StudyPage__container {
+  grid-template-rows: auto auto 1fr;
+}
+
 .StudyHeader__actions {
   display: inline-flex;
   align-items: center;

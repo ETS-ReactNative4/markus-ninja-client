@@ -3,7 +3,7 @@ import cls from 'classnames'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
 import Icon from 'components/Icon'
-import EnrollmentSelect from 'components/EnrollmentSelect'
+import EnrollIconButton from 'components/EnrollIconButton'
 import {get} from 'utils'
 
 class ListUserPreview extends React.Component {
@@ -30,7 +30,7 @@ class ListUserPreview extends React.Component {
         <span className="mdc-list-item__meta">
           <div className="mdc-list-item__meta-actions">
             {user.viewerCanEnroll && !user.isViewer &&
-            <EnrollmentSelect enrollable={user} />}
+            <EnrollIconButton enrollable={user} />}
             <Link
               className="rn-icon-link"
               to={user.resourcePath+"?tab=studies"}

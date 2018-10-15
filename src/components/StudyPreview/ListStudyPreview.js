@@ -2,10 +2,9 @@ import * as React from 'react'
 import cls from 'classnames'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
-import AppleButton from 'components/AppleButton'
+import AppleIconButton from 'components/AppleIconButton'
+import EnrollIconButton from 'components/EnrollIconButton'
 import Icon from 'components/Icon'
-import UserLink from 'components/UserLink'
-import TopicLink from 'components/TopicLink'
 import {get} from 'utils'
 
 class ListStudyPreview extends React.Component {
@@ -39,21 +38,32 @@ class ListStudyPreview extends React.Component {
           <span className="mdc-list-item__secondary-text">
             <span className="mr1">{this.timestamp}</span>
             by
-            <UserLink className="rn-link rn-link--secondary ml1" user={get(study, "owner", null)} />
+            <Link
+              className="rn-link rn-link--secondary ml1"
+              to={get(study, "owner.resourcePath", "")}
+            >
+              {get(study, "owner.login", "")}
+            </Link>
           </span>
         </span>
         <span className="mdc-list-item__tags">
           {topicNodes.map((node) =>
             node &&
-            <TopicLink
+            <Link
               key={node.id}
               className="mdc-button mdc-button--outlined"
-              topic={node}
-            />)}
+              to={node.resourcePath}
+            >
+              {node.name}
+            </Link>
+          )}
         </span>
         <span className="mdc-list-item__meta">
           <div className="mdc-list-item__meta-actions">
-            <AppleButton appleable={get(this.props, "study", null)} />
+            {study.viewerCanEnroll &&
+            <EnrollIconButton enrollable={get(this.props, "study", null)} />}
+            {study.viewerCanApple &&
+            <AppleIconButton appleable={get(this.props, "study", null)} />}
             <Link
               className="rn-icon-link"
               to={study.resourcePath+"/lessons"}

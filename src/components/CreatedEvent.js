@@ -50,7 +50,7 @@ class CreatedEvent extends React.Component {
 
     return (
       <li className={this.classes}>
-        <Icon className="mdc-list-item__graphic">create</Icon>
+        <Icon className="mdc-list-item__graphic" label="Created">create</Icon>
         <span className="mdc-list-item__text">
           <span className="mdc-list-item__primary-text">
             {withUser &&

@@ -2,9 +2,7 @@ import * as React from 'react'
 import cls from 'classnames'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faApple } from '@fortawesome/free-brands-svg-icons'
-import AppleButton from 'components/AppleButton'
+import AppleIconButton from 'components/AppleIconButton'
 import Icon from 'components/Icon'
 import { get } from 'utils'
 
@@ -40,19 +38,12 @@ class CardCoursePreview extends React.Component {
             >
               Begin
             </Link>
-            <AppleButton
-              className="mdc-card__action mdc-card__action--button"
-              appleable={get(this.props, "course", null)}
-            />
           </div>
           <div className="mdc-card__action-icons">
-            <Link
-              className="rn-icon-link mdc-card__action mdc-card__action--icon"
-              to={course.resourcePath+"/applegivers"}
-            >
-              <FontAwesomeIcon className="rn-icon-link__icon" icon={faApple} />
-              {get(course, "appleGivers.totalCount", 0)}
-            </Link>
+            <AppleIconButton
+              className="mdc-card__action mdc-card__action--icon"
+              appleable={get(this.props, "course", null)}
+            />
             <Link
               className="rn-icon-link mdc-card__action mdc-card__action--icon"
               to={course.resourcePath}

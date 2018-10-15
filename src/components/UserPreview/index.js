@@ -10,7 +10,7 @@ import ListUserPreview from './ListUserPreview'
 
 const FRAGMENT = graphql`
   fragment UserPreview_user on User {
-    ...EnrollmentSelect_enrollable
+    ...EnrollIconButton_enrollable
     bio
     createdAt
     isViewer

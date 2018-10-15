@@ -12,7 +12,7 @@ import ListCoursePreview from './ListCoursePreview'
 
 const FRAGMENT =  graphql`
   fragment CoursePreview_course on Course {
-    ...AppleButton_appleable
+    ...AppleIconButton_appleable
     advancedAt
     appleGivers(first: 0) {
       totalCount
@@ -27,8 +27,8 @@ const FRAGMENT =  graphql`
     name
     number
     owner {
-      ...UserLink_user
       login
+      resourcePath
     }
     resourcePath
     study {
@@ -38,7 +38,8 @@ const FRAGMENT =  graphql`
     topics(first: 5) {
       nodes {
         id
-        ...TopicLink_topic
+        name
+        resourcePath
       }
     }
     viewerCanApple
