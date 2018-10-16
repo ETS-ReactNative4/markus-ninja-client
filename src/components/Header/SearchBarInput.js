@@ -39,8 +39,13 @@ class SearchBarInput extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const {cursor} = this.state
+    const newSearchEdges = get(this.props, "query.search.edges", [])
+    const oldSearchEdges = get(prevProps, "query.search.edges", [])
     if (prevState.skip && !this.state.skip) {
       this._refetch(this.state.q)
+    } else if (newSearchEdges.length !== oldSearchEdges.length) {
+      this.setState({cursor: Math.min(cursor, newSearchEdges.length)})
     }
   }
 

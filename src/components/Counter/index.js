@@ -1,7 +1,7 @@
 import * as React from 'react'
 import cls from 'classnames'
 
-import './Counter.css'
+import './styles.css'
 
 const Counter = props => {
   const {className} = props

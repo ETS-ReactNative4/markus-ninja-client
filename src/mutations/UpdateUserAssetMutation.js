@@ -9,6 +9,8 @@ const mutation = graphql`
   mutation UpdateUserAssetMutation($input: UpdateUserAssetInput!) {
     updateUserAsset(input: $input) {
       id
+      description
+      descriptionHTML
       name
       resourcePath
       updatedAt
@@ -17,9 +19,10 @@ const mutation = graphql`
   }
 `
 
-export default (userAssetId, name, callback) => {
+export default (userAssetId, description, name, callback) => {
   const variables = {
     input: {
+      description,
       name: nullString(name),
       userAssetId: nullString(userAssetId),
     },
@@ -32,21 +35,30 @@ export default (userAssetId, name, callback) => {
       variables,
       optimisticUpdater: proxyStore => {
         const userAsset = proxyStore.get(userAssetId)
-        if (userAsset && !isEmpty(name)) {
-          userAsset.setValue(name, 'name')
+        if (userAsset) {
+          if (!isEmpty(description)) {
+            userAsset.setValue(description, 'description')
+          }
+          if (!isEmpty(name)) {
+            userAsset.setValue(name, 'name')
+          }
         }
       },
       updater: proxyStore => {
         const updateUserAssetField = proxyStore.getRootField('updateUserAsset')
         if (updateUserAssetField) {
-          const newTitle = updateUserAssetField.getValue('name')
+          const newDescription = updateUserAssetField.getValue('description')
+          const newDescriptionHTML = updateUserAssetField.getValue('descriptionHTML')
+          const newName = updateUserAssetField.getValue('name')
           const newResourcePath = updateUserAssetField.getValue('resourcePath')
           const newUpdatedAt = updateUserAssetField.getValue('updatedAt')
           const newUrl = updateUserAssetField.getValue('url')
 
           const userAsset = proxyStore.get(userAssetId)
           if (userAsset) {
-            userAsset.setValue(newTitle, 'name')
+            userAsset.setValue(newDescription, 'description')
+            userAsset.setValue(newDescriptionHTML, 'descriptionHTML')
+            userAsset.setValue(newName, 'name')
             userAsset.setValue(newResourcePath, 'resourcePath')
             userAsset.setValue(newUpdatedAt, 'updatedAt')
             userAsset.setValue(newUrl, 'url')

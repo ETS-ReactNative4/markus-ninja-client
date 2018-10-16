@@ -6,7 +6,6 @@ import {Link} from 'react-router-dom'
 import EnrollIconButton from 'components/EnrollIconButton'
 import Icon from 'components/Icon'
 import LabelLink from 'components/LabelLink'
-import UserLink from 'components/UserLink'
 import {get} from 'utils'
 
 class ListLessonPreview extends React.Component {
@@ -40,7 +39,12 @@ class ListLessonPreview extends React.Component {
             Created on
             <span className="mh1">{moment(lesson.createdAt).format("MMM D")}</span>
             by
-            <UserLink className="rn-link rn-link--secondary ml1" user={get(lesson, "author", null)} />
+            <Link
+              className="rn-link rn-link--secondary ml1"
+              to={get(lesson, "author.resourcePath", "")}
+            >
+              {get(lesson, "author.login")}
+            </Link>
           </span>
         </span>
         <span className="mdc-list-item__tags">

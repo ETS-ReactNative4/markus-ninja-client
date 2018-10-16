@@ -13,29 +13,29 @@ import './styles.css'
 
 const FRAGMENT = graphql`
   fragment LessonPreview_lesson on Lesson {
-    ...EnrollIconButton_enrollable
     author {
-      ...UserLink_user
       login
+      resourcePath
     }
     comments(first: 0) {
       totalCount
     }
-    course {
-      viewerCanAdmin
-    }
     courseNumber
     createdAt
+    enrollmentStatus
     id
     labels(first: 5) {
       nodes {
+        color
         id
-        ...LabelLink_label
+        name
+        resourcePath
       }
     }
     number
     resourcePath
     title
+    viewerCanEnroll
   }
 `
 

@@ -20,6 +20,9 @@ class StudySettings extends React.Component {
       <React.Fragment>
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">Settings</h5>
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+        <h6 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          Study name
+        </h6>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <UpdateStudyNameForm study={study} />
         </div>

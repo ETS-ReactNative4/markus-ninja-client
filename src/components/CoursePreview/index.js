@@ -12,7 +12,6 @@ import ListCoursePreview from './ListCoursePreview'
 
 const FRAGMENT =  graphql`
   fragment CoursePreview_course on Course {
-    ...AppleIconButton_appleable
     advancedAt
     appleGivers(first: 0) {
       totalCount

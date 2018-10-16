@@ -1,5 +1,24 @@
 import * as React from 'react'
 
+export function byteSizeToString(size) {
+  const bytesPerKB = 1000
+  const bytesPerMB = bytesPerKB * 1000
+  const bytesPerGB = bytesPerMB * 1000
+
+  if (size < bytesPerKB) {
+    return size + ' B'
+  }
+  else if (size < bytesPerMB) {
+    return size/bytesPerKB + ' KB'
+  }
+  else if (size < bytesPerGB) {
+    return size/bytesPerMB + ' MB'
+  }
+  else {
+    return size/bytesPerGB + ' GB'
+  }
+}
+
 function timeDifference(current, previous) {
   const milliSecondsPerMinute = 60 * 1000
   const milliSecondsPerHour = milliSecondsPerMinute * 60

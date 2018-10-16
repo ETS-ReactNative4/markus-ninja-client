@@ -34,17 +34,14 @@ class SearchNav extends React.Component {
     const searchUserAssets = queryString.stringify(query)
 
     return (
-      <aside className="SearchNav mdc-drawer mdc-drawer--permanent mdc-typography">
-        <div className="mdc-drawer___toolbar-spacer"></div>
-        <nav className="mdc-drawer__drawer">
-          <header className="mdc-drawer__header">
-            <div className="mdc-drawer__header-content">
-              <h5>
-                Search
-              </h5>
-            </div>
-          </header>
-          <nav className="mdc-drawer__content mdc-list">
+      <aside className="SearchNav mdc-drawer mdc-typography">
+        <header className="mdc-drawer__header">
+          <div className="mdc-drawer__title">
+            Search
+          </div>
+        </header>
+        <div className="mdc-drawer__content">
+          <nav className="mdc-list">
             <div role="separator" className="mdc-list-divider"></div>
             <ListItem
               selected={type === 'course'}
@@ -101,7 +98,7 @@ class SearchNav extends React.Component {
               <Counter>{counts.userAsset}</Counter>
             </ListItem>
           </nav>
-        </nav>
+        </div>
       </aside>
     )
   }

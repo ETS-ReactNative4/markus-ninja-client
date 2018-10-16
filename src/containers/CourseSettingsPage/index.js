@@ -16,10 +16,25 @@ const CourseSettingsPageQuery = graphql`
     $owner: String!,
     $name: String!,
     $number: Int!,
+    $addLessonCount: Int!,
+    $filterAddLessonsBy: LessonFilters,
   ) {
     study(owner: $owner, name: $name) {
       course(number: $number) {
         ...UpdateCourseNameForm_course
+        ...AddCourseLessonForm_course @arguments(
+          count: $addLessonCount,
+          filterBy: $filterAddLessonsBy,
+        )
+        lessons(first: 10, orderBy:{direction: ASC field: COURSE_NUMBER}) {
+          edges {
+            node {
+              courseNumber
+              id
+              title
+            }
+          }
+        }
       }
     }
   }
@@ -46,6 +61,10 @@ class CourseSettingsPage extends React.Component {
           owner: match.params.owner,
           name: match.params.name,
           number: parseInt(match.params.number, 10),
+          addLessonCount: 10,
+          filterAddLessonsBy: {
+            isCourseLesson: false,
+          }
         }}
         render={({error,  props}) => {
           if (error) {
@@ -60,8 +79,30 @@ class CourseSettingsPage extends React.Component {
               <div className={this.classes}>
                 <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">Settings</h5>
                 <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                <h6 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">Course name</h6>
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   <UpdateCourseNameForm course={course} />
+                </div>
+                <h6 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">Course lessons</h6>
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <ul className="mdc-list">
+                    {get(course, "lessons.edges", []).map(({node}) =>
+                      node &&
+                      <li key={node.id} className="mdc-list-item">
+                        <span className="mdc-list-item__text">
+                          {node.title} #{node.courseNumber}
+                        </span>
+                        <span className="mdc-list-item__meta">
+                          <button
+                            className="material-icons mdc-icon-button"
+                            type="button"
+                          >
+                            delete
+                          </button>
+                        </span>
+                      </li>
+                    )}
+                  </ul>
                 </div>
               </div>
             )
@@ -75,6 +116,7 @@ class CourseSettingsPage extends React.Component {
 
 export default createFragmentContainer(CourseSettingsPage, graphql`
   fragment CourseSettingsPage_course on Course {
+    id
     resourcePath
     viewerCanAdmin
   }

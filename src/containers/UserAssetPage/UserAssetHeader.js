@@ -30,6 +30,7 @@ class UserAssetHeader extends React.Component {
     const { name } = this.state
     UpdateUserAssetMutation(
       this.props.asset.id,
+      null,
       name,
       (updatedUserAsset, errors) => {
         if (!isNil(errors)) {
@@ -50,7 +51,7 @@ class UserAssetHeader extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("UserAssetHeader mdc-layout-grid__inner", className)
+    return cls("UserAssetHeader mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {
@@ -70,10 +71,7 @@ class UserAssetHeader extends React.Component {
     const {name} = this.state
 
     return (
-      <form
-        className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-        onSubmit={this.handleSubmit}
-      >
+      <form onSubmit={this.handleSubmit}>
         <div className="inline-flex items-center w-100">
           <TextField
             className="flex-auto"
@@ -94,13 +92,13 @@ class UserAssetHeader extends React.Component {
           >
             Save
           </button>
-          <span
-            className="pointer pa2"
-            role="button"
+          <button
+            className="mdc-button ml2"
+            type="button"
             onClick={this.handleToggleOpen}
           >
             Cancel
-          </span>
+          </button>
         </div>
       </form>
       )
@@ -110,25 +108,23 @@ class UserAssetHeader extends React.Component {
     const asset = get(this.props, "asset", {})
 
     return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <div className="inline-flex w-100">
-          <h5 className="flex-auto">
-            <UserLink className="rn-link" user={get(asset, "study.owner", null)} />
-            <span>/</span>
-            <StudyLink className="rn-link" study={get(asset, "study", null)} />
-            <span>/</span>
-            <Icon className="v-mid mr1" icon="asset" />
-            <span className="fw5">{asset.name}</span>
-          </h5>
-          {asset.viewerCanUpdate &&
-          <button
-            className="material-icons mdc-icon-button"
-            type="button"
-            onClick={this.handleToggleOpen}
-          >
-            edit
-          </button>}
-        </div>
+      <div className="inline-flex w-100">
+        <h5 className="flex-auto">
+          <UserLink className="rn-link" user={get(asset, "study.owner", null)} />
+          <span>/</span>
+          <StudyLink className="rn-link" study={get(asset, "study", null)} />
+          <span>/</span>
+          <Icon className="v-mid mr1" icon="asset" />
+          <span className="fw5">{asset.name}</span>
+        </h5>
+        {asset.viewerCanUpdate &&
+        <button
+          className="material-icons mdc-icon-button"
+          type="button"
+          onClick={this.handleToggleOpen}
+        >
+          edit
+        </button>}
       </div>
     )
   }

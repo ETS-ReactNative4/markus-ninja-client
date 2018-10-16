@@ -64,7 +64,7 @@ class UserHeader extends React.Component {
   }
 
   renderForm() {
-    const bio = get(this.props, "user.bio")
+    const {bio} = this.state
 
     return (
       <form
@@ -92,7 +92,7 @@ class UserHeader extends React.Component {
             Save
           </button>
           <button
-            className="mdc-button mdc-button--outlined ml2"
+            className="mdc-button ml2"
             type="button"
             onClick={this.handleToggleOpen}
           >
@@ -129,21 +129,23 @@ class UserHeader extends React.Component {
           <EnrollmentSelect enrollable={userProp} />}
         </div>
         <div className="flex items-center w-100">
-          <div className="flex-auto mdc-theme--text-secondary-on-light">
+          <div className="truncate">
             {isEmpty(user.bio)
-            ? <div>No bio provided</div>
+            ? <div className="mdc-theme--text-secondary-on-light">No bio provided</div>
             : <HTML html={user.bioHTML} />}
           </div>
-          {user.isViewer &&
-          <button
-            className="mdc-icon-button material-icons"
-            type="button"
-            onClick={this.handleToggleOpen}
-            aria-label="Edit bio"
-            title="Edit bio"
-          >
-            edit
-          </button>}
+          <div className="ml-auto">
+            {user.isViewer &&
+            <button
+              className="mdc-icon-button material-icons"
+              type="button"
+              onClick={this.handleToggleOpen}
+              aria-label="Edit bio"
+              title="Edit bio"
+            >
+              edit
+            </button>}
+          </div>
         </div>
       </div>
     )

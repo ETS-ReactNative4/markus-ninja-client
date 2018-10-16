@@ -49,7 +49,7 @@ class CreateCoursePage extends React.Component {
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <div className="mdc-typography--headline4">Create a new course</div>
                     <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light pb3">
-                      Sort your lessons in sequential lists to be taken one after the other.
+                      Sort your lessons into sequential lists to be taken one after the other.
                     </div>
                   </div>
                   <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />

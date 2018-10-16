@@ -41,14 +41,16 @@ class CardStudyPreview extends React.Component {
             </Link>
           </div>
           <div className="mdc-card__action-icons">
+            {study.viewerCanEnroll &&
             <EnrollIconButton
               className="mdc-card__action mdc-card__action--icon"
               enrollable={get(this.props, "study", null)}
-            />
+            />}
+            {study.viewerCanApple &&
             <AppleIconButton
               className="mdc-card__action mdc-card__action--icon"
               appleable={get(this.props, "study", null)}
-            />
+            />}
             <Link
               className="rn-icon-link mdc-card__action mdc-card__action--icon"
               to={study.resourcePath}

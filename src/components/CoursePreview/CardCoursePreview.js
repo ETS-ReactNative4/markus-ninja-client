@@ -40,10 +40,11 @@ class CardCoursePreview extends React.Component {
             </Link>
           </div>
           <div className="mdc-card__action-icons">
+            {course.viewerCanApple &&
             <AppleIconButton
               className="mdc-card__action mdc-card__action--icon"
               appleable={get(this.props, "course", null)}
-            />
+            />}
             <Link
               className="rn-icon-link mdc-card__action mdc-card__action--icon"
               to={course.resourcePath}

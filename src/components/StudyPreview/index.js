@@ -11,8 +11,6 @@ import ListStudyPreview from './ListStudyPreview'
 
 const FRAGMENT = graphql`
   fragment StudyPreview_study on Study {
-    ...AppleIconButton_appleable
-    ...EnrollIconButton_enrollable
     advancedAt
     appleGivers(first: 0) {
       totalCount
@@ -20,6 +18,8 @@ const FRAGMENT = graphql`
     createdAt
     descriptionHTML
     description
+    enrollmentStatus
+    id
     isPrivate
     lessons(first: 0) {
       totalCount

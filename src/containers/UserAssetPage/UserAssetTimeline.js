@@ -13,20 +13,27 @@ class UserAssetTimeline extends Component {
   render() {
     const timelineEdges = get(this.props, "asset.timeline.edges", [])
     return (
-      <div className="UserAssetTimeline flex flex-column">
+      <React.Fragment>
         {timelineEdges.map(({node}) => (
-          <div key={node.id} className="mt3">
-            <UserAssetTimelineEvent item={node} />
-          </div>
+          node &&
+          <UserAssetTimelineEvent
+            key={node.id}
+            className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+            item={node}
+          />
         ))}
         {this.props.relay.hasMore() &&
-        <button
-          className="UserAssetTimeline__more"
-          onClick={this._loadMore}
-        >
-          More
-        </button>}
-      </div>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <div className="flex justify-center">
+            <button
+              className="UserAssetTimeline__more"
+              onClick={this._loadMore}
+            >
+              Load More
+            </button>
+          </div>
+        </div>}
+      </React.Fragment>
     )
   }
 

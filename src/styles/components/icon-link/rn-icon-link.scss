@@ -12,7 +12,6 @@
   text-decoration: none;
   transition: color $rn-icon-link-transition-duration;
   color: currentColor;
-  will-change: transform, color;
 
   &:hover {
     color: var(--mdc-theme-text-secondary-on-light);

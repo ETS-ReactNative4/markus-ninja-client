@@ -1,9 +1,6 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay'
 import tinycolor from 'tinycolor2'
 import {Link} from 'react-router-dom'
 import {get} from 'utils'
@@ -53,11 +50,22 @@ class LabelLink extends React.Component {
   }
 }
 
-export default createFragmentContainer(LabelLink, graphql`
-  fragment LabelLink_label on Label {
-    color
-    id
-    name
-    resourcePath
+LabelLink.propTypes = {
+  label: PropTypes.shape({
+    color: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    resourcePath: PropTypes.string.isRequired,
+  }).isRequired,
+}
+
+LabelLink.defaultProps = {
+  label: {
+    color: "",
+    id: "",
+    name: "",
+    resourcePath: "",
   }
-`)
+}
+
+export default LabelLink

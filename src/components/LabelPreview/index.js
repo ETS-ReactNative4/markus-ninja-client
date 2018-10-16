@@ -8,7 +8,6 @@ import ListLabelPreview from './ListLabelPreview'
 
 const FRAGMENT = graphql`
   fragment LabelPreview_label on Label {
-    ...LabelLink_label
     color
     createdAt
     description

@@ -124,7 +124,7 @@ TopicTopicablesContainer.defaultProps = {
   count: TOPICABLES_PER_PAGE,
 }
 
-export const TopicTopicableProp = PropTypes.shape({
+export const TopicTopicablesProp = PropTypes.shape({
   counts: PropTypes.shape({
     course: PropTypes.number,
     study: PropTypes.number,
@@ -136,7 +136,7 @@ export const TopicTopicableProp = PropTypes.shape({
   type: PropTypes.string,
 })
 
-export const TopicTopicablePropDefaults = {
+export const TopicTopicablesPropDefaults = {
   counts: {
     course: 0,
     study: 0,

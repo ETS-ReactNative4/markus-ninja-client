@@ -1,8 +1,5 @@
 import * as React from 'react'
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faApple } from '@fortawesome/free-brands-svg-icons'
@@ -132,10 +129,20 @@ export class AppleIconButton extends React.Component {
   }
 }
 
-export default createFragmentContainer(AppleIconButton, graphql`
-  fragment AppleIconButton_appleable on Appleable {
-    id
-    viewerCanApple
-    viewerHasAppled
+AppleIconButton.propTypes = {
+  appleable: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    viewerCanApple: PropTypes.bool.isRequired,
+    viewerHasAppled: PropTypes.bool.isRequired,
+  }).isRequired,
+}
+
+AppleIconButton.defaultProps = {
+  appleable: {
+    id: "",
+    viewerCanApple: false,
+    viewerHasAppled: false,
   }
-`)
+}
+
+export default AppleIconButton

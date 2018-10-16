@@ -37,10 +37,11 @@ class CardLessonPreview extends React.Component {
             </Link>
           </div>
           <div className="mdc-card__action-icons">
+            {lesson.viewerCanEnroll &&
             <EnrollIconButton
               className="mdc-card__action mdc-card__action--icon"
               enrollable={get(this.props, "lesson", null)}
-            />
+            />}
             <Link
               className="rn-icon-link mdc-card__action mdc-card__action--icon"
               to={lesson.resourcePath}

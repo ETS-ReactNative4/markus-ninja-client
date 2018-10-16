@@ -101,9 +101,7 @@ class StudyDangerZone extends React.Component {
     return (
       <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
         <h6>Delete this study</h6>
-        <p className="info-description">
-          Once you delete a study, there is no going back. Please be certain.
-        </p>
+        <p>Once you delete a study, there is no going back. Please be certain.</p>
         <button
           className="mdc-button mdc-button--unelevated"
           type="button"

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {withRouter} from 'react-router-dom'
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
@@ -35,16 +34,11 @@ class SearchPageResults extends React.Component {
     history.replace({pathname: location.pathname, search})
   }, 100)
 
-  get classes() {
-    const {className} = this.props
-    return cls("SearchPageResults flex w-100", className)
-  }
-
   render() {
     const {search} = this.props
 
     return (
-      <div className={this.classes}>
+      <React.Fragment>
         <SearchNav counts={search.counts} />
         <div className="flex-auto">
           <div className="mdc-layout-grid">
@@ -56,7 +50,7 @@ class SearchPageResults extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 
