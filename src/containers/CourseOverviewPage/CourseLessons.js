@@ -25,7 +25,7 @@ class CourseLessons extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("CourseLessons ", className)
+    return cls("CourseLessons mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {
@@ -33,26 +33,24 @@ class CourseLessons extends React.Component {
     const edges = get(course, "lessons.edges", [])
 
     return (
-      <React.Fragment>
+      <div className={this.classes}>
+        <ul className="mdc-list mdc-list--two-line">
+          {edges.map(({node}) => (
+            node &&
+            <LessonPreview.List isCourse key={node.id} lesson={node} />
+          ))}
+        </ul>
+        {this.props.relay.hasMore() &&
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <ul className="mdc-list mdc-list--two-line">
-            {edges.map(({node}) => (
-              node &&
-              <LessonPreview.List isCourse key={node.id} lesson={node} />
-            ))}
-          </ul>
-          {this.props.relay.hasMore() &&
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <button
-              className="mdc-button mdc-button--unelevated"
-              type="button"
-              onClick={this._loadMore}
-            >
-              More
-            </button>
-          </div>}
-        </div>
-      </React.Fragment>
+          <button
+            className="mdc-button mdc-button--unelevated"
+            type="button"
+            onClick={this._loadMore}
+          >
+            More
+          </button>
+        </div>}
+      </div>
     )
   }
 }
@@ -64,12 +62,14 @@ export default createPaginationContainer(CourseLessons,
         after: {type: "String"},
         count: {type: "Int!"},
       ) {
+        id
         lessons(
           first: $count,
           after: $after,
           orderBy:{direction: ASC field: COURSE_NUMBER}
         ) @connection(key: "CourseLessons_lessons", filters: []) {
           edges {
+            cursor
             node {
               id
               ...LessonPreview_lesson

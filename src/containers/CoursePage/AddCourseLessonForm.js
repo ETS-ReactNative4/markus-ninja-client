@@ -15,6 +15,24 @@ class AddCourseLessonForm extends React.Component {
     lessonId: "",
   }
 
+  handleChangeLesson = (lessonId) => {
+    this.setState({ lessonId })
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const { lessonId } = this.state
+    AddCourseLessonMutation(
+      this.props.course.id,
+      lessonId,
+      (response, errors) => {
+        if (!isNil(errors)) {
+          this.setState({ error: errors[0].message })
+        }
+      }
+    )
+  }
+
   get classes() {
     const {className} = this.props
     return cls("AddCourseLessonForm flex items-center", className)
@@ -46,24 +64,6 @@ class AddCourseLessonForm extends React.Component {
           Add lesson
         </button>
       </form>
-    )
-  }
-
-  handleChangeLesson = (lessonId) => {
-    this.setState({ lessonId })
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const { lessonId } = this.state
-    AddCourseLessonMutation(
-      this.props.course.id,
-      lessonId,
-      (response, errors) => {
-        if (!isNil(errors)) {
-          this.setState({ error: errors[0].message })
-        }
-      }
     )
   }
 }
