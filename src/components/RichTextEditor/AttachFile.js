@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -123,46 +122,39 @@ class AttachFile extends React.Component {
     }
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("mdc-card__actions", className)
-  }
-
   render() {
     const {study, uid} = this.props
     const viewerCanAdmin = get(study, "viewerCanAdmin", false)
 
     return (
-      <div className={this.classes}>
-        <div className="mdc-card__actions-icons">
-          <label
-            className="material-icons mdc-icon-button mdc-card__action--icon"
-            htmlFor={`file-input${uid}`}
-            title="Attach file"
-            aria-label="Attach file"
-          >
-            attach_file
-            <input
-              id={`file-input${uid}`}
-              className="dn"
-              type="file"
-              accept=".jpg,jpeg,.png,.gif"
-              onChange={(e) => this.handleAttachFile(e.target.files[0], false)}
-            />
-          </label>
-          {viewerCanAdmin &&
-          <button
-            className="material-icons mdc-icon-button mdc-card__action--icon"
-            type="button"
-            onClick={this.handleToggleSaveForm}
-            aria-label="Attach & Save file"
-            title="Attach & Save file"
-          >
-            save
-          </button>}
-        </div>
+      <React.Fragment>
+        <label
+          className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+          htmlFor={`file-input${uid}`}
+          title="Attach file"
+          aria-label="Attach file"
+        >
+          attach_file
+          <input
+            id={`file-input${uid}`}
+            className="dn"
+            type="file"
+            accept=".jpg,jpeg,.png,.gif"
+            onChange={(e) => this.handleAttachFile(e.target.files[0], false)}
+          />
+        </label>
+        {viewerCanAdmin &&
+        <button
+          className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+          type="button"
+          onClick={this.handleToggleSaveForm}
+          aria-label="Attach & Save file"
+          title="Attach & Save file"
+        >
+          save
+        </button>}
         {viewerCanAdmin && this.renderSaveForm()}
-      </div>
+      </React.Fragment>
     )
   }
 
@@ -223,7 +215,7 @@ class AttachFile extends React.Component {
               Save
             </button>
           </Dialog.Actions>}
-        />
+      />
     )
   }
 }

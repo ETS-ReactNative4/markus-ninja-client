@@ -47,25 +47,15 @@ class AddLessonCommentForm extends React.Component {
   }
 
   render() {
-    const {submitted} = this.state
-
     return (
-      <form
-        className={this.classes}
-        onSubmit={this.handleSubmit}
-      >
+      <form className={this.classes}>
         <RichTextEditor
           onChange={this.handleChangeBody}
-          submit={submitted}
+          submitText="Comment"
           placeholder="Leave a comment"
           study={get(this.props, "lesson.study", null)}
+          onSubmit={this.handleSubmit}
         />
-        <button
-          className="mdc-button mdc-button--unelevated mt2"
-          type="submit"
-        >
-          Comment
-        </button>
       </form>
     )
   }

@@ -103,7 +103,7 @@ class StudyLessonsPage extends React.Component {
           </div>
         </div>
         <StudyLessons filterBy={this._filterBy} orderBy={this._orderBy}>
-          <StudyLessonsPageLessons />
+          <StudyLessonsPageLessons study={study} />
         </StudyLessons>
       </div>
     )
@@ -134,6 +134,7 @@ export default createFragmentContainer(StudyLessonsPage, graphql`
   fragment StudyLessonsPage_study on Study {
     ...CreateLessonLink_study
     ...StudyLabelsLink_study
+    resourcePath
     viewerCanAdmin
   }
 `)

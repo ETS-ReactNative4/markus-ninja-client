@@ -66,6 +66,10 @@ class CourseOverviewPage extends React.Component {
             return <div>{error.message}</div>
           } else if (props) {
             const course = get(props, "study.course", null)
+            if (!course) {
+              return null
+            }
+
             return (
               <div className={this.classes}>
                 <CourseMeta course={course} />

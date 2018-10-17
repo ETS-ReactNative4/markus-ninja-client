@@ -25,8 +25,11 @@ class ListLessonPreview extends React.Component {
   }
 
   get classes() {
-    const {className} = this.props
-    return cls("ListLessonPreview mdc-list-item", className)
+    const {className, drag, edit} = this.props
+    return cls("ListLessonPreview mdc-list-item", className, {
+      "ListLessonPreview--editting": edit,
+      "ListLessonPreview--dragging": drag,
+    })
   }
 
   get number() {
@@ -34,8 +37,22 @@ class ListLessonPreview extends React.Component {
     return isCourse ? lesson.courseNumber : lesson.number
   }
 
+  get otherProps() {
+    const {
+      children,
+      className,
+      edit,
+      innerRef,
+      isCourse,
+      lesson,
+      ...otherProps
+    } = this.props
+
+    return otherProps
+  }
+
   render() {
-    const {edit, isCourse, lesson} = this.props
+    const {edit, innerRef, isCourse, lesson} = this.props
     const labelNodes = get(lesson, "labels.nodes", [])
 
     if (!lesson) {
@@ -43,7 +60,11 @@ class ListLessonPreview extends React.Component {
     }
 
     return (
-      <li className={this.classes}>
+      <li
+        {...this.otherProps}
+        ref={innerRef}
+        className={this.classes}
+      >
         <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
         <span className="mdc-list-item__text">
           <Link className="mdc-list-item__primary-text" to={lesson.resourcePath}>

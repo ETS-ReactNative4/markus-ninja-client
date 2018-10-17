@@ -66,9 +66,9 @@ class LessonBody extends React.Component {
         </div>
         {lesson.viewerCanUpdate &&
         <div className="mdc-card__actions bottom">
-          <div className="mdc-card__actions-icons">
+          <div className="mdc-card__action-icons">
             <button
-              className="material-icons mdc-icon-button mdc-card__action--icon"
+              className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
               type="button"
               onClick={this.handleToggleEdit}
               aria-label="Edit lesson"
@@ -87,28 +87,17 @@ class LessonBody extends React.Component {
     const {body} = this.state
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form>
         <RichTextEditor
           id="LessonBody__body"
-          onChange={(body) => this.setState({body})}
           placeholder="Begin your lesson"
           initialValue={body}
+          submitText="Update lesson"
+          onCancel={this.handleToggleEdit}
+          onChange={(body) => this.setState({body})}
+          onSubmit={this.handleSubmit}
           study={get(lesson, "study", null)}
         />
-        <div className="mt2">
-          <button
-            className="mdc-button mdc-button--unelevated"
-            type="submit"
-          >
-            Update lesson
-          </button>
-          <button
-            className="mdc-button mdc-button--outlined ml2"
-            onClick={this.handleToggleEdit}
-          >
-            Cancel
-          </button>
-        </div>
       </form>
     )
   }

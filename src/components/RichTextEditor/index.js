@@ -98,9 +98,28 @@ class RichTextEditor extends React.Component {
     return
   }
 
+  handleCancel = () => {
+    const {initialValue, onCancel} = this.props
+    const editorState = EditorState.push(
+      this.state.editorState,
+      ContentState.createFromText(initialValue),
+    )
+    this.setState({ editorState })
+    onCancel()
+  }
+
   handleChange = (editorState) => {
     this.setState({editorState})
     this.props.onChange(editorState.getCurrentContent().getPlainText())
+  }
+
+  handleSubmit = () => {
+    const editorState = EditorState.push(
+      this.state.editorState,
+      ContentState.createFromText(""),
+    )
+    this.setState({ editorState })
+    this.props.onSubmit()
   }
 
   focus = () => {
@@ -123,7 +142,7 @@ class RichTextEditor extends React.Component {
 
   render() {
     const {editorState, loadingFile, preview} = this.state
-    const { placeholder } = this.props
+    const {onCancel, onSubmit, placeholder} = this.props
 
     return (
       <div className={this.classes}>
@@ -145,11 +164,33 @@ class RichTextEditor extends React.Component {
               ref={this.editorElement}
             />
           </div>
-          <AttachFile
-            onChange={this.handleChangeFile}
-            onChangeComplete={this.handleChangeFileComplete}
-            study={get(this.props, "study", null)}
-          />
+          <div className="mdc-card__actions">
+            <div className="mdc-card__action-buttons">
+              {onSubmit &&
+              <button
+                className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
+                type="button"
+                onClick={this.handleSubmit}
+              >
+                {this.props.submitText || "Submit"}
+              </button>}
+              {onCancel &&
+              <button
+                className="mdc-button mdc-card__action mdc-card__action--button"
+                type="button"
+                onClick={this.handleCancel}
+              >
+                Cancel
+              </button>}
+            </div>
+            <div className="mdc-card__action-icons">
+              <AttachFile
+                onChange={this.handleChangeFile}
+                onChangeComplete={this.handleChangeFileComplete}
+                study={get(this.props, "study", null)}
+              />
+            </div>
+          </div>
         </div>
       </div>
     )

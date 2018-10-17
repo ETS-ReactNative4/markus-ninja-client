@@ -6,7 +6,7 @@ import {makeCancelable} from 'utils'
 
 class Preview extends React.Component {
   state = {
-    dirty: false,
+    dirty: true,
     open: false,
     preview: "",
     request: {
@@ -19,7 +19,7 @@ class Preview extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.open && !prevProps.open && this.state.dirty) {
+    if (!prevProps.open && this.props.open && this.state.dirty) {
       if (this.props.text !== "") {
         this.fetchPreview()
         this.setState({dirty: false})

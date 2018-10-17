@@ -84,7 +84,7 @@ class UserAsset extends React.Component {
           <div className="mdc-card__action-icons">
             {asset.viewerCanDelete &&
             <button
-              className="material-icons mdc-icon-button mdc-card__action--icon"
+              className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
               type="button"
               onClick={this.handleToggleDeleteConfirmation}
               aria-label="Delete asset"

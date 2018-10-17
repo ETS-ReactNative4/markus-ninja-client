@@ -5,6 +5,7 @@ import {
   graphql,
 } from 'react-relay'
 import moment from 'moment'
+import Dialog from 'components/Dialog'
 import HTML from 'components/HTML'
 import RichTextEditor from 'components/RichTextEditor'
 import UserLink from 'components/UserLink'
@@ -14,6 +15,7 @@ import {get, isNil, timeDifferenceForDate} from 'utils'
 
 class LessonComment extends React.Component {
   state = {
+    confirmDeleteDialogOpen: false,
     edit: false,
     error: null,
     body: get(this.props, "comment.body", ""),
@@ -45,8 +47,18 @@ class LessonComment extends React.Component {
     )
   }
 
+  handleToggleDeleteConfirmation = () => {
+    const {confirmDeleteDialogOpen} = this.state
+    this.setState({
+      confirmDeleteDialogOpen: !confirmDeleteDialogOpen,
+    })
+  }
+
   handleToggleEdit = () => {
-    this.setState({ edit: !this.state.edit })
+    this.setState({
+      body: get(this.props, "comment.body", ""),
+      edit: !this.state.edit,
+    })
   }
 
   get classes() {
@@ -82,16 +94,21 @@ class LessonComment extends React.Component {
         <HTML className="ph3" html={comment.bodyHTML} />
         {comment.viewerCanUpdate &&
         <div className="mdc-card__actions">
-          <div className="mdc-card__actions-buttons">
+          <div className="mdc-card__action-buttons">
             {comment.viewerDidAuthor &&
-              <button className="mdc-button mdc-button--outlined" disabled>Author</button>}
+            <button
+              className="mdc-button mdc-button--outlined mdc-card__action mdc-card__action--button"
+              disabled
+            >
+              Author
+            </button>}
           </div>
-          <div className="mdc-card__actions-icons">
+          <div className="mdc-card__action-icons">
             {comment.viewerCanDelete &&
             <button
-              className="material-icons mdc-icon-button mdc-card__action--icon"
+              className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
               type="button"
-              onClick={this.handleDelete}
+              onClick={this.handleToggleDeleteConfirmation}
               aria-label="Delete comment"
               title="Delete comment"
             >
@@ -109,38 +126,63 @@ class LessonComment extends React.Component {
             </button>}
           </div>
         </div>}
+        {comment.viewerCanDelete && this.renderConfirmDeleteDialog()}
       </div>
     )
   }
 
+  renderConfirmDeleteDialog() {
+    const {confirmDeleteDialogOpen} = this.state
+
+    return (
+      <Dialog
+        open={confirmDeleteDialogOpen}
+        onClose={() => this.setState({confirmDeleteDialogOpen: false})}
+        title={<Dialog.Title>Delete comment</Dialog.Title>}
+        content={
+          <Dialog.Content>
+            <div className="flex flex-column mw5">
+              <p>Are you sure?</p>
+            </div>
+          </Dialog.Content>
+        }
+        actions={
+          <Dialog.Actions>
+            <button
+              type="button"
+              className="mdc-button"
+              data-mdc-dialog-action="no"
+            >
+              No
+            </button>
+            <button
+              type="button"
+              className="mdc-button"
+              onClick={this.handleDelete}
+              data-mdc-dialog-action="yes"
+            >
+              Yes
+            </button>
+          </Dialog.Actions>}
+        />
+    )
+  }
   renderForm() {
     const study = get (this.props, "comment.study", null)
     const {body} = this.state
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form>
         <RichTextEditor
           id="LessonComment__body"
           placeholder="Leave a comment"
           initialValue={body}
+          submitText="Update comment"
           study={study}
+          onCancel={this.handleToggleEdit}
           onChange={this.handleChange}
+          onSubmit={this.handleSubmit}
         />
-        <div className="mt2">
-          <button
-            className="mdc-button mdc-button--unelevated"
-            type="submit"
-          >
-            Update comment
-          </button>
-          <button
-            className="mdc-button mdc-button--outlined ml2"
-            type="button"
-            onClick={this.handleToggleEdit}
-          >
-            Cancel
-          </button>
-        </div>
       </form>
     )
   }

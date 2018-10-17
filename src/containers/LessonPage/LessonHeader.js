@@ -91,13 +91,13 @@ class LessonHeader extends React.Component {
           >
             Save
           </button>
-          <span
-            className="pointer pa2"
-            role="button"
+          <button
+            className="mdc-button ml2"
+            type="button"
             onClick={this.handleToggleOpen}
           >
             Cancel
-          </span>
+          </button>
         </div>
       </form>
       )

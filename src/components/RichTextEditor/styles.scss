@@ -19,22 +19,6 @@
   color: rgba(184, 95, 138, 1.0);
 }
 
-.AttachFile .AttachFile__name-input {
-  display: none;
-}
-
-.AttachFile .AttachFile__name-input.open {
-  display: inline-block;
-}
-
-.AttachFile .AttachFile__name {
-  display: none;
-}
-
-.AttachFile .AttachFile__name.open {
-  display: inline-block;
-}
-
 .RichTextEditor__write {
   @include mdc-theme-prop(background-color, background);
   @include mdc-theme-prop(color, text-primary-on-light);
@@ -46,7 +30,7 @@
   cursor: text;
   min-height: calc(125px - 54.5px);
   box-sizing: border-box;
-  padding: 10px;
+  padding: 1rem;
 }
 
 .RichTextEditor__preview {
@@ -55,7 +39,7 @@
 
   display: none;
   min-height: 125px;
-  padding: 10px;
+  padding: 1rem;
 }
 
 .RichTextEditor.RichTextEditor--preview {
