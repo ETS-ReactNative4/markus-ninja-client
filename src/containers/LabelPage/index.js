@@ -98,7 +98,7 @@ class LabelPage extends React.Component {
             </StudyLabelsLink>
           </div>
         </div>
-        <StudyLessons filterBy={this._filterBy} orderBy={this._orderBy}>
+        <StudyLessons filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
           <LabelPageLessons />
         </StudyLessons>
       </div>

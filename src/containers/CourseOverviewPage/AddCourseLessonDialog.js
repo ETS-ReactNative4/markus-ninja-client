@@ -1,4 +1,6 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -8,19 +10,62 @@ import Dialog from 'components/Dialog'
 import StudyLessons from 'components/StudyLessons'
 import LessonPreview from 'components/LessonPreview'
 import AddCourseLessonMutation from 'mutations/AddCourseLessonMutation'
+import {get, isEmpty} from 'utils'
 
-const Lessons = ({lessons}) => (
-  <ul className="mdc-list mdc-list--two-line">
-    {lessons.edges.map(({node}) => (
-      node && <LessonPreview.List key={node.id} lesson={node} />
-    ))}
-  </ul>
-)
+class Lessons extends React.Component {
+  state = {
+    lessonId: "",
+  }
+
+  handleSelect = (lessonId) => {
+    this.setState({lessonId})
+    this.props.onSelect(lessonId)
+  }
+
+  render() {
+    const {lessonId} = this.state
+    const {lessons} = this.props
+    const edges = get(lessons, "edges", [])
+    const noResults = isEmpty(edges)
+
+    return (
+      <ul className="mdc-list">
+        {noResults
+        ? <li className="mdc-list-item">No lessons found</li>
+        : edges.map(({node}) => (
+            node &&
+            <LessonPreview.Select
+              key={node.id}
+              lesson={node}
+              selected={lessonId === node.id}
+              onClick={this.handleSelect}
+            />
+          ))}
+      </ul>
+    )
+  }
+}
+
+Lessons.propTypes = {
+  onSelect: PropTypes.func.isRequired,
+}
+
+Lessons.defaultProps = {
+  onSelect: () => {},
+}
 
 class AddCourseLessonDialog extends React.Component {
   state = {
+    lessonsFetched: false,
     lessonId: "",
     query: "",
+  }
+
+  componentDidUpdate(prevProps) {
+    const {lessonsFetched} = this.state
+    if (!lessonsFetched && !prevProps.open && this.props.open) {
+      this.setState({lessonsFetched: true})
+    }
   }
 
   handleCancel = () => {
@@ -34,6 +79,10 @@ class AddCourseLessonDialog extends React.Component {
     })
   }
 
+  handleSelectLesson = (lessonId) => {
+    this.setState({lessonId})
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
     const { lessonId } = this.state
@@ -44,8 +93,18 @@ class AddCourseLessonDialog extends React.Component {
         if (errors) {
           this.setState({ error: errors[0].message })
         }
+        this.setState({
+          lessonsFetched: false,
+          lessonId: "",
+          query: "",
+        })
       }
     )
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("AddCourseLessonDialog", className)
   }
 
   get _filterBy() {
@@ -57,19 +116,22 @@ class AddCourseLessonDialog extends React.Component {
   }
 
   render() {
+    const {lessonsFetched} = this.state
     const {open} = this.props
 
     return (
       <Dialog
+        className={this.classes}
         open={open}
         onClose={this.handleCancel}
         title={<Dialog.Title>Add course lesson</Dialog.Title>}
         content={
           <Dialog.Content>
             {this.renderInput()}
-            <StudyLessons filterBy={this._filterBy}>
-              <Lessons />
-            </StudyLessons>
+            {(open || lessonsFetched) &&
+            <StudyLessons filterBy={this._filterBy} fragment="select">
+              <Lessons onSelect={this.handleSelectLesson} />
+            </StudyLessons>}
           </Dialog.Content>}
         actions={
           <Dialog.Actions>
@@ -112,9 +174,14 @@ class AddCourseLessonDialog extends React.Component {
       </TextField>
     )
   }
+}
 
-  renderLessons() {
-  }
+AddCourseLessonDialog.propTypes = {
+  onClose: PropTypes.func,
+}
+
+AddCourseLessonDialog.defaultProps = {
+  onClose: () => {},
 }
 
 export default createFragmentContainer(AddCourseLessonDialog, graphql`

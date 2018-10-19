@@ -17,12 +17,16 @@ class Dialog extends React.Component {
   constructor(props) {
     super(props)
 
-    this.root = React.createRef()
+    this.root = null
     this.container = React.createRef()
     this.content = React.createRef()
     this.focusTrap_ = null
     this.focusTrapFactory_ = createFocusTrap
     this.initialFocusEl = null
+
+    this.setRootRef = (element) => {
+      this.root = element;
+    }
 
     this.state = {
       classList: new Set(),
@@ -30,8 +34,8 @@ class Dialog extends React.Component {
   }
 
   componentDidMount() {
-    this.buttons_ = [].slice.call(this.root.current.querySelectorAll(strings.BUTTON_SELECTOR))
-    this.defaultButton_ = this.root.current.querySelector(strings.DEFAULT_BUTTON_SELECTOR)
+    this.buttons_ = [].slice.call(this.root.querySelectorAll(strings.BUTTON_SELECTOR))
+    this.defaultButton_ = this.root.querySelector(strings.DEFAULT_BUTTON_SELECTOR)
     this.focusTrap_ = util.createFocusTrapInstance(this.container.current, this.focusTrapFactory_, this.initialFocusEl)
     this.foundation_ = new MDCDialogFoundation(this.adapter)
     this.foundation_.init()
@@ -82,11 +86,11 @@ class Dialog extends React.Component {
   }
 
   listen(evtType, handler) {
-    this.root.current.addEventListener(evtType, handler)
+    this.root.addEventListener(evtType, handler)
   }
 
   unlisten(evtType, handler) {
-    this.root.current.removeEventListener(evtType, handler)
+    this.root.removeEventListener(evtType, handler)
   }
 
   emit(evtType, evtData, shouldBubble = false) {
@@ -101,7 +105,7 @@ class Dialog extends React.Component {
       evt.initCustomEvent(evtType, shouldBubble, false, evtData)
     }
 
-    this.root.current.dispatchEvent(evt)
+    this.root.dispatchEvent(evt)
   }
 
   get classes() {
@@ -161,6 +165,7 @@ class Dialog extends React.Component {
       actions,
       className,
       content,
+      innerRef,
       onClose,
       onOpen,
       open,
@@ -174,6 +179,7 @@ class Dialog extends React.Component {
     const {
       actions,
       content,
+      innerRef,
       title,
     } = this.props
 
@@ -187,7 +193,7 @@ class Dialog extends React.Component {
         aria-describedby="dialog-content"
         onClick={(e) => this.foundation_.handleInteraction(e)}
         onKeyDown={(e) => this.foundation_.handleInteraction(e)}
-        ref={this.root}
+        ref={(node) => {this.setRootRef(node); innerRef(node)}}
       >
         <div
           className="mdc-dialog__container"
@@ -237,6 +243,7 @@ Dialog.propTypes = {
   actions: PropTypes.element,
   className: PropTypes.string,
   content: PropTypes.element,
+  innerRef: PropTypes.func,
   onClose: PropTypes.func,
   onOpen: PropTypes.func,
   open: PropTypes.bool,
@@ -247,6 +254,7 @@ Dialog.defaultProps = {
   actions: null,
   className: '',
   content: null,
+  innerRef: () => {},
   onClose: () => {},
   onOpen: () => {},
   open: false,

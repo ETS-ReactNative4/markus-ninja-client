@@ -6,9 +6,9 @@ import {
 } from 'react-relay'
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
-import CreateUserAssetForm from 'components/CreateUserAssetForm'
 import StudyAssets from 'components/StudyAssets'
 import StudyAssetsPageAssets from './StudyAssetsPageAssets'
+import CreateUserAssetDialog from './CreateUserAssetDialog'
 import {debounce, get, isEmpty} from 'utils'
 
 class StudyAssetsPage extends React.Component {
@@ -100,18 +100,15 @@ class StudyAssetsPage extends React.Component {
               </button>}
           </div>
         </div>
-        {open && study.viewerCanAdmin &&
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <div className="flex items-start">
-            <CreateUserAssetForm
-              study={study}
-              onCancel={() => this.setState({open: false})}
-            />
-          </div>
-        </div>}
         <StudyAssets filterBy={this._filterBy} orderBy={this._orderBy}>
           <StudyAssetsPageAssets />
         </StudyAssets>
+        {study.viewerCanAdmin &&
+        <CreateUserAssetDialog
+          open={open}
+          study={get(this.props, "study", null)}
+          onClose={() => this.setState({open: false})}
+        />}
       </div>
     )
   }
@@ -139,7 +136,7 @@ class StudyAssetsPage extends React.Component {
 
 export default createFragmentContainer(StudyAssetsPage, graphql`
   fragment StudyAssetsPage_study on Study {
-    ...CreateUserAssetForm_study
+    ...CreateUserAssetDialog_study
     id
     viewerCanAdmin
   }

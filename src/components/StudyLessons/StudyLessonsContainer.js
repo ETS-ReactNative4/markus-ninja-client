@@ -127,15 +127,20 @@ const refetchContainer = createRefetchContainer(StudyLessonsContainer,
         after: {type: "String"},
         filterBy: {type: "LessonFilters"},
         orderBy: {type: "LessonOrder"},
+        styleCard: {type: "Boolean!"},
+        styleList: {type: "Boolean!"},
+        styleSelect: {type: "Boolean!"},
       ) {
         lessons(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
-        @connection(key: "StudyLessonsContainer_lessons", filters: ["filterBy", "orderBy"]) {
+        @connection(key: "StudyLessonsContainer_lessons", filters: ["filterBy", "orderBy", "styleCard", "styleList", "styleSelect"]) {
           edges {
             cursor
             node {
               id
               ...on Lesson {
-                ...LessonPreview_lesson
+                ...CardLessonPreview_lesson @include(if: $styleCard)
+                ...ListLessonPreview_lesson @include(if: $styleList)
+                ...SelectLessonPreview_lesson @include(if: $styleSelect)
               }
             }
           }
@@ -156,6 +161,9 @@ const refetchContainer = createRefetchContainer(StudyLessonsContainer,
       $after: String,
       $filterBy: LessonFilters,
       $orderBy: LessonOrder,
+      $styleCard: Boolean!,
+      $styleList: Boolean!,
+      $styleSelect: Boolean!,
     ) {
       study(owner: $owner, name: $name) {
         ...StudyLessonsContainer_study @arguments(
@@ -163,6 +171,9 @@ const refetchContainer = createRefetchContainer(StudyLessonsContainer,
           after: $after,
           filterBy: $filterBy,
           orderBy: $orderBy,
+          styleCard: $styleCard,
+          styleList: $styleList,
+          styleSelect: $styleSelect,
         )
       }
     }

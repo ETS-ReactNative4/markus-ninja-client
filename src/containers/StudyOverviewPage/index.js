@@ -41,7 +41,7 @@ const StudyOverviewPageQuery = graphql`
           node {
             id
             ...on Lesson {
-              ...LessonPreview_lesson
+              ...CardLessonPreview_lesson
             }
           }
         }

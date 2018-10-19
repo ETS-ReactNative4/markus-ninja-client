@@ -16,6 +16,7 @@ const mutation = graphql`
         }
       }
       study {
+        id
         labels(first: 0) {
           totalCount
         }
@@ -42,18 +43,16 @@ export default (studyId, name, description, color, callback) => {
       updater: proxyStore => {
         const createLabelField = proxyStore.getRootField('createLabel')
         if (!isNil(createLabelField)) {
-          const searchStudy = ConnectionHandler.getConnection(
-            proxyStore.getRoot(),
-            "SearchContainer_search",
-            {type: "LABEL", within: studyId},
-          )
+          const study = proxyStore.get(studyId)
+          if (study) {
+            const studyLabels = ConnectionHandler.getConnection(
+              study,
+              "StudyLabelsContainer_labels",
+            )
 
-          const labelStudy = createLabelField.getLinkedRecord('study')
-          const studyLabelCount = labelStudy && labelStudy.getLinkedRecord('labels', {first:0})
-          searchStudy && searchStudy.setValue(studyLabelCount, "labels", {first: 0})
-
-          const labelEdge = createLabelField.getLinkedRecord('labelEdge')
-          searchStudy && ConnectionHandler.insertEdgeBefore(searchStudy, labelEdge)
+            const labelEdge = createLabelField.getLinkedRecord('labelEdge')
+            studyLabels && ConnectionHandler.insertEdgeBefore(studyLabels, labelEdge)
+          }
         }
       },
       onCompleted: callback,

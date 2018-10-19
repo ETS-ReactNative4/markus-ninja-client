@@ -51,14 +51,14 @@ class UserAssetNameInput extends React.Component {
           if (error) {
             return <div>{error.message}</div>
           } else {
-            const {className, disabled, onChange, placeholder, initialValue} = this.props
+            const {className, disabled, onChange, label, initialValue} = this.props
 
             return (
               <UserAssetNameInputContainer
                 className={className}
                 disabled={disabled}
                 onChange={onChange}
-                placeholder={placeholder}
+                label={label}
                 initialValue={initialValue}
                 query={props}
               />

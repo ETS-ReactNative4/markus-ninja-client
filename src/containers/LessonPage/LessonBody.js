@@ -16,8 +16,7 @@ class LessonBody extends React.Component {
     body: this.props.lesson.body,
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault()
+  handleSubmit = () => {
     const { body } = this.state
     UpdateLessonMutation(
       this.props.lesson.id,

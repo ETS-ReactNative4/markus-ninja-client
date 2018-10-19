@@ -8,8 +8,10 @@ import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
 import StudyLabels from 'components/StudyLabels'
 import StudyLabelsPageLabels from './StudyLabelsPageLabels'
-import CreateLabelForm from './CreateLabelForm'
+import CreateLabelDialog from './CreateLabelDialog'
 import {debounce, get, isEmpty} from 'utils'
+
+import "./styles.css"
 
 class StudyLabelsPage extends React.Component {
   constructor(props) {
@@ -93,18 +95,15 @@ class StudyLabelsPage extends React.Component {
             </button>}
           </div>
         </div>
-        {open && study.viewerCanAdmin &&
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <div className="flex items-center">
-            <CreateLabelForm
-              study={get(this.props, "study", null)}
-              onCancel={() => this.setState({open: false})}
-            />
-          </div>
-        </div>}
         <StudyLabels filterBy={this._filterBy} orderBy={this._orderBy}>
-          <StudyLabelsPageLabels />
+          <StudyLabelsPageLabels onAddAction={() => this.setState({open: !open})}/>
         </StudyLabels>
+        {study.viewerCanAdmin &&
+        <CreateLabelDialog
+          open={open}
+          study={get(this.props, "study", null)}
+          onClose={() => this.setState({open: false})}
+        />}
       </div>
     )
   }
@@ -132,7 +131,7 @@ class StudyLabelsPage extends React.Component {
 
 export default createFragmentContainer(StudyLabelsPage, graphql`
   fragment StudyLabelsPage_study on Study {
-    ...CreateLabelForm_study
+    ...CreateLabelDialog_study
     id
     viewerCanAdmin
   }

@@ -4,12 +4,14 @@ import Dialog from 'components/Dialog'
 import Icon from 'components/Icon'
 import LabelLink from 'components/LabelLink'
 import DeleteLabelMutation from 'mutations/DeleteLabelMutation'
+import UpdateLabelDialog from './UpdateLabelDialog'
 import {get, isNil} from 'utils'
 
 class ListLabelPreview extends React.Component {
   state = {
-    error: null,
     confirmDeleteDialogOpen: false,
+    error: null,
+    editDialogOpen: false,
   }
 
   handleDelete = () => {
@@ -30,12 +32,20 @@ class ListLabelPreview extends React.Component {
     })
   }
 
+  handleToggleEdit = () => {
+    const {editDialogOpen} = this.state
+    this.setState({
+      editDialogOpen: !editDialogOpen,
+    })
+  }
+
   get classes() {
     const {className} = this.props
     return cls("ListLabelPreview mdc-list-item", className)
   }
 
   render() {
+    const {editDialogOpen} = this.state
     const label = get(this.props, "label", {})
     return (
       <React.Fragment>
@@ -58,9 +68,25 @@ class ListLabelPreview extends React.Component {
             >
               delete
             </button>}
+            {label.viewerCanUpdate &&
+            <button
+              className="material-icons mdc-icon-button"
+              type="button"
+              onClick={this.handleToggleEdit}
+              aria-label="Edit label"
+              title="EditDelete label"
+            >
+              edit
+            </button>}
           </span>
         </li>
         {label.viewerCanDelete && this.renderConfirmDeleteDialog()}
+        {label.viewerCanUpdate &&
+        <UpdateLabelDialog
+          open={editDialogOpen}
+          label={label}
+          onClose={() => this.setState({editDialogOpen: false})}
+        />}
       </React.Fragment>
     )
   }

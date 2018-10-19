@@ -37,17 +37,16 @@ export default (labelId, callback) => {
           const labelStudy = deleteLabelField.getLinkedRecord('study')
           if (labelStudy) {
             const labelStudyId = labelStudy.getValue('id')
-            const searchStudy = ConnectionHandler.getConnection(
-              proxyStore.getRoot(),
-              "SearchStudy_search",
-              {type: "LABEL", within: labelStudyId},
-            )
+            const study = proxyStore.get(labelStudyId)
+            if (study) {
+              const studyLabels = ConnectionHandler.getConnection(
+                study,
+                "StudyLabelsContainer_labels",
+              )
 
-            const studyLabelCount = labelStudy.getLinkedRecord('labels', {first: 0})
-            searchStudy && searchStudy.setValue(studyLabelCount, "labels", {first: 0})
-
-            const deletedLabelId = deleteLabelField.getValue("deletedLabelId")
-            searchStudy && ConnectionHandler.deleteNode(searchStudy, deletedLabelId)
+              const deletedLabelId = deleteLabelField.getValue("deletedLabelId")
+              studyLabels && ConnectionHandler.deleteNode(studyLabels, deletedLabelId)
+            }
 
             proxyStore.delete(labelId)
           }

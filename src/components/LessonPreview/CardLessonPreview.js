@@ -1,5 +1,10 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
+import {
+  createFragmentContainer,
+  graphql,
+} from 'react-relay'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import EnrollIconButton from 'components/EnrollIconButton'
@@ -56,4 +61,59 @@ class CardLessonPreview extends React.Component {
   }
 }
 
-export default CardLessonPreview
+CardLessonPreview.propTypes = {
+  edit: PropTypes.bool,
+  isCourse: PropTypes.bool,
+  lesson: PropTypes.shape({
+    author: PropTypes.shape({
+      login: PropTypes.string.isRequired,
+      resourcePath: PropTypes.string.isRequired,
+    }).isRequired,
+    createdAt: PropTypes.string.isRequired,
+    comments: PropTypes.shape({
+      totalCount: PropTypes.number.isRequired,
+    }).isRequired,
+    id: PropTypes.string.isRequired,
+    number: PropTypes.number.isRequired,
+    resourcePath: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }),
+}
+
+CardLessonPreview.defaultProps = {
+  edit: false,
+  isCourse: false,
+  lesson: {
+    author: {
+      login: "",
+      resourcePath: "",
+    },
+    createdAt: "",
+    comments: {
+      totalCount: 0,
+    },
+    id: "",
+    number: 0,
+    resourcePath: "",
+    title: "",
+  }
+}
+
+export default createFragmentContainer(CardLessonPreview, graphql`
+  fragment CardLessonPreview_lesson on Lesson {
+    author {
+      login
+      resourcePath
+    }
+    comments(first: 0) {
+      totalCount
+    }
+    createdAt
+    enrollmentStatus
+    id
+    number
+    resourcePath
+    title
+    viewerCanEnroll
+  }
+`)

@@ -113,7 +113,8 @@ class RichTextEditor extends React.Component {
     this.props.onChange(editorState.getCurrentContent().getPlainText())
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault()
     const editorState = EditorState.push(
       this.state.editorState,
       ContentState.createFromText(""),

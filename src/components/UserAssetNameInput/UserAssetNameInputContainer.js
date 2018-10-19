@@ -67,9 +67,9 @@ class UserAssetNameInputContainer extends React.Component {
     return cls("UserAssetNameInputContainer", className)
   }
 
-  get placeholder() {
-    const {placeholder} = this.props
-    return placeholder ? placeholder : 'Enter name'
+  get label() {
+    const {label} = this.props
+    return label ? label : 'Enter name'
   }
 
   render() {
@@ -79,13 +79,12 @@ class UserAssetNameInputContainer extends React.Component {
     return (
       <div className={this.classes}>
         <TextField
-          fullWidth
-          label={this.placeholder}
+          label={this.label}
           helperText={this.renderHelperText()}
         >
           <Input
             name="name"
-            placeholder={this.placeholder}
+            pattern="^([\w-]+.)*[\w-]+$"
             disabled={disabled}
             value={name}
             onChange={(e) => this.handleChange(e.target.value)}
@@ -113,6 +112,7 @@ class UserAssetNameInputContainer extends React.Component {
 }
 
 UserAssetNameInputContainer.propTypes = {
+  label: PropTypes.string,
   onChange: PropTypes.func,
 }
 

@@ -14,6 +14,8 @@ import {isNil} from 'utils'
 
 import {LESSONS_PER_PAGE, TOPICS_PER_PAGE} from 'consts'
 
+import "./styles.css"
+
 const CourseOverviewPageQuery = graphql`
   query CourseOverviewPageQuery(
     $owner: String!,

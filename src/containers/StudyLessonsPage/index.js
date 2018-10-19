@@ -102,7 +102,7 @@ class StudyLessonsPage extends React.Component {
             </CreateLessonLink>}
           </div>
         </div>
-        <StudyLessons filterBy={this._filterBy} orderBy={this._orderBy}>
+        <StudyLessons filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
           <StudyLessonsPageLessons study={study} />
         </StudyLessons>
       </div>

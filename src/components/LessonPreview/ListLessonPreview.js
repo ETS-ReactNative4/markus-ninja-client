@@ -1,6 +1,10 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
+import {
+  createFragmentContainer,
+  graphql,
+} from 'react-relay'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
 import EnrollIconButton from 'components/EnrollIconButton'
@@ -25,10 +29,10 @@ class ListLessonPreview extends React.Component {
   }
 
   get classes() {
-    const {className, drag, edit} = this.props
+    const {className, dragging, editing} = this.props
     return cls("ListLessonPreview mdc-list-item", className, {
-      "ListLessonPreview--editting": edit,
-      "ListLessonPreview--dragging": drag,
+      "ListLessonPreview--editing": editing,
+      "ListLessonPreview--dragging": dragging,
     })
   }
 
@@ -41,7 +45,8 @@ class ListLessonPreview extends React.Component {
     const {
       children,
       className,
-      edit,
+      dragging,
+      editing,
       innerRef,
       isCourse,
       lesson,
@@ -52,7 +57,7 @@ class ListLessonPreview extends React.Component {
   }
 
   render() {
-    const {edit, innerRef, isCourse, lesson} = this.props
+    const {editing, innerRef, isCourse, lesson} = this.props
     const labelNodes = get(lesson, "labels.nodes", [])
 
     if (!lesson) {
@@ -89,7 +94,7 @@ class ListLessonPreview extends React.Component {
             <LabelLink key={node.id} label={node} />
           )}
         </span>
-        {isCourse && edit && get(lesson, "course.viewerCanAdmin", false)
+        {isCourse && editing && get(lesson, "course.viewerCanAdmin", false)
         ? this.renderEditMeta()
         : this.renderMeta()}
       </li>
@@ -136,13 +141,89 @@ class ListLessonPreview extends React.Component {
 }
 
 ListLessonPreview.propTypes = {
-  edit: PropTypes.bool,
+  dragging: PropTypes.bool,
+  editing: PropTypes.bool,
   isCourse: PropTypes.bool,
+  lesson: PropTypes.shape({
+    author: PropTypes.shape({
+      login: PropTypes.string.isRequired,
+      resourcePath: PropTypes.string.isRequired,
+    }).isRequired,
+    createdAt: PropTypes.string.isRequired,
+    comments: PropTypes.shape({
+      totalCount: PropTypes.number.isRequired,
+    }).isRequired,
+    course: PropTypes.shape({
+      id: PropTypes.string,
+      viewerCanAdmin: PropTypes.bool,
+    }),
+    courseNumber: PropTypes.number,
+    id: PropTypes.string.isRequired,
+    labels: PropTypes.shape({
+      nodes: PropTypes.array,
+    }).isRequired,
+    number: PropTypes.number.isRequired,
+    resourcePath: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }),
 }
 
 ListLessonPreview.defaultProps = {
-  edit: false,
+  dragging: false,
+  editing: false,
   isCourse: false,
+  lesson: {
+    author: {
+      login: "",
+      resourcePath: "",
+    },
+    createdAt: "",
+    comments: {
+      totalCount: 0,
+    },
+    course: {
+      id: "",
+      viewerCanAdmin: false,
+    },
+    courseNumber: 0,
+    id: "",
+    labels: {
+      nodes: [],
+    },
+    number: 0,
+    resourcePath: "",
+    title: "",
+  }
 }
 
-export default ListLessonPreview
+export default createFragmentContainer(ListLessonPreview, graphql`
+  fragment ListLessonPreview_lesson on Lesson {
+    author {
+      login
+      resourcePath
+    }
+    comments(first: 0) {
+      totalCount
+    }
+    course {
+      id
+      viewerCanAdmin
+    }
+    courseNumber
+    createdAt
+    enrollmentStatus
+    id
+    labels(first: 5) {
+      nodes {
+        color
+        id
+        name
+        resourcePath
+      }
+    }
+    number
+    resourcePath
+    title
+    viewerCanEnroll
+  }
+`)

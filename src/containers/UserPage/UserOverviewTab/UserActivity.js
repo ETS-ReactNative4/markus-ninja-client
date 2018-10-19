@@ -37,28 +37,38 @@ class UserActivity extends React.Component {
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           Recent activity
         </h5>
-        {isEmpty(edges)
-        ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            This user has no recent activity.
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <div className="mdc-card mdc-card--outlined ph2">
+            {isEmpty(edges)
+            ? <div>This user has no recent activity.</div>
+            : this.renderActivity()}
+            <div className="mdc-card__actions">
+              <div className="mdc-card__action-buttons">
+                {this.props.relay.hasMore() &&
+                <button
+                className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
+                  onClick={this._loadMore}
+                >
+                  Load more activity
+                </button>}
+              </div>
+            </div>
           </div>
-        : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <ul className="mdc-list mdc-list--two-line">
-              {edges.map(({node}) => (
-                node &&
-                <UserActivityEvent key={node.id} withUser event={node} />
-              ))}
-            </ul>
-            {this.props.relay.hasMore() &&
-            <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-              <button
-                className="mdc-button mdc-button--unelevated"
-                onClick={this._loadMore}
-              >
-                Load more activity
-              </button>
-            </div>}
-          </div>}
+        </div>
       </div>
+    )
+  }
+
+  renderActivity() {
+    const edges = get(this.props, "user.activity.edges", [])
+
+    return (
+      <ul className="mdc-list mdc-list--two-line">
+        {edges.map(({node}) => (
+          node &&
+          <UserActivityEvent key={node.id} withUser event={node} />
+        ))}
+      </ul>
     )
   }
 }

@@ -1,0 +1,23 @@
+@import "@material/animation/variables";
+
+.rn-color-input {
+  position: relative;
+}
+
+.rn-color-input__picker {
+  opacity: 0;
+  transition: opacity 180ms $mdc-animation-standard-curve-timing-function;
+  will-change: opacity;
+
+  &.rn-color-input__picker--persistent {
+    transition: none;
+    opacity: 1;
+    will-change: initial;
+  }
+}
+
+.rn-color-input--focused {
+  .rn-color-input__picker {
+    opacity: 1;
+  }
+}

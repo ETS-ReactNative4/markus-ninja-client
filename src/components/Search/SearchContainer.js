@@ -176,7 +176,7 @@ const refetchContainer = createRefetchContainer(SearchContainer,
                 ...LabelPreview_label
               }
               ...on Lesson {
-                ...LessonPreview_lesson
+                ...ListLessonPreview_lesson
               }
               ...on Study {
                 ...StudyPreview_study

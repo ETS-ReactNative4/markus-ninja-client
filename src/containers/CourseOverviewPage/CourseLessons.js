@@ -6,6 +6,7 @@ import {
 } from 'react-relay'
 import {Link} from 'react-router-dom'
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd'
+import Icon from 'components/Icon'
 import LessonPreview from 'components/LessonPreview'
 import MoveCourseLessonMutation from 'mutations/MoveCourseLessonMutation'
 import {get, isEmpty, moveListItem} from 'utils'
@@ -18,6 +19,14 @@ class CourseLessons extends React.Component {
     addFormDialogOpen: false,
     edges: get(this.props, "course.lessons.edges", []),
     edit: false,
+  }
+
+  componentDidUpdate(prevProps) {
+    const prevEdges = get(prevProps, "course.lessons.edges", [])
+    const newEdges = get(this.props, "course.lessons.edges", [])
+    if (prevEdges.length !== newEdges.length) {
+      this.setState({edges: newEdges})
+    }
   }
 
   handleDragEnd = (result) => {
@@ -81,9 +90,19 @@ class CourseLessons extends React.Component {
     return cls("CourseLessons mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
+  get firstLessonResourcePath() {
+    const {edges} = this.state
+    for (let edge of edges) {
+      if (get(edge, "node.courseNumber") === 1) {
+        return get(edge, "node.resourcePath", "")
+      }
+    }
+  }
+
   render() {
     const {addFormDialogOpen, edit, edges} = this.state
-    const firstLessonResourcePath = !isEmpty(edges) && get(edges[0], "node.resourcePath", "")
+    const viewerCanAdmin = get(this.props, "course.viewerCanAdmin", false)
+    const noResults = isEmpty(edges)
 
     return (
       <div className={this.classes}>
@@ -93,12 +112,22 @@ class CourseLessons extends React.Component {
           : this.renderLessons()}
           <div className="mdc-card__actions">
             <div className="mdc-card__action-buttons">
-              <Link
-                className="mdc-button mdc-card__action mdc-card__action--button"
-                to={firstLessonResourcePath}
-              >
-                Begin
-              </Link>
+              {!noResults
+              ? <Link
+                  className="mdc-button mdc-card__action mdc-card__action--button"
+                  to={this.firstLessonResourcePath}
+                >
+                  Begin
+                </Link>
+              : viewerCanAdmin
+                ? <button
+                    className="mdc-button mdc-card__action mdc-card__action--button"
+                    type="button"
+                    onClick={this.handleToggleAddFormDialog}
+                  >
+                    Add lesson
+                  </button>
+              : null}
               {this.props.relay.hasMore() &&
               <button
                 className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
@@ -166,8 +195,8 @@ class CourseLessons extends React.Component {
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       isCourse
-                      drag={snapshot.isDragging}
-                      edit
+                      dragging={snapshot.isDragging}
+                      editing
                       lesson={node}
                     />
                   )}
@@ -182,18 +211,40 @@ class CourseLessons extends React.Component {
 
   renderLessons() {
     const {edges} = this.state
+    const noResults = isEmpty(edges)
 
     return (
       <ul className="mdc-list mdc-list--two-line">
-        {edges.map(({node}, index) => (
-          node &&
-          <LessonPreview.List
-            key={node.id}
-            isCourse
-            lesson={node}
-          />
-        ))}
+        {noResults
+        ? this.renderEmptyListPlaceholder()
+        : edges.map(({node}, index) => (
+            node &&
+            <LessonPreview.List
+              key={node.id}
+              isCourse
+              lesson={node}
+            />
+          ))}
       </ul>
+    )
+  }
+
+  renderEmptyListPlaceholder() {
+    const viewerCanAdmin = get(this.props, "course.viewerCanAdmin", false)
+
+    return (
+      <li
+        className="mdc-list-item pointer"
+        onClick={viewerCanAdmin ? this.handleToggleAddFormDialog : null}
+      >
+        <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
+        {viewerCanAdmin
+        ? "Add the first lesson"
+        : "No lessons"}
+        <span className="mdc-list-item__meta">
+          <i className="material-icons">add</i>
+        </span>
+      </li>
     )
   }
 }
@@ -215,7 +266,7 @@ export default createPaginationContainer(CourseLessons,
           edges {
             cursor
             node {
-              ...LessonPreview_lesson
+              ...ListLessonPreview_lesson
               courseNumber
               id
               resourcePath

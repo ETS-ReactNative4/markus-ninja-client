@@ -5,8 +5,8 @@ import {
   graphql,
 } from 'react-relay'
 import moment from 'moment'
+import {Link} from 'react-router-dom'
 import UserLink from 'components/UserLink'
-import LessonPreview from 'components/LessonPreview'
 import {get} from 'utils'
 
 class ReferencedEvent extends React.Component {
@@ -17,6 +17,8 @@ class ReferencedEvent extends React.Component {
 
   render() {
     const event = get(this.props, "event", {})
+    const source = get(event, "source", {})
+
     return (
       <div className={this.classes}>
         <div>
@@ -24,7 +26,15 @@ class ReferencedEvent extends React.Component {
           <span className="ml1">
             {event.isCrossStudy && "cross-"}referenced this on {moment(event.createdAt).format("MMM D")} from
           </span>
-          <LessonPreview className="ml1" lesson={event.source} />
+          <Link
+            className="rn-link"
+            to={source.resourcePath}
+          >
+            {source.title}
+            <span className="mdc-theme--text-secondary-on-light ml1">
+              #{source.number}
+            </span>
+          </Link>
         </div>
       </div>
     )
@@ -37,7 +47,9 @@ export default createFragmentContainer(ReferencedEvent, graphql`
     id
     isCrossStudy
     source {
-      ...LessonPreview_lesson
+      number
+      resourcePath
+      title
     }
     user {
       ...UserLink_user

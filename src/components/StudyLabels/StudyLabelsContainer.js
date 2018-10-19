@@ -129,7 +129,7 @@ const refetchContainer = createRefetchContainer(StudyLabelsContainer,
         orderBy: {type: "LabelOrder"},
       ) {
         labels(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
-        @connection(key: "StudyLabelsContainer_labels", filters: ["filterBy", "orderBy"]) {
+        @connection(key: "StudyLabelsContainer_labels", filters: []) {
           edges {
             node {
               id

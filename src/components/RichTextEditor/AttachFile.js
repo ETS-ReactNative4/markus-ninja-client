@@ -189,7 +189,7 @@ class AttachFile extends React.Component {
               </label>
               <UserAssetNameInput
                 initialValue={get(file, "name", "")}
-                placeholder="No file chosen"
+                label="No file chosen"
                 onChange={this.handleChangeName}
                 disabled={isNil(file)}
               />

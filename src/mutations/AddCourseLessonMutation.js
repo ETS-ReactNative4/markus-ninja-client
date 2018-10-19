@@ -9,16 +9,17 @@ const mutation = graphql`
   mutation AddCourseLessonMutation($input: AddCourseLessonInput!) {
     addCourseLesson(input: $input) {
       lessonEdge {
+        cursor
         node {
-          ...LessonPreview_lesson
+          ...ListLessonPreview_lesson
+          courseNumber
+          id
+          resourcePath
         }
       }
       course {
         lessons(first: 0) {
           totalCount
-        }
-        study {
-          id
         }
       }
     }
@@ -51,17 +52,8 @@ export default (courseId, lessonId, callback) => {
               course,
               "CourseLessons_lessons",
             )
-            const studyId = course.getLinkedRecord('study').getValue('id')
-            const study = proxyStore.get(studyId)
-            if (study) {
-              const studyLessonsSelect = ConnectionHandler.getConnection(
-                study,
-                "StudyLessonSelect_lessons",
-              )
-              const edge = addCourseLessonField.getLinkedRecord("lessonEdge")
-              courseLessons && ConnectionHandler.insertEdgeAfter(courseLessons, edge)
-              studyLessonsSelect && ConnectionHandler.deleteNode(studyLessonsSelect, lessonId)
-            }
+            const edge = addCourseLessonField.getLinkedRecord("lessonEdge")
+            courseLessons && ConnectionHandler.insertEdgeBefore(courseLessons, edge)
           }
         }
       },
