@@ -90,12 +90,10 @@ class ViewerBackupEmail extends React.Component {
         <p>
           Your backup email address, in addition to authentication, can be used to reset your password.
         </p>
-        <form>
+        <form onSubmit={this.handleSubmit} className="flex items-center">
           <Select
             className="rn-select"
             floatingLabelClassName="mdc-floating-label--float-above"
-            notchedOutlineClassName="mdc-notched-outline--notched"
-            outlined
             label="Backup email address"
             value={value}
             onChange={(e) => this.setState({value: e.target.value})}
@@ -104,7 +102,6 @@ class ViewerBackupEmail extends React.Component {
           <button
             className="mdc-button mdc-button--unelevated ml2"
             type="submit"
-            onClick={this.handleSubmit}
           >
             Save
           </button>

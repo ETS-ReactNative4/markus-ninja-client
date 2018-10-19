@@ -6,10 +6,8 @@ import {
 } from 'react-relay'
 import {Route, Switch} from 'react-router-dom'
 import environment from 'Environment'
-import PrivateRoute from 'components/PrivateRoute'
 import CourseOverviewPage from 'containers/CourseOverviewPage'
 import CourseAppleGiversPage from 'containers/CourseAppleGiversPage'
-import CourseSettingsPage from 'containers/CourseSettingsPage'
 import NotFound from 'components/NotFound'
 import CourseHeader from './CourseHeader'
 import CourseNav from './CourseNav'
@@ -28,7 +26,6 @@ const CoursePageQuery = graphql`
         id
         ...CourseHeader_course
         ...CourseNav_course
-        ...CourseSettingsPage_course
       }
     }
     viewer {
@@ -64,8 +61,6 @@ class CoursePage extends React.Component {
               return <NotFound />
             }
 
-            const authenticated = !isNil(props.viewer)
-
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
@@ -82,12 +77,6 @@ class CoursePage extends React.Component {
                         exact
                         path="/:owner/:name/course/:number/applegivers"
                         component={CourseAppleGiversPage}
-                      />
-                      <PrivateRoute
-                        exact
-                        path="/:owner/:name/course/:number/settings"
-                        authenticated={authenticated}
-                        render={(routeProps) => <CourseSettingsPage {...routeProps} course={course} />}
                       />
                     </Switch>
                   </div>

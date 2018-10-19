@@ -127,7 +127,6 @@ class ChangeUsername extends React.Component {
       >
         <TextField
           className="rn-form__input"
-          outlined
           label="New username"
           floatingLabelClassName="mdc-floating-label--float-above"
         >

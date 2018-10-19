@@ -102,7 +102,6 @@ class DeleteAccount extends React.Component {
         <div className="flex flex-column">
           <TextField
             className="rn-form__input"
-            outlined
             label="You username or email"
           >
             <Input
@@ -113,7 +112,6 @@ class DeleteAccount extends React.Component {
           </TextField>
           <TextField
             className="rn-form__input mt3"
-            outlined
             label="Password"
           >
             <Input
@@ -129,7 +127,6 @@ class DeleteAccount extends React.Component {
         </p>
         <TextField
           className="rn-form__input"
-          outlined
           label="Verify"
         >
           <Input

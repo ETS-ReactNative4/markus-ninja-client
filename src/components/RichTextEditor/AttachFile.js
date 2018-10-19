@@ -4,10 +4,11 @@ import {
   graphql,
 } from 'react-relay'
 import { withUID } from 'components/UniqueId'
-import UserAssetNameInput from 'components/UserAssetNameInput/index'
+import TextField, {Input} from '@material/react-text-field'
+import UserAssetNameInput from 'components/UserAssetNameInput'
 import Dialog from 'components/Dialog'
 import CreateUserAssetMutation from 'mutations/CreateUserAssetMutation'
-import { get, isNil, makeCancelable } from 'utils'
+import {get, isNil, makeCancelable, replaceAll} from 'utils'
 
 class AttachFile extends React.Component {
   state = {
@@ -16,6 +17,7 @@ class AttachFile extends React.Component {
     },
     file: null,
     name: "",
+    description: "",
     open: false,
     save: false,
     submittable: false,
@@ -29,6 +31,7 @@ class AttachFile extends React.Component {
     this.setState({
       file: null,
       name: "",
+      description: "",
       open: false,
       submittable: false,
     })
@@ -93,6 +96,7 @@ class AttachFile extends React.Component {
             data.asset.id,
             this.props.study.id,
             this.state.name,
+            this.state.description,
             (userAsset, errors) => {
               if (!isNil(errors)) {
                 this.setState({ error: errors[0].message })
@@ -159,7 +163,8 @@ class AttachFile extends React.Component {
   }
 
   renderSaveForm() {
-    const {file, open, submittable} = this.state
+    const {description, file, open, submittable} = this.state
+    const filename = replaceAll(get(file, "name", ""), " ", "_")
 
     return (
       <Dialog
@@ -188,11 +193,20 @@ class AttachFile extends React.Component {
                 />
               </label>
               <UserAssetNameInput
-                initialValue={get(file, "name", "")}
-                label="No file chosen"
+                initialValue={filename}
+                label={!file ? "No file chosen" : "Name"}
                 onChange={this.handleChangeName}
-                disabled={isNil(file)}
+                disabled={!file}
               />
+              <div>
+                <TextField label="Description (optional)">
+                  <Input
+                    name="description"
+                    value={description}
+                    onChange={this.handleChange}
+                  />
+                </TextField>
+              </div>
             </div>
           </Dialog.Content>
         }

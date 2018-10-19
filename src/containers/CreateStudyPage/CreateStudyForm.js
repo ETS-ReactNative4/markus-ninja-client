@@ -52,7 +52,6 @@ class CreateStudyForm extends React.Component {
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet">
             <div className="inline-flex items-center">
               <TextField
-                outlined
                 label="Owner"
                 floatingLabelClassName="mdc-floating-label--float-above"
               >
@@ -62,7 +61,7 @@ class CreateStudyForm extends React.Component {
                 />
               </TextField>
               <span className="mdc-typography--headline6 mh2">/</span>
-              <TextField outlined label="Study name">
+              <TextField label="Study name">
                 <Input
                   name="name"
                   value={name}

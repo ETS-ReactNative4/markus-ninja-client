@@ -6,6 +6,7 @@ import {
 } from 'react-relay'
 import {withRouter} from 'react-router-dom';
 import TextField, {Input} from '@material/react-text-field'
+import EnrollmentSelect from 'components/EnrollmentSelect'
 import Icon from 'components/Icon'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
@@ -74,7 +75,6 @@ class LessonHeader extends React.Component {
         <div className="inline-flex items-center w-100">
           <TextField
             className="flex-auto"
-            outlined
             label="Title"
             floatingLabelClassName={!isEmpty(title) ? "mdc-floating-label--float-above" : ""}
           >
@@ -121,9 +121,13 @@ class LessonHeader extends React.Component {
             className="material-icons mdc-icon-button"
             type="button"
             onClick={this.handleToggleOpen}
+            aria-label="Edit title"
+            title="Edit title"
           >
             edit
           </button>}
+          {lesson.viewerCanEnroll &&
+          <EnrollmentSelect enrollable={lesson} />}
         </div>
       </header>
     )
@@ -141,6 +145,7 @@ export default withRouter(createFragmentContainer(LessonHeader, graphql`
       }
     }
     title
+    viewerCanEnroll
     viewerCanUpdate
   }
 `))

@@ -49,7 +49,6 @@ class ChangePassword extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
             className="rn-form__input"
-            outlined
             label="Old password"
           >
             <Input
@@ -63,7 +62,6 @@ class ChangePassword extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
             className="rn-form__input"
-            outlined
             label="New password"
           >
             <Input
@@ -77,7 +75,6 @@ class ChangePassword extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
             className="rn-form__input"
-            outlined
             label="Confirm new password"
           >
             <Input

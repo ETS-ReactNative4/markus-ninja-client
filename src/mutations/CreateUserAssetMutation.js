@@ -25,12 +25,13 @@ const mutation = graphql`
   }
 `
 
-export default (assetId, studyId, name, callback) => {
+export default (assetId, studyId, name, description, callback) => {
   const variables = {
     input: {
       assetId,
       studyId: nullString(studyId),
       name: nullString(name),
+      description: nullString(description),
     },
   }
 
@@ -52,7 +53,7 @@ export default (assetId, studyId, name, callback) => {
             const userAssetEdge = createUserAssetField.getLinkedRecord('userAssetEdge')
             const studyAssets = ConnectionHandler.getConnection(
               study,
-              "StudyAssets_assets",
+              "StudyAssetsContainer_assets",
             )
             studyAssets && ConnectionHandler.insertEdgeBefore(studyAssets, userAssetEdge)
           }

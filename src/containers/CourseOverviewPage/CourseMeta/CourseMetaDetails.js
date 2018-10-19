@@ -99,37 +99,34 @@ class CourseMetaDetails extends React.Component {
     const {description} = this.state
 
     return (
-      <form className="inline-flex w-100" onSubmit={this.handleSubmit}>
-        <div className="flex-auto">
-          <TextField
-            className="w-100"
-            label="Description"
-            outlined
-            floatingLabelClassName={!isEmpty(description) ? "mdc-floating-label--float-above" : ""}
-            helperText={this.renderHelperText()}
-          >
-            <Input
-              name="description"
-              value={description}
-              onChange={this.handleChange}
-            />
-          </TextField>
-        </div>
-        <div className="inline-flex items-center pa2 mb4">
+      <form onSubmit={this.handleSubmit}>
+        <TextField
+          className="w-100"
+          label="Description"
+          textarea
+          floatingLabelClassName={!isEmpty(description) ? "mdc-floating-label--float-above" : ""}
+          helperText={this.renderHelperText()}
+        >
+          <Input
+            name="description"
+            value={description}
+            onChange={this.handleChange}
+          />
+        </TextField>
+        <div className="inline-flex items-center mt2">
           <button
             className="mdc-button mdc-button--unelevated"
             type="submit"
-            onClick={this.handleSubmit}
           >
             Save
           </button>
-          <span
-            className="pointer pa2 underline-hover"
-            role="button"
+          <button
+            className="mdc-button ml2"
+            type="button"
             onClick={this.handleToggleOpen}
           >
             Cancel
-          </span>
+          </button>
         </div>
       </form>
     )

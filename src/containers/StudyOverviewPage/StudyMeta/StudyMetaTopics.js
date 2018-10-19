@@ -47,6 +47,11 @@ class StudyMetaTopics extends React.Component {
           this.setState({ error, invalidTopicNames })
         } else {
           this.handleToggleOpen()
+          this.setState({
+            error: null,
+            initialValues: {topics},
+            invalidTopicNames: null,
+          })
         }
       },
     )
@@ -101,28 +106,22 @@ class StudyMetaTopics extends React.Component {
   }
 
   renderForm() {
-    const study = get(this.props, "study", {})
-    const topicEdges = get(study, "topics.edges", [])
     const {topics} = this.state
 
     return (
-      <form className="inline-flex w-100" onSubmit={this.handleSubmit}>
-        <div className="flex-auto">
-          <TextField
-            className="w-100"
-            outlined
-            label="Topics (separate with spaces)"
-            helperText={this.renderHelperText()}
-            floatingLabelClassName={!isEmpty(topicEdges) ? "mdc-floating-label--float-above" : ""}
-          >
-            <Input
-              name="topics"
-              value={topics}
-              onChange={this.handleChange}
-            />
-          </TextField>
-        </div>
-        <div className="inline-flex items-center pa2 mb4">
+      <form onSubmit={this.handleSubmit}>
+        <TextField
+          fullWidth
+          helperText={this.renderHelperText()}
+        >
+          <Input
+            name="topics"
+            placeholder="Topics (separate with spaces)"
+            value={topics}
+            onChange={this.handleChange}
+          />
+        </TextField>
+        <div className="inline-flex items-center mt2">
           <button
             className="mdc-button mdc-button--unelevated"
             type="submit"
@@ -130,13 +129,13 @@ class StudyMetaTopics extends React.Component {
           >
             Save
           </button>
-          <span
-            className="pointer pa2 underline-hover"
-            role="button"
+          <button
+            className="mdc-button ml2"
+            type="button"
             onClick={this.handleToggleOpen}
           >
             Cancel
-          </span>
+          </button>
         </div>
       </form>
     )
@@ -145,7 +144,7 @@ class StudyMetaTopics extends React.Component {
   renderHelperText() {
     return (
       <HelperText persistent>
-        Add topics to categorize your study and make it more discoverable.
+        Add topics to categorize your study and make it more discoverable. (separate with spaces)
       </HelperText>
     )
   }

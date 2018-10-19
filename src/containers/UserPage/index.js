@@ -9,6 +9,7 @@ import environment from 'Environment'
 import UserHeader from './UserHeader'
 import UserNav from './UserNav'
 import UserApplesTab from './UserApplesTab'
+import UserAssetsTab from './UserAssetsTab'
 import UserOverviewTab from './UserOverviewTab'
 import UserPupilsTab from './UserPupilsTab'
 import UserStudiesTab from './UserStudiesTab'
@@ -54,6 +55,8 @@ class UserPage extends React.Component {
       switch (tab.toLowerCase()) {
       case "apples":
         return UserApplesTab
+      case "assets":
+        return UserAssetsTab
       case "pupils":
         return UserPupilsTab
       case "studies":

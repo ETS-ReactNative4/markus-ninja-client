@@ -104,7 +104,6 @@ class SignupForm extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
             className="w-100"
-            outlined
             label="Username"
             helperText={<HelperText persistent>Your name by which other users will know you.</HelperText>}
           >
@@ -122,7 +121,6 @@ class SignupForm extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
             className="w-100"
-            outlined
             label="Email address"
             helperText={
               <HelperText persistent>
@@ -144,7 +142,6 @@ class SignupForm extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
             className="w-100"
-            outlined
             label="Password"
             helperText={
               <HelperText persistent>

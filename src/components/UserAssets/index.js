@@ -7,46 +7,43 @@ import {
 import { withRouter } from 'react-router'
 import environment from 'Environment'
 import {get} from 'utils'
-import UserStudiesContainer, {UserStudiesProp, UserStudiesPropDefaults} from './UserStudiesContainer'
+import UserAssetsContainer, {UserAssetsProp, UserAssetsPropDefaults} from './UserAssetsContainer'
 
-import { USERS_PER_PAGE } from 'consts'
+import { ASSETS_PER_PAGE } from 'consts'
 
-const UserStudiesQuery = graphql`
-  query UserStudiesQuery(
+const UserAssetsQuery = graphql`
+  query UserAssetsQuery(
     $login: String!,
     $after: String,
     $count: Int!,
-    $filterBy: StudyFilters,
-    $orderBy: StudyOrder,
+    $filterBy: UserAssetFilters,
+    $orderBy: UserAssetOrder,
     $isUser: Boolean!,
     $isViewer: Boolean!,
-    $styleLink: Boolean!,
     $stylePreview: Boolean!,
   ) {
     user(login: $login) @skip(if: $isViewer) {
-      ...UserStudiesContainer_user @arguments(
+      ...UserAssetsContainer_user @arguments(
         after: $after,
         count: $count,
         filterBy: $filterBy,
         orderBy: $orderBy,
-        styleLink: $styleLink,
         stylePreview: $stylePreview,
       )
     }
     viewer @skip(if: $isUser) {
-      ...UserStudiesContainer_user @arguments(
+      ...UserAssetsContainer_user @arguments(
         after: $after,
         count: $count,
         filterBy: $filterBy,
         orderBy: $orderBy,
-        styleLink: $styleLink,
         stylePreview: $stylePreview,
       )
     }
   }
 `
 
-class UserStudies extends React.Component {
+class UserAssets extends React.Component {
   constructor(props) {
     super(props)
 
@@ -65,7 +62,7 @@ class UserStudies extends React.Component {
     return (
       <QueryRenderer
         environment={environment}
-        query={UserStudiesQuery}
+        query={UserAssetsQuery}
         variables={{
           login: get(match, "params.login", ""),
           count,
@@ -73,7 +70,6 @@ class UserStudies extends React.Component {
           orderBy,
           isUser: !isViewer,
           isViewer,
-          styleLink: fragment === "link",
           stylePreview: fragment === "preview",
         }}
         render={({error,  props}) => {
@@ -84,7 +80,7 @@ class UserStudies extends React.Component {
             const user = isViewer ? props.viewer : props.user
 
             return (
-              <UserStudiesContainer
+              <UserAssetsContainer
                 count={count}
                 orderBy={orderBy}
                 filterBy={filterBy}
@@ -92,7 +88,7 @@ class UserStudies extends React.Component {
                 user={user}
               >
                 {children}
-              </UserStudiesContainer>
+              </UserAssetsContainer>
             )
           }
           return <div>Loading</div>
@@ -102,7 +98,7 @@ class UserStudies extends React.Component {
   }
 }
 
-UserStudies.propTypes = {
+UserAssets.propTypes = {
   count: PropTypes.number,
   orderBy: PropTypes.shape({
     direction: PropTypes.string,
@@ -112,15 +108,15 @@ UserStudies.propTypes = {
     topics: PropTypes.arrayOf(PropTypes.string),
     search: PropTypes.string,
   }),
-  fragment: PropTypes.oneOf(["link", "preview"]),
+  fragment: PropTypes.oneOf(["preview"]),
   isViewer: PropTypes.bool,
 }
 
-UserStudies.defaultProps = {
-  count: USERS_PER_PAGE,
+UserAssets.defaultProps = {
+  count: ASSETS_PER_PAGE,
   fragment: "preview",
   isViewer: false,
 }
 
-export {UserStudiesProp, UserStudiesPropDefaults}
-export default withRouter(UserStudies)
+export {UserAssetsProp, UserAssetsPropDefaults}
+export default withRouter(UserAssets)

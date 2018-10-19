@@ -127,7 +127,7 @@ const refetchContainer = createRefetchContainer(StudyAssetsContainer,
         orderBy: {type: "UserAssetOrder"},
       ) {
         assets(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
-        @connection(key: "StudyAssetsContainer_assets", filters: ["filterBy", "orderBy"]) {
+        @connection(key: "StudyAssetsContainer_assets", filters: []) {
           edges {
             cursor
             node {

@@ -5,6 +5,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import TextField, {Input} from '@material/react-text-field'
 import Dialog from 'components/Dialog'
 import UserAssetNameInput from 'components/UserAssetNameInput'
 import CreateUserAssetMutation from 'mutations/CreateUserAssetMutation'
@@ -23,7 +24,9 @@ class CreateUserAssetDialog extends React.Component {
     this.state = {
       error: null,
       file: null,
+      loading: false,
       name: "",
+      description: "",
       request: {
         cancel() {}
       },
@@ -31,14 +34,20 @@ class CreateUserAssetDialog extends React.Component {
     }
   }
 
-  handleCancel = () => {
-    this.setState({
-      error: null,
-      color: "",
-      description: "",
-      name: "",
-      focusColorInput: false,
-    })
+  componentWillUnmount() {
+    this.state.request.cancel()
+  }
+
+  handleClose = (action) => {
+    if (action === "cancel") {
+      this.setState({
+        error: null,
+        description: "",
+        file: null,
+        name: "",
+        submittable: false,
+      })
+    }
     this.props.onClose()
   }
 
@@ -73,8 +82,6 @@ class CreateUserAssetDialog extends React.Component {
       formData.append("study_id", get(this.props, "study.id", ""))
       formData.append("file", file)
 
-      this.props.onChange(file)
-
       const request = makeCancelable(fetch(process.env.REACT_APP_API_URL + "/upload/assets", {
         method: "POST",
         body: formData,
@@ -96,13 +103,18 @@ class CreateUserAssetDialog extends React.Component {
           data.asset.id,
           this.props.study.id,
           this.state.name,
+          this.state.description,
           (userAsset, errors) => {
             if (!isNil(errors)) {
               this.setState({ error: errors[0].message })
             }
             this.setState({
-              loading: false,
+              error: null,
+              description: "",
               file: null,
+              loading: false,
+              name: "",
+              submittable: false,
             })
           }
         )
@@ -128,7 +140,7 @@ class CreateUserAssetDialog extends React.Component {
         innerRef={this.setRoot}
         className={this.classes}
         open={open}
-        onClose={this.handleCancel}
+        onClose={this.handleClose}
         title={<Dialog.Title>Create asset</Dialog.Title>}
         content={
           <Dialog.Content>
@@ -139,7 +151,7 @@ class CreateUserAssetDialog extends React.Component {
             <button
               type="button"
               className="mdc-button"
-              data-mdc-dialog-action="close"
+              data-mdc-dialog-action="cancel"
             >
               Cancel
             </button>
@@ -158,7 +170,7 @@ class CreateUserAssetDialog extends React.Component {
   }
 
   renderForm() {
-    const {file} = this.state
+    const {description, file} = this.state
     const filename = replaceAll(get(file, "name", ""), " ", "_")
 
     return (
@@ -179,10 +191,19 @@ class CreateUserAssetDialog extends React.Component {
         </label>
         <UserAssetNameInput
           initialValue={filename}
-          label="No file chosen"
+          label={!file ? "No file chosen" : "Name"}
           onChange={this.handleChangeName}
           disabled={!file}
         />
+        <div>
+          <TextField label="Description (optional)">
+            <Input
+              name="description"
+              value={description}
+              onChange={this.handleChange}
+            />
+          </TextField>
+        </div>
       </form>
     )
   }

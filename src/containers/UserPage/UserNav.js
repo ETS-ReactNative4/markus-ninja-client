@@ -22,6 +22,7 @@ class UserNav extends React.Component {
       const t = get(query, "tab", "")
       switch (t.toLowerCase()) {
         case "apples":
+        case "assets":
         case "pupils":
         case "studies":
         case "tutors":
@@ -56,6 +57,20 @@ class UserNav extends React.Component {
             <span className="mdc-tab__text-label">
               Studies
               <Counter>{get(user, "studies.totalCount", 0)}</Counter>
+            </span>
+          </span>
+        </Tab>
+        <Tab
+          minWidth
+          active={tab === "assets"}
+          as={Link}
+          to={user.resourcePath + "?tab=assets"}
+        >
+          <span className="mdc-tab__content">
+            <Icon as="span" className="mdc-tab__icon" icon="asset" />
+            <span className="mdc-tab__text-label">
+              Assets
+              <Counter>{get(user, "assets.totalCount", 0)}</Counter>
             </span>
           </span>
         </Tab>
@@ -118,6 +133,9 @@ export default withRouter(createFragmentContainer(UserNav, graphql`
     appled(first: 0 type: STUDY) {
       courseCount
       studyCount
+    }
+    assets(first: 0) {
+      totalCount
     }
     enrollees(first: 0) {
       totalCount

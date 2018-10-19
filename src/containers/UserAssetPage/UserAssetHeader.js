@@ -75,7 +75,6 @@ class UserAssetHeader extends React.Component {
         <div className="inline-flex items-center w-100">
           <TextField
             className="flex-auto"
-            outlined
             label="Name"
             floatingLabelClassName={"mdc-floating-label--float-above"}
           >

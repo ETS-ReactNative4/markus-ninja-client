@@ -6,14 +6,26 @@ import {
 } from 'react-relay'
 import Select from '@material/react-select'
 import UpdateEmailMutation from 'mutations/UpdateEmailMutation'
-import { get, isNil } from 'utils'
+import {get, isNil} from 'utils'
 
 import { EMAILS_PER_PAGE } from 'consts'
 
 class ViewerPrimaryEmail extends React.Component {
-  state = {
-    value: "",
-    error: null,
+  constructor(props) {
+    super(props)
+
+    let value = ""
+    for (let edge of get(props, "viewer.primaryEmailOptions.edges", [])) {
+      const type = get(edge, "node.type", "")
+      if (type === 'PRIMARY') {
+        value = get(edge, "node.id", "")
+      }
+    }
+
+    this.state = {
+      value,
+      error: null,
+    }
   }
 
   _loadMore = () => {
@@ -73,12 +85,10 @@ class ViewerPrimaryEmail extends React.Component {
         <p>
           Your primary email address, in addition to authentication, will be used for account-related notifications.
         </p>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} className="flex items-center">
           <Select
             className="rn-select"
             floatingLabelClassName="mdc-floating-label--float-above"
-            notchedOutlineClassName="mdc-notched-outline--notched"
-            outlined
             label="Primary email address"
             value={value}
             onChange={(e) => this.setState({value: e.target.value})}
@@ -87,7 +97,6 @@ class ViewerPrimaryEmail extends React.Component {
           <button
             className="mdc-button mdc-button--unelevated ml2"
             type="submit"
-            onClick={this.handleSubmit}
           >
             Save
           </button>
@@ -109,6 +118,7 @@ export default createPaginationContainer(ViewerPrimaryEmail,
           edges {
             node {
               id
+              type
               value
             }
           }

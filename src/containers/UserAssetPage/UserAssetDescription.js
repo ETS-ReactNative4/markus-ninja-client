@@ -80,7 +80,7 @@ class UserAssetDescription extends React.Component {
             Save
           </button>
           <button
-            className="mdc-button mdc-button--outlined ml2"
+            className="mdc-button ml2"
             type="button"
             onClick={this.handleToggleOpen}
           >

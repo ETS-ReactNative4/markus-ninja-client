@@ -109,22 +109,18 @@ class CourseMetaTopics extends React.Component {
   }
 
   renderForm() {
-    const course = get(this.props, "course", {})
-    const topicEdges = get(course, "topics.edges", [])
     const {topics} = this.state
 
     return (
       <form className="CourseMeta__form inline-flex w-100" onSubmit={this.handleSubmit}>
         <div className="flex-auto">
           <TextField
-            className="w-100"
-            outlined
-            label="Topics (separate with spaces)"
+            fullWidth
             helperText={this.renderHelperText()}
-            floatingLabelClassName={!isEmpty(topicEdges) ? "mdc-floating-label--float-above" : ""}
           >
             <Input
               name="topics"
+              placeholder="Topics (separate with spaces)"
               value={topics}
               onChange={this.handleChange}
             />
@@ -153,7 +149,7 @@ class CourseMetaTopics extends React.Component {
   renderHelperText() {
     return (
       <HelperText>
-        Add topics to categorize your course and make it more discoverable.
+        Add topics to categorize your course and make it more discoverable. (separate with spaces)
       </HelperText>
     )
   }

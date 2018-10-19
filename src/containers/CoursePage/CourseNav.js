@@ -38,20 +38,6 @@ class CourseNav extends React.Component {
             </span>
           </span>
         </Tab>
-        {course.viewerCanAdmin &&
-        <Tab
-          minWidth
-          active={matchPath(pathname, { path: coursePath+"/settings", exact: true })}
-          as={Link}
-          to={course.resourcePath + "/settings"}
-        >
-          <span className="mdc-tab__content">
-            <Icon as="span" className="mdc-tab__icon">settings</Icon>
-            <span className="mdc-tab__text-label">
-              Settings
-            </span>
-          </span>
-        </Tab>}
       </TabBar>
     )
   }

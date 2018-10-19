@@ -49,7 +49,7 @@ class UpdateStudyNameForm extends React.Component {
   get classes() {
     const {className} = this.props
     const {open} = this.state
-    return cls("UpdateStudyNameForm mdc-layout-grid__inner", className, {
+    return cls("UpdateStudyNameForm", className, {
       open,
     })
   }
@@ -58,9 +58,8 @@ class UpdateStudyNameForm extends React.Component {
     const {name} = this.state
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <div className="flex items-center">
           <TextField
-            outlined
             label="Study name"
             floatingLabelClassName="mdc-floating-label--float-above"
           >

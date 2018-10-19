@@ -13,7 +13,7 @@ import { EMAILS_PER_PAGE } from 'consts'
 
 class ViewerEmailList extends React.Component {
   state = {
-    addEmail: "",
+    email: "",
     error: null,
   }
 
@@ -38,9 +38,9 @@ class ViewerEmailList extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { addEmail } = this.state
+    const { email } = this.state
     AddEmailMutation(
-      addEmail,
+      email,
       (error) => {
         if (!isNil(error)) {
           this.setState({ error: error.message })
@@ -57,45 +57,51 @@ class ViewerEmailList extends React.Component {
   render() {
     const {relay} = this.props
     const emailEdges = get(this.props, "viewer.allEmails.edges", [])
-    const {addEmail} = this.state
+    const {email} = this.state
 
     return (
       <div className={this.classes}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          {emailEdges.map(({node}) => (
-            <ViewerEmail key={node.__id} email={node} />
-          ))}
-          {relay.hasMore() &&
-          <button
-            className="mdc-button mdc-button--unelevated"
-            type="button"
-            onClick={this._loadMore}
-          >
-            More
-          </button>}
+          <div className="mdc-card mdc-card--outlined ph2">
+            <ul className="mdc-list">
+              {emailEdges.map(({node}) => (
+                <ViewerEmail key={node.__id} email={node} />
+              ))}
+            </ul>
+            <div className="mdc-card__actions">
+              <div className="mdc-card__action-buttons">
+                {relay.hasMore() &&
+                <button
+                  className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
+                  type="button"
+                  onClick={this._loadMore}
+                >
+                  More
+                </button>}
+              </div>
+            </div>
+          </div>
         </div>
         <form
           className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
           onSubmit={this.handleSubmit}
         >
-          <TextField
-            outlined
-            label="Add email address"
-          >
-            <Input
-              type="password"
-              name="addEmail"
-              value={addEmail}
-              onChange={this.handleChange}
-            />
-          </TextField>
-          <button
-            className="mdc-button mdc-button--unelevated ml2"
-            type="submit"
-            onClick={this.handleSubmit}
-          >
-            Add
-          </button>
+          <div className="flex items-center">
+            <TextField label="Add email address">
+              <Input
+                type="email"
+                name="email"
+                value={email}
+                onChange={this.handleChange}
+              />
+            </TextField>
+            <button
+              className="mdc-button mdc-button--unelevated ml2"
+              type="submit"
+            >
+              Add
+            </button>
+          </div>
         </form>
       </div>
     )

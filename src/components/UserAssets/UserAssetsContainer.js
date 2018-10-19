@@ -8,9 +8,9 @@ import {withRouter} from 'react-router-dom'
 import isEqual from 'lodash.isequal'
 import {debounce, get, isNil} from 'utils'
 
-import {STUDIES_PER_PAGE} from 'consts'
+import {ASSETS_PER_PAGE} from 'consts'
 
-class UserStudiesContainer extends React.Component {
+class UserAssetsContainer extends React.Component {
   state = {
     error: null,
     loading: false,
@@ -25,7 +25,7 @@ class UserStudiesContainer extends React.Component {
 
   _loadMore = () => {
     const {loading} = this.state
-    const after = get(this.props, "user.studies.pageInfo.endCursor")
+    const after = get(this.props, "user.assets.pageInfo.endCursor")
 
     if (!this._hasMore) {
       console.log("Nothing more to load")
@@ -68,27 +68,27 @@ class UserStudiesContainer extends React.Component {
   }, 200)
 
   get _hasMore() {
-    return get(this.props, "user.studies.pageInfo.hasNextPage", false)
+    return get(this.props, "user.assets.pageInfo.hasNextPage", false)
   }
 
   render() {
     const child = React.Children.only(this.props.children)
-    const userStudies = get(this.props, "user.studies", {})
+    const userAssets = get(this.props, "user.assets", {})
     const {loading} = this.state
 
     return React.cloneElement(child, {
-      studies: {
-        edges: userStudies.edges,
+      assets: {
+        edges: userAssets.edges,
         hasMore: this._hasMore,
         isLoading: loading,
         loadMore: this._loadMore,
-        totalCount: userStudies.totalCount,
+        totalCount: userAssets.totalCount,
       },
     })
   }
 }
 
-UserStudiesContainer.propTypes = {
+UserAssetsContainer.propTypes = {
   count: PropTypes.number,
   orderBy: PropTypes.shape({
     direction: PropTypes.string,
@@ -101,12 +101,12 @@ UserStudiesContainer.propTypes = {
   isViewer: PropTypes.bool,
 }
 
-UserStudiesContainer.defaultProps = {
-  count: STUDIES_PER_PAGE,
+UserAssetsContainer.defaultProps = {
+  count: ASSETS_PER_PAGE,
   isViewer: false,
 }
 
-export const UserStudiesProp = PropTypes.shape({
+export const UserAssetsProp = PropTypes.shape({
   edges: PropTypes.array,
   idLoading: PropTypes.bool,
   hasMore: PropTypes.bool,
@@ -114,7 +114,7 @@ export const UserStudiesProp = PropTypes.shape({
   totalCount: PropTypes.number,
 })
 
-export const UserStudiesPropDefaults = {
+export const UserAssetsPropDefaults = {
   edges: [],
   isLoading: false,
   hasMore: false,
@@ -122,26 +122,24 @@ export const UserStudiesPropDefaults = {
   totalCount: 0,
 }
 
-const refetchContainer = createRefetchContainer(UserStudiesContainer,
+const refetchContainer = createRefetchContainer(UserAssetsContainer,
   {
     user: graphql`
-      fragment UserStudiesContainer_user on User @argumentDefinitions(
+      fragment UserAssetsContainer_user on User @argumentDefinitions(
         count: {type: "Int!"},
         after: {type: "String"},
-        filterBy: {type: "StudyFilters"},
-        orderBy: {type: "StudyOrder"},
-        styleLink: {type: "Boolean!"},
+        filterBy: {type: "UserAssetFilters"},
+        orderBy: {type: "UserAssetOrder"},
         stylePreview: {type: "Boolean!"},
       ) {
-        studies(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
-        @connection(key: "UserStudiesContainer_studies", filters: ["filterBy", "orderBy"]) {
+        assets(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
+        @connection(key: "UserAssetsContainer_assets", filters: ["filterBy", "orderBy"]) {
           edges {
             cursor
             node {
               id
-              ...on Study {
-                ...StudyLink_study @include(if: $styleLink)
-                ...StudyPreview_study @include(if: $stylePreview)
+              ...on UserAsset {
+                ...UserAssetPreview_asset @include(if: $stylePreview)
               }
             }
           }
@@ -155,34 +153,31 @@ const refetchContainer = createRefetchContainer(UserStudiesContainer,
     `,
   },
   graphql`
-    query UserStudiesContainerRefetchQuery(
+    query UserAssetsContainerRefetchQuery(
       $login: String!,
       $count: Int!,
       $after: String,
-      $filterBy: StudyFilters,
-      $orderBy: StudyOrder,
+      $filterBy: UserAssetFilters,
+      $orderBy: UserAssetOrder,
       $isUser: Boolean!,
       $isViewer: Boolean!,
-      $styleLink: Boolean!,
       $stylePreview: Boolean!,
     ) {
       user(login: $login) @skip(if: $isViewer) {
-        ...UserStudiesContainer_user @arguments(
+        ...UserAssetsContainer_user @arguments(
           after: $after,
           count: $count,
           filterBy: $filterBy,
           orderBy: $orderBy,
-          styleLink: $styleLink,
           stylePreview: $stylePreview,
         )
       }
       viewer @skip(if: $isUser) {
-        ...UserStudiesContainer_user @arguments(
+        ...UserAssetsContainer_user @arguments(
           after: $after,
           count: $count,
           filterBy: $filterBy,
           orderBy: $orderBy,
-          styleLink: $styleLink,
           stylePreview: $stylePreview,
         )
       }

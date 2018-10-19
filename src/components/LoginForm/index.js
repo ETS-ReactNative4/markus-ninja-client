@@ -58,7 +58,6 @@ class LoginForm extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
             className="w-100"
-            outlined
             label="Username or email"
           >
             <Input
@@ -71,7 +70,6 @@ class LoginForm extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
             className="w-100"
-            outlined
             label="Password"
           >
             <Input

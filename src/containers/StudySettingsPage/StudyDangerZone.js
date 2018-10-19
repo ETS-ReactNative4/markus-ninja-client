@@ -48,6 +48,9 @@ class StudyDangerZone extends React.Component {
 
     return (
       <div className={this.classes}>
+        <h6 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          Delete this study
+        </h6>
         {open
         ? this.renderForm()
         : this.renderInfo()}
@@ -65,10 +68,7 @@ class StudyDangerZone extends React.Component {
             Please enter 'delete me' to confirm
           </p>
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <TextField
-              outlined
-              label="Confirmation"
-            >
+            <TextField label="Confirmation">
               <Input
                 name="confirmation"
                 value={confirmation}
@@ -85,7 +85,7 @@ class StudyDangerZone extends React.Component {
               Delete
             </button>
             <button
-              className="mdc-button mdc-button--unelevated ml2"
+              className="mdc-button ml2"
               type="button"
               onClick={this.handleToggleOpen}
             >
@@ -99,17 +99,20 @@ class StudyDangerZone extends React.Component {
 
   renderInfo() {
     return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <h6>Delete this study</h6>
-        <p>Once you delete a study, there is no going back. Please be certain.</p>
-        <button
-          className="mdc-button mdc-button--unelevated"
-          type="button"
-          onClick={this.handleToggleOpen}
-        >
-          Delete this study
-        </button>
-      </div>
+      <React.Fragment>
+        <p className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          Once you delete a study, there is no going back. Please be certain.
+        </p>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <button
+            className="mdc-button mdc-button--unelevated"
+            type="button"
+            onClick={this.handleToggleOpen}
+          >
+            Delete this study
+          </button>
+        </div>
+      </React.Fragment>
     )
   }
 }

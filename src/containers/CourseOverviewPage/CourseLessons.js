@@ -148,7 +148,7 @@ class CourseLessons extends React.Component {
               >
                 add
               </button>}
-              {get(this.props, "course.viewerCanAdmin", false) &&
+              {!noResults && get(this.props, "course.viewerCanAdmin", false) &&
               <button
                 className={cls(
                   "mdc-icon-button mdc-card__action mdc-card__action--icon",

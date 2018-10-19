@@ -65,7 +65,6 @@ class UserProfileForm extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
             className="rn-form__input"
-            outlined
             label="Name"
             floatingLabelClassName={!isEmpty(name) ? "mdc-floating-label--float-above" : ""}
           >
@@ -80,7 +79,6 @@ class UserProfileForm extends React.Component {
           <Select
             className="rn-select"
             floatingLabelClassName={!isEmpty(emailId) ? "mdc-floating-label--float-above" : ""}
-            outlined
             label="Public email"
             name="emailId"
             value={emailId}
