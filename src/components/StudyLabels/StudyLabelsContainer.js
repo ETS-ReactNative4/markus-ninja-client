@@ -127,13 +127,16 @@ const refetchContainer = createRefetchContainer(StudyLabelsContainer,
         after: {type: "String!"},
         filterBy: {type: "LabelFilters"},
         orderBy: {type: "LabelOrder"},
+        styleList: {type: "Boolean!"},
+        styleToggle: {type: "Boolean!"},
       ) {
         labels(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
         @connection(key: "StudyLabelsContainer_labels", filters: []) {
           edges {
             node {
               id
-              ...LabelPreview_label
+              ...ListLabelPreview_label @include(if: $styleList)
+              ...ToggleLabelPreview_label @include(if: $styleToggle)
             }
           }
           pageInfo {
@@ -151,8 +154,10 @@ const refetchContainer = createRefetchContainer(StudyLabelsContainer,
       $name: String!,
       $count: Int!,
       $after: String,
-    $filterBy: LabelFilters,
-    $orderBy: LabelOrder,
+      $filterBy: LabelFilters,
+      $orderBy: LabelOrder,
+      $styleList: Boolean!,
+      $styleToggle: Boolean!,
     ) {
       study(owner: $owner, name: $name) {
         ...StudyLabelsContainer_study @arguments(
@@ -160,6 +165,8 @@ const refetchContainer = createRefetchContainer(StudyLabelsContainer,
           after: $after,
           filterBy: $filterBy,
           orderBy: $orderBy,
+          styleList: $styleList,
+          styleToggle: $styleToggle,
         )
       }
     }

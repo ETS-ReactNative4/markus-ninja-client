@@ -12,7 +12,7 @@ const mutation = graphql`
       labelEdge {
         node {
           id
-          ...LabelPreview_label
+          ...ListLabelPreview_label
         }
       }
       study {

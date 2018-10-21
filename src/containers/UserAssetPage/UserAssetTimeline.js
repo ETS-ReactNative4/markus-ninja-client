@@ -13,18 +13,16 @@ class UserAssetTimeline extends Component {
   render() {
     const timelineEdges = get(this.props, "asset.timeline.edges", [])
     return (
-      <React.Fragment>
-        {timelineEdges.map(({node}) => (
-          node &&
-          <UserAssetTimelineEvent
-            key={node.id}
-            className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-            item={node}
-          />
-        ))}
+      <div className="mdc-card mdc-card--outlined ph2">
+        <ul className="mdc-list">
+          {timelineEdges.map(({node}) => (
+            node &&
+            <UserAssetTimelineEvent key={node.id} item={node} />
+          ))}
+        </ul>
         {this.props.relay.hasMore() &&
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <div className="flex justify-center">
+        <div className="mdc-card__actions">
+          <div className="mdc-card__action-buttons">
             <button
               className="UserAssetTimeline__more"
               onClick={this._loadMore}
@@ -33,7 +31,7 @@ class UserAssetTimeline extends Component {
             </button>
           </div>
         </div>}
-      </React.Fragment>
+      </div>
     )
   }
 

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
@@ -11,11 +10,6 @@ import { get, isEmpty } from 'utils'
 import {USER_ACTIVITY_PER_PAGE} from 'consts'
 
 class UserActivity extends React.Component {
-  get classes() {
-    const {className} = this.props
-    return cls("UserActivity mdc-layout-grid__inner", className)
-  }
-
   _loadMore = () => {
     const relay = get(this.props, "relay")
     if (!relay.hasMore()) {
@@ -30,44 +24,46 @@ class UserActivity extends React.Component {
   }
 
   render() {
-    const edges = get(this.props, "user.activity.edges", [])
-
     return (
-      <div className={this.classes}>
+      <React.Fragment>
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           Recent activity
         </h5>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="mdc-card mdc-card--outlined ph2">
-            {isEmpty(edges)
-            ? <div>This user has no recent activity.</div>
-            : this.renderActivity()}
+            {this.renderActivity()}
+            {this.props.relay.hasMore() &&
             <div className="mdc-card__actions">
               <div className="mdc-card__action-buttons">
-                {this.props.relay.hasMore() &&
                 <button
                 className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
                   onClick={this._loadMore}
                 >
                   Load more activity
-                </button>}
+                </button>
               </div>
-            </div>
+            </div>}
           </div>
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 
   renderActivity() {
+    const {relay} = this.props
     const edges = get(this.props, "user.activity.edges", [])
+    const noResults = isEmpty(edges)
 
     return (
       <ul className="mdc-list mdc-list--two-line">
-        {edges.map(({node}) => (
-          node &&
-          <UserActivityEvent key={node.id} withUser event={node} />
-        ))}
+        {relay.isLoading() && noResults
+        ? <li className="mdc-list-item">Loading...</li>
+        : noResults
+          ? <li className="mdc-list-item">No recent activity</li>
+        : edges.map(({node}) => (
+            node &&
+            <UserActivityEvent key={node.id} withUser event={node} />
+          ))}
       </ul>
     )
   }

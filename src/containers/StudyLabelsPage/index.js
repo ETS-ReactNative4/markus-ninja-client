@@ -95,7 +95,7 @@ class StudyLabelsPage extends React.Component {
             </button>}
           </div>
         </div>
-        <StudyLabels filterBy={this._filterBy} orderBy={this._orderBy}>
+        <StudyLabels filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
           <StudyLabelsPageLabels onAddAction={() => this.setState({open: !open})}/>
         </StudyLabels>
         {study.viewerCanAdmin &&

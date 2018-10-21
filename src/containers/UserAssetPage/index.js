@@ -58,7 +58,9 @@ class UserAssetPage extends React.Component {
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <UserAsset asset={props.study.asset} />
                   </div>
-                  <UserAssetTimeline asset={asset} />
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <UserAssetTimeline asset={asset} />
+                  </div>
                 </div>
               </div>
             )

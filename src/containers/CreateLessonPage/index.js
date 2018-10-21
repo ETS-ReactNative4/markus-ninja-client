@@ -49,12 +49,9 @@ class CreateLessonPage extends React.Component {
           } else if (props) {
             return (
               <div className={this.classes}>
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <div className="mdc-typography--headline4">Create a new lesson</div>
-                  <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light">
-                    Teach us
-                  </div>
-                </div>
+                <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  Create a new lesson
+                </h4>
                 <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   <CreateLessonForm study={props.study} />

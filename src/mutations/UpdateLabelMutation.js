@@ -9,7 +9,7 @@ const mutation = graphql`
   mutation UpdateLabelMutation($input: UpdateLabelInput!) {
     updateLabel(input: $input) {
       id
-      ...LabelPreview_label
+      ...ListLabelPreview_label
     }
   }
 `

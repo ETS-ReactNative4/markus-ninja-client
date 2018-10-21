@@ -6,16 +6,13 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import AddLabelMutation from 'mutations/AddLabelMutation'
-import RemoveLabelMutation from 'mutations/RemoveLabelMutation'
-import {get, isNil} from 'utils'
+import {get} from 'utils'
 
 import "./styles.css"
 
-class Label extends React.Component {
+export class Label extends React.Component {
   state = {
-    backgroundColor: tinycolor(get(this.props, "label.color", "")),
-    loading: false,
+    backgroundColor: this.color,
   }
 
   componentDidUpdate(prevProps) {
@@ -23,40 +20,7 @@ class Label extends React.Component {
     const newLabel = get(this.props, "label", {})
 
     if (oldLabel.color !== newLabel.color) {
-      this.setState({backgroundColor: newLabel.color})
-    }
-  }
-
-  handleLabelChecked = (labelId, checked) => {
-    const {loading} = this.state
-    if (loading) {
-      console.log("request is already pending")
-      return
-    }
-    if (checked) {
-      this.setState({loading: true})
-      AddLabelMutation(
-        labelId,
-        this.props.labelableId,
-        (response, errors) => {
-          if (!isNil(errors)) {
-            console.error(errors[0].message)
-          }
-          this.setState({loading: false})
-        },
-      )
-    } else {
-      this.setState({loading: true})
-      RemoveLabelMutation(
-        labelId,
-        this.props.labelableId,
-        (response, errors) => {
-          if (!isNil(errors)) {
-            console.error(errors[0].message)
-          }
-          this.setState({loading: false})
-        },
-      )
+      this.setState({backgroundColor: this.color})
     }
   }
 
@@ -73,43 +37,63 @@ class Label extends React.Component {
     })
   }
 
+  get color() {
+    let color = get(this.props, "label.color", "")
+    if (!color.match(/^#(?:[0-9a-fA-F]{3}){1,2}$/g)) {
+      color = "#e0e0e0"
+    }
+    return tinycolor(color)
+  }
+
   render() {
-    const {disabled, selected} = this.props
-    const label = get(this.props, "label", {})
-    const style = selected ? {backgroundColor: label.color} : null
-    const onClick = !disabled
-      ? () => {
-        this.handleLabelChecked(label.id, !selected)
-      }
-      : null
+    const {
+      as: Component,
+      label,
+      onClick,
+      selected,
+      ...otherProps
+    } = this.props
+    const {backgroundColor} = this.state
+    const style = selected ? {backgroundColor: backgroundColor.toHexString()} : null
 
     return (
-      <div
+      <Component
+        {...otherProps}
         className={this.classes}
         style={style}
         onClick={onClick}
       >
         <div className="mdc-chip__text">{label.name}</div>
-      </div>
+      </Component>
     )
   }
 }
 
 Label.propTypes = {
-  disabled: PropTypes.bool,
+  as: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  className: PropTypes.string,
+  label: PropTypes.shape({
+    color: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+  onClick: PropTypes.func,
   selected: PropTypes.bool,
 }
 
 Label.defaultProps = {
-  disabled: false,
-  selected: true
+  as: 'div',
+  className: "",
+  label: {
+    color: "",
+    name: "",
+  },
+  onClick: () => {},
+  selected: true,
 }
 
 export default createFragmentContainer(Label, graphql`
   fragment Label_label on Label {
     color
-    id
     name
-    resourcePath
   }
 `)

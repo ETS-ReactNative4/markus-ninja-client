@@ -38,9 +38,7 @@ class TopicPageTopicables extends React.Component {
 
   render() {
     const {topicables} = this.props
-    const {edges, hasMore, isLoading, loadMore, type} = topicables
-
-    const noResults = isEmpty(edges)
+    const {hasMore, loadMore} = topicables
 
     return (
       <React.Fragment>
@@ -48,39 +46,23 @@ class TopicPageTopicables extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           {this.renderInput()}
         </div>
-        {isLoading && noResults
-        ? <div>Loading...</div>
-        : (noResults
-          ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-              No {pluralize(type.toLowerCase())} were found.
-            </div>
-          : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-              <ul className="mdc-list mdc-list--two-line">
-                {edges.map(({node}) => {
-                  if (!node) {
-                    return null
-                  }
-                  switch(node.__typename) {
-                    case "Course":
-                      return <CoursePreview.List key={node.id} course={node} />
-                    case "Study":
-                      return <StudyPreview.List key={node.id} study={node} />
-                    default:
-                      return null
-                  }
-                })}
-              </ul>
-              {hasMore &&
-              <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <div className="mdc-card mdc-card--outlined ph2">
+            {this.renderTopicables()}
+            {hasMore &&
+            <div className="mdc-card__actions">
+              <div className="mdc-card__action-buttons">
                 <button
-                  className="mdc-button mdc-button--unelevated"
+                  className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
                   type="button"
                   onClick={loadMore}
                 >
                   More
                 </button>
-              </div>}
-            </div>)}
+              </div>
+            </div>}
+          </div>
+        </div>
       </React.Fragment>
     )
   }
@@ -102,6 +84,36 @@ class TopicPageTopicables extends React.Component {
           onChange={this.handleChange}
         />
       </TextField>
+    )
+  }
+
+  renderTopicables() {
+    const {topicables} = this.props
+    const {edges, isLoading, type} = topicables
+    const noResults = isEmpty(edges)
+
+    return (
+      <ul className="mdc-list mdc-list--two-line">
+        {isLoading
+        ? <li className="mdc-list-item">Loading...</li>
+        : noResults
+          ? <li className="mdc-list-item">
+              No {pluralize(type.toLowerCase())} were found.
+            </li>
+        : edges.map(({node}) => {
+            if (!node) {
+              return null
+            }
+            switch(node.__typename) {
+              case "Course":
+                return <CoursePreview.List key={node.id} course={node} />
+              case "Study":
+                return <StudyPreview.List key={node.id} study={node} />
+              default:
+                return null
+            }
+          })}
+      </ul>
     )
   }
 }

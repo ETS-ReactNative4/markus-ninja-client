@@ -1,8 +1,13 @@
 import * as React from 'react'
 import cls from 'classnames'
+import {
+  createFragmentContainer,
+  graphql,
+} from 'react-relay'
+import {Link} from 'react-router-dom'
 import Dialog from 'components/Dialog'
 import Icon from 'components/Icon'
-import LabelLink from 'components/LabelLink'
+import Label from 'components/Label'
 import DeleteLabelMutation from 'mutations/DeleteLabelMutation'
 import UpdateLabelDialog from './UpdateLabelDialog'
 import {get, isNil} from 'utils'
@@ -52,7 +57,7 @@ class ListLabelPreview extends React.Component {
         <li className={this.classes}>
           <Icon as="span" className="mdc-list-item__graphic" icon="label" />
           <span className="mdc-list-item__text">
-            <LabelLink label={label} />
+            <Label as={Link} label={label} to={label.resourcePath} />
             <span className="ml2">
               {label.description}
             </span>
@@ -129,4 +134,16 @@ class ListLabelPreview extends React.Component {
   }
 }
 
-export default ListLabelPreview
+export default createFragmentContainer(ListLabelPreview, graphql`
+  fragment ListLabelPreview_label on Label {
+    ...Label_label
+    color
+    createdAt
+    description
+    id
+    name
+    resourcePath
+    viewerCanDelete
+    viewerCanUpdate
+  }
+`)

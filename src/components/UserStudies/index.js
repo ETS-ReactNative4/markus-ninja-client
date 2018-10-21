@@ -9,7 +9,7 @@ import environment from 'Environment'
 import {get} from 'utils'
 import UserStudiesContainer, {UserStudiesProp, UserStudiesPropDefaults} from './UserStudiesContainer'
 
-import { USERS_PER_PAGE } from 'consts'
+import { STUDIES_PER_PAGE } from 'consts'
 
 const UserStudiesQuery = graphql`
   query UserStudiesQuery(
@@ -117,7 +117,7 @@ UserStudies.propTypes = {
 }
 
 UserStudies.defaultProps = {
-  count: USERS_PER_PAGE,
+  count: STUDIES_PER_PAGE,
   fragment: "preview",
   isViewer: false,
 }

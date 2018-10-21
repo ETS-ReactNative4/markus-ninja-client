@@ -53,7 +53,7 @@ class CardStudyPreview extends React.Component {
             />}
             <Link
               className="rn-icon-link mdc-card__action mdc-card__action--icon"
-              to={study.resourcePath}
+              to={study.resourcePath+"/lessons"}
             >
               <Icon className="rn-icon-link__icon" icon="lesson" />
               {get(study, "lessons.totalCount", 0)}

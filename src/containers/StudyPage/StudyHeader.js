@@ -71,8 +71,6 @@ export default withRouter(createFragmentContainer(StudyHeader, graphql`
   fragment StudyHeader_study on Study {
     ...StudyLink_study
     ...AppleButton_appleable
-    ...EnrollmentSelect_enrollable
-    id
     advancedAt
     appleGivers(first: 0) {
       totalCount
@@ -81,6 +79,8 @@ export default withRouter(createFragmentContainer(StudyHeader, graphql`
     enrollees(first: 0) {
       totalCount
     }
+    enrollmentStatus
+    id
     name
     owner {
       ...UserLink_user

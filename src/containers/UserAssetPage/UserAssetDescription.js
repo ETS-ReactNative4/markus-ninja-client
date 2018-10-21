@@ -46,7 +46,7 @@ class UserAssetDescription extends React.Component {
     const {open} = this.state
 
     return (
-      <div className="mdc-typography--body2 ph3 pb2">
+      <div className="mdc-typography--body2 pl3 pr2 pb2">
         {open
         ? this.renderForm()
         : this.renderDetails()}
@@ -96,15 +96,13 @@ class UserAssetDescription extends React.Component {
 
     return (
       <div className="flex items-center w-100">
-        <div className="truncate">
-          {isEmpty(asset.description)
-          ? <div className="mdc-theme--text-secondary-on-light">No description provided</div>
-          : <HTML html={asset.descriptionHTML} />}
-        </div>
+        {isEmpty(asset.description)
+        ? <div className="mdc-theme--text-secondary-on-light">No description provided</div>
+        : <HTML html={asset.descriptionHTML} />}
         <div className="ml-auto">
           {asset.viewerCanUpdate &&
           <button
-            className="mdc-icon-button material-icons"
+            className="mdc-icon-button material-icons mdc-theme--text-icon-on-background"
             type="button"
             onClick={this.handleToggleOpen}
             aria-label="Edit description"

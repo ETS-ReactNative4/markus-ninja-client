@@ -4,9 +4,9 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import ViewerEmailList from 'components/ViewerEmailList'
-import ViewerPrimaryEmail from 'components/ViewerPrimaryEmail'
-import ViewerBackupEmail from 'components/ViewerBackupEmail'
+import ViewerEmailList from './ViewerEmailList'
+import ViewerPrimaryEmail from './ViewerPrimaryEmail'
+import ViewerBackupEmail from './ViewerBackupEmail'
 
 import { EMAILS_PER_PAGE } from 'consts'
 

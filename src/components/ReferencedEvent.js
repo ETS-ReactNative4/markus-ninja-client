@@ -6,13 +6,14 @@ import {
 } from 'react-relay'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
+import Icon from 'components/Icon'
 import UserLink from 'components/UserLink'
 import {get} from 'utils'
 
 class ReferencedEvent extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("ReferencedEvent", className)
+    return cls("ReferencedEvent mdc-list-item", className)
   }
 
   render() {
@@ -20,14 +21,15 @@ class ReferencedEvent extends React.Component {
     const source = get(event, "source", {})
 
     return (
-      <div className={this.classes}>
-        <div>
+      <li className={this.classes}>
+        <Icon className="mdc-list-item__graphic" icon="reference" />
+        <span className="mdc-list-item__text">
           <UserLink className="rn-link fw5" user={get(event, "user", null)} />
           <span className="ml1">
             {event.isCrossStudy && "cross-"}referenced this on {moment(event.createdAt).format("MMM D")} from
           </span>
           <Link
-            className="rn-link"
+            className="rn-link fw5 ml1"
             to={source.resourcePath}
           >
             {source.title}
@@ -35,8 +37,16 @@ class ReferencedEvent extends React.Component {
               #{source.number}
             </span>
           </Link>
-        </div>
-      </div>
+        </span>
+        <span className="mdc-list-item__meta">
+          <Link
+            className="mdc-icon-button"
+            to={source.resourcePath}
+          >
+            <Icon className="rn-icon-link__icon" icon="lesson" />
+          </Link>
+        </span>
+      </li>
     )
   }
 }

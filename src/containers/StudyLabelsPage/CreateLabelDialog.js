@@ -8,6 +8,7 @@ import {
 import TextField, {Input} from '@material/react-text-field'
 import { GithubPicker } from 'react-color'
 import Dialog from 'components/Dialog'
+import {Label} from 'components/Label'
 import CreateLabelMutation from 'mutations/CreateLabelMutation'
 import {isNil} from 'utils'
 
@@ -98,6 +99,11 @@ class CreateLabelDialog extends React.Component {
     return cls("CreateLabelDialog", className)
   }
 
+  get label() {
+    const {color, name} = this.state
+    return {color, name}
+  }
+
   render() {
     const {open} = this.props
 
@@ -110,6 +116,7 @@ class CreateLabelDialog extends React.Component {
         title={<Dialog.Title>Create label</Dialog.Title>}
         content={
           <Dialog.Content>
+            <Label className="mb2" label={this.label} />
             {this.renderForm()}
           </Dialog.Content>}
         actions={

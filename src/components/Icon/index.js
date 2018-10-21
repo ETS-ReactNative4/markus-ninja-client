@@ -26,6 +26,8 @@ class Icon extends React.PureComponent {
         return "label"
       case "lesson":
         return "subject"
+      case "reference":
+        return "attach_money"
       case "study":
         return "local_library"
       case "topic":
@@ -55,6 +57,8 @@ class Icon extends React.PureComponent {
         return "Label"
       case "lesson":
         return "Lesson"
+      case "reference":
+        return "Reference"
       case "study":
         return "Study"
       case "topic":

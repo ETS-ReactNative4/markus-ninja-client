@@ -13,18 +13,12 @@ class UserStudiesTabStudies extends React.Component {
 
   render() {
     const {studies} = this.props
-    const {edges, hasMore, isLoading, loadMore} = studies
-
-    const noResults = isEmpty(edges)
+    const {hasMore, loadMore} = studies
 
     return (
       <div className={this.classes}>
         <div className="mdc-card mdc-card--outlined ph2">
-          {isLoading && noResults
-          ? <div>Loading...</div>
-          : (noResults
-            ? <div>No studies were found.</div>
-            : this.renderStudies())}
+          {this.renderStudies()}
           <div className="mdc-card__actions">
             <div className="mdc-card__action-buttons">
               {hasMore &&
@@ -39,7 +33,7 @@ class UserStudiesTabStudies extends React.Component {
             <div className="mdc-card__action-icons">
               <Link
                 className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
-                to={"/new"}
+                to="/new"
                 aria-label="New study"
                 title="New study"
               >
@@ -53,14 +47,20 @@ class UserStudiesTabStudies extends React.Component {
   }
 
   renderStudies() {
-    const edges = this.props.studies.edges
+    const {studies} = this.props
+    const {edges, isLoading, isStale} = studies
+    const noResults = isEmpty(edges)
 
     return (
       <ul className="mdc-list mdc-list--two-line">
-        {edges.map(({node}) => (
-          node &&
-          <StudyPreview.List key={node.id} study={node} />
-        ))}
+        {isLoading && isStale
+        ? <li className="mdc-list-item">Loading...</li>
+        : noResults
+          ? <li className="mdc-list-item">No studies were found</li>
+        : edges.map(({node}) => (
+            node &&
+            <StudyPreview.List key={node.id} study={node} />
+          ))}
       </ul>
     )
   }

@@ -137,7 +137,7 @@ class UserHeader extends React.Component {
           <div className="ml-auto">
             {user.isViewer &&
             <button
-              className="mdc-icon-button material-icons"
+              className="mdc-icon-button material-icons mdc-theme--text-icon-on-background"
               type="button"
               onClick={this.handleToggleOpen}
               aria-label="Edit bio"
@@ -154,14 +154,13 @@ class UserHeader extends React.Component {
 
 export default withRouter(createFragmentContainer(UserHeader, graphql`
   fragment UserHeader_user on User {
-    ...EnrollmentSelect_enrollable
-
     bio
     bioHTML
     createdAt
     email {
       value
     }
+    enrollmentStatus
     id
     isViewer
     login

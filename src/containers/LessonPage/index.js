@@ -74,7 +74,7 @@ class LessonPage extends React.Component {
                   <LessonBody className="LessonPage__body" lesson={lesson}/>
                   <div className="LessonPage__meta mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <div className="center mw8">
-                      <StudyLabels>
+                      <StudyLabels fragment="toggle">
                         <LessonLabels lesson={lesson}/>
                       </StudyLabels>
                       {lesson.isCourseLesson && <LessonCourse lesson={lesson} />}

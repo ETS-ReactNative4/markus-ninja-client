@@ -56,7 +56,7 @@ class LessonLabels extends React.Component {
         <LabelSet selectedLabelIds={selectedLabelIds}>
           {studyLabelEdges.map(({node}) =>
             node &&
-            <LabelPreview
+            <LabelPreview.Toggle
               key={node.id}
               id={node.id}
               label={node}

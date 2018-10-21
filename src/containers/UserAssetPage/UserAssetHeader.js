@@ -118,7 +118,7 @@ class UserAssetHeader extends React.Component {
         </h5>
         {asset.viewerCanUpdate &&
         <button
-          className="material-icons mdc-icon-button"
+          className="material-icons mdc-icon-button mdc-theme--text-icon-on-background"
           type="button"
           onClick={this.handleToggleOpen}
         >

@@ -4,8 +4,9 @@ import cls from 'classnames'
 import TextField, {Input} from '@material/react-text-field'
 import { GithubPicker } from 'react-color'
 import Dialog from 'components/Dialog'
+import {Label} from 'components/Label'
 import UpdateLabelMutation from 'mutations/UpdateLabelMutation'
-import {isEmpty, isNil} from 'utils'
+import {get, isEmpty, isNil} from 'utils'
 
 class UpdateLabelDialog extends React.Component {
   constructor(props) {
@@ -22,8 +23,14 @@ class UpdateLabelDialog extends React.Component {
 
     this.state = {
       error: null,
-      color: label.color,
-      description: label.description,
+      color: {
+        value: label.color,
+        valid: true,
+      },
+      description: {
+        value: label.description,
+        valid: true,
+      },
       focusColorInput: false,
     }
   }
@@ -40,8 +47,14 @@ class UpdateLabelDialog extends React.Component {
     const {label} = this.props
     this.setState({
       error: null,
-      color: label.color,
-      description: label.description,
+      color: {
+        value: label.color,
+        valid: true,
+      },
+      description: {
+        value: label.description,
+        valid: true,
+      },
       focusColorInput: false,
     })
     this.props.onClose()
@@ -49,13 +62,19 @@ class UpdateLabelDialog extends React.Component {
 
   handleChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: {
+        value: e.target.value,
+        valid: e.target.validity.valid,
+      },
     })
   }
 
   handleChangeComplete = (color, event) => {
     this.setState({
-      color: color.hex,
+      color: {
+        value: color.hex,
+        valid: true,
+      },
       focusColorInput: false,
     });
   }
@@ -94,6 +113,17 @@ class UpdateLabelDialog extends React.Component {
     return cls("UpdateLabelDialog", className)
   }
 
+  get label() {
+    const {color} = this.state
+    const name = get(this.props, "label.name", "")
+    return {color: color.value, name}
+  }
+
+  get isValid() {
+    const {color, description} = this.state
+    return color.valid && description.valid
+  }
+
   render() {
     const {open} = this.props
 
@@ -106,6 +136,7 @@ class UpdateLabelDialog extends React.Component {
         title={<Dialog.Title>Update label</Dialog.Title>}
         content={
           <Dialog.Content>
+            <Label className="mb2" label={this.label} />
             {this.renderForm()}
           </Dialog.Content>}
         actions={
@@ -113,15 +144,16 @@ class UpdateLabelDialog extends React.Component {
             <button
               type="button"
               className="mdc-button"
-              data-mdc-dialog-action="close"
+              data-mdc-dialog-action="cancel"
             >
               Cancel
             </button>
             <button
               type="button"
               className="mdc-button mdc-button--unelevated"
+              disabled={!this.isValid}
               onClick={this.handleSubmit}
-              data-mdc-dialog-action="create"
+              data-mdc-dialog-action="update"
             >
               Update
             </button>
@@ -140,7 +172,7 @@ class UpdateLabelDialog extends React.Component {
         >
           <Input
             name="description"
-            value={description}
+            value={description.value}
             onChange={this.handleChange}
           />
         </TextField>
@@ -151,7 +183,9 @@ class UpdateLabelDialog extends React.Component {
           >
             <Input
               name="color"
-              value={color}
+              value={color.value}
+              pattern="^#(?:[0-9a-fA-F]{3}){1,2}$"
+              required
               onChange={this.handleChange}
               onFocus={() => this.setState({focusColorInput: true})}
               onBlur={this.handleBlurColorInput}
@@ -170,6 +204,7 @@ UpdateLabelDialog.propTypes = {
   label: PropTypes.shape({
     color: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
   }).isRequired,
   onClose: PropTypes.func,
@@ -179,6 +214,7 @@ UpdateLabelDialog.defaultProps = {
   label: {
     color: "",
     description: "",
+    name: "",
     id: "",
   },
   onClose: () => {},

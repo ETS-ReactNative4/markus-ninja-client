@@ -6,6 +6,7 @@ import {
 } from 'react-relay'
 import StudyLink from 'components/StudyLink'
 import EnrollButton from 'components/EnrollButton'
+import Icon from 'components/Icon'
 import { get, isEmpty } from 'utils'
 
 import { STUDIES_PER_PAGE } from 'consts'
@@ -44,6 +45,7 @@ class ViewerEnrolledStudies extends React.Component {
               <li role="separator" className="mdc-list-divider" />
               {enrolledEdges.map(({node}) => (
                 <li key={node.id} className="mdc-list-item">
+                  <Icon as="span" className="mdc-list-item__graphic" icon="study" />
                   <StudyLink study={node} />
                   <span className="mdc-list-item__meta">
                     <EnrollButton enrollable={node} />

@@ -19,7 +19,7 @@ class UserStudiesContainer extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (!isEqual(prevProps.filterBy, this.props.filterBy) ||
         !isEqual(prevProps.orderBy, this.props.orderBy)) {
-      this._refetch()
+      this._refetch(null, true)
     }
   }
 
@@ -38,11 +38,12 @@ class UserStudiesContainer extends React.Component {
     this._refetch(after)
   }
 
-  _refetch = debounce((after) => {
+  _refetch = debounce((after, currentResultsAreStale = false) => {
     const {count, filterBy, isViewer, orderBy, relay} = this.props
 
     this.setState({
       loading: true,
+      stale: currentResultsAreStale,
     })
 
     relay.refetch(
@@ -61,6 +62,7 @@ class UserStudiesContainer extends React.Component {
         }
         this.setState({
           loading: false,
+          stale: false,
         })
       },
       {force: true},
@@ -74,13 +76,14 @@ class UserStudiesContainer extends React.Component {
   render() {
     const child = React.Children.only(this.props.children)
     const userStudies = get(this.props, "user.studies", {})
-    const {loading} = this.state
+    const {loading, stale} = this.state
 
     return React.cloneElement(child, {
       studies: {
         edges: userStudies.edges,
         hasMore: this._hasMore,
         isLoading: loading,
+        isStale: stale,
         loadMore: this._loadMore,
         totalCount: userStudies.totalCount,
       },
@@ -108,16 +111,18 @@ UserStudiesContainer.defaultProps = {
 
 export const UserStudiesProp = PropTypes.shape({
   edges: PropTypes.array,
-  idLoading: PropTypes.bool,
   hasMore: PropTypes.bool,
+  isLoading: PropTypes.bool,
+  isStale: PropTypes.bool,
   loadMore: PropTypes.func,
   totalCount: PropTypes.number,
 })
 
 export const UserStudiesPropDefaults = {
   edges: [],
-  isLoading: false,
   hasMore: false,
+  isLoading: false,
+  isStale: false,
   loadMore: () => {},
   totalCount: 0,
 }

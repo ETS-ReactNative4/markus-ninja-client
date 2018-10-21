@@ -18,6 +18,8 @@ const StudyLabelsQuery = graphql`
     $after: String,
     $filterBy: LabelFilters,
     $orderBy: LabelOrder,
+    $styleList: Boolean!,
+    $styleToggle: Boolean!,
   ) {
     study(owner: $owner, name: $name) {
       ...StudyLabelsContainer_study @arguments(
@@ -25,6 +27,8 @@ const StudyLabelsQuery = graphql`
         count: $count,
         filterBy: $filterBy,
         orderBy: $orderBy,
+        styleList: $styleList,
+        styleToggle: $styleToggle,
       )
     }
   }
@@ -44,7 +48,7 @@ class StudyLabels extends React.Component {
 
   render() {
     const {orderBy, filterBy} = this.state
-    const {count, match} = this.props
+    const {count, fragment, match} = this.props
 
     return (
       <QueryRenderer
@@ -56,6 +60,8 @@ class StudyLabels extends React.Component {
           count,
           filterBy,
           orderBy,
+          styleList: fragment === "list",
+          styleToggle: fragment === "toggle",
         }}
         render={({error,  props}) => {
           if (error) {
@@ -91,6 +97,7 @@ StudyLabels.propTypes = {
     isDefault: PropTypes.bool,
     search: PropTypes.string,
   }),
+  fragment: PropTypes.oneOf(["list", "toggle"]).isRequired,
 }
 
 StudyLabels.defaultProps = {

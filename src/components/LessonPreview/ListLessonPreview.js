@@ -9,7 +9,7 @@ import moment from 'moment'
 import {Link} from 'react-router-dom'
 import EnrollIconButton from 'components/EnrollIconButton'
 import Icon from 'components/Icon'
-import LabelLink from 'components/LabelLink'
+import Label from 'components/Label'
 import RemoveCourseLessonMutation from 'mutations/RemoveCourseLessonMutation'
 import {get} from 'utils'
 
@@ -91,7 +91,7 @@ class ListLessonPreview extends React.Component {
         <span className="mdc-list-item__tags">
           {labelNodes.map((node) =>
             node &&
-            <LabelLink key={node.id} label={node} />
+            <Label key={node.id} as={Link} label={node} to={node.resourcePath} />
           )}
         </span>
         {isCourse && editing && get(lesson, "course.viewerCanAdmin", false)
@@ -215,9 +215,8 @@ export default createFragmentContainer(ListLessonPreview, graphql`
     id
     labels(first: 5) {
       nodes {
-        color
+        ...Label_label
         id
-        name
         resourcePath
       }
     }

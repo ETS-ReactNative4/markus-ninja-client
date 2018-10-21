@@ -120,7 +120,7 @@ class CourseHeader extends React.Component {
         <div className="rn-header__meta">
           {course.viewerCanAdmin &&
           <button
-            className="material-icons mdc-icon-button"
+            className="material-icons mdc-icon-button mdc-theme--text-icon-on-background"
             type="button"
             onClick={this.handleToggleOpen}
             aria-label="Edit name"

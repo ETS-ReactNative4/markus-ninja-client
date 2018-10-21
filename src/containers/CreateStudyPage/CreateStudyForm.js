@@ -49,7 +49,7 @@ class CreateStudyForm extends React.Component {
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
         <div className="mdc-layout-grid__inner">
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet">
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8">
             <div className="inline-flex items-center">
               <TextField
                 label="Owner"

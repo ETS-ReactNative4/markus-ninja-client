@@ -63,37 +63,34 @@ class TopicHeader extends React.Component {
     const {description} = this.state
 
     return (
-      <form
-        className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-        onSubmit={this.handleSubmit}
-      >
-        <div className="inline-flex items-center w-100">
-          <TextField
-            className="flex-auto"
-            outlined
-            label="Description"
-            floatingLabelClassName={!isEmpty(description) ? "mdc-floating-label--float-above" : ""}
-          >
-            <Input
-              name="description"
-              value={description}
-              onChange={this.handleChange}
-            />
-          </TextField>
+      <form className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <TextField
+          className="w-100"
+          textarea
+          label="Description"
+          floatingLabelClassName={!isEmpty(description) ? "mdc-floating-label--float-above" : ""}
+        >
+          <Input
+            name="description"
+            value={description}
+            onChange={this.handleChange}
+          />
+        </TextField>
+        <div className="flex mt2">
           <button
-            className="mdc-button mdc-button--unelevated ml2"
+            className="mdc-button mdc-button--unelevated"
             type="submit"
             onClick={this.handleSubmit}
           >
             Save
           </button>
-          <span
-            className="pointer pa2"
-            role="button"
+          <button
+            className="mdc-button ml2"
+            type="button"
             onClick={this.handleToggleOpen}
           >
             Cancel
-          </span>
+          </button>
         </div>
       </form>
       )
@@ -110,7 +107,7 @@ class TopicHeader extends React.Component {
           </div>
           {topic.viewerCanUpdate &&
           <button
-            className="material-icons mdc-icon-button"
+            className="material-icons mdc-icon-button mdc-theme--text-icon-on-background"
             type="button"
             onClick={this.handleToggleOpen}
           >

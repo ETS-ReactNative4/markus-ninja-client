@@ -14,14 +14,11 @@ class StudyLessonsPageLessons extends React.Component {
 
   render() {
     const {lessons, study} = this.props
-    const {edges, hasMore, isLoading, loadMore} = lessons
-
-    const noResults = isEmpty(edges)
+    const {hasMore, loadMore} = lessons
 
     return (
       <div className={this.classes}>
         <div className="mdc-card mdc-card--outlined ph2">
-          {isLoading && noResults && <div>Loading...</div>}
           {this.renderLessons()}
           <div className="mdc-card__actions">
             <div className="mdc-card__action-buttons">
@@ -51,13 +48,16 @@ class StudyLessonsPageLessons extends React.Component {
   }
 
   renderLessons() {
-    const edges = this.props.lessons.edges
+    const {lessons} = this.props
+    const {edges, isLoading} = lessons
     const noResults = isEmpty(edges)
 
     return (
       <ul className="mdc-list mdc-list--two-line">
-        {noResults
-        ? <li className="mdc-list-item">No lessons were found</li>
+        {isLoading
+        ? <li className="mdc-list-item">Loading...</li>
+        : noResults
+          ? <li className="mdc-list-item">No lessons were found</li>
         : edges.map(({node}) => (
             node && <LessonPreview.List key={node.id} lesson={node} />
           ))}

@@ -17,8 +17,8 @@ class CreateStudyPage extends React.Component {
       <div className={this.classes}>
         <div className="mdc-layout-grid__inner">
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <div className="mdc-typography--headline4">Create a new study</div>
-            <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light pb3">
+            <h4>Create a new study</h4>
+            <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light">
               A study contains all your lessons, courses, and assets
             </div>
           </div>

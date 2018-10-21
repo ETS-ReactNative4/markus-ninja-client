@@ -1,8 +1,5 @@
 import * as React from 'react'
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import { get, isNil } from 'utils'
 import UpdateEnrollmentMutation from 'mutations/UpdateEnrollmentMutation'
@@ -64,10 +61,20 @@ class EnrollmentSelect extends React.Component {
   }
 }
 
-export default createFragmentContainer(EnrollmentSelect, graphql`
-  fragment EnrollmentSelect_enrollable on Enrollable {
-    enrollmentStatus
-    id
-    viewerCanEnroll
+EnrollmentSelect.propTypes = {
+  enrollable: PropTypes.shape({
+    enrollmentStatus: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    viewerCanEnroll: PropTypes.bool.isRequired,
+  }).isRequired,
+}
+
+EnrollmentSelect.defaultProps = {
+  enrollable: {
+    enrollmentStatus: "",
+    id: "",
+    viewerCanEnroll: false,
   }
-`)
+}
+
+export default EnrollmentSelect
