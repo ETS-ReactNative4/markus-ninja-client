@@ -66,13 +66,14 @@ class UpdateStudyNameForm extends React.Component {
             <Input
               name="name"
               value={name}
+              required
               onChange={this.handleChange}
             />
           </TextField>
           <button
+            type="submit"
             className="mdc-button mdc-button--unelevated ml2"
             disabled={!this.state.dirty}
-            type="submit"
           >
             Rename
           </button>

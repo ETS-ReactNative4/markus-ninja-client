@@ -107,7 +107,7 @@ class ChangeUsername extends React.Component {
           I understand, change my username
         </button>
         <button
-          className="mdc-button mdc-button--outlined ml2"
+          className="mdc-button ml2"
           type="button"
           onClick={() => this.handleChangeStage(INFO_STAGE)}
         >
@@ -133,18 +133,19 @@ class ChangeUsername extends React.Component {
           <Input
             name="username"
             value={username}
+            required
             onChange={this.handleChange}
           />
         </TextField>
         <div className="mt2">
           <button
-            className="mdc-button mdc-button--unelevated"
             type="submit"
+            className="mdc-button mdc-button--unelevated"
           >
             Change username
           </button>
           <button
-            className="mdc-button mdc-button--outlined ml2"
+            className="mdc-button ml2"
             type="button"
             onClick={() => this.handleChangeStage(INFO_STAGE)}
           >

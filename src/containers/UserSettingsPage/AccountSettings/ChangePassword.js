@@ -4,12 +4,16 @@ import TextField, {Input} from '@material/react-text-field'
 import UpdateViewerAccountMutation from 'mutations/UpdateViewerAccountMutation'
 import { isNil } from 'utils'
 
+const INFO_STAGE = 'info'
+const FORM_STAGE = 'form'
+
 class ChangePassword extends React.Component {
   state = {
+    error: null,
     confirmNewPassword: "",
     newPassword: "",
     oldPassword: "",
-    error: null,
+    stage: INFO_STAGE,
   }
 
   handleChange = (e) => {
@@ -37,12 +41,50 @@ class ChangePassword extends React.Component {
     }
   }
 
+  handleChangeStage = (stage = INFO_STAGE) => {
+    this.setState({ stage })
+  }
+
   get classes() {
     const {className} = this.props
     return cls("ChangePassword mdc-layout-grid__inner", className)
   }
 
   render() {
+    const {stage} = this.state
+
+    return (
+      <div className={this.classes}>
+        {(() => {
+          switch (stage) {
+            case INFO_STAGE:
+              return this.renderInfo()
+            case FORM_STAGE:
+              return this.renderForm()
+            default:
+              return null
+          }
+        })()}
+      </div>
+    )
+  }
+
+  renderInfo() {
+    return (
+      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <p>We recommend changing your password every few months.</p>
+        <button
+          className="mdc-button mdc-button--unelevated mt2"
+          type="button"
+          onClick={() => this.handleChangeStage(FORM_STAGE)}
+        >
+          Change password
+        </button>
+      </div>
+    )
+  }
+
+  renderForm() {
     const {confirmNewPassword, newPassword, oldPassword} = this.state
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
@@ -55,6 +97,7 @@ class ChangePassword extends React.Component {
               type="password"
               name="oldPassword"
               value={oldPassword}
+              required
               onChange={this.handleChange}
             />
           </TextField>
@@ -68,6 +111,7 @@ class ChangePassword extends React.Component {
               type="password"
               name="newPassword"
               value={newPassword}
+              required
               onChange={this.handleChange}
             />
           </TextField>
@@ -81,6 +125,8 @@ class ChangePassword extends React.Component {
               type="password"
               name="confirmNewPassword"
               value={confirmNewPassword}
+              required
+              pattern={newPassword}
               onChange={this.handleChange}
             />
           </TextField>
@@ -91,6 +137,13 @@ class ChangePassword extends React.Component {
             type="submit"
           >
             Update password
+          </button>
+          <button
+            type="button"
+            className="mdc-button ml2"
+            onClick={() => this.handleChangeStage(INFO_STAGE)}
+          >
+            Cancel
           </button>
         </div>
       </form>

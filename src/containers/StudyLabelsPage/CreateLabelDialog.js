@@ -5,77 +5,57 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import TextField, {Input} from '@material/react-text-field'
+import tinycolor from 'tinycolor2'
+import {HelperText} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import { GithubPicker } from 'react-color'
 import Dialog from 'components/Dialog'
 import {Label} from 'components/Label'
 import CreateLabelMutation from 'mutations/CreateLabelMutation'
-import {isNil} from 'utils'
+import {isEmpty, replaceAll} from 'utils'
 
 class CreateLabelDialog extends React.Component {
   constructor(props) {
     super(props)
 
-    this.colorInput = React.createRef()
-    this.root = null
-
-    this.setRoot = (element) => {
-      this.root = element
-    }
-
     this.state = {
       error: null,
-      color: "",
-      description: "",
-      name: "",
-      focusColorInput: false,
+      color: defaultTextFieldState,
+      description: defaultTextFieldState,
+      name: defaultTextFieldState,
     }
   }
 
-  componentDidMount() {
-    this.root.addEventListener('mousedown', this.handleClick, false);
-  }
-
-  componentWillUnmount() {
-    this.root.removeEventListener('mousedown', this.handleClick, false);
-  }
-
-  handleCancel = () => {
+  handleClose = (action) => {
     this.setState({
       error: null,
-      color: "",
-      description: "",
-      name: "",
-      focusColorInput: false,
+      color: defaultTextFieldState,
+      description: defaultTextFieldState,
+      name: defaultTextFieldState,
     })
     this.props.onClose()
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
+    const valid = field.name === "color"
+      ? tinycolor(field.value).isValid()
+      : field.valid
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: {
+        ...field,
+        valid,
+      },
     })
   }
 
-  handleChangeComplete = (color, event) => {
+  handlePickColor = (color, event) => {
     this.setState({
-      color: color.hex,
-      focusColorInput: false,
+      color: {
+        ...this.state.color,
+        valid: true,
+        value: color.hex,
+      },
     });
-  }
-
-  handleClick = (e) => {
-    if (!this.colorInput.current.contains(e.target)) {
-      this.setState({ focusColorInput: false })
-    }
-  }
-
-  handleBlurColorInput = (e) => {
-    setTimeout(() => {
-      if (!this.colorInput.current.contains(document.activeElement)) {
-        this.setState({ focusColorInput: false })
-      }
-    }, 0);
   }
 
   handleSubmit = (e) => {
@@ -83,13 +63,15 @@ class CreateLabelDialog extends React.Component {
     const { color, description, name } = this.state
     CreateLabelMutation(
       this.props.study.id,
-      name,
-      description,
-      color,
+      replaceAll(name.value, " ", "_"),
+      description.value,
+      color.value,
       (response, error) => {
-        if (!isNil(error)) {
+        if (error) {
           this.setState({ error: error[0].message })
+          return
         }
+        this.props.onClose()
       },
     )
   }
@@ -99,9 +81,21 @@ class CreateLabelDialog extends React.Component {
     return cls("CreateLabelDialog", className)
   }
 
+  get isFormValid() {
+    const {color, description, name} = this.state
+    return !isEmpty(name.value) && name.valid &&
+      !isEmpty(color.value) && color.valid &&
+      description.valid
+  }
+
   get label() {
     const {color, name} = this.state
-    return {color, name}
+    return {
+      color: color.value,
+      name: !isEmpty(name.value)
+      ? replaceAll(name.value, " ", "_")
+      : "Enter name",
+    }
   }
 
   render() {
@@ -112,27 +106,30 @@ class CreateLabelDialog extends React.Component {
         innerRef={this.setRoot}
         className={this.classes}
         open={open}
-        onClose={this.handleCancel}
-        title={<Dialog.Title>Create label</Dialog.Title>}
+        onClose={this.handleClose}
+        title={
+          <Dialog.Title>
+            <Label className="CreateLabelDialog__preview" label={this.label} />
+          </Dialog.Title>
+        }
         content={
           <Dialog.Content>
-            <Label className="mb2" label={this.label} />
-            {this.renderForm()}
+            {open && this.renderForm()}
           </Dialog.Content>}
         actions={
           <Dialog.Actions>
             <button
               type="button"
               className="mdc-button"
-              data-mdc-dialog-action="close"
+              data-mdc-dialog-action="cancel"
             >
               Cancel
             </button>
             <button
-              type="button"
+              type="submit"
+              form="create-label-form"
               className="mdc-button mdc-button--unelevated"
-              onClick={this.handleSubmit}
-              data-mdc-dialog-action="create"
+              data-mdc-dialog-action={this.isFormValid ? "create" : null}
             >
               Create
             </button>
@@ -142,40 +139,54 @@ class CreateLabelDialog extends React.Component {
   }
 
   renderForm() {
-    const {color, description, focusColorInput, name} = this.state
+    const {color} = this.state
     return (
-      <form>
-        <div>
-          <TextField label="Name">
-            <Input
-              name="name"
-              value={name}
-              onChange={this.handleChange}
-            />
-          </TextField>
+      <form className="CreateLabelDialog__form" id="create-label-form" onSubmit={this.handleSubmit}>
+        <div className="mb1">
+          <TextField
+            label="Name"
+            helperText={
+              <HelperText persistent>
+                Spaces become underscores.
+              </HelperText>
+            }
+            inputProps={{
+              name: "name",
+              required: true,
+              maxLength: 39,
+              onChange: this.handleChange,
+            }}
+          />
+        </div>
+        <div className="mb1">
+          <TextField
+            label="Description (optional)"
+            helperText={<HelperText>A brief description of the label.</HelperText>}
+            inputProps={{
+              name: "description",
+              onChange: this.handleChange,
+            }}
+          />
         </div>
         <div>
-          <TextField label="Description (optional)">
-            <Input
-              name="description"
-              value={description}
-              onChange={this.handleChange}
-            />
-          </TextField>
-        </div>
-        <div ref={this.colorInput} className={cls("rn-color-input", {"rn-color-input--focused": focusColorInput})}>
-          <TextField label="Color">
-            <Input
-              name="color"
-              value={color}
-              onChange={this.handleChange}
-              onFocus={() => this.setState({focusColorInput: true})}
-              onBlur={this.handleBlurColorInput}
-            />
-          </TextField>
-          <div className="rn-color-input__picker rn-color-input__picker--persistent">
-            <GithubPicker onChangeComplete={this.handleChangeComplete} />
+          <div className="mb1">
+            <GithubPicker triangle="hide" onChangeComplete={this.handlePickColor} />
           </div>
+          <TextField
+            label="Color"
+            helperText={
+              <HelperText persistent validation={!color.valid}>
+                Color may be formatted in hex, rgb(a), hsl(a), hsv(a), or named.
+              </HelperText>
+            }
+            inputProps={{
+              name: "color",
+              value: color.value,
+              required: true,
+              pattern: color.valid ? null : "",
+              onChange: this.handleChange,
+            }}
+          />
         </div>
       </form>
     )

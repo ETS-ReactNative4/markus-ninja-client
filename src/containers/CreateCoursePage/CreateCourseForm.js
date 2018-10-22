@@ -5,63 +5,21 @@ import {
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router-dom';
-import TextField, {Input, HelperText} from '@material/react-text-field'
-import Textarea from 'components/mdc/Textarea'
+import {HelperText} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import CreateCourseMutation from 'mutations/CreateCourseMutation'
-import { isNil } from 'utils'
+import {isEmpty, isNil} from 'utils'
 
 class CreateCourseForm extends React.Component {
   state = {
     error: null,
-    description: "",
-    name: "",
+    description: defaultTextFieldState,
+    name: defaultTextFieldState,
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("CreateCourseForm mdc-layout-grid__inner", className)
-  }
-
-  render() {
-    const {name, description} = this.state
-    return (
-      <form className={this.classes} onSubmit={this.handleSubmit}>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet">
-          <TextField
-            className="w-100"
-            outlined
-            label="Course name"
-          >
-            <Input
-              name="name"
-              value={name}
-              onChange={this.handleChange}
-            />
-          </TextField>
-        </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <TextField
-            textarea
-            label="Description (optional)"
-            helperText={<HelperText>Give a brief description of the course.</HelperText>}
-          >
-            <Textarea
-              name="description"
-              value={description}
-              onChange={this.handleChange}
-            />
-          </TextField>
-        </div>
-        <div className="mdc-layout-grid__cell">
-          <button className="mdc-button mdc-button--unelevated" type="submit">Create course</button>
-        </div>
-      </form>
-    )
-  }
-
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
     })
   }
 
@@ -70,8 +28,8 @@ class CreateCourseForm extends React.Component {
     const { description, name } = this.state
     CreateCourseMutation(
       this.props.study.id,
-      name,
-      description,
+      name.value,
+      description.value,
       (course, errors) => {
         if (!isNil(errors)) {
           this.setState({ error: errors[0].message })
@@ -79,6 +37,53 @@ class CreateCourseForm extends React.Component {
         }
         this.props.history.push(course.resourcePath)
       },
+    )
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("CreateCourseForm mdc-layout-grid__inner", className)
+  }
+
+  get isFormValid() {
+    const {description, name} = this.state
+    return !isEmpty(name.value) && name.valid &&
+      description.valid
+  }
+
+  render() {
+    return (
+      <form className={this.classes} onSubmit={this.handleSubmit}>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet">
+          <TextField
+            label="Course name"
+            inputProps={{
+              name: "name",
+              required: true,
+              onChange: this.handleChange,
+            }}
+          />
+        </div>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <TextField
+            textarea
+            label="Description (optional)"
+            helperText={<HelperText>Give a brief description of the course.</HelperText>}
+            inputProps={{
+              name: "description",
+              onChange: this.handleChange,
+            }}
+          />
+        </div>
+        <div className="mdc-layout-grid__cell">
+          <button
+            type="submit"
+            className="mdc-button mdc-button--unelevated"
+            disabled={!this.isFormValid}
+          >
+          Create course</button>
+        </div>
+      </form>
     )
   }
 }

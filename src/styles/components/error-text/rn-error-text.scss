@@ -1,0 +1,18 @@
+@import "@material/animation/variables";
+@import "@material/theme/mixins";
+@import "@material/typography/mixins";
+
+.rn-error-text {
+  @include mdc-typography(caption);
+  @include mdc-typography-baseline-top(16px);
+  @include mdc-theme-prop(color, error);
+
+  margin: 0;
+  transition: opacity 180ms $mdc-animation-standard-curve-timing-function;
+  opacity: 0;
+  will-change: opacity;
+}
+
+.rn-error-text--show {
+  opacity: 1;
+}

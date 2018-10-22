@@ -5,18 +5,22 @@ import {
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router'
-import TextField, {Input} from '@material/react-text-field'
 import CreateLessonMutation from 'mutations/CreateLessonMutation'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import RichTextEditor from 'components/RichTextEditor'
 import StudyCourseSelect from 'components/StudyCourseSelect'
-import { get, isNil } from 'utils'
+import {get, isEmpty, isNil} from 'utils'
 
 class CreateLessonForm extends React.Component {
-  state = {
-    error: null,
-    body: "",
-    courseId: "",
-    title: "",
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      error: null,
+      body: "",
+      courseId: "",
+      title: defaultTextFieldState,
+    }
   }
 
   handleSubmit = (e) => {
@@ -43,19 +47,26 @@ class CreateLessonForm extends React.Component {
     return cls("CreateLessonForm mdc-layout-grid__inner", className)
   }
 
+  get isFormValid() {
+    const {body, title} = this.state
+    return !isEmpty(body) &&
+      !isEmpty(title.value) && title.valid
+  }
+
   render() {
-    const {title} = this.state
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <TextField fullWidth label="Title">
-            <Input
-              name="title"
-              placeholder="Title"
-              value={title}
-              onChange={(e) => this.setState({title: e.target.value})}
-            />
-          </TextField>
+          <TextField
+            fullWidth
+            label="Title"
+            inputProps={{
+              name: "title",
+              placeholder: "Title*",
+              required: true,
+              onChange: (title) => this.setState({title}),
+            }}
+          />
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <RichTextEditor
@@ -68,7 +79,12 @@ class CreateLessonForm extends React.Component {
         {this.renderCourseSelect()}
         <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
         <div className="mdc-layout-grid__cell">
-          <button className="mdc-button mdc-button--unelevated" type="submit">Create lesson</button>
+          <button
+            type="submit"
+            className="mdc-button mdc-button--unelevated"
+          >
+            Create lesson
+          </button>
         </div>
       </form>
     )

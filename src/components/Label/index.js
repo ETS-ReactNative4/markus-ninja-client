@@ -27,7 +27,13 @@ export class Label extends React.Component {
   get classes() {
     const {className, selected} = this.props
     const {backgroundColor} = this.state
-    const isDark = backgroundColor.isDark()
+    const alpha = backgroundColor.getAlpha()
+    let isDark
+    if (tinycolor.isReadable(backgroundColor.toHexString(), "#fff") && alpha > 0.6) {
+      isDark = true
+    } else {
+      isDark = false
+    }
 
     return cls("Label mdc-chip", className, {
       "mdc-chip-selected": selected,
@@ -38,11 +44,11 @@ export class Label extends React.Component {
   }
 
   get color() {
-    let color = get(this.props, "label.color", "")
-    if (!color.match(/^#(?:[0-9a-fA-F]{3}){1,2}$/g)) {
-      color = "#e0e0e0"
+    let color = tinycolor(get(this.props, "label.color", ""))
+    if (!color.isValid()) {
+      return tinycolor("#e0e0e0")
     }
-    return tinycolor(color)
+    return color
   }
 
   render() {
@@ -54,7 +60,7 @@ export class Label extends React.Component {
       ...otherProps
     } = this.props
     const {backgroundColor} = this.state
-    const style = selected ? {backgroundColor: backgroundColor.toHexString()} : null
+    const style = selected ? {backgroundColor: backgroundColor.toHex8String()} : null
 
     return (
       <Component

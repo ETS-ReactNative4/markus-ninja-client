@@ -3,28 +3,29 @@ import PropTypes from 'prop-types'
 import cls from 'classnames'
 import { withRouter } from 'react-router'
 import queryString from 'query-string'
-import TextField, {Input} from '@material/react-text-field'
-import {get} from 'utils'
+import ErrorText from 'components/ErrorText'
+import TextField, {defaultTextFieldState} from 'components/TextField'
+import {get, isEmpty} from 'utils'
 
 import './styles.css'
 
 class LoginForm extends React.Component {
   state = {
     error: null,
-    username: "",
-    password: "",
+    username: defaultTextFieldState,
+    password: defaultTextFieldState,
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
     })
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
     const { username, password } = this.state
-    const credentials = btoa(username + ":" + password)
+    const credentials = btoa(username.value + ":" + password.value)
     return fetch(process.env.REACT_APP_API_URL + "/token", {
       method: "GET",
       headers: {
@@ -33,9 +34,29 @@ class LoginForm extends React.Component {
       credentials: "include",
     }).then((response) => {
       if (!response.ok) {
-        console.error("failed to login")
-        return
+        return response.text()
       }
+      return Promise.resolve()
+    }).then((responseBody) => {
+      if (responseBody) {
+        try {
+          const body = JSON.parse(responseBody)
+          switch (body.error) {
+            case "invalid_credentials":
+              return this.setState({
+                error: "Invalid credentials",
+              })
+            default:
+              return this.setState({
+                error: "An unknown error occurred",
+              })
+          }
+
+        } catch (error) {
+          console.error(error)
+        }
+      }
+
       this.props.onLogin()
       const search = queryString.parse(get(this.props, "location.search", ""))
       const returnTo = get(search, "return_to", undefined)
@@ -48,8 +69,15 @@ class LoginForm extends React.Component {
     return cls("LoginForm mdc-layout-grid__inner", className)
   }
 
-  render() {
+  get formIsValid() {
     const {username, password} = this.state
+
+    return !isEmpty(username.value) && username.valid &&
+      !isEmpty(password.value) && password.valid
+  }
+
+  render() {
+    const {error, username, password} = this.state
     return (
       <form
         className={this.classes}
@@ -59,35 +87,39 @@ class LoginForm extends React.Component {
           <TextField
             className="w-100"
             label="Username or email"
-          >
-            <Input
-              name="username"
-              value={username}
-              onChange={this.handleChange}
-            />
-          </TextField>
+            inputProps={{
+              name: "username",
+              required: username.visited,
+              maxLength: 39,
+              onChange: this.handleChange,
+            }}
+          />
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
             className="w-100"
             label="Password"
-          >
-            <Input
-              type="password"
-              name="password"
-              value={password}
-              onChange={this.handleChange}
-            />
-          </TextField>
+            inputProps={{
+              type: "password",
+              name: "password",
+              required: password.visited,
+              onChange: this.handleChange,
+            }}
+          />
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <button
-            className="mdc-button mdc-button--unelevated w-100"
             type="submit"
+            className="mdc-button mdc-button--unelevated w-100"
+            disabled={!this.formIsValid}
           >
             Sign in
           </button>
         </div>
+        <ErrorText
+          className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+          error={error}
+        />
       </form>
     )
   }

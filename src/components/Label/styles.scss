@@ -3,6 +3,9 @@
 @import "@material/typography/mixins";
 
 .Label {
+  .mdc-chip__text {
+    @include mdc-typography-overflow-ellipsis;
+  }
   vertical-align: middle;
 }
 

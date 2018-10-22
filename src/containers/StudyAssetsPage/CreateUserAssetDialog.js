@@ -5,6 +5,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import {HelperText} from '@material/react-text-field'
 import TextField, {Input} from '@material/react-text-field'
 import Dialog from 'components/Dialog'
 import UserAssetNameInput from 'components/UserAssetNameInput'
@@ -176,7 +177,7 @@ class CreateUserAssetDialog extends React.Component {
     return (
       <form>
         <label
-          className="mdc-button w-100 mb2"
+          className="mdc-button w-100 mb1"
           htmlFor="file-input"
         >
           <i className="material-icons mdc-button__icon">attach_file</i>
@@ -186,17 +187,22 @@ class CreateUserAssetDialog extends React.Component {
             className="dn"
             type="file"
             accept=".jpg,.jpeg,.png,.gif"
+            required
             onChange={this.handleChangeFile}
           />
         </label>
         <UserAssetNameInput
+          className="mb1"
           initialValue={filename}
           label={!file ? "No file chosen" : "Name"}
           onChange={this.handleChangeName}
           disabled={!file}
         />
         <div>
-          <TextField label="Description (optional)">
+          <TextField
+            label="Description (optional)"
+            helperText={<HelperText>Give a brief description of the asset.</HelperText>}
+          >
             <Input
               name="description"
               value={description}

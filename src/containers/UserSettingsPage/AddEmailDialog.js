@@ -86,11 +86,10 @@ class AddEmailDialog extends React.Component {
               Cancel
             </button>
             <button
-              type="button"
+              type="submit"
               className="mdc-button mdc-button--unelevated"
-              disabled={!this.isValid}
-              onClick={this.handleSubmit}
-              data-mdc-dialog-action="add"
+              form="add-email-form"
+              data-mdc-dialog-action={this.isValid ? "add" : null}
             >
               Add
             </button>
@@ -102,12 +101,13 @@ class AddEmailDialog extends React.Component {
   renderForm() {
     const {email} = this.state
     return (
-      <form>
+      <form id="add-email-form" onSubmit={this.handleSubmit}>
         <TextField label="Email">
           <Input
             type="email"
             name="email"
             value={email}
+            required
             onChange={this.handleChange}
           />
         </TextField>

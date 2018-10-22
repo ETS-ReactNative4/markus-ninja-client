@@ -107,6 +107,7 @@ class DeleteAccount extends React.Component {
             <Input
               name="login"
               value={login}
+              required
               onChange={this.handleChange}
             />
           </TextField>
@@ -118,6 +119,7 @@ class DeleteAccount extends React.Component {
               type="password"
               name="password"
               value={password}
+              required
               onChange={this.handleChange}
             />
           </TextField>
@@ -132,20 +134,20 @@ class DeleteAccount extends React.Component {
           <Input
             name="verify"
             value={verify}
+            required
+            pattern="delete my account"
             onChange={this.handleChange}
           />
         </TextField>
         <div className="mt2">
           <button
-            className="mdc-button mdc-button--unelevated"
-            disabled={!this.isSubmittable}
             type="submit"
-            onClick={this.handleSubmit}
+            className="mdc-button mdc-button--unelevated"
           >
             Delete this account
           </button>
           <button
-            className="mdc-button mdc-button--outlined ml2"
+            className="mdc-button ml2"
             type="button"
             onClick={this.handleToggleOpen}
           >

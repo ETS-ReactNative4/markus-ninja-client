@@ -100,6 +100,10 @@
   &.mdc-text-field--inline {
     height: 100%;
   }
+
+  +.mdc-text-field-helper-text {
+    overflow-wrap: break-word;
+  }
 }
 
 @function mdc-theme-background-url-prop-value($style) {

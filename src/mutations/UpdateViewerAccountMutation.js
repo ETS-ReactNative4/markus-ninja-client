@@ -32,17 +32,21 @@ export default (login, newPassword, oldPassword, callback) => {
       variables,
       updater: proxyStore => {
         const updateViewerAccountField = proxyStore.getRootField('updateViewerAccount')
-        const userId = updateViewerAccountField.getValue("id")
-        const newAccountUpdatedAt = updateViewerAccountField.getValue('accountUpdatedAt')
-        const newLogin = updateViewerAccountField.getValue('login')
-        const newResourcePath = updateViewerAccountField.getValue('resourcePath')
-        const newUrl = updateViewerAccountField.getValue('url')
+        if (updateViewerAccountField) {
+          const userId = updateViewerAccountField.getValue("id")
+          const newAccountUpdatedAt = updateViewerAccountField.getValue('accountUpdatedAt')
+          const newLogin = updateViewerAccountField.getValue('login')
+          const newResourcePath = updateViewerAccountField.getValue('resourcePath')
+          const newUrl = updateViewerAccountField.getValue('url')
 
-        const user = proxyStore.get(userId)
-        user.setValue(newAccountUpdatedAt, 'accountUpdatedAt')
-        user.setValue(newLogin, 'login')
-        user.setValue(newResourcePath, 'resourcePath')
-        user.setValue(newUrl, 'url')
+          const user = proxyStore.get(userId)
+          if (user) {
+            user.setValue(newAccountUpdatedAt, 'accountUpdatedAt')
+            user.setValue(newLogin, 'login')
+            user.setValue(newResourcePath, 'resourcePath')
+            user.setValue(newUrl, 'url')
+          }
+        }
       },
       onCompleted: callback,
       onError: err => console.error(err),

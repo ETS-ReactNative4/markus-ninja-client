@@ -1,10 +1,11 @@
 @import "@material/animation/variables";
 
 .rn-color-input {
-  position: relative;
 }
 
 .rn-color-input__picker {
+  margin-bottom: 4px;
+  margin-top: 4px;
   opacity: 0;
   transition: opacity 180ms $mdc-animation-standard-curve-timing-function;
   will-change: opacity;

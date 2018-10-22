@@ -1,10 +1,13 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
-import TextField, {Input} from '@material/react-text-field'
+import tinycolor from 'tinycolor2'
 import { GithubPicker } from 'react-color'
+import {HelperText} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import Dialog from 'components/Dialog'
 import {Label} from 'components/Label'
+import {withUID} from 'components/UniqueId'
 import UpdateLabelMutation from 'mutations/UpdateLabelMutation'
 import {get, isEmpty, isNil} from 'utils'
 
@@ -12,35 +15,21 @@ class UpdateLabelDialog extends React.Component {
   constructor(props) {
     super(props)
 
-    this.colorInput = React.createRef()
-    this.root = null
-
-    this.setRoot = (element) => {
-      this.root = element
-    }
-
     const {label} = this.props
 
     this.state = {
       error: null,
       color: {
+        ...defaultTextFieldState,
         value: label.color,
         valid: true,
       },
       description: {
+        ...defaultTextFieldState,
         value: label.description,
         valid: true,
       },
-      focusColorInput: false,
     }
-  }
-
-  componentDidMount() {
-    this.root.addEventListener('mousedown', this.handleClick, false);
-  }
-
-  componentWillUnmount() {
-    this.root.removeEventListener('mousedown', this.handleClick, false);
   }
 
   handleCancel = () => {
@@ -48,23 +37,25 @@ class UpdateLabelDialog extends React.Component {
     this.setState({
       error: null,
       color: {
+        ...defaultTextFieldState,
         value: label.color,
-        valid: true,
       },
       description: {
+        ...defaultTextFieldState,
         value: label.description,
-        valid: true,
       },
-      focusColorInput: false,
     })
     this.props.onClose()
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
+    const valid = field.name === "color"
+      ? tinycolor(field.value).isValid()
+      : field.valid
     this.setState({
-      [e.target.name]: {
-        value: e.target.value,
-        valid: e.target.validity.valid,
+      [field.name]: {
+        ...field,
+        valid,
       },
     })
   }
@@ -72,25 +63,11 @@ class UpdateLabelDialog extends React.Component {
   handleChangeComplete = (color, event) => {
     this.setState({
       color: {
+        ...this.state.color,
         value: color.hex,
         valid: true,
       },
-      focusColorInput: false,
     });
-  }
-
-  handleClick = (e) => {
-    if (!this.colorInput.current.contains(e.target)) {
-      this.setState({ focusColorInput: false })
-    }
-  }
-
-  handleBlurColorInput = (e) => {
-    setTimeout(() => {
-      if (!this.colorInput.current.contains(document.activeElement)) {
-        this.setState({ focusColorInput: false })
-      }
-    }, 0);
   }
 
   handleSubmit = (e) => {
@@ -98,8 +75,8 @@ class UpdateLabelDialog extends React.Component {
     const { color, description} = this.state
     UpdateLabelMutation(
       this.props.label.id,
-      color,
-      description,
+      color.value,
+      description.value,
       (response, error) => {
         if (!isNil(error)) {
           this.setState({ error: error[0].message })
@@ -119,13 +96,14 @@ class UpdateLabelDialog extends React.Component {
     return {color: color.value, name}
   }
 
-  get isValid() {
+  get isFormValid() {
     const {color, description} = this.state
-    return color.valid && description.valid
+    return !isEmpty(color.value) && color.valid &&
+      description.valid
   }
 
   render() {
-    const {open} = this.props
+    const {open, uid} = this.props
 
     return (
       <Dialog
@@ -133,12 +111,12 @@ class UpdateLabelDialog extends React.Component {
         className={this.classes}
         open={open}
         onClose={this.handleCancel}
-        title={<Dialog.Title>Update label</Dialog.Title>}
-        content={
-          <Dialog.Content>
-            <Label className="mb2" label={this.label} />
-            {this.renderForm()}
-          </Dialog.Content>}
+        title={
+          <Dialog.Title>
+            <Label className="UpdateLabelDialog__preview" label={this.label} />
+          </Dialog.Title>
+        }
+        content={<Dialog.Content>{this.renderForm()}</Dialog.Content>}
         actions={
           <Dialog.Actions>
             <button
@@ -149,11 +127,10 @@ class UpdateLabelDialog extends React.Component {
               Cancel
             </button>
             <button
-              type="button"
+              type="submit"
+              form={`update-label-form${uid}`}
               className="mdc-button mdc-button--unelevated"
-              disabled={!this.isValid}
-              onClick={this.handleSubmit}
-              data-mdc-dialog-action="update"
+              data-mdc-dialog-action={this.isFormValid ? "update" : null}
             >
               Update
             </button>
@@ -163,37 +140,43 @@ class UpdateLabelDialog extends React.Component {
   }
 
   renderForm() {
-    const {color, description, focusColorInput} = this.state
+    const {uid} = this.props
+    const {color, description} = this.state
+
     return (
-      <form>
-        <TextField
-          label="Description"
-          floatingLabelClassName={!isEmpty(description) ? "mdc-floating-label--float-above" : ""}
-        >
-          <Input
-            name="description"
-            value={description.value}
-            onChange={this.handleChange}
+      <form className="UpdateLabelDialog__form" id={`update-label-form${uid}`} onSubmit={this.handleSubmit}>
+        <div className="mb1">
+          <TextField
+            label="Description"
+            floatingLabelClassName={!isEmpty(description.value) ? "mdc-floating-label--float-above" : ""}
+            helperText={<HelperText>A brief description of the label.</HelperText>}
+            inputProps={{
+              name: "description",
+              value: description.value,
+              onChange: this.handleChange,
+            }}
           />
-        </TextField>
-        <div ref={this.colorInput} className={cls("rn-color-input", {"rn-color-input--focused": focusColorInput})}>
+        </div>
+        <div>
+          <div className="mb1">
+            <GithubPicker triangle="hide" onChangeComplete={this.handleChangeComplete} />
+          </div>
           <TextField
             label="Color"
             floatingLabelClassName={!isEmpty(color) ? "mdc-floating-label--float-above" : ""}
-          >
-            <Input
-              name="color"
-              value={color.value}
-              pattern="^#(?:[0-9a-fA-F]{3}){1,2}$"
-              required
-              onChange={this.handleChange}
-              onFocus={() => this.setState({focusColorInput: true})}
-              onBlur={this.handleBlurColorInput}
-            />
-          </TextField>
-          <div className="rn-color-input__picker rn-color-input__picker--persistent">
-            <GithubPicker onChangeComplete={this.handleChangeComplete} />
-          </div>
+            helperText={
+              <HelperText validation>
+                Color may be formatted in hex, rgb(a), hsl(a), hsv(a), or named.
+              </HelperText>
+            }
+            inputProps={{
+              name: "color",
+              value: color.value,
+              required: true,
+              pattern: color.valid ? null : "",
+              onChange: this.handleChange,
+            }}
+          />
         </div>
       </form>
     )
@@ -220,4 +203,4 @@ UpdateLabelDialog.defaultProps = {
   onClose: () => {},
 }
 
-export default UpdateLabelDialog
+export default withUID((getId) => ({uid: getId()}))(UpdateLabelDialog)

@@ -5,21 +5,22 @@ import {
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router-dom';
-import TextField, {Input, HelperText} from '@material/react-text-field'
-import Textarea from 'components/mdc/Textarea'
+import {HelperText} from '@material/react-text-field'
+import ErrorText from 'components/ErrorText'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import CreateStudyMutation from 'mutations/CreateStudyMutation'
-import { get, isEmpty } from 'utils'
+import {get, isEmpty, replaceAll} from 'utils'
 
 class CreateStudyForm extends React.Component {
   state = {
     error: null,
-    description: "",
-    name: "",
+    description: defaultTextFieldState,
+    name: defaultTextFieldState,
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
     })
   }
 
@@ -27,11 +28,12 @@ class CreateStudyForm extends React.Component {
     e.preventDefault()
     const { description, name } = this.state
     CreateStudyMutation(
-      name,
-      description,
+      replaceAll(name.value, " ", "_"),
+      description.value,
       (study, errors) => {
         if (!isEmpty(errors)) {
           this.setState({ error: errors[0].message })
+          return
         }
         this.props.history.push(get(study, "resourcePath", ""))
       }
@@ -43,50 +45,72 @@ class CreateStudyForm extends React.Component {
     return cls("CreateStudyForm", className)
   }
 
+  get formIsValid() {
+    const {description, name} = this.state
+    return !isEmpty(description.value) && description.valid &&
+      !isEmpty(name.value) && name.valid
+  }
+
   render() {
     const owner = get(this.props, "user.login", "")
-    const { name, description, error } = this.state
+    const {error, name} = this.state
+
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
         <div className="mdc-layout-grid__inner">
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8">
-            <div className="inline-flex items-center">
-              <TextField
-                label="Owner"
-                floatingLabelClassName="mdc-floating-label--float-above"
-              >
-                <Input
-                  value={owner}
-                  disabled
-                />
-              </TextField>
-              <span className="mdc-typography--headline6 mh2">/</span>
-              <TextField label="Study name">
-                <Input
-                  name="name"
-                  value={name}
-                  onChange={this.handleChange}
-                />
-              </TextField>
-            </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <TextField
+              label="Owner"
+              floatingLabelClassName="mdc-floating-label--float-above"
+              inputProps={{
+                value: owner,
+                disabled: true,
+              }}
+            />
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <TextField
+              fullWidth
+              label="Study name"
+              helperText={
+                <HelperText persistent>
+                  {!isEmpty(name.value)
+                  ? `Name will be ${replaceAll(name.value, " ", "_")}`
+                  : ""}
+                </HelperText>
+              }
+              inputProps={{
+                name: "name",
+                placeholder: "Study name*",
+                required: true,
+                maxLength: 39,
+                onChange: this.handleChange,
+              }}
+            />
           </div>
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             <TextField
               textarea
               label="Description (optional)"
               helperText={<HelperText>Give a brief description of the study.</HelperText>}
-            >
-              <Textarea
-                name="description"
-                value={description}
-                onChange={this.handleChange}
-              />
-            </TextField>
+              inputProps={{
+                name: "description",
+                onChange: this.handleChange,
+              }}
+            />
           </div>
           <div className="mdc-layout-grid__cell">
-            <button className="mdc-button mdc-button--unelevated" type="submit">Create study</button>
+            <button
+              type="submit"
+              className="mdc-button mdc-button--unelevated"
+            >
+              Create study
+            </button>
           </div>
-          <span>{error}</span>
+          <ErrorText
+            className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+            error={error}
+          />
         </div>
       </form>
     )

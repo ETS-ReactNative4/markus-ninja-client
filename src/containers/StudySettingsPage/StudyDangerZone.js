@@ -72,15 +72,16 @@ class StudyDangerZone extends React.Component {
               <Input
                 name="confirmation"
                 value={confirmation}
+                required
+                pattern="delete me"
                 onChange={(e) => this.setState({ confirmation: e.target.value })}
               />
             </TextField>
           </div>
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             <button
-              className="mdc-button mdc-button--unelevated"
               type="submit"
-              disabled={confirmation !== "delete me"}
+              className="mdc-button mdc-button--unelevated"
             >
               Delete
             </button>

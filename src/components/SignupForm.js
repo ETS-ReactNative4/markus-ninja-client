@@ -2,51 +2,22 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
 import {withRouter} from 'react-router-dom'
-import TextField, {Input, HelperText} from '@material/react-text-field'
+import {HelperText} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import CreateUserMutation from 'mutations/CreateUserMutation'
 import {isEmpty, isNil} from 'utils'
 
 class SignupForm extends React.Component {
   state = {
     error: null,
-    email: {
-      dirty: false,
-      value: "",
-      visited: false,
-    },
-    username: {
-      dirty: false,
-      value: "",
-      visited: false,
-    },
-    password: {
-      dirty: false,
-      value: "",
-      visited: false,
-    },
+    email: defaultTextFieldState,
+    username: defaultTextFieldState,
+    password: defaultTextFieldState,
   }
 
-  handleChange = (e) => {
-    const name = e.target.name
-    const field = this.state[name]
-    const value = e.target.value
+  handleChange = (field) => {
     this.setState({
-      [name]: {
-        ...field,
-        dirty: true,
-        value,
-      }
-    })
-  }
-
-  handleFocus = (e) => {
-    const name = e.target.name
-    const field = this.state[name]
-    this.setState({
-      [name]: {
-        ...field,
-        visited: true,
-      }
+      [field.name]: field,
     })
   }
 
@@ -89,9 +60,9 @@ class SignupForm extends React.Component {
   get formIsValid() {
     const {email, username, password} = this.state
 
-    return !isEmpty(email.value) &&
-      !isEmpty(username.value) &&
-      !isEmpty(password.value)
+    return !isEmpty(email.value) && email.valid &&
+      !isEmpty(username.value) && username.valid &&
+      !isEmpty(password.value) && password.valid
   }
 
   render() {
@@ -105,61 +76,61 @@ class SignupForm extends React.Component {
           <TextField
             className="w-100"
             label="Username"
-            helperText={<HelperText persistent>Your name by which other users will know you.</HelperText>}
-          >
-            <Input
-              name="username"
-              value={username.value}
-              required={username.visited}
-              pattern="^([a-zA-Z0-9]+-)*[a-zA-Z0-9]+$"
-              maxLength={39}
-              onChange={this.handleChange}
-              onFocus={this.handleFocus}
-            />
-          </TextField>
+            helperText={
+              <HelperText persistent validation={!username.valid}>
+                {username.valid
+                ? "Your name by which other users will know you."
+                : "Invalid username"}
+              </HelperText>
+            }
+            inputProps={{
+              name: "username",
+              required: username.visited,
+              pattern: "^([a-zA-Z0-9]+-)*[a-zA-Z0-9]+$",
+              maxLength: 39,
+              onChange: this.handleChange,
+            }}
+          />
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
             className="w-100"
             label="Email address"
             helperText={
-              <HelperText persistent>
-                Your primary email address for account related communication.
-                We will never share your email address with anyone.
+              <HelperText persistent validation={!email.valid}>
+                {email.valid
+                ?  `Your primary email address for account related communication.
+                    We will never share your email address with anyone.`
+                : "Invalid email"}
               </HelperText>
             }
-          >
-            <Input
-              type="email"
-              name="email"
-              value={email.value}
-              required={email.visited}
-              onChange={this.handleChange}
-              onFocus={this.handleFocus}
-            />
-          </TextField>
+            inputProps={{
+              type: "email",
+              name: "email",
+              required: email.visited,
+              onChange: this.handleChange,
+            }}
+          />
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
             className="w-100"
             label="Password"
             helperText={
-              <HelperText persistent>
+              <HelperText persistent validation={!password.valid}>
                 Use at least one lowercase letter, one uppercase letter, one numeral, and seven characters.
               </HelperText>
             }
-          >
-            <Input
-              type="password"
-              name="password"
-              value={password.value}
-              required={password.visited}
-              pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,255}$"
-              minLength={7}
-              onChange={this.handleChange}
-              onFocus={this.handleFocus}
-            />
-          </TextField>
+            inputProps={{
+              type: "password",
+              name: "password",
+              required: password.visited,
+              // eslint-disable-next-line no-useless-escape
+              pattern: "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,255}$",
+              minLength: 7,
+              onChange: this.handleChange,
+            }}
+          />
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <button
