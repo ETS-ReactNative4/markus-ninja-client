@@ -6,7 +6,8 @@ import {
   graphql,
 } from 'react-relay'
 import { Link, withRouter } from 'react-router-dom';
-import TextField, {HelperText, Input} from '@material/react-text-field'
+import {HelperText} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateTopicsMutation from 'mutations/UpdateTopicsMutation'
 import { get, isEmpty } from 'utils'
 import { TOPICS_PER_PAGE } from 'consts'
@@ -21,17 +22,18 @@ class StudyMetaTopics extends React.Component {
     this.state = {
       error: null,
       invalidTopicNames: null,
-      initialValues: {
-        topics,
+      topics: {
+        ...defaultTextFieldState,
+        initialValue: topics,
+        value: topics,
       },
-      topics,
       open: false,
     }
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
       error: null,
     })
   }
@@ -41,7 +43,7 @@ class StudyMetaTopics extends React.Component {
     const { topics } = this.state
     UpdateTopicsMutation(
       this.props.study.id,
-      topics.split(" "),
+      topics.value.split(" "),
       (error, invalidTopicNames) => {
         if (!isEmpty(invalidTopicNames)) {
           this.setState({ error, invalidTopicNames })
@@ -49,7 +51,10 @@ class StudyMetaTopics extends React.Component {
           this.handleToggleOpen()
           this.setState({
             error: null,
-            initialValues: {topics},
+            topics: {
+              ...this.state.topics,
+              initialValue: topics.value,
+            },
             invalidTopicNames: null,
           })
         }
@@ -63,7 +68,9 @@ class StudyMetaTopics extends React.Component {
     this.setState({ open, error: null })
     this.props.onOpen(open)
 
-    this.reset_()
+    if (!open) {
+      this.reset_()
+    }
   }
 
   _loadMore = () => {
@@ -83,7 +90,10 @@ class StudyMetaTopics extends React.Component {
     this.setState({
       error: null,
       invalidTopicNames: null,
-      ...this.state.initialValues,
+      topics: {
+        ...this.state.topics,
+        value: this.state.topics.initialValue,
+      },
     })
   }
 
@@ -112,20 +122,20 @@ class StudyMetaTopics extends React.Component {
       <form onSubmit={this.handleSubmit}>
         <TextField
           fullWidth
+          label="Topics (separate with spaces)"
           helperText={this.renderHelperText()}
-        >
-          <Input
-            name="topics"
-            placeholder="Topics (separate with spaces)"
-            value={topics}
-            onChange={this.handleChange}
-          />
-        </TextField>
+          inputProps={{
+            name: "topics",
+            value: topics.value,
+            placeholder: "Topics (separate with spaces)",
+            pattern: "^([a-zA-Z0-9-]{1,39}\\s+)*([a-zA-Z0-9-]{1,39})$",
+            onChange: this.handleChange,
+          }}
+        />
         <div className="inline-flex items-center mt2">
           <button
-            className="mdc-button mdc-button--unelevated"
             type="submit"
-            onClick={this.handleSubmit}
+            className="mdc-button mdc-button--unelevated"
           >
             Save
           </button>
@@ -142,9 +152,13 @@ class StudyMetaTopics extends React.Component {
   }
 
   renderHelperText() {
+    const {topics} = this.state
+
     return (
-      <HelperText persistent>
-        Add topics to categorize your study and make it more discoverable. (separate with spaces)
+      <HelperText persistent validation={!topics.valid}>
+        {topics.valid
+        ? "Add topics to categorize your study and make it more discoverable."
+        : "Topic names must be less than 40 characters, and may only contain alphanumeric characters or hyphens. Separate with spaces."}
       </HelperText>
     )
   }

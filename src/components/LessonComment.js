@@ -172,16 +172,16 @@ class LessonComment extends React.Component {
     const {body} = this.state
 
     return (
-      <form>
+      <form id="lesson-comment-form" onSubmit={this.handleSubmit}>
         <RichTextEditor
           id="LessonComment__body"
           placeholder="Leave a comment"
           initialValue={body}
+          form="lesson-comment-form"
           submitText="Update comment"
           study={study}
           onCancel={this.handleToggleEdit}
           onChange={this.handleChange}
-          onSubmit={this.handleSubmit}
         />
       </form>
     )

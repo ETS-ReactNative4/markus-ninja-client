@@ -5,42 +5,41 @@ import {
 } from 'react-relay'
 import { withUID } from 'components/UniqueId'
 import TextField, {Input} from '@material/react-text-field'
-import UserAssetNameInput from 'components/UserAssetNameInput'
+import UserAssetNameInput, {defaultUserAssetNameState} from 'components/UserAssetNameInput'
 import Dialog from 'components/Dialog'
+import ErrorText from 'components/ErrorText'
 import CreateUserAssetMutation from 'mutations/CreateUserAssetMutation'
 import {get, isNil, makeCancelable, replaceAll} from 'utils'
 
 class AttachFile extends React.Component {
   state = {
+    description: "",
+    file: null,
+    name: defaultUserAssetNameState,
+    open: false,
     request: {
       cancel() {}
     },
-    file: null,
-    name: "",
-    description: "",
-    open: false,
     save: false,
-    submittable: false,
   }
 
   componentWillUnmount() {
     this.state.request.cancel()
   }
 
-  handleCancel = () => {
+  handleClose = () => {
     this.setState({
-      file: null,
-      name: "",
       description: "",
+      file: null,
+      name: defaultUserAssetNameState,
       open: false,
-      submittable: false,
     })
   }
 
-  handleChangeName = (name, submittable) => {
+  handleChangeName = (name) => {
     this.setState({
+      error: null,
       name,
-      submittable,
     })
   }
 
@@ -48,7 +47,6 @@ class AttachFile extends React.Component {
     const file = e.target.files[0]
     this.setState({
       file,
-      name: file.name
     })
   }
 
@@ -59,13 +57,20 @@ class AttachFile extends React.Component {
     })
   }
 
-  handleSaveFile = () => {
-    const {file} = this.state
+  handleSaveFile = (e) => {
+    e.preventDefault()
+    const {file, name} = this.state
+    if (!name.available) {
+      this.setState({
+        error: "Choose a new name"
+      })
+      return
+    }
     this.handleAttachFile(file, true)
   }
 
   handleAttachFile = (file, save) => {
-    if (!isNil(file)) {
+    if (file) {
       const formData = new FormData()
 
       formData.append("save", save)
@@ -95,25 +100,28 @@ class AttachFile extends React.Component {
           CreateUserAssetMutation(
             data.asset.id,
             this.props.study.id,
-            this.state.name,
+            this.state.name.value,
             this.state.description,
             (userAsset, errors) => {
               if (!isNil(errors)) {
                 this.setState({ error: errors[0].message })
+                return
               }
               this.setState({
-                loading: false,
+                error: null,
+                description: "",
                 file: null,
-                save: false,
+                loading: false,
+                name: defaultUserAssetNameState,
               })
               this.props.onChangeComplete(userAsset, save, data.error)
             }
           )
         } else {
           this.setState({
+            error: null,
             loading: false,
             file: null,
-            save: false,
           })
           this.props.onChangeComplete(data.asset, save, data.error)
         }
@@ -125,118 +133,4 @@ class AttachFile extends React.Component {
       })
     }
   }
-
-  render() {
-    const {study, uid} = this.props
-    const viewerCanAdmin = get(study, "viewerCanAdmin", false)
-
-    return (
-      <React.Fragment>
-        <label
-          className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
-          htmlFor={`file-input${uid}`}
-          title="Attach file"
-          aria-label="Attach file"
-        >
-          attach_file
-          <input
-            id={`file-input${uid}`}
-            className="dn"
-            type="file"
-            accept=".jpg,jpeg,.png,.gif"
-            onChange={(e) => this.handleAttachFile(e.target.files[0], false)}
-          />
-        </label>
-        {viewerCanAdmin &&
-        <button
-          className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
-          type="button"
-          onClick={this.handleToggleSaveForm}
-          aria-label="Attach & Save file"
-          title="Attach & Save file"
-        >
-          save
-        </button>}
-        {viewerCanAdmin && this.renderSaveForm()}
-      </React.Fragment>
-    )
-  }
-
-  renderSaveForm() {
-    const {description, file, open, submittable} = this.state
-    const filename = replaceAll(get(file, "name", ""), " ", "_")
-
-    return (
-      <Dialog
-        open={open}
-        onClose={this.handleCancel}
-        title={<Dialog.Title>Attach & Save file</Dialog.Title>}
-        content={
-          <Dialog.Content>
-            <div className="flex flex-column mw5">
-              <p>
-                The selected file will be saved to the study's assets.
-                A reference will be attached in the text body,
-                which will translate into an image link.
-              </p>
-              <label
-                className="mdc-button mdc-button--outlined mb2"
-                htmlFor="file-input"
-              >
-                File
-                <input
-                  id="file-input"
-                  className="dn"
-                  type="file"
-                  accept=".jpg,jpeg,.png,.gif"
-                  onChange={this.handleChangeFile}
-                />
-              </label>
-              <UserAssetNameInput
-                initialValue={filename}
-                label={!file ? "No file chosen" : "Name"}
-                onChange={this.handleChangeName}
-                disabled={!file}
-              />
-              <div>
-                <TextField label="Description (optional)">
-                  <Input
-                    name="description"
-                    value={description}
-                    onChange={this.handleChange}
-                  />
-                </TextField>
-              </div>
-            </div>
-          </Dialog.Content>
-        }
-        actions={
-          <Dialog.Actions>
-            <button
-              type="button"
-              className="mdc-button"
-              data-mdc-dialog-action="close"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="mdc-button mdc-button--unelevated"
-              onClick={this.handleSaveFile}
-              disabled={isNil(file) || !submittable}
-              data-mdc-dialog-action="save"
-            >
-              Save
-            </button>
-          </Dialog.Actions>}
-      />
-    )
-  }
 }
-
-export default withUID((getUID) => ({ uid: getUID() }))(createFragmentContainer(AttachFile, graphql`
-  fragment AttachFile_study on Study {
-    id
-    viewerCanAdmin
-  }
-`))

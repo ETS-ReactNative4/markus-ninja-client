@@ -197,3 +197,29 @@ function escapeRegExp(str) {
 export function replaceAll(str, find, replace) {
   return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }
+
+export function log(e) {
+  console.log(e)
+}
+
+export function monitorEvents(element) {
+  const events = []
+
+  for (let i in element) {
+    if (i.startsWith("on")) events.push(i.substr(2))
+  }
+  events.forEach(function(eventName) {
+    element.addEventListener(eventName, log)
+  })
+}
+
+export function unmonitorEvents(element) {
+  const events = []
+
+  for (let i in element) {
+    if (i.startsWith("on")) events.push(i.substr(2))
+  }
+  events.forEach(function(eventName) {
+    element.removeEventListener(eventName, log)
+  })
+}

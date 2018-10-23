@@ -8,7 +8,8 @@ import {
 import {HelperText} from '@material/react-text-field'
 import TextField, {Input} from '@material/react-text-field'
 import Dialog from 'components/Dialog'
-import UserAssetNameInput from 'components/UserAssetNameInput'
+import ErrorText from 'components/ErrorText'
+import UserAssetNameInput, {defaultUserAssetNameState} from 'components/UserAssetNameInput'
 import CreateUserAssetMutation from 'mutations/CreateUserAssetMutation'
 import {get, isNil, makeCancelable, replaceAll} from 'utils'
 
@@ -23,15 +24,14 @@ class CreateUserAssetDialog extends React.Component {
     }
 
     this.state = {
+      description: "",
       error: null,
       file: null,
       loading: false,
-      name: "",
-      description: "",
+      name: defaultUserAssetNameState,
       request: {
         cancel() {}
       },
-      submittable: false,
     }
   }
 
@@ -40,15 +40,12 @@ class CreateUserAssetDialog extends React.Component {
   }
 
   handleClose = (action) => {
-    if (action === "cancel") {
-      this.setState({
-        error: null,
-        description: "",
-        file: null,
-        name: "",
-        submittable: false,
-      })
-    }
+    this.setState({
+      error: null,
+      description: "",
+      file: null,
+      name: defaultUserAssetNameState,
+    })
     this.props.onClose()
   }
 
@@ -58,25 +55,30 @@ class CreateUserAssetDialog extends React.Component {
     })
   }
 
-  handleChangeName = (name, submittable) => {
+  handleChangeName = (name) => {
     this.setState({
+      error: null,
       name,
-      submittable,
     })
   }
 
   handleChangeFile = (e) => {
     const file = e.target.files[0]
-
     this.setState({
-      file: e.target.files[0],
-      name: file.name,
+      file,
     })
   }
 
   handleSubmit = (e) => {
-    const {file} = this.state
-    if (!isNil(file)) {
+    e.preventDefault()
+    const {file, name} = this.state
+    if (file) {
+      if (!name.available) {
+        this.setState({
+          error: "Choose a new name"
+        })
+        return
+      }
       const formData = new FormData()
 
       formData.append("save", true)
@@ -103,7 +105,7 @@ class CreateUserAssetDialog extends React.Component {
         CreateUserAssetMutation(
           data.asset.id,
           this.props.study.id,
-          this.state.name,
+          name.value,
           this.state.description,
           (userAsset, errors) => {
             if (!isNil(errors)) {
@@ -114,8 +116,7 @@ class CreateUserAssetDialog extends React.Component {
               description: "",
               file: null,
               loading: false,
-              name: "",
-              submittable: false,
+              name: defaultUserAssetNameState,
             })
           }
         )
@@ -134,7 +135,7 @@ class CreateUserAssetDialog extends React.Component {
 
   render() {
     const {open} = this.props
-    const {file, submittable} = this.state
+    const {error, file, name} = this.state
 
     return (
       <Dialog
@@ -146,6 +147,7 @@ class CreateUserAssetDialog extends React.Component {
         content={
           <Dialog.Content>
             {this.renderForm()}
+            <ErrorText error={error} />
           </Dialog.Content>}
         actions={
           <Dialog.Actions>
@@ -157,11 +159,10 @@ class CreateUserAssetDialog extends React.Component {
               Cancel
             </button>
             <button
-              type="button"
+              type="submit"
               className="mdc-button mdc-button--unelevated"
-              disabled={!file || !submittable}
-              onClick={this.handleSubmit}
-              data-mdc-dialog-action="create"
+              form="create-user-asset-form"
+              data-mdc-dialog-action={file && name.valid && name.available ? "create" : null}
             >
               Create
             </button>
@@ -175,22 +176,21 @@ class CreateUserAssetDialog extends React.Component {
     const filename = replaceAll(get(file, "name", ""), " ", "_")
 
     return (
-      <form>
-        <label
-          className="mdc-button w-100 mb1"
-          htmlFor="file-input"
-        >
-          <i className="material-icons mdc-button__icon">attach_file</i>
-          File
+      <form id="create-user-asset-form" onSubmit={this.handleSubmit}>
+        <div className="CreateUserAssetDialog__file">
           <input
             id="file-input"
-            className="dn"
+            className="CreateUserAssetDialog__file-input"
             type="file"
             accept=".jpg,.jpeg,.png,.gif"
             required
             onChange={this.handleChangeFile}
           />
-        </label>
+          <label className="mdc-button mb1" htmlFor="file-input">
+            <i className="material-icons mdc-button__icon">attach_file</i>
+            File
+          </label>
+        </div>
         <UserAssetNameInput
           className="mb1"
           initialValue={filename}

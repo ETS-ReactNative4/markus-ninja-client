@@ -11,6 +11,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import { withUID } from 'components/UniqueId'
 import Tab from 'components/Tab'
 import TabBar from 'components/TabBar'
 import { get, isNil } from 'utils'
@@ -21,6 +22,7 @@ import './styles.css'
 class RichTextEditor extends React.Component {
   constructor(props) {
     super(props)
+
     this.editorElement = React.createRef()
 
     const compositeDecorator = new CompositeDecorator([
@@ -114,13 +116,11 @@ class RichTextEditor extends React.Component {
   }
 
   handleSubmit = (e) => {
-    e.preventDefault()
     const editorState = EditorState.push(
       this.state.editorState,
       ContentState.createFromText(""),
     )
     this.setState({ editorState })
-    this.props.onSubmit()
   }
 
   focus = () => {
@@ -143,7 +143,7 @@ class RichTextEditor extends React.Component {
 
   render() {
     const {editorState, loadingFile, preview} = this.state
-    const {onCancel, onSubmit, placeholder} = this.props
+    const {form, onCancel, placeholder, study, uid} = this.props
 
     return (
       <div className={this.classes}>
@@ -151,12 +151,21 @@ class RichTextEditor extends React.Component {
         <div className="RichTextEditor__preview mdc-card mdc-card--outlined">
           <Preview
             open={preview}
-            studyId={get(this.props, "study.id", "")}
+            studyId={study.id}
             text={this.text}
           />
         </div>
         <div className="RichTextEditor__write mdc-card mdc-card--outlined">
           <div className="RichTextEditor__write-text" onClick={() => this.focus()}>
+            <input
+              className="RichTextEditor__hidden-input"
+              type="text"
+              value={this.text}
+              required
+              onChange={() => {}}
+              onInvalid={this.focus}
+              onFocus={this.focus}
+            />
             <Editor
               editorState={editorState}
               readOnly={loadingFile}
@@ -167,10 +176,11 @@ class RichTextEditor extends React.Component {
           </div>
           <div className="mdc-card__actions">
             <div className="mdc-card__action-buttons">
-              {onSubmit &&
+              {form &&
               <button
+                type="submit"
+                form={form}
                 className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
-                type="button"
                 onClick={this.handleSubmit}
               >
                 {this.props.submitText || "Submit"}
@@ -185,6 +195,31 @@ class RichTextEditor extends React.Component {
               </button>}
             </div>
             <div className="mdc-card__action-icons">
+              <label
+                className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                htmlFor={`file-input${uid}`}
+                title="Attach file"
+                aria-label="Attach file"
+              >
+                attach_file
+                <input
+                  id={`file-input${uid}`}
+                  className="dn"
+                  type="file"
+                  accept=".jpg,jpeg,.png,.gif"
+                  onChange={(e) => this.handleAttachFile(e.target.files[0], false)}
+                />
+              </label>
+              {study.viewerCanAdmin &&
+              <button
+                className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                type="button"
+                onClick={this.handleToggleSaveForm}
+                aria-label="Attach & Save file"
+                title="Attach & Save file"
+              >
+                save
+              </button>}
               <AttachFile
                 onChange={this.handleChangeFile}
                 onChangeComplete={this.handleChangeFileComplete}
@@ -230,6 +265,20 @@ class RichTextEditor extends React.Component {
         </Tab>
       </TabBar>
     )
+  }
+}
+
+RichTextEditor.propTypes = {
+  study: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    viewerCanAdmin: PropTypes.string.isRequired,
+  }).isRequired,
+}
+
+RichTextEditor.defaultProps = {
+  study: {
+    id: "",
+    viewerCanAdmin: false,
   }
 }
 
@@ -296,10 +345,9 @@ const DollarSignSpan = (props) => {
   )
 }
 
-export default createFragmentContainer(RichTextEditor, graphql`
+export default withUID((getUID) => ({ uid: getUID() }))(createFragmentContainer(RichTextEditor, graphql`
   fragment RichTextEditor_study on Study {
     id
-    ...AttachFile_study
+    viewerCanAdmin
   }
-`)
-
+`))

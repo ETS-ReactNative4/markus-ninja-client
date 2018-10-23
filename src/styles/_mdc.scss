@@ -96,13 +96,10 @@
   overflow: hidden;
 }
 
-.mdc-text-field {
-  &.mdc-text-field--inline {
-    height: 100%;
-  }
-
-  +.mdc-text-field-helper-text {
-    overflow-wrap: break-word;
+.mdc-text-field--with-leading-icon .mdc-text-field__icon,
+.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
+  &.mdc-icon-button {
+    bottom: 4px;
   }
 }
 

@@ -5,9 +5,15 @@ import {
   graphql,
 } from 'react-relay'
 import cls from 'classnames'
-import TextField, {Input, HelperText} from '@material/react-text-field'
+import {HelperText} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import { withRouter } from 'react-router'
 import { debounce, get, isEmpty, isNil } from 'utils'
+
+export const defaultUserAssetNameState = {
+  ...defaultTextFieldState,
+  available: false,
+}
 
 class UserAssetNameInputContainer extends React.Component {
   constructor(props) {
@@ -15,39 +21,47 @@ class UserAssetNameInputContainer extends React.Component {
 
     this.state = {
       error: null,
-      fetched: false,
       loading: false,
-      name: get(props, "initialValue", ""),
-      nameAvailable: true,
-      validInput: true,
+      name: {
+        ...defaultUserAssetNameState,
+        initialValue: this.props.initialValue,
+        value: this.props.initialValue,
+      },
     }
   }
 
   componentDidUpdate(prevProps) {
-    const name = this.props.initialValue
-    if (this.props.initialValue !== prevProps.initialValue) {
+    const initialValue = this.props.initialValue
+    if (initialValue !== prevProps.initialValue) {
+      const name = {
+        ...this.state.name,
+        initialValue,
+        value: initialValue,
+      }
       this.setState({name})
-      this.props.onChange(name, false)
-      this._refetch(name)
+      this.props.onChange(name)
+      this._fetch(name.value)
     }
   }
 
-  handleChange = (e) => {
-    const name = e.target.value
-    const valid = e.target.validity.valid
-    this.setState({
-      name,
-      validInput: valid,
-    })
-    this.props.onChange(name, false)
-    valid && this._refetch(name)
+  handleChange = (name) => {
+    if (name.value !== this.state.name.value) {
+      this.setState({
+        name: {
+          ...name,
+          available: false,
+        },
+        loading: name.valid,
+      })
+      this.props.onChange(name)
+      name.valid && this._refetch(name.value)
+    }
   }
 
-  _refetch = debounce((name) => {
+  _fetch = (name) => {
     const {disabled, relay} = this.props
     if (!disabled && !isEmpty(name)) {
       this.setState({
-        fetched: true,
         loading: true,
       })
       relay.refetch(
@@ -62,17 +76,23 @@ class UserAssetNameInputContainer extends React.Component {
           if (error) {
             console.error(error)
           }
-          const nameAvailable = isNil(get(this.props, "query.study.asset"))
+          const available = isNil(get(this.props, "query.study.asset"))
+          const newName = {
+            ...this.state.name,
+            available,
+          }
           this.setState({
             loading: false,
-            nameAvailable,
+            name: newName,
           })
-          this.props.onChange(name, nameAvailable)
+          this.props.onChange(newName)
         },
         {force: true},
       )
     }
-  }, 500)
+  }
+
+  _refetch = debounce(this._fetch, 500)
 
   get classes() {
     const {className} = this.props
@@ -85,8 +105,8 @@ class UserAssetNameInputContainer extends React.Component {
   }
 
   get isValid() {
-    const {nameAvailable, validInput} = this.state
-    return validInput && nameAvailable
+    const {name} = this.state
+    return name.valid && name.available
   }
 
   render() {
@@ -99,32 +119,31 @@ class UserAssetNameInputContainer extends React.Component {
           className={!this.isValid ? "mdc-text-field--invalid" : ""}
           label={this.label}
           helperText={this.renderHelperText()}
-        >
-          <Input
-            name="name"
-            required
-            pattern="^([\w-]+.)*[\w-]+$"
-            maxLength={39}
-            disabled={disabled}
-            value={name}
-            onChange={this.handleChange}
-          />
-        </TextField>
+          inputProps={{
+            name: "name",
+            required: true,
+            pattern: "^([\\w-]+.)*[\\w-]+$",
+            maxLength: 39,
+            disabled,
+            value: name.value,
+            onChange: this.handleChange,
+          }}
+        />
       </div>
     )
   }
 
   renderHelperText() {
-    const {fetched, loading, nameAvailable, validInput} = this.state
+    const {loading, name} = this.state
 
     return (
       <HelperText persistent validation>
-        {!validInput
+        {!name.valid
         ? "Invalid name"
         : loading
           ? "Loading..."
-          : fetched
-            ? `Name ${nameAvailable ? "available" : "taken"}`
+          : !isEmpty(name.value)
+            ? `Name ${name.available ? "available" : "taken"}`
             : ""}
       </HelperText>
     )
@@ -132,11 +151,13 @@ class UserAssetNameInputContainer extends React.Component {
 }
 
 UserAssetNameInputContainer.propTypes = {
+  initialValue: PropTypes.string,
   label: PropTypes.string,
   onChange: PropTypes.func,
 }
 
 UserAssetNameInputContainer.defaultProps = {
+  initialValue: "",
   onChange: () => {},
 }
 

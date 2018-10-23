@@ -48,13 +48,13 @@ class AddLessonCommentForm extends React.Component {
 
   render() {
     return (
-      <form className={this.classes}>
+      <form id="add-lesson-comment-form" className={this.classes} onSubmit={this.handleSubmit}>
         <RichTextEditor
           onChange={this.handleChangeBody}
+          form="add-lesson-comment-form"
           submitText="Comment"
           placeholder="Leave a comment"
           study={get(this.props, "lesson.study", null)}
-          onSubmit={this.handleSubmit}
         />
       </form>
     )

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import cls from 'classnames'
 import {withRouter} from 'react-router-dom'
 import {HelperText} from '@material/react-text-field'
+import ErrorText from 'components/ErrorText'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import CreateUserMutation from 'mutations/CreateUserMutation'
 import {isEmpty, isNil} from 'utils'
@@ -66,7 +67,7 @@ class SignupForm extends React.Component {
   }
 
   render() {
-    const {email, username, password} = this.state
+    const {email, error, password, username} = this.state
     return (
       <form
         className={this.classes}
@@ -80,12 +81,14 @@ class SignupForm extends React.Component {
               <HelperText persistent validation={!username.valid}>
                 {username.valid
                 ? "Your name by which other users will know you."
-                : "Invalid username"}
+                : "Usernames must be less than 40 characters, and may only " +
+                  "contain alphanumeric characters or hyphens. Cannot have " +
+                  "multiple consecutive hyphens, and begin or end with a hyphen."}
               </HelperText>
             }
             inputProps={{
               name: "username",
-              required: username.visited,
+              required: true,
               pattern: "^([a-zA-Z0-9]+-)*[a-zA-Z0-9]+$",
               maxLength: 39,
               onChange: this.handleChange,
@@ -107,7 +110,7 @@ class SignupForm extends React.Component {
             inputProps={{
               type: "email",
               name: "email",
-              required: email.visited,
+              required: true,
               onChange: this.handleChange,
             }}
           />
@@ -118,15 +121,14 @@ class SignupForm extends React.Component {
             label="Password"
             helperText={
               <HelperText persistent validation={!password.valid}>
-                Use at least one lowercase letter, one uppercase letter, one numeral, and seven characters.
+                Use at least one lowercase letter, one uppercase letter, and one numeral in a minimum of seven characters.
               </HelperText>
             }
             inputProps={{
               type: "password",
               name: "password",
-              required: password.visited,
-              // eslint-disable-next-line no-useless-escape
-              pattern: "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,255}$",
+              required: true,
+              pattern: "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{7,255}$",
               minLength: 7,
               onChange: this.handleChange,
             }}
@@ -136,11 +138,14 @@ class SignupForm extends React.Component {
           <button
             type="submit"
             className="mdc-button mdc-button--unelevated"
-            disabled={!this.formIsValid}
           >
             Create an account
           </button>
         </div>
+        <ErrorText
+          className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+          error={error}
+        />
       </form>
     )
   }

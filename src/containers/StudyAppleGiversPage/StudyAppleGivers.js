@@ -30,18 +30,18 @@ class StudyAppleGivers extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="mdc-card mdc-card--outlined ph2">
             {this.renderAppleGivers()}
+            {this.props.relay.hasMore() &&
             <div className="mdc-card__actions">
               <div className="mdc-card__action-buttons">
-                {this.props.relay.hasMore() &&
                 <button
                   className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
                   type="button"
                   onClick={this._loadMore}
                 >
                   More
-                </button>}
+                </button>
               </div>
-            </div>
+            </div>}
           </div>
         </div>
       </React.Fragment>

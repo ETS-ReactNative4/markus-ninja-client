@@ -6,7 +6,7 @@
   align-items: stretch;
   
   &.mdc-layout-grid {
-    .mdc-layout-grid__inner {
+    >.mdc-layout-grid__inner {
       width: 100%;
     }
   }

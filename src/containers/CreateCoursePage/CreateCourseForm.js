@@ -6,6 +6,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router-dom';
 import {HelperText} from '@material/react-text-field'
+import ErrorText from 'components/ErrorText'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import CreateCourseMutation from 'mutations/CreateCourseMutation'
 import {isEmpty, isNil} from 'utils'
@@ -52,6 +53,8 @@ class CreateCourseForm extends React.Component {
   }
 
   render() {
+    const {error} = this.state
+
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet">
@@ -83,6 +86,10 @@ class CreateCourseForm extends React.Component {
           >
           Create course</button>
         </div>
+        <ErrorText
+          className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+          error={error}
+        />
       </form>
     )
   }

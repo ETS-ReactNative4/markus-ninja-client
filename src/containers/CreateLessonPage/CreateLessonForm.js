@@ -6,6 +6,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import CreateLessonMutation from 'mutations/CreateLessonMutation'
+import ErrorText from 'components/ErrorText'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import RichTextEditor from 'components/RichTextEditor'
 import StudyCourseSelect from 'components/StudyCourseSelect'
@@ -54,6 +55,8 @@ class CreateLessonForm extends React.Component {
   }
 
   render() {
+    const {error} = this.state
+
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
@@ -86,6 +89,10 @@ class CreateLessonForm extends React.Component {
             Create lesson
           </button>
         </div>
+        <ErrorText
+          className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+          error={error}
+        />
       </form>
     )
   }

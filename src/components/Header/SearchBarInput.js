@@ -6,26 +6,29 @@ import {
 import cls from 'classnames'
 import { Link, withRouter } from 'react-router-dom'
 import queryString from 'query-string'
-import SearchBarResult from './SearchBarResult'
-import StudyLink from 'components/StudyLink'
+import TextField, {Input} from '@material/react-text-field'
 import { debounce, get, isNil, isEmpty } from 'utils'
+
 import { SEARCH_BAR_RESULTS_PER_PAGE } from 'consts'
 
 class SearchBarInput extends React.Component {
+  constructor(props) {
+    super(props)
 
-  node = null
-  form_ = null
+    this.root = React.createRef()
+    this.form = React.createRef()
 
-  state = {
-    cursor: 0,
-    cursors: new Map(),
-    error: null,
-    ids: new Map(),
-    loading: true,
-    focus: false,
-    q: "",
-    results: [],
-    skip: true,
+    this.state = {
+      cursor: 0,
+      cursors: new Map(),
+      error: null,
+      ids: new Map(),
+      loading: true,
+      focus: false,
+      q: "",
+      results: [],
+      skip: true,
+    }
   }
 
   componentWillMount() {
@@ -51,7 +54,7 @@ class SearchBarInput extends React.Component {
 
   handleBlur = (e) => {
     setTimeout(() => {
-      if (!this.node.contains(document.activeElement)) {
+      if (!this.root.current.contains(document.activeElement)) {
         this.setState({ focus: false })
       }
     }, 0);
@@ -81,13 +84,16 @@ class SearchBarInput extends React.Component {
       }
       e.preventDefault()
       const element = document.getElementById("search-bar-input")
-      element.focus()
+      if (element) {
+        element.focus()
+        element.select()
+      }
       this.setState({ focus: true })
     } else if (isEscape) {
       const {focus} = this.state
       if (focus) {
         const element = document.getElementById("search-bar-input")
-        element.blur()
+        element && element.blur()
         this.setState({ focus: false })
       }
     }
@@ -100,22 +106,13 @@ class SearchBarInput extends React.Component {
       this.setState({ cursor: cursor + 1})
     } else if (isEnter) {
       const element = document.getElementById(this.state.ids.get(cursor))
-      element.focus()
+      element && element.focus()
       this.setState({ focus: false })
     }
   }
 
-  handleSearchIconKeyDown = (e) => {
-    const isEnter = e.key === 'Enter' || e.keyCode === 13
-    setTimeout(() => {
-      if (isEnter) {
-        this.form_.submit()
-      }
-    }, 0);
-  }
-
   handleClick = (e) => {
-    if (!this.node.contains(e.target)) {
+    if (!this.root.current.contains(e.target)) {
       this.setState({ focus: false })
     }
   }
@@ -123,6 +120,7 @@ class SearchBarInput extends React.Component {
   handleChange = (e) => {
     const q = e.target.value
     this.setState({
+      loading: true,
       q,
     })
     this._refetch(q)
@@ -144,10 +142,10 @@ class SearchBarInput extends React.Component {
           console.log(error)
         }
         const cursors = new Map([
-          ["search-bar-this-study", 0],
+          ["search-bar-whole-site", 0],
         ])
         const ids = new Map([
-          [0, "search-bar-this-study"],
+          [0, "search-bar-whole-site"],
         ])
         get(this.props, "query.search.edges", []).map((edge, i) => {
           cursors.set(get(edge, "node.id", ""), i+1)
@@ -164,105 +162,112 @@ class SearchBarInput extends React.Component {
     )
   }, 300)
 
+  handleClickSearchResult = (e) => {
+    this.setState({
+      focus: false,
+    })
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+
+    const {q} = this.state
+
+    this.props.history.push({
+      pathname: "/search",
+      search: queryString.stringify({ q }),
+    })
+
+    this.setState({
+      focus: false,
+    })
+  }
+
   get classes() {
     const {className} = this.props
     return cls("SearchBarInput", className)
   }
 
   render() {
-    const { cursor, q, loading, focus } = this.state
-    // const pathname = get(this.props, "location.pathname", "")
-    const searchEdges = get(this.props, "query.search.edges", [])
-    // const studyPath = matchPath(pathname, { path: '/:owner/:name' })
-    // const isStudyPath =
-    //   studyPath &&
-    //   studyPath.params.owner !== 'topics' &&
-    //   studyPath.params.owner !== 'settings'
-
     return (
       <div
-        ref={node => this.node = node}
+        ref={this.root}
         className={this.classes}
         onBlur={this.handleBlur}
       >
-        <form ref={node => this.form_ = node} action="/search" acceptCharset="utf8" method="get">
-          <div className="mdc-text-field mdc-text-field--outlined mdc-text-field--inline mdc-text-field--with-trailing-icon w-100">
-            <input
-              id="search-bar-input"
-              className="mdc-text-field__input"
-              autoComplete="off"
-              type="text"
-              name="q"
-              placeholder="Search..."
-              value={q}
-              onChange={this.handleChange}
-              onFocus={() => this.setState({ focus: true, skip: false })}
-            />
-            <div className="mdc-notched-outline mdc-theme--background z-behind">
-              <svg>
-                <path className="mdc-notched-outline__path"></path>
-              </svg>
-            </div>
-            <div className="mdc-notched-outline__idle mdc-theme--background z-behind"></div>
-            <i
-              className="material-icons mdc-text-field__icon"
+        {this.renderForm()}
+        {this.renderResults()}
+      </div>
+    )
+  }
+
+  renderForm() {
+    const {q} = this.state
+
+    return (
+      <form ref={this.form} onSubmit={this.handleSubmit}>
+        <TextField
+          className="w-100"
+          label="Search..."
+          trailingIcon={
+            <button
+              type="submit"
+              className="mdc-icon-button material-icons"
               tabIndex="0"
-              role="button"
-              onClick={() => this.form_.submit()}
-              onKeyDown={this.handleSearchIconKeyDown}
             >
               search
-            </i>
-          </div>
-        </form>
-        <div className={cls("SearchBarInput__results", {dn: !focus})}>
-          {loading && searchEdges.length < 1
-          // eslint-disable-next-line jsx-a11y/role-supports-aria-props
-          ? <div className="mdc-list mdc-list--non-interactive" aria-orientation="vertical">
-              <div className="mdc-list-item">Loading...</div>
-            </div>
-          // eslint-disable-next-line jsx-a11y/role-supports-aria-props
-          : <div className="mdc-list" aria-orientation="vertical">
-              {/*isStudyPath &&
-              <SearchBarResult
-                id="search-bar-this-study"
-                selected={cursor === 0}
-                as={Link}
-                to={{
-                  pathname: studyPath.url + "/search",
-                  search: queryString.stringify({ q }),
-                }}
-                onMouseEnter={this.handleMouseEnter}
-                onClick={() => this.setState({ focus: false })}
-              >
-                Search this study...
-              </SearchBarResult>*/}
-              <SearchBarResult
+            </button>
+          }
+        >
+          <Input
+            id="search-bar-input"
+            name="q"
+            value={q}
+            autoComplete="off"
+            onChange={this.handleChange}
+            onFocus={() => this.setState({ focus: true, skip: false })}
+          />
+        </TextField>
+      </form>
+    )
+  }
+
+  renderResults() {
+    const { cursor, q, loading, focus } = this.state
+    const searchEdges = get(this.props, "query.search.edges", [])
+
+    return (
+      <div className={cls("SearchBarInput__results", {dn: !focus})}>
+        {// eslint-disable-next-line jsx-a11y/role-supports-aria-props
+        <ul className="mdc-list" aria-orientation="vertical">
+          {loading
+          ? <li className="mdc-list-item">Loading...</li>
+          : <React.Fragment>
+              <Link
                 id="search-bar-whole-site"
-                selected={cursor === 0}
-                as={Link}
+                className={cls("mdc-list-item", {"mdc-list-item--selected": cursor === 0})}
                 to={{
                   pathname: "/search",
                   search: queryString.stringify({ q }),
                 }}
                 onMouseEnter={this.handleMouseEnter}
-                onClick={() => this.setState({ focus: false })}
+                onClick={this.handleClickSearchResult}
               >
                 Search whole site...
-              </SearchBarResult>
+              </Link>
               {searchEdges.map(({node}, i) =>
                 node &&
-                <SearchBarResult key={node.id}
+                <Link key={node.id}
                   id={node.id}
-                  selected={cursor === i+1}
-                  as={StudyLink}
-                  withOwner
-                  study={node}
+                  className={cls("mdc-list-item", {"mdc-list-item--selected": cursor === i+1})}
+                  to={node.resourcePath}
                   onMouseEnter={this.handleMouseEnter}
-                  onClick={() => this.setState({ focus: false })}
-                />)}
-            </div>}
-        </div>
+                  onClick={this.handleClickSearchResult}
+                >
+                  {node.nameWithOwner}
+                </Link>)}
+            </React.Fragment>}
+        </ul>}
       </div>
     )
   }
@@ -279,7 +284,8 @@ export default withRouter(createRefetchContainer(SearchBarInput,
             node {
               id
               ...on Study {
-                ...StudyLink_study
+                nameWithOwner
+                resourcePath
               }
             }
           }

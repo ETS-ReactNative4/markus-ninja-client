@@ -11,6 +11,8 @@ import StudyAssetsPageAssets from './StudyAssetsPageAssets'
 import CreateUserAssetDialog from './CreateUserAssetDialog'
 import {debounce, get, isEmpty} from 'utils'
 
+import "./styles.css"
+
 class StudyAssetsPage extends React.Component {
   constructor(props) {
     super(props)

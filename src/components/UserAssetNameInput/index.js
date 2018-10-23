@@ -5,7 +5,7 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
-import UserAssetNameInputContainer from './UserAssetNameInputContainer'
+import UserAssetNameInputContainer, {defaultUserAssetNameState} from './UserAssetNameInputContainer'
 import {get, isEmpty} from 'utils'
 
 const UserAssetNameInputQuery = graphql`
@@ -70,4 +70,5 @@ class UserAssetNameInput extends React.Component {
   }
 }
 
+export {defaultUserAssetNameState}
 export default withRouter(UserAssetNameInput)

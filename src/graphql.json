@@ -1302,6 +1302,41 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "LessonCommentConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EventConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAssetConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EmailConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "TopicConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "AppleGiverConnection",
 							"ofType": null
 						},
@@ -1312,17 +1347,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EnrolleeConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAssetConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EmailConnection",
+							"name": "LabelConnection",
 							"ofType": null
 						},
 						{
@@ -1332,37 +1357,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonCommentConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelConnection",
+							"name": "StudyConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "NotificationConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "TopicConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "StudyConnection",
 							"ofType": null
 						}
 					]
@@ -2775,12 +2775,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Course",
 							"ofType": null
 						},
 						{
@@ -3451,12 +3451,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
@@ -3555,6 +3555,41 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "LessonCommentEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EventEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAssetEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EmailEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "TopicEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EnrolleeEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "AppleGiverEdge",
 							"ofType": null
 						},
@@ -3565,17 +3600,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EnrolleeEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAssetEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EmailEdge",
+							"name": "LabelEdge",
 							"ofType": null
 						},
 						{
@@ -3585,37 +3610,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonCommentEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelEdge",
+							"name": "StudyEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "NotificationEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "TopicEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "StudyEdge",
 							"ofType": null
 						}
 					]
@@ -4076,12 +4076,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "User",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "User",
 							"ofType": null
 						},
 						{
@@ -7311,12 +7311,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "ReferencedEvent",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "ReferencedEvent",
 							"ofType": null
 						}
 					]
@@ -8781,36 +8781,6 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "UnappledEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Course",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "ReferencedEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Email",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "User",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "LessonComment",
 							"ofType": null
 						},
@@ -8821,27 +8791,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "CreatedEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Notification",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Event",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "ReferencedEvent",
 							"ofType": null
 						},
 						{
@@ -8851,7 +8811,47 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "Email",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Topic",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CreatedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Course",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UnappledEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Notification",
 							"ofType": null
 						}
 					]
@@ -10377,22 +10377,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "UserAsset",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
@@ -10402,7 +10392,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Course",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "User",
 							"ofType": null
 						},
 						{
@@ -11823,7 +11823,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
@@ -11833,17 +11833,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Course",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -12138,12 +12138,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AccessToken",
+							"name": "PRT",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "PRT",
+							"name": "AccessToken",
 							"ofType": null
 						}
 					]
@@ -13006,7 +13006,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
@@ -13016,17 +13016,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "User",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
@@ -13036,7 +13026,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Course",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "User",
 							"ofType": null
 						},
 						{
@@ -13659,22 +13659,22 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
 							"ofType": null
 						}
 					]
@@ -14928,17 +14928,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "UnappledEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "AppledEvent",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "CreatedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UnappledEvent",
 							"ofType": null
 						}
 					]

@@ -12,11 +12,7 @@ class LessonTimelineEvent extends React.PureComponent {
       case "LessonComment":
         return <LessonComment className={className} comment={item} />
       case "ReferencedEvent":
-        return (
-          <div className={className}>
-            <ReferencedEvent className="ml3" event={item} />
-          </div>
-        )
+        return <ReferencedEvent className={className} event={item} />
       default:
         return null
     }
