@@ -167,9 +167,10 @@ class LessonComment extends React.Component {
         />
     )
   }
+
   renderForm() {
-    const study = get (this.props, "comment.study", null)
-    const {body} = this.state
+    const study = get(this.props, "comment.study", null)
+    const body = get(this.props, "comment.body", "")
 
     return (
       <StudyBodyEditor study={study}>

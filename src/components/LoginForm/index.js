@@ -77,7 +77,7 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const {error, username, password} = this.state
+    const {error} = this.state
     return (
       <form
         className={this.classes}
@@ -89,7 +89,7 @@ class LoginForm extends React.Component {
             label="Username or email"
             inputProps={{
               name: "username",
-              required: username.visited,
+              required: true,
               maxLength: 39,
               onChange: this.handleChange,
             }}
@@ -102,7 +102,7 @@ class LoginForm extends React.Component {
             inputProps={{
               type: "password",
               name: "password",
-              required: password.visited,
+              required: true,
               onChange: this.handleChange,
             }}
           />
@@ -111,7 +111,6 @@ class LoginForm extends React.Component {
           <button
             type="submit"
             className="mdc-button mdc-button--unelevated w-100"
-            disabled={!this.formIsValid}
           >
             Sign in
           </button>

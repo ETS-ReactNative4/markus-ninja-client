@@ -47,6 +47,7 @@ const StudyOverviewPageQuery = graphql`
         }
         totalCount
       }
+      viewerCanAdmin
     }
   }
 `
@@ -79,39 +80,36 @@ class StudyOverviewPage extends React.Component {
               <div className={this.classes}>
                 <StudyMeta study={props.study}  />
                 {!isEmpty(lessons) &&
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <div className="mdc-layout-grid__inner">
-                    <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                      Popular lessons
-                    </h5>
-                    {lessons.map(({node}) => (
-                      node &&
-                      <div key={node.id} className="mdc-layout-grid__cell">
-                        <LessonPreview.Card className="h-100" lesson={node} />
-                      </div>
-                    ))}
-                  </div>
-                </div>}
+                <React.Fragment>
+                  <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    Popular lessons
+                  </h5>
+                  {lessons.map(({node}) => (
+                    node &&
+                    <div key={node.id} className="mdc-layout-grid__cell">
+                      <LessonPreview.Card className="h-100" lesson={node} />
+                    </div>
+                  ))}
+                </React.Fragment>}
                 {!isEmpty(courses) &&
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <div className="mdc-layout-grid__inner">
-                    <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                      Popular courses
-                    </h5>
-                    {courses.map(({node}) => (
-                      node &&
-                      <div key={node.id} className="mdc-layout-grid__cell">
-                        <CoursePreview.Card className="h-100" course={node} />
-                      </div>
-                    ))}
-                  </div>
-                </div>}
+                <React.Fragment>
+                  <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    Popular courses
+                  </h5>
+                  {courses.map(({node}) => (
+                    node &&
+                    <div key={node.id} className="mdc-layout-grid__cell">
+                      <CoursePreview.Card className="h-100" course={node} />
+                    </div>
+                  ))}
+                </React.Fragment>}
+                {props.study.viewerCanAdmin &&
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   {get(props, "study.lessons.totalCount", 0) < 1 &&
                   <CreateLessonLink className="rn-link" study={props.study} >
                     Create a lesson
                   </CreateLessonLink>}
-                </div>
+                </div>}
               </div>
             )
           }

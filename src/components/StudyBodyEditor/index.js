@@ -9,16 +9,10 @@ import {
   ContentState,
   EditorState,
 } from 'draft-js'
+import Context from './Context'
 import SaveFileDialog from './SaveFileDialog'
 import StudyBodyEditorMain from './StudyBodyEditorMain'
 import './styles.css'
-
-export const StudyBodyEditorContext = React.createContext({
-  editorState: EditorState.createEmpty(),
-  onChange: () => {},
-  saveFileDialogOpen: false,
-  toggleSaveDialog: () => {},
-})
 
 const FRAGMENT = graphql`
   fragment StudyBodyEditor_study on Study {
@@ -76,11 +70,11 @@ class StudyBodyEditor extends React.Component {
     const {saveFileDialogOpen} = this.state
 
     return (
-      <StudyBodyEditorContext.Provider value={this.state}>
+      <Context.Provider value={this.state}>
         {child}
         {study.viewerCanAdmin &&
-        <SaveFileDialog open={saveFileDialogOpen} />}
-      </StudyBodyEditorContext.Provider>
+        <SaveFileDialog open={saveFileDialogOpen} study={study} />}
+      </Context.Provider>
     )
   }
 }

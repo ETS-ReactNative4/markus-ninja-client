@@ -26,10 +26,6 @@ const defaultState = {
 class SaveFileDialog extends React.Component {
   state = defaultState
 
-  componentDidMount() {
-    console.log(this.context)
-  }
-
   componentWillUnmount() {
     this.state.request.cancel()
   }
@@ -38,6 +34,11 @@ class SaveFileDialog extends React.Component {
     const {toggleSaveDialog} = this.context
     this.setState(defaultState)
     toggleSaveDialog()
+  }
+
+  handleChangeFile = (e) => {
+    const file = e.target.files[0]
+    this.setState({file})
   }
 
   handleChangeField = (field) => {

@@ -45,7 +45,7 @@ class AttachFile extends React.Component {
 
     if (error) {
       console.error(error)
-      this.handleChange(EditorState.undo(editorState))
+      onChange(EditorState.undo(editorState))
       return
     }
     const previousEditorState = EditorState.undo(editorState)
@@ -68,6 +68,7 @@ class AttachFile extends React.Component {
     if (file) {
       const formData = new FormData()
 
+      formData.append("save", false)
       formData.append("study_id", get(this.props, "study.id", ""))
       formData.append("file", file)
 

@@ -43,7 +43,7 @@ const LessonPageQuery = graphql`
 class LessonPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("LessonPage rn-page mdc-layout-grid", className)
+    return cls("LessonPage rn-page rn-page--column", className)
   }
 
   render() {
@@ -69,26 +69,28 @@ class LessonPage extends React.Component {
 
             return (
               <div className={this.classes}>
-                <div className="LessonPage__container mdc-layout-grid__inner">
-                  <LessonHeader className="LessonPage__header" lesson={lesson}/>
-                  <LessonBody className="LessonPage__body" lesson={lesson}/>
-                  <div className="LessonPage__meta mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <div className="center mw8">
-                      <StudyLabels fragment="toggle">
-                        <LessonLabels lesson={lesson}/>
-                      </StudyLabels>
-                      {lesson.isCourseLesson && <LessonCourse lesson={lesson} />}
+                <div className="mdc-layout-grid">
+                  <div className="LessonPage__container mdc-layout-grid__inner">
+                    <LessonHeader className="LessonPage__header" lesson={lesson}/>
+                    <LessonBody className="LessonPage__body" lesson={lesson}/>
+                    <div className="LessonPage__meta mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      <div className="center mw8">
+                        <StudyLabels fragment="toggle">
+                          <LessonLabels lesson={lesson}/>
+                        </StudyLabels>
+                        {lesson.isCourseLesson && <LessonCourse lesson={lesson} />}
+                      </div>
                     </div>
                   </div>
-                  <div className="LessonPage__comments mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <div className="LessonPage__comments__container mdc-layout-grid__inner mw8">
-                      {isNil(props.viewer)
-                      ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                          <LoginLink>Login to leave a comment</LoginLink>
-                        </div>
-                      : <AddLessonCommentForm className="mt3" lesson={lesson} />}
-                      <LessonTimeline lesson={lesson} />
-                    </div>
+                </div>
+                <div className="LessonPage__comments mdc-layout-grid">
+                  <div className="LessonPage__comments__container mdc-layout-grid__inner mw8">
+                    {isNil(props.viewer)
+                    ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                        <LoginLink>Login to leave a comment</LoginLink>
+                      </div>
+                    : <AddLessonCommentForm className="mt3" lesson={lesson} />}
+                    <LessonTimeline lesson={lesson} />
                   </div>
                 </div>
               </div>

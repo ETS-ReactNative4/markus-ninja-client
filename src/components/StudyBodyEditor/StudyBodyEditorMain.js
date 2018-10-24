@@ -6,9 +6,9 @@ import {
   Editor,
   EditorState,
 } from 'draft-js'
+import Dialog from 'components/Dialog'
 import Tab from 'components/Tab'
 import TabBar from 'components/TabBar'
-import {get} from 'utils'
 import AttachFile from './AttachFile'
 import Context from './Context'
 import Preview from './Preview'
@@ -20,6 +20,7 @@ class StudyBodyEditorMain extends React.Component {
     this.editorElement = React.createRef()
 
     this.state = {
+      confirmCancelDialogOpen: false,
       loading: false,
       preview: false,
     }
@@ -27,7 +28,7 @@ class StudyBodyEditorMain extends React.Component {
 
   componentDidMount() {
     const {editorState, onChange} = this.context
-    const initialValue = get(this.props, "initialValue", "")
+    const {initialValue} = this.props
     if (editorState) {
       onChange(EditorState.push(editorState, ContentState.createFromText(initialValue)))
     }
@@ -56,6 +57,17 @@ class StudyBodyEditorMain extends React.Component {
     ))
   }
 
+  handleToggleCancelConfirmation = () => {
+    if (this.text !== this.props.initialValue) {
+      const {confirmCancelDialogOpen} = this.state
+      this.setState({
+        confirmCancelDialogOpen: !confirmCancelDialogOpen,
+      })
+    } else {
+      this.props.onCancel()
+    }
+  }
+
   focus = () => {
     if (this.editorElement && this.editorElement.current) {
       this.editorElement.current.focus()
@@ -71,19 +83,13 @@ class StudyBodyEditorMain extends React.Component {
   }
 
   get text() {
-    const {editorState} = this.context
-    const currentContent = editorState && editorState.getCurrentContent()
-    return currentContent && currentContent.getPlainText()
+    return this.context.editorState.getCurrentContent().getPlainText()
   }
 
   render() {
     const {editorState, toggleSaveDialog} = this.context
     const {loading, preview} = this.state
     const {placeholder, showFormButtonsFor, study} = this.props
-
-    if (!editorState) {
-      return null
-    }
 
     return (
       <div className={this.classes}>
@@ -128,7 +134,7 @@ class StudyBodyEditorMain extends React.Component {
               <button
                 className="mdc-button mdc-card__action mdc-card__action--button"
                 type="button"
-                onClick={this.handleCancel}
+                onClick={this.handleToggleCancelConfirmation}
               >
                 Cancel
               </button>
@@ -148,7 +154,45 @@ class StudyBodyEditorMain extends React.Component {
             </div>
           </div>
         </div>
+        {this.renderConfirmCancelDialog()}
       </div>
+    )
+  }
+
+  renderConfirmCancelDialog() {
+    const {confirmCancelDialogOpen} = this.state
+
+    return (
+      <Dialog
+        open={confirmCancelDialogOpen}
+        onClose={() => this.setState({confirmCancelDialogOpen: false})}
+        title={<Dialog.Title>Cancel comment</Dialog.Title>}
+        content={
+          <Dialog.Content>
+            <div className="flex flex-column mw5">
+              <p>Are you sure?</p>
+            </div>
+          </Dialog.Content>
+        }
+        actions={
+          <Dialog.Actions>
+            <button
+              type="button"
+              className="mdc-button"
+              data-mdc-dialog-action="no"
+            >
+              No
+            </button>
+            <button
+              type="button"
+              className="mdc-button"
+              onClick={this.handleCancel}
+              data-mdc-dialog-action="yes"
+            >
+              Yes
+            </button>
+          </Dialog.Actions>}
+        />
     )
   }
 

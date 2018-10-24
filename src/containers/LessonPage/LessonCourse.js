@@ -14,16 +14,30 @@ class LessonCourse extends React.Component {
     const {previousLesson, nextLesson} = lesson
 
     return (
-      <div>
+      <div className="flex items-center">
         <span>
           <Icon className="v-mid mr1" icon="course" />
           <CourseLink className="rn-link mdc-typography--headline6" course={get(lesson, "course", null)} />
           <span className="mdc-theme--text-hint-on-light ml2">#{lesson.courseNumber}</span>
         </span>
         {previousLesson &&
-        <Link className="mdc-button mdc-button--outlined ml2" to={previousLesson.resourcePath}>Previous lesson</Link>}
+        <Link
+          className="material-icons mdc-icon-button mdc-theme--text-icon-on-background"
+          to={previousLesson.resourcePath}
+          aria-label="Previous lesson"
+          title="Previous lesson"
+        >
+          arrow_back
+        </Link>}
         {nextLesson &&
-        <Link className="mdc-button mdc-button--unelevated ml2" to={nextLesson.resourcePath}>Next lesson</Link>}
+        <Link
+          className="material-icons mdc-icon-button"
+          to={nextLesson.resourcePath}
+          aria-label="Next lesson"
+          title="Next lesson"
+        >
+          arrow_forward
+        </Link>}
       </div>
     )
   }

@@ -46,7 +46,7 @@ class LessonBody extends React.Component {
 
     return (
       <div className={this.classes}>
-        <div className="center mw7 ph3 h-100">
+        <div className="center mw7">
           {edit
           ? this.renderForm()
           : this.renderBody()}
@@ -83,7 +83,7 @@ class LessonBody extends React.Component {
 
   renderForm() {
     const study = get(this.props, "lesson.study", null)
-    const {body} = this.state
+    const body = get(this.props, "lesson.body", "")
 
     return (
       <StudyBodyEditor study={study}>

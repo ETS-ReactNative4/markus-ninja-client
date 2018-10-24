@@ -11,3 +11,15 @@
     }
   }
 }
+
+.rn-page--column {
+  flex-direction: column;
+
+  >.mdc-layout-grid {
+    width: 100%;
+
+    &:last-child {
+      flex: auto
+    }
+  }
+}
