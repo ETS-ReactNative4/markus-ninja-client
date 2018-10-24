@@ -7,7 +7,7 @@ import {
 import moment from 'moment'
 import Dialog from 'components/Dialog'
 import HTML from 'components/HTML'
-import RichTextEditor from 'components/RichTextEditor'
+import StudyBodyEditor from 'components/StudyBodyEditor'
 import UserLink from 'components/UserLink'
 import DeleteLessonCommentMutation from 'mutations/DeleteLessonCommentMutation'
 import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
@@ -172,18 +172,19 @@ class LessonComment extends React.Component {
     const {body} = this.state
 
     return (
-      <form id="lesson-comment-form" onSubmit={this.handleSubmit}>
-        <RichTextEditor
-          id="LessonComment__body"
-          placeholder="Leave a comment"
-          initialValue={body}
-          form="lesson-comment-form"
-          submitText="Update comment"
-          study={study}
-          onCancel={this.handleToggleEdit}
-          onChange={this.handleChange}
-        />
-      </form>
+      <StudyBodyEditor study={study}>
+        <form id="lesson-comment-form" onSubmit={this.handleSubmit}>
+          <StudyBodyEditor.Main
+            placeholder="Leave a comment"
+            initialValue={body}
+            showFormButtonsFor="lesson-comment-form"
+            submitText="Update comment"
+            onCancel={this.handleToggleEdit}
+            onChange={this.handleChange}
+            study={study}
+          />
+        </form>
+      </StudyBodyEditor>
     )
   }
 }
@@ -199,7 +200,7 @@ export default createFragmentContainer(LessonComment, graphql`
     id
     publishedAt
     study {
-      ...RichTextEditor_study
+      ...StudyBodyEditor_study
     }
     updatedAt
     viewerCanDelete

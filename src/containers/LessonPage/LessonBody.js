@@ -5,7 +5,7 @@ import {
   graphql,
 } from 'react-relay'
 import HTML from 'components/HTML'
-import RichTextEditor from 'components/RichTextEditor'
+import StudyBodyEditor from 'components/StudyBodyEditor'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
 import { get, isNil } from 'utils'
 
@@ -82,22 +82,23 @@ class LessonBody extends React.Component {
   }
 
   renderForm() {
-    const lesson = get(this.props, "lesson", {})
+    const study = get(this.props, "lesson.study", null)
     const {body} = this.state
 
     return (
-      <form>
-        <RichTextEditor
-          id="LessonBody__body"
-          placeholder="Begin your lesson"
-          initialValue={body}
-          submitText="Update lesson"
-          onCancel={this.handleToggleEdit}
-          onChange={(body) => this.setState({body})}
-          onSubmit={this.handleSubmit}
-          study={get(lesson, "study", null)}
-        />
-      </form>
+      <StudyBodyEditor study={study}>
+        <form id="lesson-body-form" onSubmit={this.handleSubmit}>
+          <StudyBodyEditor.Main
+            placeholder="Begin your lesson"
+            initialValue={body}
+            showFormButtonsFor="lesson-body-form"
+            submitText="Update lesson"
+            onCancel={this.handleToggleEdit}
+            onChange={(body) => this.setState({body})}
+            study={study}
+          />
+        </form>
+      </StudyBodyEditor>
     )
   }
 }
@@ -108,7 +109,7 @@ export default createFragmentContainer(LessonBody, graphql`
     body
     bodyHTML
     study {
-      ...RichTextEditor_study
+      ...StudyBodyEditor_study
     }
     viewerCanUpdate
   }

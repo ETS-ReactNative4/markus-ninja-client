@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import {
   createFragmentContainer,
@@ -6,24 +7,13 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import AddLessonCommentMutation from 'mutations/AddLessonCommentMutation'
-import RichTextEditor from 'components/RichTextEditor'
+import StudyBodyEditor from 'components/StudyBodyEditor'
 import { get, isNil } from 'utils'
 
 class AddLessonCommentForm extends React.Component {
   state = {
     error: null,
     body: "",
-    submitted: false,
-  }
-
-  componentDidUpdate() {
-    if (this.state.submitted) {
-      this.setState({ submitted: false })
-    }
-  }
-
-  handleChangeBody = (body) => {
-    this.setState({body})
   }
 
   handleSubmit = (e) => {
@@ -36,7 +26,6 @@ class AddLessonCommentForm extends React.Component {
         if (!isNil(errors)) {
           this.setState({ error: errors[0].message })
         }
-        this.setState({ submitted: true })
       }
     )
   }
@@ -47,26 +36,41 @@ class AddLessonCommentForm extends React.Component {
   }
 
   render() {
+    const study = get(this.props, "lesson.study", null)
+
     return (
-      <form id="add-lesson-comment-form" className={this.classes} onSubmit={this.handleSubmit}>
-        <RichTextEditor
-          onChange={this.handleChangeBody}
-          form="add-lesson-comment-form"
-          submitText="Comment"
-          placeholder="Leave a comment"
-          study={get(this.props, "lesson.study", null)}
-        />
-      </form>
+      <StudyBodyEditor study={study}>
+        <form id="add-lesson-comment-form" className={this.classes} onSubmit={this.handleSubmit}>
+          <StudyBodyEditor.Main
+            onChange={(body) => this.setState({body})}
+            submitText="Comment"
+            showFormButtonsFor="add-lesson-comment-form"
+            placeholder="Leave a comment"
+            study={study}
+          />
+        </form>
+      </StudyBodyEditor>
     )
   }
+}
+
+AddLessonCommentForm.propTypes = {
+  lesson: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+  }).isRequired,
+}
+
+AddLessonCommentForm.defaultProps = {
+  lesson: {
+    id: "",
+  },
 }
 
 export default withRouter(createFragmentContainer(AddLessonCommentForm, graphql`
   fragment AddLessonCommentForm_lesson on Lesson {
     id
     study {
-      id
-      ...RichTextEditor_study
+      ...StudyBodyEditor_study
     }
   }
 `))

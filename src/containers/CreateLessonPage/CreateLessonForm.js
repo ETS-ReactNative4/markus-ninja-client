@@ -8,7 +8,7 @@ import { withRouter } from 'react-router'
 import CreateLessonMutation from 'mutations/CreateLessonMutation'
 import ErrorText from 'components/ErrorText'
 import TextField, {defaultTextFieldState} from 'components/TextField'
-import RichTextEditor from 'components/RichTextEditor'
+import StudyBodyEditor from 'components/StudyBodyEditor'
 import StudyCourseSelect from 'components/StudyCourseSelect'
 import {get, isEmpty, isNil} from 'utils'
 
@@ -56,44 +56,47 @@ class CreateLessonForm extends React.Component {
 
   render() {
     const {error} = this.state
+    const study = get(this.props, "study", null)
 
     return (
-      <form className={this.classes} onSubmit={this.handleSubmit}>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <TextField
-            fullWidth
-            label="Title"
-            inputProps={{
-              name: "title",
-              placeholder: "Title*",
-              required: true,
-              onChange: (title) => this.setState({title}),
-            }}
+      <StudyBodyEditor study={study}>
+        <form className={this.classes} onSubmit={this.handleSubmit}>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <TextField
+              fullWidth
+              label="Title"
+              inputProps={{
+                name: "title",
+                placeholder: "Title*",
+                required: true,
+                onChange: (title) => this.setState({title}),
+              }}
+            />
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <StudyBodyEditor.Main
+              placeholder="Begin your lesson"
+              onChange={(body) => this.setState({body})}
+              study={study}
+            />
+          </div>
+          <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+          {this.renderCourseSelect()}
+          <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+          <div className="mdc-layout-grid__cell">
+            <button
+              type="submit"
+              className="mdc-button mdc-button--unelevated"
+            >
+              Create lesson
+            </button>
+          </div>
+          <ErrorText
+            className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+            error={error}
           />
-        </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <RichTextEditor
-            study={get(this.props, "study", null)}
-            placeholder="Begin your lesson"
-            onChange={(body) => this.setState({body})}
-          />
-        </div>
-        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-        {this.renderCourseSelect()}
-        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-        <div className="mdc-layout-grid__cell">
-          <button
-            type="submit"
-            className="mdc-button mdc-button--unelevated"
-          >
-            Create lesson
-          </button>
-        </div>
-        <ErrorText
-          className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-          error={error}
-        />
-      </form>
+        </form>
+      </StudyBodyEditor>
     )
   }
 
@@ -115,8 +118,8 @@ class CreateLessonForm extends React.Component {
 
 export default withRouter(createFragmentContainer(CreateLessonForm, graphql`
   fragment CreateLessonForm_study on Study {
-    id
-    ...RichTextEditor_study
+    ...StudyBodyEditor_study
     ...StudyCourseSelect_study
+    id
   }
 `))
