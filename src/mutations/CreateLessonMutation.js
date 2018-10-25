@@ -68,7 +68,7 @@ export default (studyId, title, body, courseId, callback) => {
             const lessonCourse = node && node.getLinkedRecord('course')
             const courseLessonCount = lessonCourse && lessonCourse.getLinkedRecord('lessons', {first: 0})
             const course = proxyStore.get(courseId)
-            course && course.setLinkedRecord(courseLessonCount, 'lessons', {first: 0})
+            course && courseLessonCount && course.setLinkedRecord(courseLessonCount, 'lessons', {first: 0})
           }
         }
       },

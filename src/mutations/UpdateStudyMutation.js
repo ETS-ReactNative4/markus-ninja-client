@@ -57,7 +57,7 @@ export default (studyId, description, name, callback) => {
         study.setValue(newUpdatedAt, 'updatedAt')
       },
       onCompleted: (response, error) => {
-        callback(error)
+        callback(response.updateStudy, error)
       },
       onError: err => console.error(err),
     },

@@ -6,9 +6,10 @@ import {
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router-dom';
-import TextField, {Input, HelperText} from '@material/react-text-field'
+import {HelperText} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateCourseMutation from 'mutations/UpdateCourseMutation'
-import { get, isEmpty, isNil } from 'utils'
+import {get, isEmpty} from 'utils'
 
 class CourseMetaDetails extends React.Component {
   constructor(props) {
@@ -18,18 +19,32 @@ class CourseMetaDetails extends React.Component {
 
     this.state = {
       error: null,
-      description,
-      initialValues: {
-        description,
+      description: {
+        ...defaultTextFieldState,
+        initialValue: description,
+        value: description,
       },
       open: false,
       submitted: false,
     }
   }
 
-  handleChange = (e) => {
+  componentDidUpdate(prevProps) {
+    const newDescription = get(this.props, "course.description", "")
+    if (newDescription !== this.state.description.initialValue) {
+      this.setState({
+        description: {
+          ...this.state.description,
+          initialValue: newDescription,
+          value: newDescription,
+        }
+      })
+    }
+  }
+
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
     })
   }
 
@@ -41,10 +56,10 @@ class CourseMetaDetails extends React.Component {
 
     UpdateCourseMutation(
       this.props.course.id,
-      description,
+      description.value,
       null,
-      (errors) => {
-        if (!isNil(errors)) {
+      (updateCourse, errors) => {
+        if (errors) {
           this.setState({ error: errors[0].message })
         }
         this.handleToggleOpen()
@@ -59,15 +74,18 @@ class CourseMetaDetails extends React.Component {
     this.props.onOpen(open)
 
     if (!this.state.submitted) {
-      this.reset_()
+      this._reset()
     }
   }
 
-  reset_ = () => {
+  _reset = () => {
     this.setState({
       error: null,
+      description: {
+        ...defaultTextFieldState,
+        value: this.state.description.initialValue,
+      },
       submitted: false,
-      ...this.state.initialValues,
     })
   }
 
@@ -106,13 +124,12 @@ class CourseMetaDetails extends React.Component {
           textarea
           floatingLabelClassName={!isEmpty(description) ? "mdc-floating-label--float-above" : ""}
           helperText={this.renderHelperText()}
-        >
-          <Input
-            name="description"
-            value={description}
-            onChange={this.handleChange}
-          />
-        </TextField>
+          inputProps={{
+            name: "description",
+            value: description.value,
+            onChange: this.handleChange,
+          }}
+        />
         <div className="inline-flex items-center mt2">
           <button
             className="mdc-button mdc-button--unelevated"

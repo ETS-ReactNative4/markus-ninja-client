@@ -49,14 +49,6 @@ class StudyBodyEditorMain extends React.Component {
     this.props.onChange(editorState.getCurrentContent().getPlainText())
   }
 
-  handleSubmit = (e) => {
-    const {editorState, onChange} = this.context
-    onChange(EditorState.push(
-      editorState,
-      ContentState.createFromText(""),
-    ))
-  }
-
   handleToggleCancelConfirmation = () => {
     if (this.text !== this.props.initialValue) {
       const {confirmCancelDialogOpen} = this.state
@@ -127,7 +119,6 @@ class StudyBodyEditorMain extends React.Component {
                 type="submit"
                 form={showFormButtonsFor}
                 className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
-                onClick={this.handleSubmit}
               >
                 {this.props.submitText || "Submit"}
               </button>

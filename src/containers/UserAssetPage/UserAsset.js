@@ -150,6 +150,9 @@ export default withRouter(createFragmentContainer(UserAsset, graphql`
       resourcePath
     }
     size
+    study {
+      resourcePath
+    }
     subtype
     type
     viewerCanDelete

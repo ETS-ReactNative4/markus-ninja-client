@@ -40,15 +40,22 @@ class AddLessonCommentForm extends React.Component {
 
     return (
       <StudyBodyEditor study={study}>
-        <form id="add-lesson-comment-form" className={this.classes} onSubmit={this.handleSubmit}>
-          <StudyBodyEditor.Main
-            onChange={(body) => this.setState({body})}
-            submitText="Comment"
-            showFormButtonsFor="add-lesson-comment-form"
-            placeholder="Leave a comment"
-            study={study}
-          />
-        </form>
+        <StudyBodyEditor.Context.Consumer>
+          {({clearText}) =>
+            <form
+              id="add-lesson-comment-form"
+              className={this.classes}
+              onSubmit={(e) => {this.handleSubmit(e); clearText()}}
+            >
+              <StudyBodyEditor.Main
+                onChange={(body) => this.setState({body})}
+                submitText="Comment"
+                showFormButtonsFor="add-lesson-comment-form"
+                placeholder="Leave a comment"
+                study={study}
+              />
+            </form>}
+        </StudyBodyEditor.Context.Consumer>
       </StudyBodyEditor>
     )
   }

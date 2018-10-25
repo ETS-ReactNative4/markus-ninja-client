@@ -32,19 +32,10 @@ class UpdateLabelDialog extends React.Component {
     }
   }
 
-  handleCancel = () => {
-    const {label} = this.props
-    this.setState({
-      error: null,
-      color: {
-        ...defaultTextFieldState,
-        value: label.color,
-      },
-      description: {
-        ...defaultTextFieldState,
-        value: label.description,
-      },
-    })
+  handleClose = (action) => {
+    if (action !== "update") {
+      this._reset()
+    }
     this.props.onClose()
   }
 
@@ -60,7 +51,7 @@ class UpdateLabelDialog extends React.Component {
     })
   }
 
-  handleChangeComplete = (color, event) => {
+  handlePickColor = (color, event) => {
     this.setState({
       color: {
         ...this.state.color,
@@ -81,8 +72,24 @@ class UpdateLabelDialog extends React.Component {
         if (!isNil(error)) {
           this.setState({ error: error[0].message })
         }
+        this._reset()
       },
     )
+  }
+
+  _reset = () => {
+    const {label} = this.props
+    this.setState({
+      error: null,
+      color: {
+        ...defaultTextFieldState,
+        value: label.color,
+      },
+      description: {
+        ...defaultTextFieldState,
+        value: label.description,
+      },
+    })
   }
 
   get classes() {
@@ -110,7 +117,7 @@ class UpdateLabelDialog extends React.Component {
         innerRef={this.setRoot}
         className={this.classes}
         open={open}
-        onClose={this.handleCancel}
+        onClose={this.handleClose}
         title={
           <Dialog.Title>
             <Label className="UpdateLabelDialog__preview" label={this.label} />
@@ -159,7 +166,7 @@ class UpdateLabelDialog extends React.Component {
         </div>
         <div>
           <div className="mb1">
-            <GithubPicker triangle="hide" onChangeComplete={this.handleChangeComplete} />
+            <GithubPicker triangle="hide" onChangeComplete={this.handlePickColor} />
           </div>
           <TextField
             label="Color"

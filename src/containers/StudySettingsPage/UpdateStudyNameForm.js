@@ -4,6 +4,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import {withRouter} from 'react-router-dom'
 import TextField, {Input} from '@material/react-text-field'
 import UpdateStudyMutation from 'mutations/UpdateStudyMutation'
 import { isNil } from 'utils'
@@ -37,11 +38,12 @@ class UpdateStudyNameForm extends React.Component {
       this.props.study.id,
       null,
       name,
-      (error) => {
+      (updateStudy, error) => {
         if (!isNil(error)) {
           this.setState({ error: error.message })
         }
         this.setState({ dirty: false })
+        this.props.history.push(updateStudy.resourcePath+"/settings")
       },
     )
   }
@@ -83,9 +85,9 @@ class UpdateStudyNameForm extends React.Component {
   }
 }
 
-export default createFragmentContainer(UpdateStudyNameForm, graphql`
+export default withRouter(createFragmentContainer(UpdateStudyNameForm, graphql`
   fragment UpdateStudyNameForm_study on Study {
     id
     name
   }
-`)
+`))

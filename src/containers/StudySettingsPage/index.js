@@ -24,7 +24,7 @@ const StudySettingsPageQuery = graphql`
 class StudySettingsPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("StudySettingsPage mdc-layout-grid__inner", className)
+    return cls("StudySettingsPage mdc-layout-grid__inner mw7", className)
   }
 
   render() {

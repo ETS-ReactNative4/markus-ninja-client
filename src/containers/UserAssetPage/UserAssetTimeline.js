@@ -5,13 +5,18 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import UserAssetTimelineEvent from './UserAssetTimelineEvent'
-import { get } from 'utils'
+import {get, isEmpty} from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
 
 class UserAssetTimeline extends Component {
   render() {
     const timelineEdges = get(this.props, "asset.timeline.edges", [])
+
+    if (isEmpty(timelineEdges)) {
+      return null
+    }
+
     return (
       <div className="mdc-card mdc-card--outlined ph2">
         <ul className="mdc-list">

@@ -30,7 +30,7 @@ class CreateLessonForm extends React.Component {
 
     CreateLessonMutation(
       this.props.study.id,
-      title,
+      title.value,
       body,
       courseId,
       (lesson, errors) => {

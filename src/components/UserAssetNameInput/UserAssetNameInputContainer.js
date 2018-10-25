@@ -12,6 +12,7 @@ import { debounce, get, isEmpty, isNil } from 'utils'
 
 export const defaultUserAssetNameState = {
   ...defaultTextFieldState,
+  name: "name",
   available: false,
 }
 
@@ -39,7 +40,6 @@ class UserAssetNameInputContainer extends React.Component {
         value: initialValue,
       }
       this.setState({name})
-      this.props.onChange(name)
       this._fetch(name.value)
     }
   }

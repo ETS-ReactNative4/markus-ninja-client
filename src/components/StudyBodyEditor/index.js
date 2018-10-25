@@ -45,6 +45,7 @@ class StudyBodyEditor extends React.Component {
     ])
 
     this.state = {
+      clearText: this.handleClearText,
       editorState: EditorState.createWithContent(
         ContentState.createFromText(""),
         compositeDecorator,
@@ -57,6 +58,16 @@ class StudyBodyEditor extends React.Component {
 
   handleChange = (editorState) => {
     this.setState({editorState})
+  }
+
+  handleClearText = () => {
+    const {editorState} = this.state
+    this.setState({
+      editorState: EditorState.push(
+        editorState,
+        ContentState.createFromText(""),
+      ),
+    })
   }
 
   handleToggleSaveDialog = () => {
@@ -93,6 +104,7 @@ StudyBodyEditor.defaultProps = {
   }
 }
 
+StudyBodyEditor.Context = Context
 StudyBodyEditor.Main = Relay.createFragmentContainer(StudyBodyEditorMain, FRAGMENT)
 
 const AT_REGEX = /(?:(?:^|\s)@)(\w+)(?=\s|$)/g
