@@ -23,7 +23,10 @@ class CardLessonPreview extends React.Component {
       <div className={this.classes}>
         <Link className="mdc-card__primary-action" to={lesson.resourcePath}>
           <div className="pa3">
-            <h6>{lesson.title}</h6>
+            <h6 className="inline-flex-center">
+              <Icon as="span" className="mr2" icon="lesson" />
+              {lesson.title}
+            </h6>
             <div className="mdc-typography--subtitle2 mdc-theme--text-secondary-on-light">
               #{lesson.number} created on
               <span className="mh1">{moment(lesson.createdAt).format("MMM D, YYYY")}</span>

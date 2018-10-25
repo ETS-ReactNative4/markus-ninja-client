@@ -8,16 +8,11 @@ import StudyPreview from 'components/StudyPreview'
 import { get, isEmpty } from 'utils'
 
 class UserPopularStudies extends React.Component {
-  get classes() {
-    const {className} = this.props
-    return cls("UserPopularStudies mdc-layout-grid__inner", className)
-  }
-
   render() {
     const studyEdges = get(this.props, "user.studies.edges", [])
 
     return (
-      <div className={this.classes}>
+      <React.Fragment>
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           Popular studies
         </h5>
@@ -35,7 +30,7 @@ class UserPopularStudies extends React.Component {
           )}>
             <StudyPreview.Card className="h-100" study={node} />
           </div>)}
-      </div>
+      </React.Fragment>
     )
   }
 }

@@ -249,15 +249,26 @@
     "@material/theme" "^0.40.1"
     "@material/typography" "^0.40.1"
 
-"@material/menu@^0.38.0":
-  version "0.38.0"
-  resolved "https://registry.yarnpkg.com/@material/menu/-/menu-0.38.0.tgz#648ced4184ee72940712d4e5a0255b1f5e3cf4b4"
+"@material/menu-surface@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/menu-surface/-/menu-surface-0.40.1.tgz#d0905626e6e99d3009b52cdbeaf51ebfa00161af"
   dependencies:
-    "@material/animation" "^0.34.0"
-    "@material/base" "^0.35.0"
-    "@material/elevation" "^0.38.0"
-    "@material/theme" "^0.38.0"
-    "@material/typography" "^0.38.0"
+    "@material/animation" "^0.40.1"
+    "@material/base" "^0.40.1"
+    "@material/elevation" "^0.40.1"
+    "@material/rtl" "^0.40.1"
+    "@material/shape" "^0.40.1"
+    "@material/theme" "^0.40.1"
+
+"@material/menu@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/menu/-/menu-0.40.1.tgz#befdac6518c5bf03873499245aa185fb39cf109a"
+  dependencies:
+    "@material/base" "^0.40.1"
+    "@material/list" "^0.40.1"
+    "@material/menu-surface" "^0.40.1"
+    "@material/ripple" "^0.40.1"
+    "@material/rtl" "^0.40.1"
 
 "@material/notched-outline@^0.39.0", "@material/notched-outline@^0.39.1":
   version "0.39.1"
@@ -413,41 +424,41 @@
   version "0.40.1"
   resolved "https://registry.yarnpkg.com/@material/shape/-/shape-0.40.1.tgz#bd4224902896c3d45fab353d788fe6c4866483a8"
 
-"@material/tab-bar@^0.38.1":
-  version "0.38.1"
-  resolved "https://registry.yarnpkg.com/@material/tab-bar/-/tab-bar-0.38.1.tgz#539b7a844ea290a92f9fcd05dda00dd2fb8b04c3"
+"@material/tab-bar@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/tab-bar/-/tab-bar-0.40.1.tgz#d9a324ca8d67e7427f5a6664c79419ede6b71d7b"
   dependencies:
-    "@material/base" "^0.35.0"
-    "@material/elevation" "^0.38.0"
-    "@material/tab" "^0.38.1"
-    "@material/tab-scroller" "^0.38.1"
+    "@material/base" "^0.40.1"
+    "@material/elevation" "^0.40.1"
+    "@material/tab" "^0.40.1"
+    "@material/tab-scroller" "^0.40.1"
 
-"@material/tab-indicator@^0.38.0":
-  version "0.38.0"
-  resolved "https://registry.yarnpkg.com/@material/tab-indicator/-/tab-indicator-0.38.0.tgz#8cb0f364af561a0e0311530247d2116c3ff88f49"
+"@material/tab-indicator@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/tab-indicator/-/tab-indicator-0.40.1.tgz#f6cdbb709276ca9b0b92e5f57a53515c0f1c6646"
   dependencies:
-    "@material/animation" "^0.34.0"
-    "@material/base" "^0.35.0"
-    "@material/theme" "^0.38.0"
+    "@material/animation" "^0.40.1"
+    "@material/base" "^0.40.1"
+    "@material/theme" "^0.40.1"
 
-"@material/tab-scroller@^0.38.1":
-  version "0.38.1"
-  resolved "https://registry.yarnpkg.com/@material/tab-scroller/-/tab-scroller-0.38.1.tgz#79a4d8aa58981a61bba25e5a2e0b494ca2920473"
+"@material/tab-scroller@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/tab-scroller/-/tab-scroller-0.40.1.tgz#41dd9086ce0f6a3294464e6e6c51e6794b7059ee"
   dependencies:
-    "@material/animation" "^0.34.0"
-    "@material/base" "^0.35.0"
-    "@material/tab" "^0.38.1"
+    "@material/animation" "^0.40.1"
+    "@material/base" "^0.40.1"
+    "@material/tab" "^0.40.1"
 
-"@material/tab@^0.38.1":
-  version "0.38.1"
-  resolved "https://registry.yarnpkg.com/@material/tab/-/tab-0.38.1.tgz#1de846a222d4adbe29ee5b96aad1561924f734fc"
+"@material/tab@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/tab/-/tab-0.40.1.tgz#16cab0bb3c437c0cac31994df8f0b80ab442d037"
   dependencies:
-    "@material/base" "^0.35.0"
-    "@material/ripple" "^0.38.1"
-    "@material/rtl" "^0.36.0"
-    "@material/tab-indicator" "^0.38.0"
-    "@material/theme" "^0.38.0"
-    "@material/typography" "^0.38.0"
+    "@material/base" "^0.40.1"
+    "@material/ripple" "^0.40.1"
+    "@material/rtl" "^0.40.1"
+    "@material/tab-indicator" "^0.40.1"
+    "@material/theme" "^0.40.1"
+    "@material/typography" "^0.40.1"
 
 "@material/textfield@^0.39.0":
   version "0.39.3"

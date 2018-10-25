@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
@@ -23,16 +22,11 @@ class UserCourseApples extends React.Component {
     relay.loadMore(USERS_PER_PAGE)
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("UserCourseApples mdc-layout-grid__inner", className)
-  }
-
   render() {
     const user = get(this.props, "user", null)
     const appledEdges = get(user, "appledCourses.edges", [])
     return (
-      <div className={this.classes}>
+      <React.Fragment>
         <h5 className="fw5 mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           Appled courses
         </h5>
@@ -66,7 +60,7 @@ class UserCourseApples extends React.Component {
               </button>
             </div>}
           </React.Fragment>}
-      </div>
+      </React.Fragment>
     )
   }
 }

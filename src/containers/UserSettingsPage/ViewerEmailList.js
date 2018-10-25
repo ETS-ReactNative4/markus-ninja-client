@@ -86,7 +86,7 @@ export default createPaginationContainer(ViewerEmailList,
         allEmails: emails(
           first: $count,
           after: $after
-        ) @connection(key: "ViewerEmailList_allEmails") {
+        ) @connection(key: "ViewerEmailList_allEmails", filters: []) {
           edges {
             node {
               id

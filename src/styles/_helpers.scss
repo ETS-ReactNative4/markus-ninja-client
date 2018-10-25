@@ -19,3 +19,10 @@
 .bottom {
   margin-top: auto;
 }
+
+.inline-flex-center {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}

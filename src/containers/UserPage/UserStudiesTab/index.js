@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -37,11 +36,6 @@ class UserStudiesTab extends React.Component {
 
     history.replace({pathname: location.pathname, search})
   }, 300)
-
-  get classes() {
-    const {className} = this.props
-    return cls("UserStudiesTab mdc-layout-grid__inner", className)
-  }
 
   get _filterBy() {
     const {q} = this.state
@@ -82,7 +76,7 @@ class UserStudiesTab extends React.Component {
 
   render() {
     return (
-      <div className={this.classes}>
+      <React.Fragment>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="flex items-center w-100">
             {this.renderInput()}
@@ -92,7 +86,7 @@ class UserStudiesTab extends React.Component {
         <UserStudies filterBy={this._filterBy} orderBy={this._orderBy}>
           <UserStudiesTabStudies />
         </UserStudies>
-      </div>
+      </React.Fragment>
     )
   }
 

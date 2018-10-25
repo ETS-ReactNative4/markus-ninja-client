@@ -101,9 +101,7 @@ class UserPage extends React.Component {
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <UserNav user={props.user} />
                   </div>
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12" >
-                    <Tab user={props.user} />
-                  </div>
+                  <Tab user={props.user} />
                 </div>
               </div>
             )

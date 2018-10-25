@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   QueryRenderer,
   graphql,
@@ -33,11 +32,6 @@ const UserApplesTabQuery = graphql`
 `
 
 class UserApplesTab extends React.Component {
-  get classes() {
-    const {className} = this.props
-    return cls("UserApplesTab mdc-layout-grid__inner", className)
-  }
-
   render() {
     const { match } = this.props
     return (
@@ -54,15 +48,10 @@ class UserApplesTab extends React.Component {
             return <div>{error.message}</div>
           } else if (props) {
             return (
-              <div className={this.classes}>
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <UserCourseApples user={props.user} />
-                </div>
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <UserStudyApples user={props.user} />
-                </div>
-              </div>
+              <React.Fragment>
+                <UserCourseApples user={props.user} />
+                <UserStudyApples user={props.user} />
+              </React.Fragment>
             )
           }
           return <div>Loading</div>

@@ -5,7 +5,7 @@ import {
   graphql,
 } from 'react-relay'
 import StudyLink from 'components/StudyLink'
-import EnrollButton from 'components/EnrollButton'
+import EnrollIconButton from 'components/EnrollIconButton'
 import Icon from 'components/Icon'
 import { get, isEmpty } from 'utils'
 
@@ -48,7 +48,7 @@ class ViewerEnrolledStudies extends React.Component {
                   <Icon as="span" className="mdc-list-item__graphic" icon="study" />
                   <StudyLink study={node} />
                   <span className="mdc-list-item__meta">
-                    <EnrollButton enrollable={node} />
+                    <EnrollIconButton enrollable={node} />
                   </span>
                 </li>
               ))}
@@ -81,7 +81,9 @@ export default createPaginationContainer(ViewerEnrolledStudies,
               id
               ...on Study {
                 ...StudyLink_study
-                ...EnrollButton_enrollable
+                enrollmentStatus
+                id
+                viewerCanEnroll
               }
             }
           }

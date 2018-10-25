@@ -1,298 +1,281 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
-import shortid from 'shortid'
 import {MDCListFoundation} from '@material/list/dist/mdc.list'
-import {debounce, throttle, recursiveReactChildrenMap} from 'utils'
+import {matches} from '@material/dom/ponyfill'
+
+import ListDivider from './ListDivider'
+import ListItem from './ListItem'
+
+const {cssClasses, strings} = MDCListFoundation
 
 class List extends React.Component {
-
-  root_ = null
   foundation_ = null
 
   constructor(props) {
     super(props)
 
-    this.state = {
-      items: [],
+    this.root_ = null
+
+    this.setRootRef = (element) => {
+      this.root_ = element;
     }
-  }
-
-  destroy() {
-    this.root_.removeEventListener('keydown', this.handleKeydown_)
-    this.root_.removeEventListener('click', this.handleClick_)
-    this.foundation_.destroy()
-  }
-
-  init() {
-    this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_)
-    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_)
-    this.root_.addEventListener('keydown', this.handleKeydown_)
-    this.root_.addEventListener('click', this.handleClick_)
-    this.layout()
-    this.singleSelection = this.props.singleSelection
-    this.items = this.props.items
-  }
-
-  layout() {
-    this.vertical = this.props.vertical
   }
 
   componentDidMount() {
     this.foundation_ = new MDCListFoundation(this.adapter)
-    this.foundation_.init()
-    this.init()
+
+    this.layout()
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // this.checkForNewItems(prevProps, this.props)
-    if (prevProps.items !== this.props.items) {
-      this.items = this.props.items
+  componentDidUpdate() {
+    // List items need to have at least tabindex=-1 to be focusable.
+    [].slice.call(this.root_.querySelectorAll('.mdc-list-item:not([tabindex])'))
+      .forEach((ele) => {
+        ele.setAttribute('tabindex', -1);
+    });
+
+    if (this.props.role === 'menu') {
+      // List items need to have at least tabindex=-1 to be focusable.
+      [].slice.call(this.root_.querySelectorAll('.mdc-list-item'))
+        .forEach((ele) => {
+          ele.setAttribute('role', 'menuitem');
+      });
     }
+
+    // Child button/a elements are not tabbable until the list item is focused.
+    [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS))
+      .forEach((ele) => ele.setAttribute('tabindex', -1));
   }
 
   componentWillUnmount() {
-    this.destroy()
+    this.foundation_.destroy()
   }
 
-  checkForNewItems = debounce(throttle((prevProps, newProps) => {
-    const oldIds = [],
-          newIds = []
-    recursiveReactChildrenMap(newProps.children, (child) => {
-      if (child.type.name === 'ListItem') {
-        oldIds.push(child.props.id)
-      }
-      return null
-    })
-    recursiveReactChildrenMap(prevProps.children, (child) => {
-      if (child.type.name === 'ListItem') {
-        newIds.push(child.props.id)
-      }
-      return null
-    })
-
-    oldIds.some((id1) => newIds.some((id2) => {
-      const newChildren = id1 !== id2
-      if (newChildren) {
-        this.items = newProps.children
-      }
-      return newChildren
-    }))
-  }, 1000), 500)
-
-  getItemElement(item) {
-    const props = {}
-    item.propMap.forEach((v, k) => props[k] = v)
-    return React.cloneElement(item.element, props)
+  layout() {
+    this.vertical = !this.props.horizontal
   }
 
-  set items(propItems) {
-    const items = []
-    propItems.map((item) => {
-      if (item.type.name === 'ListItem') {
-        items.push({
-          element: item,
-          propMap: new Map(),
-          id: shortid.generate(),
-        })
-      }
-      return null
-    })
+  getListItemIndex_ = (e) => {
+    let eventTarget = e.target
+    let index = -1
 
-    this.listElements_ = items.map(() => React.createRef())
-
-    this.setState({items})
-  }
-
-  set singleSelection(isSingleSelectionList) {
-    if (isSingleSelectionList) {
-      this.root_.addEventListener('click', this.handleClick_)
-    } else {
-      this.root_.removeEventListener('click', this.handleClick_)
+    // Find the first ancestor that is a list item or the list.
+    while (!eventTarget.classList.contains(cssClasses.LIST_ITEM_CLASS)
+    && !eventTarget.classList.contains(cssClasses.ROOT)) {
+      eventTarget = eventTarget.parentElement;
     }
 
-    this.foundation_.setSingleSelection(isSingleSelectionList)
+    // Get the index of the element if it is a list item.
+    if (eventTarget.classList.contains(cssClasses.LIST_ITEM_CLASS)) {
+      index = this.listElements.indexOf(eventTarget);
+    }
+
+    return index;
+  }
+
+  handleFocus = (e) => {
+    const index = this.getListItemIndex_(e)
+    this.foundation_.handleFocusIn(e, index)
+  }
+
+  handleBlur = (e) => {
+    const index = this.getListItemIndex_(e)
+    this.foundation_.handleFocusOut(e, index)
+  }
+
+  handleKeydown = (e) => {
+    const index = this.getListItemIndex_(e)
+
+    if (index >= 0) {
+      this.foundation_.handleKeydown(e, e.target.classList.contains(cssClasses.LIST_ITEM_CLASS), index)
+    }
+  }
+
+  handleClick = (e) => {
+    const index = this.getListItemIndex_(e)
+
+    // Toggle the checkbox only if it's not the target of the event, or the checkbox will have 2 change events.
+    const toggleCheckbox = !matches(e.target, strings.CHECKBOX_RADIO_SELECTOR)
+    this.foundation_.handleClick(index, toggleCheckbox)
+  }
+
+  initializeListType() {
+    // Automatically set single selection if selected/activated classes are present.
+    const preselectedElement =
+      this.root_.querySelector(`.${cssClasses.LIST_ITEM_ACTIVATED_CLASS}, .${cssClasses.LIST_ITEM_SELECTED_CLASS}`);
+
+    if (preselectedElement) {
+      if (preselectedElement.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
+        this.foundation_.setUseActivatedClass(true);
+      }
+
+      this.singleSelection = true;
+      this.selectedIndex = this.listElements.indexOf(preselectedElement);
+    }
   }
 
   set vertical(value) {
-    this.foundation_.setVerticalOrientation(value)
+    this.foundation_.setVerticalOrientation(value);
+  }
+
+  get listElements() {
+    return [].slice.call(this.root_.querySelectorAll(strings.ENABLED_ITEMS_SELECTOR))
   }
 
   set wrapFocus(value) {
     this.foundation_.setWrapFocus(value)
   }
 
+  set singleSelection(isSingleSelectionList) {
+    this.foundation_.setSingleSelectio(isSingleSelectionList)
+  }
+
+  set selectedIndex(index) {
+    this.foundation_.setSelectedIndex(index)
+  }
+
   get classes() {
-    const {
-      avatarList,
-      className,
-      dense,
-      nonInteractive,
-      twoLine,
-    } = this.props
-
-    return cls('mdc-list', className, {
-      'mdc-list--non-interactive': nonInteractive,
-      'mdc-list--two-line': twoLine,
-      'mdc-list--dense': dense,
-      'mdc-list--avatar-list': avatarList,
-    })
-  }
-
-  get orientation() {
-    const {vertical} = this.props
-    return vertical ? "vertical" : "horizontal"
-  }
-
-  get otherProps() {
-    const {
-      avatarList,
-      className,
-      dense,
-      innerRef,
-      nonInteractive,
-      singleSelection,
-      twoLine,
-      vertical,
-      wrapFocus,
-      ...otherProps,
-    } = this.props
-
-    return otherProps
+    const {className} = this.props
+    return cls('mdc-list', className)
   }
 
   get adapter() {
     return {
-      getListItemCount: () => {
-        const count = this.state.items.length
-        return count
-      },
-      getFocusedElementIndex: () => {
-        let index = -1
-        this.listElements_.map((ele, i) => {
-          if (ele.current === document.activeElement) {
-            index = i
-          }
-          return null
-        })
-        return index
-      },
-      getListItemIndex: (node) => {
-        let index = -1
-        this.listElements_.map((ele, i) => {
-          if (ele.current === node) {
-            index = i
-          }
-          return null
-        })
-        return index
-      },
+      getListItemCount: () => this.listElements.length,
+      getFocusedElementIndex: () => this.listElements.indexOf(document.activeElement),
       setAttributeForElementIndex: (index, attr, value) => {
-        const {items} = this.state
-        const item = items[index]
-        if (item) {
-          const propMap = new Map(item.propMap)
-          switch (attr) {
-            case 'aria-selected':
-              propMap.set('selected', value)
-              break
-            case 'tabindex':
-              propMap.set('tabIndex', value)
-              break
-            default:
-              propMap.set(attr, value)
-          }
-          items[index].propMap = propMap
-          this.setState({ items })
+        const element = this.listElements[index];
+        if (element) {
+          element.setAttribute(attr, value);
         }
       },
-      removeAttributeForElementIndex: (index, attr, value) => {
-        const {items} = this.state
-        const item = items[index]
-        if (item) {
-          const propMap = new Map(item.propMap)
-          switch (attr) {
-            case 'aria-selected':
-              propMap.delete('selected')
-              break
-            case 'tabindex':
-              propMap.delete('tabIndex')
-              break
-            default:
-              propMap.delete(attr)
-          }
-          items[index].propMap = propMap
-          this.setState({ items })
+      removeAttributeForElementIndex: (index, attr) => {
+        const element = this.listElements[index];
+        if (element) {
+          element.removeAttribute(attr);
+        }
+      },
+      addClassForElementIndex: (index, className) => {
+        const element = this.listElements[index];
+        if (element) {
+          element.classList.add(className);
+        }
+      },
+      removeClassForElementIndex: (index, className) => {
+        const element = this.listElements[index];
+        if (element) {
+          element.classList.remove(className);
         }
       },
       focusItemAtIndex: (index) => {
-        const item = this.listElements_[index]
-        item && item.current.focus()
+        const element = this.listElements[index];
+        if (element) {
+          element.focus();
+        }
       },
-      isListItem: (ele) => {
-        let index = -1
-        this.listElements_.forEach((listEle, i) => {
-          if (listEle.current === ele) {
-            index = i
+      setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
+        const element = this.listElements[listItemIndex];
+        const listItemChildren = [].slice.call(element.querySelectorAll(strings.CHILD_ELEMENTS_TO_TOGGLE_TABINDEX));
+        listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
+      },
+      followHref: (index) => {
+        const listItem = this.listElements[index];
+        if (listItem && listItem.href) {
+          listItem.click();
+        }
+      },
+      toggleCheckbox: (index) => {
+        let checkboxOrRadioExists = false;
+        const listItem = this.listElements[index];
+        const elementsToToggle =
+          [].slice.call(listItem.querySelectorAll(strings.CHECKBOX_RADIO_SELECTOR));
+        elementsToToggle.forEach((element) => {
+          const event = document.createEvent('Event');
+          event.initEvent('change', true, true);
+
+          if (!element.checked || element.type !== 'radio') {
+            element.checked = !element.checked;
+            element.dispatchEvent(event);
           }
-        })
-        return index === -1 ? false : true
+          checkboxOrRadioExists = true;
+        });
+        return checkboxOrRadioExists;
       },
     }
   }
 
-  render() {
-    const {innerRef} = this.props
-    return (
-      // eslint-disable-next-line jsx-a11y/role-supports-aria-props
-      <ul
-        {...this.otherProps}
-        className={this.classes}
-        aria-orientation={this.orientation}
-        ref={node => {
-          this.root_ = node
-          innerRef(node)
-        }}
-      >
-        {this.renderItems()}
-      </ul>
-    )
+  get otherProps() {
+    const {
+      as,
+      children,
+      className,
+      horizontal,
+      innerRef,
+      role,
+      ...otherProps,
+    } = this.props
+    return otherProps
   }
 
-  renderItems() {
-    const {items} = this.state
-    return items.map((item, index) => {
-      const element = this.getItemElement(item)
-      return React.cloneElement(
-        element,
-        {key: item.id, innerRef: this.listElements_[index]},
-      )
-    })
+  get orientation() {
+    const {horizontal} = this.props
+    return horizontal ? "horizontal" : "vertical"
+  }
+
+  render() {
+    const {
+      as: Component,
+      children,
+      innerRef,
+      role,
+    } = this.props
+
+    return (
+      // eslint-disable-next-line jsx-a11y/role-supports-aria-props
+      <Component
+        {...this.otherProps}
+        ref={(node) => {this.setRootRef(node); innerRef(node)}}
+        className={this.classes}
+        aria-orientation={this.orientation}
+        role={role}
+        onClick={this.handleClick}
+        onKeyDown={this.handleKeydown}
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
+      >
+        {children}
+      </Component>
+    )
   }
 }
 
 List.propTypes = {
-  avatarList: PropTypes.bool,
+  as: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  children: PropTypes.node,
   className: PropTypes.string,
-  dense: PropTypes.bool,
+  horizontal: PropTypes.bool,
   innerRef: PropTypes.func,
-  nonInteractive: PropTypes.bool,
-  singleSelection: PropTypes.bool,
-  twoLine: PropTypes.bool,
-  vertical: PropTypes.bool,
-  wrapFocus: PropTypes.bool,
+  role: PropTypes.string,
+  onBlur: PropTypes.func,
+  onClick: PropTypes.func,
+  onFocus: PropTypes.func,
+  onKeyDown: PropTypes.func,
 }
 
 List.defaultProps = {
-  avatarList: false,
+  as: "ul",
+  children: null,
   className: '',
-  dense: false,
+  horizontal: false,
   innerRef: () => {},
-  nonInteractive: false,
-  singleSelection: false,
-  twoLine: false,
-  vertical: true,
-  wrapFocus: false,
+  onBlur: () => {},
+  onClick: () => {},
+  onFocus: () => {},
+  onKeyDown: () => {},
 }
+
+List.Divider = ListDivider
+List.Item = ListItem
 
 export default List

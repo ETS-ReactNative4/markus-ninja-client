@@ -4,11 +4,21 @@ import cls from 'classnames'
 import queryString from 'query-string'
 import { Link, withRouter } from 'react-router-dom'
 import Icon from 'components/Icon'
+import List from 'components/List'
 import Counter from 'components/Counter'
-import ListItem from 'components/ListItem'
 import { get } from 'utils'
 
 class SearchNav extends React.Component {
+  getItemProps(isActive) {
+    const className = cls("mdc-list-item", {
+      "mdc-list-item--activated": isActive,
+    })
+    return {
+      className,
+      "aria-selected": isActive,
+    }
+  }
+
   get classes() {
     const {className} = this.props
     return cls("SearchNav", className)
@@ -41,63 +51,57 @@ class SearchNav extends React.Component {
           </div>
         </header>
         <div className="mdc-drawer__content">
-          <nav className="mdc-list">
+          <List as="nav">
             <div role="separator" className="mdc-list-divider"></div>
-            <ListItem
-              selected={type === 'course'}
-              as={Link}
+            <Link
+              {...this.getItemProps(type === 'course')}
               to={{pathname, search: searchCourses}}
             >
               <Icon as="span" className="mdc-list-item__graphic" icon="course" />
               Courses
               <Counter>{counts.course}</Counter>
-            </ListItem>
-            <ListItem
-              selected={type === 'lesson'}
-              as={Link}
+            </Link>
+            <Link
+              {...this.getItemProps(type === 'lesson')}
               to={{pathname, search: searchLessons}}
             >
               <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
               Lessons
               <Counter>{counts.lesson}</Counter>
-            </ListItem>
-            <ListItem
-              selected={type === 'study'}
-              as={Link}
+            </Link>
+            <Link
+              {...this.getItemProps(type === 'study')}
               to={{pathname, search: searchStudies}}
             >
               <Icon as="span" className="mdc-list-item__graphic" icon="study" />
               Studies
               <Counter>{counts.study}</Counter>
-            </ListItem>
-            <ListItem
-              selected={type === 'topic'}
-              as={Link}
+            </Link>
+            <Link
+              {...this.getItemProps(type === 'topic')}
               to={{pathname, search: searchTopics}}
             >
               <Icon as="span" className="mdc-list-item__graphic" icon="topic" />
               Topics
               <Counter>{counts.topic}</Counter>
-            </ListItem>
-            <ListItem
-              selected={type === 'user'}
-              as={Link}
+            </Link>
+            <Link
+              {...this.getItemProps(type === 'user')}
               to={{pathname, search: searchUsers}}
             >
               <Icon as="span" className="mdc-list-item__graphic" icon="user" />
               Users
               <Counter>{counts.user}</Counter>
-            </ListItem>
-            <ListItem
-              selected={type === 'user_asset'}
-              as={Link}
+            </Link>
+            <Link
+              {...this.getItemProps(type === 'user_asset')}
               to={{pathname, search: searchUserAssets}}
             >
               <Icon as="span" className="mdc-list-item__graphic" icon="asset" />
               Assets
               <Counter>{counts.userAsset}</Counter>
-            </ListItem>
-          </nav>
+            </Link>
+          </List>
         </div>
       </aside>
     )

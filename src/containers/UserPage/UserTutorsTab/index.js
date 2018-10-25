@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
 import {withRouter} from 'react-router-dom'
@@ -34,11 +33,6 @@ class UserTutorsTab extends React.Component {
     history.replace({pathname: location.pathname, search})
   }, 300)
 
-  get classes() {
-    const {className} = this.props
-    return cls("UserTutorsTab mdc-layout-grid__inner", className)
-  }
-
   get _orderBy() {
     const {o, s} = this.state
     const direction = (() => {
@@ -67,14 +61,14 @@ class UserTutorsTab extends React.Component {
     const {q} = this.state
 
     return (
-      <div className={this.classes}>
+      <React.Fragment>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           {this.renderInput()}
         </div>
         <UserEnrolled orderBy={this._orderBy} search={q} type="USER">
           <UserTutorsTabTutors />
         </UserEnrolled>
-      </div>
+      </React.Fragment>
     )
   }
 

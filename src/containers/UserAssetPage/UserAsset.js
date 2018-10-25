@@ -77,6 +77,7 @@ class UserAsset extends React.Component {
             <a
               className="mdc-button mdc-card__action mdc-card__action--button"
               href={asset.href}
+              target="_blank"
             >
               View
             </a>

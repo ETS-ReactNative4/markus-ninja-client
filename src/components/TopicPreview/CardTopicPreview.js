@@ -17,7 +17,10 @@ class CardTopicPreview extends React.Component {
       <div className={this.classes}>
         <Link className="mdc-card__primary-action" to={topic.resourcePath}>
           <div className="pa3">
-            <h6>{topic.name}</h6>
+            <h6 className="inline-flex-center">
+              <Icon as="span" className="mr2" icon="topic" />
+              {topic.name}
+            </h6>
             <div className="mdc-typography--subtitle2 mdc-theme--text-secondary-on-light">
               First used on
               <span className="mh1">{moment(topic.createdAt).format("MMM D, YYYY")}</span>

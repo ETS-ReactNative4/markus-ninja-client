@@ -57,15 +57,24 @@ class Notification extends React.Component {
           </span>
         </span>
         <span className="mdc-list-item__meta">
-          <NotificationButton enrollable={subject} />
-          <span
-            className="mdc-icon-button material-icons"
-            onClick={this.handleMarkAsRead}
-            title="Mark as read"
-            aria-label="Mark as read"
-          >
-            done
-          </span>
+          <div className="mdc-list-item__meta-actions">
+            <NotificationButton enrollable={subject} />
+            <span
+              className="mdc-icon-button material-icons"
+              onClick={this.handleMarkAsRead}
+              title="Mark as read"
+              aria-label="Mark as read"
+            >
+              done
+            </span>
+            <span
+              className="Notification__why"
+              aria-label={notification.reason}
+              title={notification.reason}
+            >
+              ?
+            </span>
+          </div>
         </span>
       </li>
     )
@@ -76,6 +85,7 @@ export default withRouter(createFragmentContainer(Notification, graphql`
   fragment Notification_notification on Notification {
     id
     createdAt
+    reason
     subject {
       ...NotificationButton_enrollable
       id

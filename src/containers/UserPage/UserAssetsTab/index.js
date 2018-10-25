@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
 import UserAssets from 'components/UserAssets'
@@ -37,11 +36,6 @@ class UserAssetsTab extends React.Component {
     history.replace({pathname: location.pathname, search})
   }, 300)
 
-  get classes() {
-    const {className} = this.props
-    return cls("UserAssetsTab mdc-layout-grid__inner", className)
-  }
-
   get _filterBy() {
     const {q} = this.state
     return {search: q}
@@ -77,7 +71,7 @@ class UserAssetsTab extends React.Component {
 
   render() {
     return (
-      <div className={this.classes}>
+      <React.Fragment>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="flex items-center w-100">
             {this.renderInput()}
@@ -86,7 +80,7 @@ class UserAssetsTab extends React.Component {
         <UserAssets filterBy={this._filterBy} orderBy={this._orderBy}>
           <UserAssetsTabAssets />
         </UserAssets>
-      </div>
+      </React.Fragment>
     )
   }
 

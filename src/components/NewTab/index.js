@@ -1,16 +1,11 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
-import {MDCMenuFoundation} from '@material/menu/dist/mdc.menu'
-import {MDCMenuSurfaceFoundation} from '@material/menu-surface/dist/mdc.menuSurface'
-import MenuSurface from 'components/MenuSurface'
+import {MDCTabFoundation} from '@material/menu/dist/mdc.menu'
 
-import MenuSelectionGroup from './MenuSelectionGroup'
-import MenuSelectionGroupIcon from './MenuSelectionGroupIcon'
+const {cssClasses, strings} = MDCTabFoundation
 
-const {cssClasses, strings} = MDCMenuFoundation
-
-class Menu extends React.Component {
+class Tab extends React.Component {
   foundation_ = null
 
   constructor(props) {
@@ -26,13 +21,11 @@ class Menu extends React.Component {
   }
 
   componentDidMount() {
-    this.foundation_ = new MDCMenuFoundation(this.adapter)
+    this.foundation_ = new MDCTabFoundation(this.adapter)
     this.foundation_.init()
 
     this.list_.current.wrapFocus = true
     this.open = this.props.open
-
-    this.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.handleAfterOpened)
   }
 
   componentDidUpdate(prevProps) {
@@ -43,8 +36,6 @@ class Menu extends React.Component {
 
   componentWillUnmount() {
     this.foundation_.destroy()
-
-    this.unlisten(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.handleAfterOpened)
   }
 
   listen(evtType, handler) {
@@ -136,8 +127,8 @@ class Menu extends React.Component {
     this.menuSurface_.current.setFixedPosition(isFixed);
   }
 
-  hoistMenuToBody() {
-    this.menuSurface_.current.hoistMenuToBody();
+  hoistTabToBody() {
+    this.menuSurface_.current.hoistTabToBody();
   }
 
   /** @param {boolean} isHoisted */
@@ -163,7 +154,7 @@ class Menu extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("mdc-menu", className)
+    return cls("mdc-tab", className)
   }
 
   get adapter() {
@@ -202,14 +193,7 @@ class Menu extends React.Component {
     const {
       as,
       className,
-      fixed,
       innerRef,
-      list,
-      open,
-      onClick,
-      onClose,
-      onKeyDown,
-      onOpen,
       ...otherProps,
     } = this.props
     return otherProps
@@ -217,74 +201,35 @@ class Menu extends React.Component {
 
   render() {
     const {
-      as,
-      fixed,
+      as: Component,
       innerRef,
-      onClose,
-      onOpen,
     } = this.props
 
     return (
-      <MenuSurface
+      <Component
         {...this.otherProps}
-        innerRef={(node) => {this.setRootRef(node); innerRef(node)}}
-        ref={this.menuSurface_}
-        as={as}
+        ref={(node) => {this.setRootRef(node); innerRef(node)}}
         className={this.classes}
-        onClick={this.handleClick}
-        onClose={onClose}
-        onKeyDown={this.handleKeydown}
-        onOpen={onOpen}
-        fixed={fixed}
+        role="tab"
+        aria-selected={false}
         tabIndex="-1"
       >
         {this.renderList()}
-      </MenuSurface>
+      </Component>
     )
   }
-
-  renderList() {
-    let {list} = this.props
-    if (!list) {
-      list = React.Children.only(this.props.children)
-    }
-    const props = Object.assign({
-      ref: this.list_,
-      role: "menu",
-      "aria-hidden": true,
-    }, list.props)
-    return React.cloneElement(list, props)
-  }
 }
 
-Menu.propTypes = {
+Tab.propTypes = {
   as: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   className: PropTypes.string,
-  fixed: PropTypes.bool,
   innerRef: PropTypes.func,
-  list: PropTypes.element,
-  open: PropTypes.bool,
-  onClick: PropTypes.func,
-  onClose: PropTypes.func,
-  onKeyDown: PropTypes.func,
-  onOpen: PropTypes.func,
 }
 
-Menu.defaultProps = {
-  as: "div",
+Tab.defaultProps = {
+  as: "button",
   className: '',
-  fixed: false,
   innerRef: () => {},
-  list: null,
-  open: false,
-  onClick: () => {},
-  onClose: () => {},
-  onKeyDown: () => {},
-  onOpen: () => {},
 }
 
-Menu.Anchor = MenuSurface.Anchor
-Menu.SelectionGroup = MenuSelectionGroup
-Menu.SelectionGroupIcon = MenuSelectionGroupIcon
-
-export default Menu
+export default Tab
