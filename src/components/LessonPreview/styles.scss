@@ -1,4 +1,5 @@
 @import "@material/elevation/mixins";
+@import "@material/layout-grid/mixins";
 @import "@material/theme/mixins";
 
 .ListLessonPreview--editting {
@@ -7,4 +8,10 @@
 .ListLessonPreview--dragging {
   @include mdc-elevation(2);
   @include mdc-theme-prop(background-color, background);
+}
+
+.ListLessonPreview .mdc-list-item__graphic {
+  @include mdc-layout-grid-media-query_(phone) {
+    display: none;
+  }
 }

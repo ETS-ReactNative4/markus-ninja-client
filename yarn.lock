@@ -325,6 +325,15 @@
     prop-types "^15.6.1"
     react "^16.3.2"
 
+"@material/react-ripple@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@material/react-ripple/-/react-ripple-0.6.1.tgz#caa61dff42bf9281ea223a296550917f5c8b7d88"
+  dependencies:
+    "@material/ripple" "^0.40.1"
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+    react "^16.4.2"
+
 "@material/react-select@^0.5.1":
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/@material/react-select/-/react-select-0.5.1.tgz#3c3c5d2841a1093df18eecc5027723085e277377"
@@ -336,6 +345,35 @@
     classnames "^2.2.5"
     prop-types "^15.6.1"
     react "^16.4.2"
+
+"@material/react-tab-indicator@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@material/react-tab-indicator/-/react-tab-indicator-0.6.0.tgz#c9f235e3dc66780277fbfa5bcf8abfeaff561d18"
+  dependencies:
+    "@material/tab-indicator" "^0.40.1"
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+    react "^16.4.2"
+
+"@material/react-tab-scroller@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@material/react-tab-scroller/-/react-tab-scroller-0.6.1.tgz#67b25e49f2ca85082dba95d708e42b9131e7a023"
+  dependencies:
+    "@material/tab-scroller" "^0.40.1"
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+    react "^16.4.2"
+
+"@material/react-tab@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@material/react-tab/-/react-tab-0.6.1.tgz#bacd786c88a24ca0d0a25ea2594591a2a3e0038a"
+  dependencies:
+    "@material/react-ripple" "^0.6.1"
+    "@material/react-tab-indicator" "^0.6.0"
+    "@material/tab" "^0.40.1"
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+    react "^16.3.2"
 
 "@material/react-text-field@^0.5.1":
   version "0.5.1"
@@ -6541,6 +6579,10 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.2.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-attr-converter@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/react-attr-converter/-/react-attr-converter-0.3.1.tgz#4a2abf6d907b7ddae4d862dfec80e489ce41ad6e"
 
 react-beautiful-dnd@^9.0.2:
   version "9.0.2"

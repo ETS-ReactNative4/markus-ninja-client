@@ -124,16 +124,18 @@ class ListLessonPreview extends React.Component {
 
     return (
       <span className="mdc-list-item__meta">
-        <div className="mdc-list-item__meta-actions">
-          {lesson.viewerCanEnroll &&
-          <EnrollIconButton enrollable={get(this.props, "lesson", null)} />}
-          <Link
-            className="rn-icon-link"
-            to={lesson.resourcePath}
-          >
-            <Icon className="rn-icon-link__icon" icon="comment" />
-            {get(lesson, "comments.totalCount", 0)}
-          </Link>
+        <div className="mdc-list-item__meta-actions mdc-list-item__meta-actions--collapsible">
+          <div className="mdc-list-item__meta-actions--spread">
+            {lesson.viewerCanEnroll &&
+            <EnrollIconButton enrollable={get(this.props, "lesson", null)} />}
+            <Link
+              className="rn-icon-link"
+              to={lesson.resourcePath}
+            >
+              <Icon className="rn-icon-link__icon" icon="comment" />
+              {get(lesson, "comments.totalCount", 0)}
+            </Link>
+          </div>
         </div>
       </span>
     )

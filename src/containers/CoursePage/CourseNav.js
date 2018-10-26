@@ -4,14 +4,24 @@ import {
   graphql,
 } from 'react-relay'
 import cls from 'classnames'
-import { Link, matchPath, withRouter } from 'react-router-dom'
+import {matchPath, withRouter} from 'react-router-dom'
 import Icon from 'components/Icon'
 import Counter from 'components/Counter'
-import Tab from 'components/Tab'
-import TabBar from 'components/TabBar'
+import Tab from 'components/mdc/Tab'
+import TabBar from 'components/mdc/TabBar'
 import { get } from 'utils'
 
 class CourseNav extends React.Component {
+  isPathActive = (path) => {
+    const pathname = get(this.props, "location.pathname", "")
+    const match = matchPath(pathname, { path, exact: true })
+    return Boolean(match && match.isExact)
+  }
+
+  handleClickTab_ = (e) => {
+    this.props.history.push(e.target.value)
+  }
+
   get classes() {
     const {className} = this.props
     return cls("mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
@@ -19,26 +29,24 @@ class CourseNav extends React.Component {
 
   render() {
     const course = get(this.props, "course", {})
-    const pathname = get(this.props, "location.pathname", "")
     const coursePath = "/:owner/:name/course/:number"
 
     return (
-      <TabBar className={this.classes}>
-        <Tab
-          minWidth
-          active={matchPath(pathname, { path: coursePath, exact: true })}
-          as={Link}
-          to={course.resourcePath}
-        >
-          <span className="mdc-tab__content">
+      <div className={this.classes}>
+        <TabBar onClickTab={this.handleClickTab_}>
+          <Tab
+            minWidth
+            active={this.isPathActive(coursePath)}
+            value={course.resourcePath}
+          >
             <Icon as="span" className="mdc-tab__icon" icon="lesson" />
             <span className="mdc-tab__text-label">
               Lessons
               <Counter>{get(course, "lessons.totalCount", 0)}</Counter>
             </span>
-          </span>
-        </Tab>
-      </TabBar>
+          </Tab>
+        </TabBar>
+      </div>
     )
   }
 }

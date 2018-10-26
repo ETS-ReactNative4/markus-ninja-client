@@ -24,7 +24,7 @@ class Header extends Component {
     const {className} = this.props
     const {searchBarOpen} = this.state
     return cls("Header mdc-top-app-bar mdc-top-app-bar--fixed", className, {
-      searchBarOpen,
+      open: searchBarOpen,
     })
   }
 
@@ -67,7 +67,7 @@ class Header extends Component {
                 library_books
               </IconLink>
             </section>
-            <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+            <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
               {!authenticated &&
               <div className="mdc-top-app-bar__title">
                 <LoginLink className="rn-link rn-link--undecorated rn-link--on-primary" aria-label="Sign in">Sign in</LoginLink>
@@ -96,7 +96,7 @@ class Header extends Component {
 
     return (
       <React.Fragment>
-        <MediaQuery query="(max-width: 674px)">
+        <section className="Header__auth-nav--collapsed mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
           <Menu.Anchor>
             <button
               type="button"
@@ -130,8 +130,8 @@ class Header extends Component {
               </List>
             </Menu>
           </Menu.Anchor>
-        </MediaQuery>
-        <MediaQuery query="(min-width: 675px)">
+        </section>
+        <section className="Header__auth-nav--spread mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
           <IconLink
             className="mdc-top-app-bar__navigation-icon"
             to="/notifications"
@@ -172,7 +172,7 @@ class Header extends Component {
           >
             settings
           </IconLink>
-        </MediaQuery>
+        </section>
       </React.Fragment>
     )
   }

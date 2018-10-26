@@ -107,14 +107,18 @@ class LessonHeader extends React.Component {
     const lesson = get(this.props, "lesson", {})
 
     return (
-      <header className="rn-header mdc-typography--headline5">
-        <UserLink className="rn-link" user={get(lesson, "study.owner", null)} />
-        <span>/</span>
-        <StudyLink className="rn-link" study={get(lesson, "study", null)} />
-        <span>/</span>
-        <Icon className="v-mid mr1" icon="lesson" />
-        <span className="fw5">{lesson.title}</span>
-        <span className="mdc-theme--text-hint-on-light ml2">#{lesson.number}</span>
+      <header className="rn-header">
+        <h5>
+          <UserLink className="rn-link" user={get(lesson, "study.owner", null)} />
+          <span>/</span>
+          <StudyLink className="rn-link" study={get(lesson, "study", null)} />
+          <span>/</span>
+          <span className="dib">
+            <Icon className="v-mid mr1" icon="lesson" />
+            <span className="fw5">{lesson.title}</span>
+            <span className="mdc-theme--text-hint-on-light ml2">#{lesson.number}</span>
+          </span>
+        </h5>
         <div className="rn-header__meta">
           {lesson.viewerCanUpdate &&
           <button

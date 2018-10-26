@@ -2,6 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/dist/mdc.menuSurface'
+import * as util from './util'
 
 import MenuSurfaceAnchor from './MenuSurfaceAnchor'
 
@@ -25,7 +26,6 @@ class MenuSurface extends React.Component {
 
     this.state = {
       classList: new Set(),
-      style: {},
     }
   }
 
@@ -94,15 +94,6 @@ class MenuSurface extends React.Component {
   registerBodyClickListener_ = () => document.body.addEventListener('click', this.handleBodyClick)
 
   deregisterBodyClickListener_ = () => document.body.removeEventListener('click', this.handleBodyClick)
-
-  setStyleProperty = (property, value) => {
-    this.setState({
-      style: {
-        ...this.state.style,
-        [property]: value,
-      }
-    })
-  }
 
   /**
    * Removes the menu-surface from it's current location and appends it to the
@@ -222,7 +213,9 @@ class MenuSurface extends React.Component {
       notifyOpen: () => { this.emit(strings.OPENED_EVENT, {}); this.props.onOpen() },
       isElementInContainer: (el) => this.root_ === el || this.root_.contains(el),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      setTransformOrigin: (origin) => this.setStyleProperty("transformOrigin", origin),
+      setTransformOrigin: (origin) => {
+        this.root_.style[`${util.getTransformPropertyName(window)}-origin`] = origin;
+      }
     },
     this.getFocusAdapterMethods_(),
     this.getDimensionAdapterMethods_(),
@@ -269,18 +262,13 @@ class MenuSurface extends React.Component {
         return {x: window.pageXOffset, y: window.pageYOffset};
       },
       setPosition: (position) => {
-        this.setState({
-          style: {
-            ...this.state.style,
-            left: 'left' in position ? position.left : null,
-            right: 'right' in position ? position.right : null,
-            top: 'top' in position ? position.top : null,
-            bottom: 'bottom' in position ? position.bottom : null,
-          }
-        })
+        this.root_.style.left = 'left' in position ? position.left : null;
+        this.root_.style.right = 'right' in position ? position.right : null;
+        this.root_.style.top = 'top' in position ? position.top : null;
+        this.root_.style.bottom = 'bottom' in position ? position.bottom : null;
       },
       setMaxHeight: (height) => {
-        this.setStyleProperty("maxHeight", height)
+       this.root_.style.maxHeight = height;
       },
     };
   }
@@ -307,13 +295,11 @@ class MenuSurface extends React.Component {
       children,
       innerRef,
     } = this.props
-    const {style} = this.state
 
     return (
       <Component
         {...this.otherProps}
         ref={(node) => {this.setRootRef(node); innerRef(node)}}
-        style={style}
         className={this.classes}
         onKeyDown={this.handleKeydown}
       >

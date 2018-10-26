@@ -19,7 +19,7 @@ class StudyHeader extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("rn-header mdc-typography--headline5 mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+    return cls("rn-header mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {
@@ -30,9 +30,11 @@ class StudyHeader extends React.Component {
 
     return (
       <header className={this.classes}>
-        <UserLink className="rn-link" user={get(study, "owner", null)} />
-        <span>/</span>
-        <StudyLink className="rn-link" study={study} />
+        <h5>
+          <UserLink className="rn-link" user={get(study, "owner", null)} />
+          <span>/</span>
+          <StudyLink className="rn-link" study={study} />
+        </h5>
         <div className="rn-header__meta">
           {get(study, "viewerCanAdmin", false) &&
           <IconLink

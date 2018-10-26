@@ -1,3 +1,4 @@
+@import "@material/layout-grid/mixins";
 @import "@material/theme/variables";
 
 .Header__search-row {
@@ -7,6 +8,21 @@
 .Header.open {
   .Header__search-row {
     display: block;
+  }
+}
+
+.Header__auth-nav--collapsed {
+  @include mdc-layout-grid-media-query_(desktop) {
+    display: none;
+  }
+}
+
+.Header__auth-nav--spread {
+  @include mdc-layout-grid-media-query_(phone) {
+    display: none;
+  }
+  @include mdc-layout-grid-media-query_(tablet) {
+    display: none;
   }
 }
 

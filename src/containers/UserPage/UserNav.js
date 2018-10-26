@@ -5,16 +5,20 @@ import {
 } from 'react-relay'
 import cls from 'classnames'
 import queryString from 'query-string'
-import { Link, withRouter } from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faApple } from '@fortawesome/free-brands-svg-icons'
 import Icon from 'components/Icon'
 import Counter from 'components/Counter'
-import Tab from 'components/Tab'
-import TabBar from 'components/TabBar'
+import Tab from 'components/mdc/Tab'
+import TabBar from 'components/mdc/TabBar'
 import { get, isEmpty } from 'utils'
 
 class UserNav extends React.Component {
+  handleClickTab_ = (e) => {
+    this.props.history.push(e.target.value)
+  }
+
   render() {
     const { className, user } = this.props
     const tab = (() => {
@@ -33,94 +37,76 @@ class UserNav extends React.Component {
     })()
 
     return (
-      <TabBar className={cls("UserNav", className)}>
+      <TabBar className={cls("UserNav", className)} onClickTab={this.handleClickTab_}>
         <Tab
           minWidth
           active={isEmpty(tab)}
-          as={Link}
-          to={user.resourcePath}
+          value={user.resourcePath}
         >
-          <span className="mdc-tab__content">
-            <span className="mdc-tab__text-label">
-              Overview
-            </span>
+          <span className="mdc-tab__text-label">
+            Overview
           </span>
         </Tab>
         <Tab
           minWidth
           active={tab === "studies"}
-          as={Link}
-          to={user.resourcePath + "?tab=studies"}
+          value={user.resourcePath + "?tab=studies"}
         >
-          <span className="mdc-tab__content">
-            <Icon as="span" className="mdc-tab__icon" icon="study" />
-            <span className="mdc-tab__text-label">
-              Studies
-              <Counter>{get(user, "studies.totalCount", 0)}</Counter>
-            </span>
+          <Icon as="span" className="mdc-tab__icon" icon="study" />
+          <span className="mdc-tab__text-label">
+            Studies
+            <Counter>{get(user, "studies.totalCount", 0)}</Counter>
           </span>
         </Tab>
         <Tab
           minWidth
           active={tab === "assets"}
-          as={Link}
-          to={user.resourcePath + "?tab=assets"}
+          value={user.resourcePath + "?tab=assets"}
         >
-          <span className="mdc-tab__content">
-            <Icon as="span" className="mdc-tab__icon" icon="asset" />
-            <span className="mdc-tab__text-label">
-              Assets
-              <Counter>{get(user, "assets.totalCount", 0)}</Counter>
-            </span>
+          <Icon as="span" className="mdc-tab__icon" icon="asset" />
+          <span className="mdc-tab__text-label">
+            Assets
+            <Counter>{get(user, "assets.totalCount", 0)}</Counter>
           </span>
         </Tab>
         <Tab
           minWidth
           active={tab === "apples"}
-          as={Link}
-          to={user.resourcePath + "?tab=apples"}
+          value={user.resourcePath + "?tab=apples"}
         >
-          <span className="mdc-tab__content">
-            <FontAwesomeIcon
-              className="mdc-tab__icon"
-              icon={faApple}
-              size="2x"
-            />
-            <span className="mdc-tab__text-label">
-              Apples
-              <Counter>{
-                get(user, "appled.courseCount", 0) +
-                get(user, "appled.studyCount", 0)
-              }</Counter>
-            </span>
+          <FontAwesomeIcon
+            className="mdc-tab__icon"
+            icon={faApple}
+            size="2x"
+          />
+          <span className="mdc-tab__text-label">
+            Apples
+            <Counter>{
+              get(user, "appled.courseCount", 0) +
+              get(user, "appled.studyCount", 0)
+            }</Counter>
           </span>
         </Tab>
         <Tab
           minWidth
           active={tab === "pupils"}
-          as={Link}
-          to={user.resourcePath + "?tab=pupils"}
+          value={user.resourcePath + "?tab=pupils"}
         >
-          <span className="mdc-tab__content">
-            <Icon as="span" className="mdc-tab__icon" icon="user" />
-            <span className="mdc-tab__text-label">
-              Pupils
-              <Counter>{get(user, "enrollees.totalCount", 0)}</Counter>
-            </span>
+          <Icon as="span" className="mdc-tab__icon" icon="user" />
+          <span className="mdc-tab__text-label">
+            Pupils
+            <Counter>{get(user, "enrollees.totalCount", 0)}</Counter>
           </span>
         </Tab>
         <Tab
           minWidth
           active={tab === "tutors"}
-          as={Link}
-          to={user.resourcePath + "?tab=tutors"}
+          value={user.resourcePath + "?tab=tutors"}
         >
-          <span className="mdc-tab__content">
-            <Icon as="span" className="mdc-tab__icon" icon="user" />
-            <span className="mdc-tab__text-label">
-              Tutors
-              <Counter>{get(user, "enrolled.userCount", 0)}</Counter>
-            </span>
+          <Icon as="span" className="mdc-tab__icon" icon="user" />
+          <span className="mdc-tab__text-label">
+            Tutors
+            <Counter>{get(user, "enrolled.userCount", 0)}</Counter>
           </span>
         </Tab>
       </TabBar>
