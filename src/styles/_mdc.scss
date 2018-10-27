@@ -1,3 +1,4 @@
+@import "@material/button/mixins";
 @import "@material/layout-grid/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
@@ -26,17 +27,15 @@
   }
 }
 
-.mdc-icon-button--on {
-  .mdc-icon-button__icon {
-    &.svg-inline--fa {
-      display: none;
-    }
+.mdc-icon-button--on .mdc-icon-button__icon {
+  &.svg-inline--fa {
+    display: none;
+  }
 
-    // stylelint-disable-next-line plugin/selector-bem-pattern
-    &.mdc-icon-button__icon--on {
-      &.svg-inline--fa {
-        display: block;
-      }
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  &.mdc-icon-button__icon--on {
+    &.svg-inline--fa {
+      display: block;
     }
   }
 }
@@ -58,6 +57,16 @@
         display: inline-block;
       }
     }
+  }
+}
+
+// automatically apply dense class to buttons under media query phone
+.mdc-button,
+.mdc-button--raised,
+.mdc-button--unelevated,
+.mdc-button--outlined {
+  @include mdc-layout-grid-media-query_(phone) {
+    @include mdc-button--dense_;
   }
 }
 

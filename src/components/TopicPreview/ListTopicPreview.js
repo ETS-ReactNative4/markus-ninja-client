@@ -17,15 +17,15 @@ class ListTopicPreview extends React.Component {
     return (
       <li className={this.classes}>
         <Icon as="span" className="mdc-list-item__graphic" icon="topic" />
-        <span className="mdc-list-item__text">
-          <Link className="mdc-list-item__primary-text" to={topic.resourcePath}>
+        <Link className="mdc-list-item__text" to={topic.resourcePath}>
+          <span className="mdc-list-item__primary-text">
             {topic.name}
-          </Link>
+          </span>
           <span className="mdc-list-item__secondary-text">
             First used on
             <span className="ml1">{moment(topic.createdAt).format("MMM D, YYYY")}</span>
           </span>
-        </span>
+        </Link>
         <span className="mdc-list-item__meta">
           <Link
             className="rn-icon-link"

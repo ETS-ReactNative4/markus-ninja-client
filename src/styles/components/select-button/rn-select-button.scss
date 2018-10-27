@@ -1,23 +1,40 @@
 @import "@material/button/mixins";
+@import "@material/layout-grid/mixins";
 @import "@material/rtl/mixins";
 @import "@material/select/mixins";
 @import "@material/select/variables";
 @import "@material/theme/variables";
 @import "src/styles/mdc";
+@import "./mixins";
 @import "./variables";
 
 .rn-select-button {
   @include mdc-button-base_;
-  @include mdc-button-corner-radius(2px);
-  @include mdc-button-container-fill-color(transparent);
-  @include mdc-button-ink-color(primary);
+  @include mdc-button-shape-radius(small);
   @include mdc-states(primary);
+
+  @include rn-select-button-ink-color(primary);
+  @include rn-select-button-container-fill-color(transparent);
   
   @include mdc-button--outlined_;
   @include mdc-button-outline-width(2px);
-  @include mdc-button-outline-color(primary);
+
+  @include rn-select-button-outline-color(primary);
 
   @include mdc-select-dd-arrow-svg-bg_($rn-select-button-arrow-color, $rn-select-button-dropdown-opacity);
+
+  // Focused state colors
+  @include mdc-select-focused-bottom-line-color(primary);
+  @include mdc-select-focused-label-color($mdc-select-focused-label-color);
+
+  // Hover state colors
+  @include mdc-select-hover-bottom-line-color($mdc-select-bottom-line-hover-color);
+  @include mdc-floating-label-float-position($mdc-select-label-position-y);
+  @include mdc-select-floating-label_;
+
+  @include mdc-layout-grid-media-query_(phone) {
+    @include mdc-button--dense_;
+  }
 
   display: inline-flex;
   padding: 0;
@@ -62,12 +79,10 @@
 
 .rn-select-button--disabled {
   @include mdc-select-dd-arrow-svg-bg_($rn-select-button-disabled-arrow-color,
-  $rn-select-button-disabled-dropdown-opacity);
+    $rn-select-button-disabled-dropdown-opacity);
+  @include mdc-theme-prop(background-color, transparent);
 
-  .mdc-select-button__native-control {
-  }
-
-  opacity: .38;
+  color: $mdc-button-disabled-ink-color;
   cursor: default;
   pointer-events: none;
 }

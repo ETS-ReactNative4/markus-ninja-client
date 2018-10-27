@@ -108,28 +108,30 @@ class LessonHeader extends React.Component {
 
     return (
       <header className="rn-header">
-        <h5>
-          <UserLink className="rn-link" user={get(lesson, "study.owner", null)} />
-          <span>/</span>
-          <StudyLink className="rn-link" study={get(lesson, "study", null)} />
-          <span>/</span>
-          <span className="dib">
-            <Icon className="v-mid mr1" icon="lesson" />
-            <span className="fw5">{lesson.title}</span>
-            <span className="mdc-theme--text-hint-on-light ml2">#{lesson.number}</span>
+        <h5 className="rn-file-path">
+          <UserLink className="rn-link rn-file-path__directory" user={get(lesson, "study.owner", null)} />
+          <span className="rn-file-path__separator">/</span>
+          <StudyLink className="rn-link rn-file-path__directory" study={get(lesson, "study", null)} />
+          <span className="rn-file-path__separator">/</span>
+          <span className="rn-file-path__file">
+            <span className="rn-file-path__file__text">
+              <Icon className="v-mid mr1" icon="lesson" />
+              <span className="fw5">{lesson.title}</span>
+              <span className="mdc-theme--text-hint-on-light ml2">#{lesson.number}</span>
+            </span>
+            {lesson.viewerCanUpdate &&
+            <button
+              className="material-icons mdc-icon-button rn-file-path__file__icon"
+              type="button"
+              onClick={this.handleToggleOpen}
+              aria-label="Edit title"
+              title="Edit title"
+            >
+              edit
+            </button>}
           </span>
         </h5>
         <div className="rn-header__meta">
-          {lesson.viewerCanUpdate &&
-          <button
-            className="material-icons mdc-icon-button mdc-theme--text-icon-on-background"
-            type="button"
-            onClick={this.handleToggleOpen}
-            aria-label="Edit title"
-            title="Edit title"
-          >
-            edit
-          </button>}
           {lesson.viewerCanEnroll &&
           <EnrollmentSelect enrollable={lesson} />}
         </div>

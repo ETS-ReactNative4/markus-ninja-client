@@ -1,0 +1,36 @@
+@import "@material/typography/mixins";
+
+.rn-file-path {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: start;
+  box-sizing: border-box;
+}
+
+.rn-file-path__separator {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.rn-file-path__directory {
+  @include mdc-typography-overflow-ellipsis;
+}
+
+.rn-file-path__file {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.rn-file-path__file__text {
+  @include mdc-typography-overflow-ellipsis;
+}
+
+.rn-file-path__file__icon {
+  @include mdc-theme-prop(color, text-icon-on-background);
+
+  padding: 12px;
+}

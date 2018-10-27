@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
@@ -22,12 +21,10 @@ class UserPopularStudies extends React.Component {
           </div>
         : studyEdges.map(({node}) =>
           node &&
-          <div key={get(node, "id", "")} className={cls(
-            "mdc-layout-grid__cell",
-            "mdc-layout-grid__cell--span-6-desktop",
-            "mdc-layout-grid__cell--span-4-tablet",
-            "mdc-layout-grid__cell--span-2-phone",
-          )}>
+          <div
+            key={get(node, "id", "")}
+            className="mdc-layout-grid__cell mdc-layout-grid__cell--span-4"
+          >
             <StudyPreview.Card className="h-100" study={node} />
           </div>)}
       </React.Fragment>

@@ -9,7 +9,7 @@ import {get} from 'utils'
 class ListCoursePreview extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("ListCoursePreview mdc-list-item", className)
+    return cls("ListCoursePreview rn-list-preview mdc-list-item", className)
   }
 
   get timestamp() {
@@ -29,22 +29,16 @@ class ListCoursePreview extends React.Component {
     return (
       <li className={this.classes}>
         <Icon as="span" className="mdc-list-item__graphic" icon="course" />
-        <span className="mdc-list-item__text">
-          <Link className="mdc-list-item__primary-text" to={course.resourcePath}>
+        <Link className="mdc-list-item__text" to={course.resourcePath}>
+          <span className="mdc-list-item__primary-text">
             {course.name}
             <span className="mdc-theme--text-secondary-on-light ml1">#{course.number}</span>
-          </Link>
+          </span>
           <span className="mdc-list-item__secondary-text">
             <span className="mr1">{this.timestamp}</span>
-            by
-            <Link
-              className="rn-link rn-link--secondary ml1"
-              to={get(course, "owner.resourcePath", "")}
-            >
-              {get(course, "owner.login", "")}
-            </Link>
+            by {get(course, "owner.login", "")}
           </span>
-        </span>
+        </Link>
         <span className="mdc-list-item__tags">
           {topicNodes.map((node) =>
             node &&
@@ -58,16 +52,18 @@ class ListCoursePreview extends React.Component {
           )}
         </span>
         <span className="mdc-list-item__meta">
-          <div className="mdc-list-item__meta-actions">
-            {course.viewerCanApple &&
-            <AppleIconButton appleable={get(this.props, "course", null)} />}
-            <Link
-              className="rn-icon-link"
-              to={course.resourcePath}
-            >
-              <Icon className="rn-icon-link__icon" icon="lesson" />
-              {get(course, "lessons.totalCount", 0)}
-            </Link>
+          <div className="mdc-list-item__meta-actions mdc-list-item__meta-actions--collapsible">
+            <div className="mdc-list-item__meta-actions--spread">
+              {course.viewerCanApple &&
+              <AppleIconButton appleable={get(this.props, "course", null)} />}
+              <Link
+                className="rn-icon-link"
+                to={course.resourcePath}
+              >
+                <Icon className="rn-icon-link__icon" icon="lesson" />
+                {get(course, "lessons.totalCount", 0)}
+              </Link>
+            </div>
           </div>
         </span>
       </li>

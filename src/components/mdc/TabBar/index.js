@@ -13,8 +13,9 @@ export default class TabBar extends Component {
     this.tabBarElement_ = null;
     this.tabList_ = React.Children.map(
       this.props.children,
-      (child) => React.createRef(),
+      (child) => child ? React.createRef() : null,
     );
+    this.tabList_.filter(Boolean);
     this.tabScroller_ = React.createRef();
   }
 
@@ -165,6 +166,7 @@ export default class TabBar extends Component {
 
   renderTabs() {
     return React.Children.map(this.props.children, (tab, index) => {
+      if (!tab) return  null
       const props = Object.assign({}, tab.props, {
         ref: this.tabList_[index],
         onClick: this.handleTabInteraction_,
@@ -180,7 +182,7 @@ TabBar.propTypes = {
 
     let error = null;
     React.Children.forEach(prop, function(child) {
-      if (child.type !== Tab) {
+      if (child && child.type !== Tab) {
         error = new Error('`' + componentName + '` children should be of type `Tab`.');
       }
     })

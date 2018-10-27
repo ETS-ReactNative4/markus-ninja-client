@@ -30,7 +30,7 @@ class ListLessonPreview extends React.Component {
 
   get classes() {
     const {className, dragging, editing} = this.props
-    return cls("ListLessonPreview mdc-list-item", className, {
+    return cls("ListLessonPreview rn-list-preview mdc-list-item", className, {
       "ListLessonPreview--editing": editing,
       "ListLessonPreview--dragging": dragging,
     })
@@ -71,23 +71,17 @@ class ListLessonPreview extends React.Component {
         className={this.classes}
       >
         <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
-        <span className="mdc-list-item__text">
-          <Link className="mdc-list-item__primary-text" to={lesson.resourcePath}>
+        <Link className="mdc-list-item__text" to={lesson.resourcePath}>
+          <span className="mdc-list-item__primary-text">
             {lesson.title}
             <span className="mdc-theme--text-secondary-on-light ml1">#{this.number}</span>
-          </Link>
+          </span>
           <span className="mdc-list-item__secondary-text">
             Created on
             <span className="mh1">{moment(lesson.createdAt).format("MMM D")}</span>
-            by
-            <Link
-              className="rn-link rn-link--secondary ml1"
-              to={get(lesson, "author.resourcePath", "")}
-            >
-              {get(lesson, "author.login")}
-            </Link>
+            by {get(lesson, "author.login")}
           </span>
-        </span>
+        </Link>
         <span className="mdc-list-item__tags">
           {labelNodes.map((node) =>
             node &&

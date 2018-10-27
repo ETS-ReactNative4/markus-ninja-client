@@ -19,7 +19,7 @@ class StudyHeader extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("rn-header mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+    return cls("rn-header", className)
   }
 
   render() {
@@ -30,22 +30,24 @@ class StudyHeader extends React.Component {
 
     return (
       <header className={this.classes}>
-        <h5>
+        <h5 className="inline-flex items-center flex-start">
           <UserLink className="rn-link" user={get(study, "owner", null)} />
           <span>/</span>
-          <StudyLink className="rn-link" study={study} />
+          <span className="rn-header__title">
+            <StudyLink className="rn-link rn-header__title__text" study={study} />
+            {get(study, "viewerCanAdmin", false) &&
+            <IconLink
+              className="mdc-icon-button rn-header__title__icon"
+              to={study.resourcePath + "/lessons/new"}
+              aria-label="New lesson"
+              title="New lesson"
+            >
+              add
+            </IconLink>}
+          </span>
         </h5>
-        <div className="rn-header__meta">
-          {get(study, "viewerCanAdmin", false) &&
-          <IconLink
-            className="mdc-icon-button"
-            to={study.resourcePath + "/lessons/new"}
-            aria-label="New lesson"
-            title="New lesson"
-          >
-            add
-          </IconLink>}
-          <div className="rn-combo-button mr2">
+        <div className="rn-header__actions">
+          <div className="rn-combo-button rn-header__action rn-header__action--button">
             <EnrollmentSelect disabled={!study.viewerCanEnroll} enrollable={study} />
             <Link
               className="rn-combo-button__count"
@@ -54,7 +56,7 @@ class StudyHeader extends React.Component {
               {get(study, "enrollees.totalCount", 0)}
             </Link>
           </div>
-          <div className="rn-combo-button">
+          <div className="rn-combo-button rn-header__action rn-header__action--button">
             <AppleButton disabled={!study.viewerCanApple} appleable={study} />
             <Link
               className="rn-combo-button__count"

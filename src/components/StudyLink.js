@@ -4,14 +4,25 @@ import {
   graphql,
 } from 'react-relay'
 import { Link } from 'react-router-dom'
-import { get } from 'utils'
 
 class StudyLink extends React.Component {
   render() {
-    const study = get(this.props, "study", {})
-    const { className, innerRef, withOwner = false, ...props } = this.props
+    const {
+      className,
+      innerRef,
+      relay,
+      study = {},
+      withOwner = false,
+      ...otherProps
+    } = this.props
+
     return (
-      <Link innerRef={innerRef} className={className} to={study.resourcePath} {...props}>
+      <Link
+        innerRef={innerRef}
+        className={className}
+        to={study.resourcePath}
+        {...otherProps}
+      >
         {withOwner ? study.nameWithOwner : study.name}
       </Link>
     )

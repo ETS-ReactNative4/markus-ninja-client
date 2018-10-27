@@ -6,7 +6,8 @@ import {
   graphql,
 } from 'react-relay'
 import { Link, withRouter } from 'react-router-dom';
-import TextField, {HelperText, Input} from '@material/react-text-field'
+import {HelperText} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateTopicsMutation from 'mutations/UpdateTopicsMutation'
 import { get, isEmpty } from 'utils'
 import { TOPICS_PER_PAGE } from 'consts'
@@ -21,17 +22,18 @@ class CourseMetaTopics extends React.Component {
     this.state = {
       error: null,
       invalidTopicNames: null,
-      initialValues: {
-        topics,
+      topics: {
+        ...defaultTextFieldState,
+        initialValue: topics,
+        value: topics,
       },
-      topics,
       open: false,
     }
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
       error: null,
     })
   }
@@ -41,7 +43,7 @@ class CourseMetaTopics extends React.Component {
     const { topics } = this.state
     UpdateTopicsMutation(
       this.props.course.id,
-      topics.split(" "),
+      topics.value.split(" "),
       (error, invalidTopicNames) => {
         if (!isEmpty(invalidTopicNames)) {
           this.setState({ error, invalidTopicNames })
@@ -49,7 +51,10 @@ class CourseMetaTopics extends React.Component {
           this.handleToggleOpen()
           this.setState({
             error: null,
-            initialValues: {topics},
+            topics: {
+              ...this.state.topics,
+              initialValue: topics.value,
+            },
             invalidTopicNames: null,
           })
         }
@@ -64,9 +69,15 @@ class CourseMetaTopics extends React.Component {
     this.props.onOpen(open)
   }
 
-  handleCancel = () => {
-    this.handleToggleOpen()
-    this.reset_()
+  handleToggleOpen = () => {
+    const open = !this.state.open
+
+    this.setState({ open, error: null })
+    this.props.onOpen(open)
+
+    if (!open) {
+      this.reset_()
+    }
   }
 
   _loadMore = () => {
@@ -86,13 +97,16 @@ class CourseMetaTopics extends React.Component {
     this.setState({
       error: null,
       invalidTopicNames: null,
-      ...this.state.initialValues,
+      topics: {
+        ...this.state.topics,
+        value: this.state.topics.initialValue,
+      },
     })
   }
 
   get classes() {
     const {className} = this.props
-    return cls("CourseMetaTopics mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+    return cls("mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {
@@ -112,44 +126,46 @@ class CourseMetaTopics extends React.Component {
     const {topics} = this.state
 
     return (
-      <form className="CourseMeta__form inline-flex w-100" onSubmit={this.handleSubmit}>
-        <div className="flex-auto">
-          <TextField
-            fullWidth
-            helperText={this.renderHelperText()}
-          >
-            <Input
-              name="topics"
-              placeholder="Topics (separate with spaces)"
-              value={topics}
-              onChange={this.handleChange}
-            />
-          </TextField>
-        </div>
-        <div className="inline-flex items-center pa2 mb4">
+      <form onSubmit={this.handleSubmit}>
+        <TextField
+          fullWidth
+          label="Topics (separate with spaces)"
+          helperText={this.renderHelperText()}
+          inputProps={{
+            name: "topics",
+            value: topics.value,
+            placeholder: "Topics (separate with spaces)",
+            pattern: "^([a-zA-Z0-9-]{1,39}\\s+)*([a-zA-Z0-9-]{1,39})$",
+            onChange: this.handleChange,
+          }}
+        />
+        <div className="inline-flex items-center mt2">
           <button
-            className="mdc-button mdc-button--unelevated"
             type="submit"
-            onClick={this.handleSubmit}
+            className="mdc-button mdc-button--unelevated"
           >
             Save
           </button>
-          <span
-            className="pointer pa2 underline-hover"
-            role="button"
-            onClick={this.handleCancel}
+          <button
+            className="mdc-button ml2"
+            type="button"
+            onClick={this.handleToggleOpen}
           >
             Cancel
-          </span>
+          </button>
         </div>
       </form>
     )
   }
 
   renderHelperText() {
+    const {topics} = this.state
+
     return (
-      <HelperText>
-        Add topics to categorize your course and make it more discoverable. (separate with spaces)
+      <HelperText persistent validation={!topics.valid}>
+        {topics.valid
+        ? "Add topics to categorize your study and make it more discoverable."
+        : "Topic names must be less than 40 characters, and may only contain alphanumeric characters or hyphens. Separate with spaces."}
       </HelperText>
     )
   }
@@ -160,7 +176,7 @@ class CourseMetaTopics extends React.Component {
     const pageInfo = get(course, "topics.pageInfo", {})
 
     return (
-      <div className="inline-flex items-center w-100">
+      <div className="flex flex-wrap items-center w-100">
         {topicEdges.map(({node}) => node
         ? <Link
             className="mdc-button mdc-button--outlined mr1 mb1"
@@ -175,7 +191,7 @@ class CourseMetaTopics extends React.Component {
           className="material-icons mdc-icon-button mr1 mb1"
           onClick={this._loadMore}
         >
-          more
+          Load more
         </button>}
         {course.viewerCanAdmin &&
         <button

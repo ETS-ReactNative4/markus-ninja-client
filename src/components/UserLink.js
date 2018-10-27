@@ -4,20 +4,27 @@ import {
   graphql,
 } from 'react-relay'
 import {Link} from 'react-router-dom'
-import {get, isEmpty} from 'utils'
+import {isEmpty} from 'utils'
 
 class UserLink extends React.Component {
   render() {
-    const { className, innerRef, useName, ...props } = this.props
-    const user = get(this.props, "user", {})
+    const {
+      className,
+      innerRef,
+      relay,
+      useName,
+      user = {},
+      ...otherProps
+    } = this.props
 
-    if (useName && isEmpty(user.name)) {
-      return null
+    let text = user.login
+    if (useName && !isEmpty(user.name)) {
+      text = user.name
     }
 
     return (
-      <Link innerRef={innerRef} className={className} to={user.resourcePath} {...props}>
-        {useName ? user.name : user.login}
+      <Link innerRef={innerRef} className={className} to={user.resourcePath} {...otherProps}>
+        {text}
       </Link>
     )
   }

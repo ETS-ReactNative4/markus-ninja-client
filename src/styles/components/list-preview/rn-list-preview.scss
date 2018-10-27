@@ -1,0 +1,7 @@
+@import "@material/layout-grid/mixins";
+
+.rn-list-preview .mdc-list-item__graphic {
+  @include mdc-layout-grid-media-query_(phone) {
+    display: none;
+  }
+}

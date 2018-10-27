@@ -1,0 +1,18 @@
+@mixin rn-select-button-container-fill-color($color) {
+  &:not(.rn-select-button--disabled) {
+    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+  }
+}
+
+@mixin rn-select-button-outline-color($color) {
+  &:not(.rn-select-button--disabled) {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+
+@mixin rn-select-button-ink-color($color) {
+  &:not(.rn-select-button--disabled) {
+    @include mdc-theme-prop(color, $color);
+  }
+}

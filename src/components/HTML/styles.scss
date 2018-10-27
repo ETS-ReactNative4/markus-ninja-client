@@ -1,3 +1,4 @@
+@import "@material/layout-grid/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
@@ -44,30 +45,88 @@
   }
 
   h1 {
-    @include mdc-typography(headline1);
-    font-family: unquote("Abril Fatface, cursive");
+    @include mdc-layout-grid-media-query_(desktop) {
+      @include mdc-typography(headline1);
+
+      font-family: unquote("Abril Fatface, cursive");
+    }
+    @include mdc-layout-grid-media-query_(tablet) {
+      @include mdc-typography(headline2);
+
+      font-family: unquote("Abril Fatface, cursive");
+    }
+    @include mdc-layout-grid-media-query_(phone) {
+      @include mdc-typography(headline3);
+
+      font-family: unquote("Abril Fatface, cursive");
+    }
   }
 
   h2 {
-    @include mdc-typography(headline2);
-    font-family: unquote("Abril Fatface, cursive");
+    @include mdc-layout-grid-media-query_(desktop) {
+      @include mdc-typography(headline2);
+
+      font-family: unquote("Abril Fatface, cursive");
+    }
+    @include mdc-layout-grid-media-query_(tablet) {
+      @include mdc-typography(headline3);
+
+      font-family: unquote("Abril Fatface, cursive");
+    }
+    @include mdc-layout-grid-media-query_(phone) {
+      @include mdc-typography(headline4);
+
+      font-family: unquote("Abril Fatface, cursive");
+    }
   }
 
   h3 {
-    @include mdc-typography(headline3);
-    font-family: unquote("Abril Fatface, cursive");
+    @include mdc-layout-grid-media-query_(desktop) {
+      @include mdc-typography(headline3);
+    }
+    @include mdc-layout-grid-media-query_(tablet) {
+      @include mdc-typography(headline4);
+    }
+    @include mdc-layout-grid-media-query_(phone) {
+      @include mdc-typography(headline5);
+    }
   }
 
   h4 {
-    @include mdc-typography(headline4);
+    @include mdc-layout-grid-media-query_(desktop) {
+      @include mdc-typography(headline4);
+    }
+    @include mdc-layout-grid-media-query_(tablet) {
+      @include mdc-typography(headline5);
+    }
+    @include mdc-layout-grid-media-query_(phone) {
+      @include mdc-typography(headline6);
+    }
+
   }
 
   h5 {
-    @include mdc-typography(headline5);
+    @include mdc-layout-grid-media-query_(desktop) {
+      @include mdc-typography(headline5);
+    }
+    @include mdc-layout-grid-media-query_(tablet) {
+      @include mdc-typography(headline6);
+    }
+    @include mdc-layout-grid-media-query_(phone) {
+      @include mdc-typography(subtitle1);
+    }
   }
 
   h6 {
-    @include mdc-typography(headline6);
+    @include mdc-layout-grid-media-query_(desktop) {
+      @include mdc-typography(headline6);
+    }
+    @include mdc-layout-grid-media-query_(tablet) {
+      @include mdc-typography(subtitle1);
+    }
+    @include mdc-layout-grid-media-query_(phone) {
+      @include mdc-typography(subtitle2);
+    }
   }
 
   hr {

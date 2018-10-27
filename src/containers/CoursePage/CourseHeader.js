@@ -72,7 +72,7 @@ class CourseHeader extends React.Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <div className="inline-flex items-center w-100">
+        <div className="inline-flex items-center flex-wrap w-100">
           <TextField
             className="flex-auto"
             label="Name"
@@ -107,30 +107,32 @@ class CourseHeader extends React.Component {
     const course = get(this.props, "course", null)
 
     return (
-      <header className="rn-header mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+      <header className="rn-header">
         <h5>
           <UserLink className="rn-link" user={get(course, "study.owner", null)} />
           <span>/</span>
           <StudyLink className="rn-link" study={get(course, "study", null)} />
           <span>/</span>
-          <span>
-            <Icon className="v-mid mr1" icon="course" />
-            <span className="fw5">{get(course, "name", "")}</span>
-            <span className="mdc-theme--text-hint-on-light ml2">#{get(course, "number", 0)}</span>
+          <span className="rn-header__title">
+            <span className="rn-header__title__text">
+              <Icon className="v-mid mr1" icon="course" />
+              <span className="fw5">{get(course, "name", "")}</span>
+              <span className="mdc-theme--text-hint-on-light ml2">#{get(course, "number", 0)}</span>
+            </span>
+            {course.viewerCanAdmin &&
+            <button
+              className="material-icons mdc-icon-button rn-header__title__icon"
+              type="button"
+              onClick={this.handleToggleOpen}
+              aria-label="Edit name"
+              title="Edit name"
+            >
+              edit
+            </button>}
           </span>
         </h5>
-        <div className="rn-header__meta">
-          {course.viewerCanAdmin &&
-          <button
-            className="material-icons mdc-icon-button mdc-theme--text-icon-on-background"
-            type="button"
-            onClick={this.handleToggleOpen}
-            aria-label="Edit name"
-            title="Edit name"
-          >
-            edit
-          </button>}
-          <div className="rn-combo-button">
+        <div className="rn-header__actions">
+          <div className="rn-combo-button rn-header__action rn-header__action--button">
             <AppleButton appleable={course} />
             <Link
               className="rn-combo-button__count"
