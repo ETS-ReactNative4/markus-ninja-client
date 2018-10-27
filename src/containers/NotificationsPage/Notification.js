@@ -40,7 +40,7 @@ class Notification extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("Notification mdc-list-item", className)
+    return cls("Notification mdc-list-item rn-list-preview", className)
   }
 
   render() {
@@ -57,23 +57,25 @@ class Notification extends React.Component {
           </span>
         </span>
         <span className="mdc-list-item__meta">
-          <div className="mdc-list-item__meta-actions">
-            <NotificationButton enrollable={subject} />
-            <span
-              className="mdc-icon-button material-icons"
-              onClick={this.handleMarkAsRead}
-              title="Mark as read"
-              aria-label="Mark as read"
-            >
-              done
-            </span>
-            <span
-              className="Notification__why"
-              aria-label={notification.reason}
-              title={notification.reason}
-            >
-              ?
-            </span>
+          <div className="mdc-list-item__meta-actions mdc-list-item__meta-actions--collapsible">
+            <div className="mdc-list-item__meta-actions--spread">
+              <NotificationButton enrollable={subject} />
+              <span
+                className="mdc-icon-button material-icons"
+                onClick={this.handleMarkAsRead}
+                title="Mark as read"
+                aria-label="Mark as read"
+              >
+                done
+              </span>
+              <span
+                className="Notification__why"
+                aria-label={notification.reason}
+                title={notification.reason}
+              >
+                ?
+              </span>
+            </div>
           </div>
         </span>
       </li>

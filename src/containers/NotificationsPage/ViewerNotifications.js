@@ -54,8 +54,8 @@ class ViewerNotifications extends React.Component {
         <div className="ViewerNotifications__notifications">
           {Object.keys(notificationsByStudy).map(key =>
             <div key={key} className="mdc-card mdc-card--outlined">
-              <div className="flex items-center pa3">
-                <span className="mdc-typography--headline5 flex-auto">
+              <div className="flex flex-wrap items-center pa3">
+                <h5 className="flex-auto">
                   <UserLink
                     className="rn-link"
                     user={get(this.props, "viewer", null)}
@@ -65,7 +65,7 @@ class ViewerNotifications extends React.Component {
                     className="rn-link"
                     study={get(notificationsByStudy[key][0], "node.study", null)}
                   />
-                </span>
+                </h5>
                 <button
                   className="mdc-button mdc-button--unelevated"
                   type="button"

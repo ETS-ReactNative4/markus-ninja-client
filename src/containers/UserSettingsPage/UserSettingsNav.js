@@ -1,8 +1,7 @@
 import * as React from 'react'
-import cls from 'classnames'
-import { Link, matchPath, withRouter } from 'react-router-dom'
-import TabBar from 'components/TabBar'
-import Tab from 'components/Tab'
+import {matchPath, withRouter} from 'react-router-dom'
+import Tab from 'components/mdc/Tab'
+import TabBar from 'components/mdc/TabBar'
 import { get } from 'utils'
 
 import './styles.css'
@@ -10,52 +9,47 @@ import './styles.css'
 const SETTINGS_PATH = "/settings"
 
 class UserSettingsNav extends React.Component {
-  get classes() {
-    const {className} = this.props
-    return cls("UserSettingsNav mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+  isPathActive = (path) => {
+    const pathname = get(this.props, "location.pathname", "")
+    const match = matchPath(pathname, { path, exact: true })
+    return Boolean(match && match.isExact)
+  }
+
+  handleClickTab_ = (e) => {
+    this.props.history.push(e.target.value)
   }
 
   render() {
-    const pathname = get(this.props, "location.pathname", "")
-    const profilePath = matchPath(pathname, { path: SETTINGS_PATH+"/profile", exact: true })
-    const accountPath = matchPath(pathname, { path: SETTINGS_PATH+"/account", exact: true })
-    const emailsPath = matchPath(pathname, { path: SETTINGS_PATH+"/emails", exact: true })
-    // const notificationsPath = matchPath(pathname, { path: SETTINGS_PATH+"/notifications", exact: true })
+    const {className} = this.props
+    const profilePath = SETTINGS_PATH+"/profile"
+    const accountPath = SETTINGS_PATH+"/account"
+    const emailsPath = SETTINGS_PATH+"/emails"
 
     return (
-      <TabBar className={this.classes}>
+      <TabBar className={className} onClickTab={this.handleClickTab_}>
         <Tab
-          active={profilePath && profilePath.isExact}
+          active={this.isPathActive(profilePath)}
           minWidth
-          as={Link}
-          to={SETTINGS_PATH + "/profile"}
+          value={profilePath}
         >
-          <span className="mdc-tab__content">
-            <span className="mdc-tab__icon material-icons">person</span>
-            <span className="mdc-tab__text-label">Profile</span>
-          </span>
+          <span className="mdc-tab__icon material-icons">person</span>
+          <span className="mdc-tab__text-label">Profile</span>
         </Tab>
         <Tab
-          active={accountPath && accountPath.isExact}
+          active={this.isPathActive(accountPath)}
           minWidth
-          as={Link}
-          to={SETTINGS_PATH + "/account"}
+          value={accountPath}
         >
-          <span className="mdc-tab__content">
-            <span className="mdc-tab__icon material-icons">account_box</span>
-            <span className="mdc-tab__text-label">Account</span>
-          </span>
+          <span className="mdc-tab__icon material-icons">account_box</span>
+          <span className="mdc-tab__text-label">Account</span>
         </Tab>
         <Tab
-          active={emailsPath && emailsPath.isExact}
+          active={this.isPathActive(emailsPath)}
           minWidth
-          as={Link}
-          to={SETTINGS_PATH + "/emails"}
+          value={emailsPath}
         >
-          <span className="mdc-tab__content">
-            <span className="mdc-tab__icon material-icons">email</span>
-            <span className="mdc-tab__text-label">Emails</span>
-          </span>
+          <span className="mdc-tab__icon material-icons">email</span>
+          <span className="mdc-tab__text-label">Emails</span>
         </Tab>
       </TabBar>
     )

@@ -84,12 +84,12 @@ class StudyCoursesPage extends React.Component {
     return (
       <div className={this.classes}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <div className="inline-flex items-center w-100">
+          <div className="rn-text-field">
             {this.renderInput()}
-            <div className="flex-stable ml2">
+            <div className="rn-text-field__actions">
               {study.viewerCanAdmin &&
               <CreateCourseLink
-                className="mdc-button mdc-button--unelevated"
+                className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
                 study={study}
               >
                 New course

@@ -45,7 +45,9 @@ class EnrolledStudiesPage extends React.Component {
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
-                  <EnrolledStudiesPageNav viewer={props.viewer} />
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <EnrolledStudiesPageNav viewer={props.viewer} />
+                  </div>
                   <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <ViewerEnrolledStudies viewer={props.viewer} />

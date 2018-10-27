@@ -45,7 +45,9 @@ class NotificationsPage extends React.Component {
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
-                  <NotificationsPageNav viewer={props.viewer} />
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <NotificationsPageNav viewer={props.viewer} />
+                  </div>
                   <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <ViewerNotifications viewer={props.viewer} />

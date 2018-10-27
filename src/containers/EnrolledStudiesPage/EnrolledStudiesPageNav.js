@@ -1,42 +1,40 @@
 import * as React from 'react'
-import cls from 'classnames'
-import { Link, matchPath, withRouter } from 'react-router-dom'
+import {matchPath, withRouter} from 'react-router-dom'
 import Tab from 'components/Tab'
 import TabBar from 'components/TabBar'
 import { get } from 'utils'
 
 class EnrolledStudiesPageNav extends React.Component {
-  get classes() {
-    const {className} = this.props
-    return cls("EnrolledStudiesPageNav mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+  isPathActive = (path) => {
+    const pathname = get(this.props, "location.pathname", "")
+    const match = matchPath(pathname, { path, exact: true })
+    return Boolean(match && match.isExact)
+  }
+
+  handleClickTab_ = (e) => {
+    this.props.history.push(e.target.value)
   }
 
   render() {
-    const pathname = get(this.props, "location.pathname", "")
+    const {className} = this.props
 
     return (
-      <TabBar className={this.classes}>
+      <TabBar className={className} onClickTab={this.handleClickTab}>
         <Tab
-          active={matchPath(pathname, { path: "/notifications", exact: true })}
+          active={this.isPathActive("/notifications")}
           minWidth
-          as={Link}
-          to="/notifications"
+          value="/notifications"
         >
-          <span className="mdc-tab__content">
-            <span className="mdc-tab__icon material-icons">notifications</span>
-            <span className="mdc-tab__text-label">Notifications</span>
-          </span>
+          <span className="mdc-tab__icon material-icons">notifications</span>
+          <span className="mdc-tab__text-label">Notifications</span>
         </Tab>
         <Tab
-          active={matchPath(pathname, { path: "/enrolled", exact: true })}
+          active={this.isPathActive("/enrolled")}
           minWidth
-          as={Link}
-          to="/enrolled"
+          value="/enrolled"
         >
-          <span className="mdc-tab__content">
-            <span className="mdc-tab__icon material-icons">playlist_add_check</span>
-            <span className="mdc-tab__text-label">Enrolled</span>
-          </span>
+          <span className="mdc-tab__icon material-icons">playlist_add_check</span>
+          <span className="mdc-tab__text-label">Enrolled</span>
         </Tab>
       </TabBar>
     )

@@ -85,21 +85,23 @@ class StudyLessonsPage extends React.Component {
     return (
       <div className={this.classes}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <div className="flex items-center w-100">
+          <div className="rn-text-field">
             {this.renderInput()}
-            <StudyLabelsLink
-              className="mdc-button mdc-button--unelevated mh2"
-              study={study}
-            >
-              Labels
-            </StudyLabelsLink>
-            {study.viewerCanAdmin &&
-            <CreateLessonLink
-              className="mdc-button mdc-button--unelevated flex-stable"
-              study={study}
-            >
-              New lesson
-            </CreateLessonLink>}
+            <div className="rn-text-field__actions">
+              <StudyLabelsLink
+                className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
+                study={study}
+              >
+                Labels
+              </StudyLabelsLink>
+              {study.viewerCanAdmin &&
+              <CreateLessonLink
+                className="mdc-button mdc-button--unelevated rn-text-field__action--button"
+                study={study}
+              >
+                New lesson
+              </CreateLessonLink>}
+            </div>
           </div>
         </div>
         <StudyLessons filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">

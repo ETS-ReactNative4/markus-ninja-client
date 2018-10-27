@@ -108,20 +108,20 @@ class CourseHeader extends React.Component {
 
     return (
       <header className="rn-header">
-        <h5>
-          <UserLink className="rn-link" user={get(course, "study.owner", null)} />
-          <span>/</span>
-          <StudyLink className="rn-link" study={get(course, "study", null)} />
-          <span>/</span>
-          <span className="rn-header__title">
-            <span className="rn-header__title__text">
+        <h5 className="rn-file-path">
+          <UserLink className="rn-link rn-file-path__directory" user={get(course, "study.owner", null)} />
+          <span className="rn-file-path__separator">/</span>
+          <StudyLink className="rn-link rn-file-path__directory" study={get(course, "study", null)} />
+          <span className="rn-file-path__separator">/</span>
+          <span className="rn-file-path__file">
+            <span className="rn-file-path__file__text">
               <Icon className="v-mid mr1" icon="course" />
               <span className="fw5">{get(course, "name", "")}</span>
               <span className="mdc-theme--text-hint-on-light ml2">#{get(course, "number", 0)}</span>
             </span>
             {course.viewerCanAdmin &&
             <button
-              className="material-icons mdc-icon-button rn-header__title__icon"
+              className="material-icons mdc-icon-button rn-file-path__file__icon"
               type="button"
               onClick={this.handleToggleOpen}
               aria-label="Edit name"

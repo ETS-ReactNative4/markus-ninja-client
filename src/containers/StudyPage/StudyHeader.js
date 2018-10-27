@@ -30,14 +30,14 @@ class StudyHeader extends React.Component {
 
     return (
       <header className={this.classes}>
-        <h5 className="inline-flex items-center flex-start">
-          <UserLink className="rn-link" user={get(study, "owner", null)} />
-          <span>/</span>
-          <span className="rn-header__title">
-            <StudyLink className="rn-link rn-header__title__text" study={study} />
+        <h5 className="rn-file-path">
+          <UserLink className="rn-link rn-file-path__directory" user={get(study, "owner", null)} />
+          <span className="rn-file-path__separator">/</span>
+          <span className="rn-file-path__file">
+            <StudyLink className="rn-link rn-file-path__file__text" study={study} />
             {get(study, "viewerCanAdmin", false) &&
             <IconLink
-              className="mdc-icon-button rn-header__title__icon"
+              className="mdc-icon-button rn-file-path__file__icon"
               to={study.resourcePath + "/lessons/new"}
               aria-label="New lesson"
               title="New lesson"

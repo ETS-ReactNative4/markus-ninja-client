@@ -21,7 +21,9 @@ class UserSettingsPage extends React.Component {
     return (
       <div className={this.classes}>
         <div className="mdc-layout-grid__inner">
-          <UserSettingsNav />
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <UserSettingsNav />
+          </div>
           <Switch>
             <Route
               exact
