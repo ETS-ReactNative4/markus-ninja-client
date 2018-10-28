@@ -33,23 +33,17 @@ class AccountSettings extends React.Component {
                   Change password
                 </h5>
                 <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <ChangePassword />
-                </div>
+                <ChangePassword />
                 <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   Change username
                 </h5>
                 <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <ChangeUsername user={props.viewer} />
-                </div>
+                <ChangeUsername user={props.viewer} />
                 <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   Delete account
                 </h5>
                 <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <DeleteAccount />
-                </div>
+                <DeleteAccount />
               </React.Fragment>
             )
           }

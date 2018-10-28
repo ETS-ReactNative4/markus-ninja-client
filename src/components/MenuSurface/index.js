@@ -211,7 +211,7 @@ class MenuSurface extends React.Component {
       hasAnchor: () => !!this.anchorElement,
       notifyClose: () => { this.emit(strings.CLOSED_EVENT, {}); this.props.onClose() },
       notifyOpen: () => { this.emit(strings.OPENED_EVENT, {}); this.props.onOpen() },
-      isElementInContainer: (el) => this.root_ === el || this.root_.contains(el),
+      isElementInContainer: (el) => this.root_ === el || (this.root_ && this.root_.contains(el)),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       setTransformOrigin: (origin) => {
         this.root_.style[`${util.getTransformPropertyName(window)}-origin`] = origin;

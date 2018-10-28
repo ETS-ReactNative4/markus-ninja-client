@@ -78,9 +78,11 @@ class UserStudiesTab extends React.Component {
     return (
       <React.Fragment>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <div className="flex items-center w-100">
+          <div className="rn-text-field">
             {this.renderInput()}
-            <Link className="mdc-button mdc-button--unelevated ml3" to="/new">New</Link>
+            <div className="rn-text-field__actions">
+              <Link className="mdc-button mdc-button--unelevated" to="/new">New study</Link>
+            </div>
           </div>
         </div>
         <UserStudies filterBy={this._filterBy} orderBy={this._orderBy}>

@@ -1,5 +1,6 @@
 @import "@material/button/mixins";
 @import "@material/layout-grid/mixins";
+@import "@material/list/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
 @import "@material/theme/variables";
@@ -68,6 +69,61 @@
   @include mdc-layout-grid-media-query_(phone) {
     @include mdc-button--dense_;
   }
+}
+
+// Custom class to clear styles for list items within a sub list
+.mdc-list--sub-list {
+  .mdc-list-item {
+    height: 48px;
+  }
+
+  .mdc-list-item__text {
+    align-self: unset;
+  }
+
+  .mdc-list-item__graphic {
+    @include mdc-list-graphic-size_(24px);
+
+    border-radius: unset;
+  }
+}
+
+.mdc-list--sub-list.mdc-list--dense .mdc-list-item {
+  height: 40px;
+}
+
+.mdc-list--sub-list.mdc-list--dense .mdc-list-item__graphic {
+  @include mdc-list-graphic-size_(20px);
+}
+
+.mdc-list--sub-list.mdc-list--avatar-list .mdc-list-item {
+  height: 56px;
+}
+
+.mdc-list--sub-list.mdc-list--avatar-list .mdc-list-item__graphic {
+  @include mdc-list-graphic-size_(40px);
+
+  border-radius: 50%;
+}
+
+.mdc-list--sub-list.mdc-list--two-line .mdc-list-item__text {
+  align-self: flex-start;
+}
+
+.mdc-list--sub-list.mdc-list--two-line .mdc-list-item {
+  height: 72px;
+}
+
+.mdc-list--sub-list.mdc-list--two-line.mdc-list--dense .mdc-list-item {
+  height: 60px;
+}
+
+.mdc-list--sub-list.mdc-list--avatar-list.mdc-list--dense .mdc-list-item {
+  height: 60px;
+}
+
+.mdc-list--sub-list.mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic {
+  @include mdc-list-graphic-size_(36px);
 }
 
 .mdc-list-item {

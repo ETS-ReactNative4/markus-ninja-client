@@ -1,7 +1,108 @@
 @import "@material/layout-grid/mixins";
+@import "@material/rtl/mixins";
+@import "@material/theme/mixins";
 
-.rn-list-preview .mdc-list-item__graphic {
+.rn-list-preview { 
+  position: relative;
+  overflow: visible;
+
+  >.mdc-list-item {
+    position: unset;
+    // Needed to fix overflow being hidden (`transform` causes the issue) 
+    will-change: unset !important;
+
+    // Need to remove hover effects, because they rely on relative position
+    &::before,
+    &::after {
+      content: none !important;
+    }
+
+    >.mdc-list-item__graphic {
+      @include mdc-layout-grid-media-query_(phone) {
+        margin-right: 16px;
+      }
+    }
+  }
+
+  .mdc-menu-surface--anchor {
+    position: unset;
+  }
+}
+
+.rn-list-preview__tags {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  padding: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  > * {
+    margin: 4px;
+  }
+
   @include mdc-layout-grid-media-query_(phone) {
     display: none;
   }
+}
+
+.rn-list-preview__actions--spread {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.rn-list-preview__actions {
+  .rn-list-preview__actions--collapsed {
+    @include mdc-layout-grid-media-query_(desktop) {
+      display: none;
+    }
+    @include mdc-layout-grid-media-query_(tablet) {
+      display: none;
+    }
+  }
+
+  .rn-list-preview__actions--spread {
+    @include mdc-layout-grid-media-query_(phone) {
+      display: none;
+    }
+  }
+}
+
+.rn-list-preview__action {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.rn-list-preview__action--button {
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
+
+  padding: 0 8px;
+
+  &:last-child {
+    @include mdc-rtl-reflexive-box(margin, right, 0);
+  }
+}
+
+.rn-list-preview__action--icon {
+  // Same padding as mdc-icon-button.
+  padding: 12px;
+}
+
+.rn-list-preview__action--icon:not(:disabled) {
+  @include mdc-theme-prop(color, text-icon-on-background);
 }

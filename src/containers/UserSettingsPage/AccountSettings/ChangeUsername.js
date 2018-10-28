@@ -47,7 +47,7 @@ class ChangeUsername extends React.Component {
   get classes() {
     const {className} = this.props
     const {stage} = this.state
-    return cls("ChangeUsername mdc-layout-grid__inner", className, {
+    return cls("ChangeUsername mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className, {
       [stage]: true,
     })
   }
@@ -75,7 +75,7 @@ class ChangeUsername extends React.Component {
 
   renderInfo() {
     return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+      <React.Fragment>
         <p>Changing your username can have unintended side effects.</p>
         <button
           className="mdc-button mdc-button--unelevated mt2"
@@ -84,13 +84,13 @@ class ChangeUsername extends React.Component {
         >
           Change username
         </button>
-      </div>
+      </React.Fragment>
     )
   }
 
   renderAgreement() {
     return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+      <React.Fragment>
         <h6>Are you sure you want to change your username?</h6>
         <div className="warning">
           <span>This will result in unexpected behavior if you don't read this!</span>
@@ -107,13 +107,13 @@ class ChangeUsername extends React.Component {
           I understand, change my username
         </button>
         <button
-          className="mdc-button ml2"
+          className="mdc-button mt2"
           type="button"
           onClick={() => this.handleChangeStage(INFO_STAGE)}
         >
           Cancel
         </button>
-      </div>
+      </React.Fragment>
     )
   }
 

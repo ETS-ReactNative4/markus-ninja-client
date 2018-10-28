@@ -19,7 +19,7 @@ class NotificationsPageNav extends React.Component {
     const {className} = this.props
 
     return (
-      <TabBar className={className} onClickTab={this.handleClickTab}>
+      <TabBar className={className} onClickTab={this.handleClickTab_}>
         <Tab
           active={this.isPathActive("/notifications")}
           minWidth

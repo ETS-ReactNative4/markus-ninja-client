@@ -158,7 +158,7 @@ class Menu extends React.Component {
    * @param {!HTMLElement} element
    */
   setAnchorElement(element) {
-    this.menuSurface_.current.anchorElement = element;
+    this.menuSurface_.current.setMenuSurfaceAnchorElement(element);
   }
 
   get classes() {

@@ -8,12 +8,20 @@ import {
 import moment from 'moment'
 import {Link} from 'react-router-dom'
 import EnrollIconButton from 'components/EnrollIconButton'
+import ListEnrollButton from 'components/ListEnrollButton'
+import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import Label from 'components/Label'
+import List from 'components/List'
+import Menu from 'components/Menu'
 import RemoveCourseLessonMutation from 'mutations/RemoveCourseLessonMutation'
 import {get} from 'utils'
 
 class ListLessonPreview extends React.Component {
+  state = {
+    menuOpen: false,
+  }
+
   handleRemoveFromCourse = () => {
     if (get(this.props, "lesson.course.viewerCanAdmin", false)) {
       RemoveCourseLessonMutation(
@@ -30,7 +38,7 @@ class ListLessonPreview extends React.Component {
 
   get classes() {
     const {className, dragging, editing} = this.props
-    return cls("ListLessonPreview rn-list-preview mdc-list-item", className, {
+    return cls("ListLessonPreview rn-list-preview", className, {
       "ListLessonPreview--editing": editing,
       "ListLessonPreview--dragging": dragging,
     })
@@ -70,27 +78,29 @@ class ListLessonPreview extends React.Component {
         ref={innerRef}
         className={this.classes}
       >
-        <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
-        <Link className="mdc-list-item__text" to={lesson.resourcePath}>
-          <span className="mdc-list-item__primary-text">
-            {lesson.title}
-            <span className="mdc-theme--text-secondary-on-light ml1">#{this.number}</span>
+        <span className="mdc-list-item">
+          <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
+          <Link className="mdc-list-item__text" to={lesson.resourcePath}>
+            <span className="mdc-list-item__primary-text">
+              {lesson.title}
+              <span className="mdc-theme--text-secondary-on-light ml1">#{this.number}</span>
+            </span>
+            <span className="mdc-list-item__secondary-text">
+              Created on
+              <span className="mh1">{moment(lesson.createdAt).format("MMM D")}</span>
+              by {get(lesson, "author.login")}
+            </span>
+          </Link>
+          <span className="rn-list-preview__tags">
+            {labelNodes.map((node) =>
+              node &&
+              <Label key={node.id} as={Link} label={node} to={node.resourcePath} />
+            )}
           </span>
-          <span className="mdc-list-item__secondary-text">
-            Created on
-            <span className="mh1">{moment(lesson.createdAt).format("MMM D")}</span>
-            by {get(lesson, "author.login")}
-          </span>
-        </Link>
-        <span className="mdc-list-item__tags">
-          {labelNodes.map((node) =>
-            node &&
-            <Label key={node.id} as={Link} label={node} to={node.resourcePath} />
-          )}
+          {isCourse && editing && get(lesson, "course.viewerCanAdmin", false)
+          ? this.renderEditMeta()
+          : this.renderMeta()}
         </span>
-        {isCourse && editing && get(lesson, "course.viewerCanAdmin", false)
-        ? this.renderEditMeta()
-        : this.renderMeta()}
       </li>
     )
   }
@@ -98,39 +108,64 @@ class ListLessonPreview extends React.Component {
   renderEditMeta() {
     return (
       <span className="mdc-list-item__meta">
-        <div className="mdc-list-item__meta-actions">
-          <button
-            className="material-icons mdc-icon-button"
-            type="button"
-            onClick={this.handleRemoveFromCourse}
-            aria-label="Remove lesson"
-            title="Remove lesson"
-          >
-            remove
-          </button>
-        </div>
+        <button
+          className="material-icons mdc-icon-button"
+          type="button"
+          onClick={this.handleRemoveFromCourse}
+          aria-label="Remove lesson"
+          title="Remove lesson"
+        >
+          remove
+        </button>
       </span>
     )
   }
 
   renderMeta() {
+    const {menuOpen} = this.state
     const {lesson} = this.props
 
     return (
-      <span className="mdc-list-item__meta">
-        <div className="mdc-list-item__meta-actions mdc-list-item__meta-actions--collapsible">
-          <div className="mdc-list-item__meta-actions--spread">
-            {lesson.viewerCanEnroll &&
-            <EnrollIconButton enrollable={get(this.props, "lesson", null)} />}
-            <Link
-              className="rn-icon-link"
-              to={lesson.resourcePath}
-            >
-              <Icon className="rn-icon-link__icon" icon="comment" />
-              {get(lesson, "comments.totalCount", 0)}
-            </Link>
-          </div>
-        </div>
+      <span className="mdc-list-item__meta rn-list-preview__actions">
+        <span className="rn-list-preview__actions--spread">
+          {lesson.viewerCanEnroll &&
+          <EnrollIconButton enrollable={get(this.props, "lesson", null)} />}
+          <Link
+            className="rn-icon-link"
+            to={lesson.resourcePath}
+          >
+            <Icon className="rn-icon-link__icon" icon="comment" />
+            {get(lesson, "comments.totalCount", 0)}
+          </Link>
+        </span>
+        <Menu.Anchor className="rn-list-preview__actions--collapsed">
+          <button
+            type="button"
+            className="mdc-icon-button material-icons"
+            onClick={() => this.setState({menuOpen: !menuOpen})}
+          >
+            more_vert
+          </button>
+          <Menu open={menuOpen} onClose={() => this.setState({menuOpen: false})}>
+            <List className="mdc-list--sub-list">
+              {lesson.viewerCanEnroll &&
+              <ListEnrollButton
+                className="mdc-list-item"
+                enrollable={get(this.props, "lesson", null)}
+              />}
+              <Link
+                className="mdc-list-item"
+                to={lesson.resourcePath}
+              >
+                <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="comment" />
+                <span className="mdc-list-item__text">
+                  Comments
+                  <Counter>{get(lesson, "comments.totalCount", 0)}</Counter>
+                </span>
+              </Link>
+            </List>
+          </Menu>
+        </Menu.Anchor>
       </span>
     )
   }

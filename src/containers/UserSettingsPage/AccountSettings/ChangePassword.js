@@ -47,7 +47,7 @@ class ChangePassword extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("ChangePassword mdc-layout-grid__inner", className)
+    return cls("ChangePassword mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {
@@ -71,7 +71,7 @@ class ChangePassword extends React.Component {
 
   renderInfo() {
     return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+      <React.Fragment>
         <p>We recommend changing your password every few months.</p>
         <button
           className="mdc-button mdc-button--unelevated mt2"
@@ -80,15 +80,15 @@ class ChangePassword extends React.Component {
         >
           Change password
         </button>
-      </div>
+      </React.Fragment>
     )
   }
 
   renderForm() {
     const {confirmNewPassword, newPassword, oldPassword} = this.state
     return (
-      <form className={this.classes} onSubmit={this.handleSubmit}>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+      <form onSubmit={this.handleSubmit}>
+        <div className="mb1">
           <TextField
             className="rn-form__input"
             label="Old password"
@@ -102,7 +102,7 @@ class ChangePassword extends React.Component {
             />
           </TextField>
         </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <div className="mb1">
           <TextField
             className="rn-form__input"
             label="New password"
@@ -116,7 +116,7 @@ class ChangePassword extends React.Component {
             />
           </TextField>
         </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <div className="mb1">
           <TextField
             className="rn-form__input"
             label="Confirm new password"
@@ -131,7 +131,7 @@ class ChangePassword extends React.Component {
             />
           </TextField>
         </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <div>
           <button
             className="mdc-button mdc-button--unelevated"
             type="submit"

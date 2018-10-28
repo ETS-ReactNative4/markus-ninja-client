@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {matchPath, withRouter} from 'react-router-dom'
-import Tab from 'components/Tab'
-import TabBar from 'components/TabBar'
+import Tab from 'components/mdc/Tab'
+import TabBar from 'components/mdc/TabBar'
 import { get } from 'utils'
 
 class EnrolledStudiesPageNav extends React.Component {
@@ -19,7 +19,7 @@ class EnrolledStudiesPageNav extends React.Component {
     const {className} = this.props
 
     return (
-      <TabBar className={className} onClickTab={this.handleClickTab}>
+      <TabBar className={className} onClickTab={this.handleClickTab_}>
         <Tab
           active={this.isPathActive("/notifications")}
           minWidth

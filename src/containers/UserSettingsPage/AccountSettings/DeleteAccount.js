@@ -46,7 +46,7 @@ class DeleteAccount extends React.Component {
   get classes() {
     const {className} = this.props
     const {open} = this.state
-    return cls("DeleteAccount mdc-layout-grid__inner", className, {
+    return cls("DeleteAccount mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className, {
       open,
     })
   }
@@ -72,7 +72,7 @@ class DeleteAccount extends React.Component {
 
   renderInfo() {
     return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+      <React.Fragment>
         <p>Once you delete your account, there is no going back. Please be certain.</p>
         <button
           className="mdc-button mdc-button--unelevated mt2"
@@ -81,7 +81,7 @@ class DeleteAccount extends React.Component {
         >
           Delete your account
         </button>
-      </div>
+      </React.Fragment>
     )
   }
 
@@ -89,10 +89,7 @@ class DeleteAccount extends React.Component {
     const {login, password, verify} = this.state
 
     return (
-      <form
-        className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-        onSubmit={this.handleSubmit}
-      >
+      <form onSubmit={this.handleSubmit}>
         <h6>This is extremely important.</h6>
         <p>
           We will immediately delete all your studies, and anything associated with your account.

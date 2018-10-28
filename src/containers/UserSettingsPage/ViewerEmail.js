@@ -57,7 +57,7 @@ class ViewerEmail extends React.Component {
     const email = get(this.props, "email", {})
     return (
       <React.Fragment>
-        <li className="ViewerEmail mdc-list-item">
+        <li className="ViewerEmail mdc-list-item rn-list-preview">
           <Icon as="span" className="mdc-list-item__graphic" icon="email" />
           <div className="mdc-list-item__text">
             {email.value}
