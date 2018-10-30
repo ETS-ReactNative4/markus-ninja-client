@@ -30,7 +30,7 @@ class StudyHeader extends React.Component {
 
     return (
       <header className={this.classes}>
-        <h5 className="rn-file-path">
+        <h4 className="rn-file-path">
           <UserLink className="rn-link rn-file-path__directory" user={get(study, "owner", null)} />
           <span className="rn-file-path__separator">/</span>
           <span className="rn-file-path__file">
@@ -45,7 +45,7 @@ class StudyHeader extends React.Component {
               add
             </IconLink>}
           </span>
-        </h5>
+        </h4>
         <div className="rn-header__actions">
           <div className="rn-combo-button rn-header__action rn-header__action--button">
             <EnrollmentSelect disabled={!study.viewerCanEnroll} enrollable={study} />

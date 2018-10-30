@@ -9,12 +9,20 @@ import ListEnrollButton from 'components/ListEnrollButton'
 import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import List from 'components/List'
-import Menu from 'components/Menu'
+import Menu, {Corner} from 'components/mdc/Menu'
 import {get} from 'utils'
 
 class ListStudyPreview extends React.Component {
   state = {
+    anchorElement: null,
     menuOpen: false,
+  }
+
+  setAnchorElement = (el) => {
+    if (this.state.anchorElement) {
+      return
+    }
+    this.setState({anchorElement: el})
   }
 
   get classes() {
@@ -34,7 +42,7 @@ class ListStudyPreview extends React.Component {
   }
 
   render() {
-    const {menuOpen} = this.state
+    const {anchorElement, menuOpen} = this.state
     const study = get(this.props, "study", {})
     const topicNodes = get(study, "topics.nodes", [])
 
@@ -91,7 +99,7 @@ class ListStudyPreview extends React.Component {
                 {get(study, "lessons.totalCount", 0)}
               </Link>
             </span>
-            <Menu.Anchor className="rn-list-preview__actions--collapsed">
+            <Menu.Anchor className="rn-list-preview__actions--collapsed" innerRef={this.setAnchorElement}>
               <button
                 type="button"
                 className="mdc-icon-button material-icons"
@@ -99,8 +107,13 @@ class ListStudyPreview extends React.Component {
               >
                 more_vert
               </button>
-              <Menu open={menuOpen} onClose={() => this.setState({menuOpen: false})}>
-                <List className="mdc-list--sub-list">
+              <Menu
+                open={menuOpen}
+                onClose={() => this.setState({menuOpen: false})}
+                anchorElement={anchorElement}
+                anchorCorner={Corner.BOTTOM_LEFT}
+              >
+                <List>
                   {study.viewerCanEnroll &&
                   <ListEnrollButton enrollable={this.props.study} />}
                   {study.viewerCanApple &&

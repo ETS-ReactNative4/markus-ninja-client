@@ -14,6 +14,8 @@ class Icon extends React.PureComponent {
   get icon() {
     const {children, icon} = this.props
     switch (icon.toLowerCase()) {
+      case "":
+        return children
       case "asset":
         return "image"
       case "email":
@@ -35,7 +37,7 @@ class Icon extends React.PureComponent {
       case "user":
         return "person"
       default:
-        return children
+        return icon
     }
   }
 

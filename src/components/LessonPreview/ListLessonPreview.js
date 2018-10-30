@@ -13,13 +13,21 @@ import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import Label from 'components/Label'
 import List from 'components/List'
-import Menu from 'components/Menu'
+import Menu, {Corner} from 'components/mdc/Menu'
 import RemoveCourseLessonMutation from 'mutations/RemoveCourseLessonMutation'
 import {get} from 'utils'
 
 class ListLessonPreview extends React.Component {
   state = {
+    anchorElement: null,
     menuOpen: false,
+  }
+
+  setAnchorElement = (el) => {
+    if (this.state.anchorElement) {
+      return
+    }
+    this.setState({anchorElement: el})
   }
 
   handleRemoveFromCourse = () => {
@@ -80,17 +88,25 @@ class ListLessonPreview extends React.Component {
       >
         <span className="mdc-list-item">
           <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
-          <Link className="mdc-list-item__text" to={lesson.resourcePath}>
-            <span className="mdc-list-item__primary-text">
-              {lesson.title}
-              <span className="mdc-theme--text-secondary-on-light ml1">#{this.number}</span>
+          <span className="mdc-list-item__text">
+            <span className="mdc-list-item__primary-text" >
+              <Link className="rn-link" to={lesson.resourcePath}>
+                {lesson.title}
+                <span className="mdc-theme--text-secondary-on-light ml1">#{this.number}</span>
+              </Link>
             </span>
             <span className="mdc-list-item__secondary-text">
               Created on
               <span className="mh1">{moment(lesson.createdAt).format("MMM D")}</span>
-              by {get(lesson, "author.login")}
+              by
+              <Link
+                className="rn-link rn-link--secondary ml1"
+                to={get(lesson, "author.resourcePath", "")}
+              >
+                {get(lesson, "author.login")}
+              </Link>
             </span>
-          </Link>
+          </span>
           <span className="rn-list-preview__tags">
             {labelNodes.map((node) =>
               node &&
@@ -122,7 +138,7 @@ class ListLessonPreview extends React.Component {
   }
 
   renderMeta() {
-    const {menuOpen} = this.state
+    const {anchorElement, menuOpen} = this.state
     const {lesson} = this.props
 
     return (
@@ -138,7 +154,7 @@ class ListLessonPreview extends React.Component {
             {get(lesson, "comments.totalCount", 0)}
           </Link>
         </span>
-        <Menu.Anchor className="rn-list-preview__actions--collapsed">
+        <Menu.Anchor className="rn-list-preview__actions--collapsed" innerRef={this.setAnchorElement}>
           <button
             type="button"
             className="mdc-icon-button material-icons"
@@ -146,8 +162,13 @@ class ListLessonPreview extends React.Component {
           >
             more_vert
           </button>
-          <Menu open={menuOpen} onClose={() => this.setState({menuOpen: false})}>
-            <List className="mdc-list--sub-list">
+          <Menu
+            open={menuOpen}
+            onClose={() => this.setState({menuOpen: false})}
+            anchorElement={anchorElement}
+            anchorCorner={Corner.BOTTOM_LEFT}
+          >
+            <List>
               {lesson.viewerCanEnroll &&
               <ListEnrollButton
                 className="mdc-list-item"

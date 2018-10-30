@@ -7,7 +7,7 @@ import {
 import { withRouter } from 'react-router'
 import Icon from 'components/Icon'
 import List from 'components/List'
-import Menu from 'components/Menu'
+import Menu from 'components/mdc/Menu'
 import NotificationButton from 'components/NotificationButton'
 import ListEnrollButton from 'components/ListEnrollButton'
 import MarkNotificationAsReadMutation from 'mutations/MarkNotificationAsReadMutation'
@@ -94,7 +94,7 @@ class Notification extends React.Component {
                 more_vert
               </button>
               <Menu open={menuOpen} onClose={() => this.setState({menuOpen: false})}>
-                <List className="mdc-list--sub-list">
+                <List>
                   {subject.viewerCanEnroll &&
                   <ListEnrollButton notification enrollable={subject} />}
                   <li

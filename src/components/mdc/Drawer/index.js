@@ -41,6 +41,7 @@ const {cssClasses: listCssClasses} = MDCListFoundation
 class Drawer extends React.Component {
   drawer_ = React.createRef()
   previousFocus_ = null
+  foundation_ = null
 
   state = {
     activeFocusTrap: false,
@@ -126,20 +127,19 @@ class Drawer extends React.Component {
 
   handleScrimClick_ = (evt) => {
     this.props.onScrimClick(evt);
-    if (!this.foundation_) return;
+    if (!this.foundation_ || !this.foundation_.handleScrimClick) return;
     this.foundation_.handleScrimClick();
   }
 
   handleKeyDown_ = (evt) => {
     this.props.onKeyDown(evt);
-    if (!this.foundation_) return;
+    if (!this.foundation_ || !this.foundation_.handleKeyDown) return;
     this.foundation_.handleKeyDown(evt);
   }
 
   handleTransitionEnd_ = (evt) => {
-    console.log('handleTransitionEnd_')
     this.props.onTransitionEnd(evt);
-    if (!this.foundation_) return;
+    if (!this.foundation_ || !this.foundation_.handleTransitionEnd) return;
     this.foundation_.handleTransitionEnd(evt);
   }
 

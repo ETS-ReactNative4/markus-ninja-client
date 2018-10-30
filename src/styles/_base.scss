@@ -28,7 +28,7 @@ h1 {
     @include mdc-typography(headline2);
   }
   @include mdc-layout-grid-media-query_(phone) {
-    @include mdc-typography(headline3);
+    @include mdc-typography(headline2);
   }
 }
 h2 {
@@ -39,7 +39,7 @@ h2 {
     @include mdc-typography(headline3);
   }
   @include mdc-layout-grid-media-query_(phone) {
-    @include mdc-typography(headline4);
+    @include mdc-typography(headline3);
   }
 }
 h3 {
@@ -50,7 +50,7 @@ h3 {
     @include mdc-typography(headline4);
   }
   @include mdc-layout-grid-media-query_(phone) {
-    @include mdc-typography(headline5);
+    @include mdc-typography(headline4);
   }
 }
 h4 {
@@ -61,7 +61,7 @@ h4 {
     @include mdc-typography(headline5);
   }
   @include mdc-layout-grid-media-query_(phone) {
-    @include mdc-typography(headline6);
+    @include mdc-typography(headline5);
   }
 }
 h5 {
@@ -72,7 +72,7 @@ h5 {
     @include mdc-typography(headline6);
   }
   @include mdc-layout-grid-media-query_(phone) {
-    @include mdc-typography(subtitle1);
+    @include mdc-typography(headline6);
   }
 }
 h6 {
@@ -83,6 +83,6 @@ h6 {
     @include mdc-typography(subtitle1);
   }
   @include mdc-layout-grid-media-query_(phone) {
-    @include mdc-typography(subtitle2);
+    @include mdc-typography(subtitle1);
   }
 }

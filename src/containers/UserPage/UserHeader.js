@@ -6,7 +6,7 @@ import {
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router'
-import TextField, {Input} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import HTML from 'components/HTML'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import UpdateViewerProfileMutation from 'mutations/UpdateViewerProfileMutation'
@@ -16,12 +16,16 @@ class UserHeader extends React.Component {
   state = {
     error: null,
     open: false,
-    bio: this.props.user.bio,
+    bio: {
+      ...defaultTextFieldState,
+      value: this.props.user.bio,
+      valid: true,
+    },
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
     })
   }
 
@@ -29,7 +33,7 @@ class UserHeader extends React.Component {
     e.preventDefault()
     const { bio } = this.state
     UpdateViewerProfileMutation(
-      bio,
+      bio.value,
       null,
       null,
       (error) => {
@@ -43,6 +47,19 @@ class UserHeader extends React.Component {
 
   handleToggleOpen = () => {
     this.setState({ open: !this.state.open })
+    this.reset_()
+  }
+
+  reset_ = () => {
+    const user = get(this.props, "user", {})
+    this.setState({
+      error: null,
+      bio: {
+        ...defaultTextFieldState,
+        value: user.bio,
+        valid: true,
+      },
+    })
   }
 
   get classes() {
@@ -76,18 +93,16 @@ class UserHeader extends React.Component {
           label="Add a bio"
           textarea
           floatingLabelClassName={!isEmpty(bio) ? "mdc-floating-label--float-above" : ""}
-        >
-          <Input
-            name="bio"
-            value={bio}
-            onChange={this.handleChange}
-          />
-        </TextField>
+          inputProps={{
+            name: "bio",
+            value: bio.value,
+            onChange: this.handleChange,
+          }}
+        />
         <div className="inline-flex items-center mt2">
           <button
-            className="mdc-button mdc-button--unelevated"
             type="submit"
-            onClick={this.handleSubmit}
+            className="mdc-button mdc-button--unelevated"
           >
             Save
           </button>

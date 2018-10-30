@@ -1,116 +1,85 @@
+// The MIT License
+//
+// Copyright (c) 2018 Google, Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
-import {MDCMenuFoundation} from '@material/menu/dist/mdc.menu'
-import {MDCMenuSurfaceFoundation} from '@material/menu-surface/dist/mdc.menuSurface'
+import {MDCMenuFoundation} from '@material/menu'
+import MenuSurface, {Corner} from 'components/mdc/MenuSurface'
 import List from 'components/List'
-import MenuSurface from 'components/MenuSurface'
 
 import MenuSelectionGroup from './MenuSelectionGroup'
 import MenuSelectionGroupIcon from './MenuSelectionGroupIcon'
 
-const {cssClasses, strings} = MDCMenuFoundation
+const {cssClasses} = MDCMenuFoundation
 
 class Menu extends React.Component {
+  list_ = React.createRef()
   foundation_ = null
 
-  constructor(props) {
-    super(props)
-
-    this.root_ = null
-    this.menuSurface_ = React.createRef()
-    this.list_ = React.createRef()
-
-    this.setRootRef = (element) => {
-      this.root_ = element;
-    }
+  state = {
+    open: false,
   }
 
   componentDidMount() {
     this.foundation_ = new MDCMenuFoundation(this.adapter)
     this.foundation_.init()
 
-    this.list_.current.wrapFocus = true
     this.open = this.props.open
-
-    this.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.handleAfterOpened)
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.open !== this.props.open) {
-      this.open = this.props.open
+    const {open} = this.props
+    if (open !== prevProps.open) {
+      this.open = open
     }
   }
 
   componentWillUnmount() {
     this.foundation_.destroy()
-
-    this.unlisten(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.handleAfterOpened)
   }
 
-  listen(evtType, handler) {
-    this.root_.addEventListener(evtType, handler)
+  set open(isOpen) {
+    this.setState({open: isOpen})
   }
 
-  unlisten(evtType, handler) {
-    this.root_.removeEventListener(evtType, handler)
-  }
-
-  emit(evtType, evtData, shouldBubble = false) {
-    let evt;
-    if (typeof CustomEvent === 'function') {
-      evt = new CustomEvent(evtType, {
-        detail: evtData,
-        bubbles: shouldBubble,
-      })
-    } else {
-      evt = document.createEvent('CustomEvent')
-      evt.initCustomEvent(evtType, shouldBubble, false, evtData)
-    }
-
-    this.root_.dispatchEvent(evt)
-  }
-
-  handleAfterOpened = () => {
+  handleOpen_ = () => {
     const list = this.items;
+    if (!list) return;
+
     if (list.length > 0) {
       list[0].focus();
     }
+    this.props.onOpen()
   }
 
-  handleKeydown = (e) => {
+  handleKeydown_ = (e) => {
     this.foundation_.handleKeydown(e)
     this.props.onKeyDown(e)
   }
 
-  handleClick = (e) => {
+  handleClick_ = (e) => {
     this.foundation_.handleClick(e)
     this.props.onClick(e)
-  }
-
-  /** @return {boolean} */
-  get open() {
-    return this.menuSurface_.current.open;
-  }
-
-  /** @param {boolean} value */
-  set open(value) {
-    this.menuSurface_.current.open = value;
-  }
-
-  /**
-   * @param {!Corner} corner Default anchor corner alignment of top-left
-   *     menu corner.
-   */
-  setAnchorCorner(corner) {
-    this.menuSurface_.current.setAnchorCorner(corner);
-  }
-
-  /**
-   * @param {!AnchorMargin} margin
-   */
-  setAnchorMargin(margin) {
-    this.menuSurface_.current.setAnchorMargin(margin);
   }
 
   get items() {
@@ -125,41 +94,6 @@ class Menu extends React.Component {
     } else {
       return null
     }
-  }
-
-  /** @param {boolean} quickOpen */
-  set quickOpen(quickOpen) {
-    this.menuSurface_.current.quickOpen = quickOpen;
-  }
-
-  /** @param {boolean} isFixed */
-  setFixedPosition(isFixed) {
-    this.menuSurface_.current.setFixedPosition(isFixed);
-  }
-
-  hoistMenuToBody() {
-    this.menuSurface_.current.hoistMenuToBody();
-  }
-
-  /** @param {boolean} isHoisted */
-  setIsHoisted(isHoisted) {
-    this.menuSurface_.current.setIsHoisted(isHoisted);
-  }
-
-  /**
-   * @param {number} x
-   * @param {number} y
-   */
-  setAbsolutePosition(x, y) {
-    this.menuSurface_.current.setAbsolutePosition(x, y);
-  }
-
-  /**
-   * Sets the element that the menu-surface is anchored to.
-   * @param {!HTMLElement} element
-   */
-  setAnchorElement(element) {
-    this.menuSurface_.current.setMenuSurfaceAnchorElement(element);
   }
 
   get classes() {
@@ -192,25 +126,28 @@ class Menu extends React.Component {
       getSelectedElementIndex: (selectionGroup) => {
         return this.items.indexOf(selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`));
       },
-      notifySelected: (evtData) => this.emit(strings.SELECTED_EVENT, {
-        index: evtData.index,
-        item: this.items[evtData.index],
-      }),
+      notifySelected: (evtData) => this.props.onSelected(evtData.index, this.items[evtData.index]),
     })
   }
 
   get otherProps() {
     const {
+      anchorCorner,
+      anchorElement,
+      anchorMargin,
       as,
+      children,
       className,
+      coordinates,
       fixed,
-      innerRef,
       list,
       open,
       onClick,
       onClose,
       onKeyDown,
       onOpen,
+      onSelected,
+      quickOpen,
       ...otherProps,
     } = this.props
     return otherProps
@@ -218,26 +155,34 @@ class Menu extends React.Component {
 
   render() {
     const {
+      anchorCorner,
+      anchorElement,
+      anchorMargin,
       as,
+      coordinates,
       fixed,
-      innerRef,
       onClose,
-      onOpen,
+      open,
+      quickOpen
     } = this.props
 
     return (
       <MenuSurface
         {...this.otherProps}
-        innerRef={(node) => {this.setRootRef(node); innerRef(node)}}
-        ref={this.menuSurface_}
+        anchorCorner={anchorCorner}
+        anchorElement={anchorElement}
+        anchorMargin={anchorMargin}
         as={as}
         className={this.classes}
-        onClick={this.handleClick}
-        onClose={onClose}
-        onKeyDown={this.handleKeydown}
-        onOpen={onOpen}
+        coordinates={coordinates}
         fixed={fixed}
         tabIndex="-1"
+        onClick={this.handleClick_}
+        onClose={onClose}
+        onKeyDown={this.handleKeydown_}
+        onOpen={this.handleOpen_}
+        open={open}
+        quickOpen={quickOpen}
       >
         {this.renderList()}
       </MenuSurface>
@@ -256,36 +201,49 @@ class Menu extends React.Component {
 }
 
 Menu.propTypes = {
+  anchorElement: PropTypes.object,
+  anchorCorner: PropTypes.number,
+  anchorMargin: PropTypes.object,
   as: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   children: function(props, propName, componentName) {
     const prop = props[propName];
     const child = React.Children.only(prop)
     let error = null;
     if (child && child.type !== List) {
-      error = new Error('`' + componentName + '` children should be of type `List`.');
+      error = new Error('`' + componentName + '` only child should be of type `List`.');
     }
     return error;
   },
   className: PropTypes.string,
+  coordinates: PropTypes.shape({
+    x: PropTypes.number,
+    y: PropTypes.number,
+  }),
   fixed: PropTypes.bool,
-  innerRef: PropTypes.func,
   open: PropTypes.bool,
   onClick: PropTypes.func,
   onClose: PropTypes.func,
   onKeyDown: PropTypes.func,
   onOpen: PropTypes.func,
+  onSelected: PropTypes.func,
+  quickOpen: PropTypes.bool,
 }
 
 Menu.defaultProps = {
+  anchorElement: null,
+  anchorCorner: 0,
+  anchorMargin: {},
   as: "div",
   className: '',
+  coordinates: null,
   fixed: false,
-  innerRef: () => {},
   open: false,
   onClick: () => {},
   onClose: () => {},
   onKeyDown: () => {},
   onOpen: () => {},
+  onSelected: () => {},
+  quickOpen: false,
 }
 
 Menu.Anchor = MenuSurface.Anchor
@@ -293,3 +251,6 @@ Menu.SelectionGroup = MenuSelectionGroup
 Menu.SelectionGroupIcon = MenuSelectionGroupIcon
 
 export default Menu
+export {
+  Corner,
+}

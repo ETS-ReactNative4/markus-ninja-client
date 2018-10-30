@@ -1,6 +1,6 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
-import TextField, {Input} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import HTML from 'components/HTML'
 import UpdateUserAssetMutation from 'mutations/UpdateUserAssetMutation'
 import {get, isEmpty, isNil} from 'utils'
@@ -9,12 +9,16 @@ class UserAssetDescription extends React.Component {
   state = {
     error: null,
     open: false,
-    description: this.props.asset.description,
+    description: {
+      ...defaultTextFieldState,
+      value: this.props.asset.description,
+      valid: true,
+    }
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
     })
   }
 
@@ -23,7 +27,7 @@ class UserAssetDescription extends React.Component {
     const {description} = this.state
     UpdateUserAssetMutation(
       this.props.asset.id,
-      description,
+      description.value,
       null,
       (updatedUserAsset, errors) => {
         if (!isNil(errors)) {
@@ -40,6 +44,19 @@ class UserAssetDescription extends React.Component {
 
   handleToggleOpen = () => {
     this.setState({ open: !this.state.open })
+    this.reset_()
+  }
+
+  reset_ = () => {
+    const asset = get(this.props, "asset", {})
+    this.setState({
+      error: null,
+      description: {
+        ...defaultTextFieldState,
+        value: asset.description,
+        valid: true,
+      },
+    })
   }
 
   render() {
@@ -64,18 +81,16 @@ class UserAssetDescription extends React.Component {
           label="Add a description"
           textarea
           floatingLabelClassName={!isEmpty(description) ? "mdc-floating-label--float-above" : ""}
-        >
-          <Input
-            name="description"
-            value={description}
-            onChange={this.handleChange}
-          />
-        </TextField>
+          inputProps={{
+            name: "description",
+            value: description.value,
+            onChange: this.handleChange,
+          }}
+        />
         <div className="inline-flex items-center mt2">
           <button
-            className="mdc-button mdc-button--unelevated"
             type="submit"
-            onClick={this.handleSubmit}
+            className="mdc-button mdc-button--unelevated"
           >
             Save
           </button>

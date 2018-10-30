@@ -4,7 +4,7 @@ import {
   graphql,
 } from 'react-relay'
 import {withRouter} from 'react-router-dom';
-import TextField, {Input} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateTopicMutation from 'mutations/UpdateTopicMutation'
 import {get, isEmpty, isNil} from 'utils'
 
@@ -12,12 +12,16 @@ class TopicHeader extends React.Component {
   state = {
     error: null,
     open: false,
-    description: get(this.props, "topic.description", ""),
+    description: {
+      ...defaultTextFieldState,
+      value: get(this.props, "topic.description", ""),
+      valid: true,
+    }
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
     })
   }
 
@@ -26,7 +30,7 @@ class TopicHeader extends React.Component {
     const { description } = this.state
     UpdateTopicMutation(
       this.props.topic.id,
-      description,
+      description.value,
       (updatedTopic, errors) => {
         if (!isNil(errors)) {
           this.setState({ error: errors[0].message })
@@ -41,6 +45,19 @@ class TopicHeader extends React.Component {
 
   handleToggleOpen = () => {
     this.setState({ open: !this.state.open })
+    this.reset_()
+  }
+
+  reset_ = () => {
+    const topic = get(this.props, "topic", {})
+    this.setState({
+      error: null,
+      description: {
+        ...defaultTextFieldState,
+        value: topic.description,
+        valid: true,
+      },
+    })
   }
 
   render() {
@@ -63,24 +80,22 @@ class TopicHeader extends React.Component {
     const {description} = this.state
 
     return (
-      <form className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+      <form className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12" onSubmit={this.handleSubmit}>
         <TextField
           className="w-100"
           textarea
           label="Description"
           floatingLabelClassName={!isEmpty(description) ? "mdc-floating-label--float-above" : ""}
-        >
-          <Input
-            name="description"
-            value={description}
-            onChange={this.handleChange}
-          />
-        </TextField>
+          inputProps={{
+            name: "description",
+            value: description.value,
+            onChange: this.handleChange,
+          }}
+        />
         <div className="flex mt2">
           <button
-            className="mdc-button mdc-button--unelevated"
             type="submit"
-            onClick={this.handleSubmit}
+            className="mdc-button mdc-button--unelevated"
           >
             Save
           </button>

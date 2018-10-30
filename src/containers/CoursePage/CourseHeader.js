@@ -5,7 +5,7 @@ import {
   graphql,
 } from 'react-relay'
 import { Link, withRouter } from 'react-router-dom'
-import TextField, {Input} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import Icon from 'components/Icon'
 import AppleButton from 'components/AppleButton'
 import StudyLink from 'components/StudyLink'
@@ -17,12 +17,16 @@ class CourseHeader extends React.Component {
   state = {
     error: null,
     open: false,
-    name: this.props.course.name,
+    name: {
+      ...defaultTextFieldState,
+      value: get(this.props, "course.name", ""),
+      valid: true,
+    }
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
     })
   }
 
@@ -32,7 +36,7 @@ class CourseHeader extends React.Component {
     UpdateCourseMutation(
       this.props.course.id,
       null,
-      name,
+      name.value,
       (updatedCourse, errors) => {
         if (errors) {
           this.setState({ error: errors[0].message })
@@ -47,6 +51,19 @@ class CourseHeader extends React.Component {
 
   handleToggleOpen = () => {
     this.setState({ open: !this.state.open })
+    this.reset_()
+  }
+
+  reset_ = () => {
+    const course = get(this.props, "course", {})
+    this.setState({
+      error: null,
+      name: {
+        ...defaultTextFieldState,
+        value: course.name,
+        valid: true,
+      },
+    })
   }
 
   get classes() {
@@ -77,18 +94,16 @@ class CourseHeader extends React.Component {
             className="flex-auto"
             label="Name"
             floatingLabelClassName={!isEmpty(name) ? "mdc-floating-label--float-above" : ""}
-          >
-            <Input
-              name="name"
-              value={name}
-              onChange={this.handleChange}
-            />
-          </TextField>
+            inputProps={{
+              name: "name",
+              value: name.value,
+              onChange: this.handleChange,
+            }}
+          />
           <div className="rn-text-field__actions">
             <button
-              className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
               type="submit"
-              onClick={this.handleSubmit}
+              className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
             >
               Save
             </button>
@@ -110,7 +125,7 @@ class CourseHeader extends React.Component {
 
     return (
       <header className="rn-header">
-        <h5 className="rn-file-path">
+        <h4 className="rn-file-path">
           <UserLink className="rn-link rn-file-path__directory" user={get(course, "study.owner", null)} />
           <span className="rn-file-path__separator">/</span>
           <StudyLink className="rn-link rn-file-path__directory" study={get(course, "study", null)} />
@@ -132,7 +147,7 @@ class CourseHeader extends React.Component {
               edit
             </button>}
           </span>
-        </h5>
+        </h4>
         <div className="rn-header__actions">
           <div className="rn-combo-button rn-header__action rn-header__action--button">
             <AppleButton appleable={course} />

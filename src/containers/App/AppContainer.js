@@ -11,7 +11,6 @@ import NotFound from 'components/NotFound'
 
 import CreateStudyPage from 'containers/CreateStudyPage'
 import CoursePage from 'containers/CoursePage'
-import EnrolledStudiesPage from 'containers/EnrolledStudiesPage'
 import LessonPage from 'containers/LessonPage'
 import LoginPage from 'containers/LoginPage'
 import LogoutPage from 'containers/LogoutPage'
@@ -118,12 +117,7 @@ class AppContainer extends React.Component {
                       render={(routeProps) => <CreateStudyPage user={viewer} {...routeProps} />}
                     />
                     <PrivateRoute
-                      path="/enrolled"
-                      authenticated={authenticated}
-                      component={EnrolledStudiesPage}
-                    />
-                    <PrivateRoute
-                      path="/notifications"
+                      path="/(enrolled|notifications)"
                       authenticated={authenticated}
                       component={NotificationsPage}
                     />

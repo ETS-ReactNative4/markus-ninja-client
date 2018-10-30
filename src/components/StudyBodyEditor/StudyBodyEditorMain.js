@@ -50,6 +50,7 @@ class StudyBodyEditorMain extends React.Component {
   }
 
   handleClickTab_ = (e) => {
+    e.preventDefault()
     this.setState({tab: e.target.value})
   }
 

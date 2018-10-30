@@ -7,7 +7,7 @@ import {
 import { Link, withRouter } from 'react-router-dom'
 import MediaQuery from 'react-responsive'
 import List from 'components/List'
-import Menu from 'components/Menu'
+import Menu, {Corner} from 'components/mdc/Menu'
 import IconLink from 'components/IconLink'
 import LoginLink from 'components/LoginLink'
 import SearchBar from './SearchBar'
@@ -17,7 +17,16 @@ import './styles.css'
 
 class Header extends Component {
   state = {
+    anchorElement: null,
+    menuOpen: false,
     searchBarOpen: false,
+  }
+
+  setAnchorElement = (el) => {
+    if (this.state.anchorElement) {
+      return
+    }
+    this.setState({anchorElement: el})
   }
 
   get classes() {
@@ -92,12 +101,12 @@ class Header extends Component {
   }
 
   renderAuthLinks() {
-    const {menuOpen} = this.state
+    const {anchorElement, menuOpen} = this.state
 
     return (
       <React.Fragment>
         <section className="Header__auth-nav--collapsed mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-          <Menu.Anchor>
+          <Menu.Anchor innerRef={this.setAnchorElement}>
             <button
               type="button"
               className="material-icons mdc-top-app-bar__navigation-icon"
@@ -105,7 +114,13 @@ class Header extends Component {
             >
               menu
             </button>
-            <Menu open={menuOpen} fixed={true} onClose={() => this.setState({menuOpen: false})}>
+            <Menu
+              open={menuOpen}
+              fixed={true}
+              onClose={() => this.setState({menuOpen: false})}
+              anchorElement={anchorElement}
+              anchorCorner={Corner.BOTTOM_LEFT}
+            >
               <List>
                 <Link className="mdc-list-item" to="/notifications">
                   <span className="material-icons mdc-list-item__graphic">notifications</span>

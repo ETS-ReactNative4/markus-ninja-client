@@ -10,7 +10,7 @@ export default class TabBar extends Component {
   constructor(props) {
     super(props);
 
-    this.tabBarElement_ = null;
+    this.tabBarElement_ = React.createRef();
     this.tabList_ = React.Children.map(
       this.props.children,
       (child) => child ? React.createRef() : null,
@@ -38,12 +38,6 @@ export default class TabBar extends Component {
     this.foundation_.destroy();
   }
 
-  init = (el) => {
-    const {innerRef} = this.props;
-    this.tabBarElement_ = el;
-    innerRef(el);
-  }
-
   set focusOnActivate(focusOnActivate) {
     this.tabList_.forEach((tab) => tab.current.focusOnActivate = focusOnActivate);
   }
@@ -62,7 +56,7 @@ export default class TabBar extends Component {
       children,
       className,
       focusOnActivate,
-      innerRef,
+      isRtl,
       onClickTab,
       onKeyDown,
       onTabActivated,
@@ -78,8 +72,8 @@ export default class TabBar extends Component {
       incrementScroll: (scrollXIncrement) => this.tabScroller_.current && this.tabScroller_.current.incrementScroll(scrollXIncrement),
       getScrollPosition: () => this.tabScroller_.current && this.tabScroller_.current.getScrollPosition(),
       getScrollContentWidth: () => this.tabScroller_.current && this.tabScroller_.current.getScrollContentWidth(),
-      getOffsetWidth: () => this.tabBarElement_.offsetWidth,
-      isRTL: () => window.getComputedStyle(this.tabBarElement_).getPropertyValue('direction') === 'rtl',
+      getOffsetWidth: () => this.tabBarElement_ && this.tabBarElement_.current.offsetWidth,
+      isRTL: () => window.getComputedStyle(this.tabBarElement_.current).getPropertyValue('direction') === 'rtl',
       setActiveTab: (index) => this.foundation_.activateTab(index),
       activateTabAtIndex: (index, clientRect) => {
         const tab = this.tabList_[index]
@@ -150,11 +144,17 @@ export default class TabBar extends Component {
   }
 
   render() {
+    const {
+      isRtl
+    } = this.props
+
     return (
       <div
+        dir={isRtl ? 'rtl' : 'ltr'}
         className={this.classes}
+        role="tablist"
         onKeyDown={this.handleKeyDown_}
-        ref={this.init}
+        ref={this.tabBarElement_}
         {...this.otherProps}
       >
         <TabScroller ref={this.tabScroller_}>
@@ -189,8 +189,8 @@ TabBar.propTypes = {
     return error;
   },
   className: PropTypes.string,
+  isRtl: PropTypes.bool,
   focusOnActivate: PropTypes.bool,
-  innerRef: PropTypes.func,
   onClickTab: PropTypes.func,
   onKeyDown: PropTypes.func,
   onTabActivated: PropTypes.func,
@@ -201,7 +201,7 @@ TabBar.defaultProps = {
   className: '',
   children: null,
   focusOnActivate: false,
-  innerRef: () => {},
+  isRtl: false,
   onClickTab: () => {},
   onKeyDown: () => {},
   onTabActivated: () => {},

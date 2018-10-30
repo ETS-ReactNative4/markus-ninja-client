@@ -5,12 +5,20 @@ import {Link} from 'react-router-dom'
 import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import List from 'components/List'
-import Menu from 'components/Menu'
+import Menu, {Corner} from 'components/mdc/Menu'
 import { get } from 'utils'
 
 class ListTopicPreview extends React.Component {
   state = {
+    anchorElement: null,
     menuOpen: false,
+  }
+
+  setAnchorElement = (el) => {
+    if (this.state.anchorElement) {
+      return
+    }
+    this.setState({anchorElement: el})
   }
 
   get classes() {
@@ -19,7 +27,7 @@ class ListTopicPreview extends React.Component {
   }
 
   render() {
-    const {menuOpen} = this.state
+    const {anchorElement, menuOpen} = this.state
     const topic = get(this.props, "topic", {})
 
     return (
@@ -52,7 +60,7 @@ class ListTopicPreview extends React.Component {
                 {get(topic, "topicables.studyCount", 0)}
               </Link>
             </span>
-            <Menu.Anchor className="rn-list-preview__actions--collapsed">
+            <Menu.Anchor className="rn-list-preview__actions--collapsed" innerRef={this.setAnchorElement}>
               <button
                 type="button"
                 className="mdc-icon-button material-icons"
@@ -60,8 +68,13 @@ class ListTopicPreview extends React.Component {
               >
                 more_vert
               </button>
-              <Menu open={menuOpen} onClose={() => this.setState({menuOpen: false})}>
-                <List className="mdc-list--sub-list">
+              <Menu
+                open={menuOpen}
+                onClose={() => this.setState({menuOpen: false})}
+                anchorElement={anchorElement}
+                anchorCorner={Corner.BOTTOM_LEFT}
+              >
+                <List>
                   <Link
                     className="mdc-list-item"
                     to={topic.resourcePath+"?t=course"}

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
@@ -23,11 +22,6 @@ class ViewerEnrolledStudies extends React.Component {
     }
 
     relay.loadMore(STUDIES_PER_PAGE)
-  }
-
-  get classes() {
-    const {className} = this.props
-    return cls("ViewerEnrolledStudies mdc-layout-grid__inner", className)
   }
 
   render() {

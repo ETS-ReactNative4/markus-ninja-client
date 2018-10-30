@@ -1,28 +1,10 @@
 import * as React from 'react'
 import cls from 'classnames'
-import {
-  QueryRenderer,
-  graphql,
-} from 'react-relay'
-import environment from 'Environment'
 import NotificationsPageNav from './NotificationsPageNav'
-import ViewerNotifications from './ViewerNotifications'
-
-import { NOTIFICATIONS_PER_PAGE } from 'consts'
+import NotificationsTab from './NotificationsTab'
+import EnrolledStudiesTab from './EnrolledStudiesTab'
 
 import "./styles.css"
-
-const NotificationsPageQuery = graphql`
-  query NotificationsPageQuery(
-    $count: Int!,
-    $after: String
-  ) {
-    viewer {
-      id
-      ...ViewerNotifications_viewer
-    }
-  }
-`
 
 class NotificationsPage extends React.Component {
   get classes() {
@@ -31,34 +13,24 @@ class NotificationsPage extends React.Component {
   }
 
   render() {
+    const tab = this.props.match.params[0]
+
     return (
-      <QueryRenderer
-        environment={environment}
-        query={NotificationsPageQuery}
-        variables={{
-          count: NOTIFICATIONS_PER_PAGE,
-        }}
-        render={({error,  props}) => {
-          if (error) {
-            return <div>{error.message}</div>
-          } else if (props) {
-            return (
-              <div className={this.classes}>
-                <div className="mdc-layout-grid__inner">
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <NotificationsPageNav viewer={props.viewer} />
-                  </div>
-                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <ViewerNotifications viewer={props.viewer} />
-                  </div>
-                </div>
-              </div>
-            )
-          }
-          return <div>Loading</div>
-        }}
-      />
+      <div className={this.classes}>
+        <div className="mdc-layout-grid__inner">
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <NotificationsPageNav />
+          </div>
+          <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            {tab === "notifications"
+            ? <NotificationsTab />
+            : tab === "enrolled"
+              ? <EnrolledStudiesTab />
+            : null}
+          </div>
+        </div>
+      </div>
     )
   }
 }

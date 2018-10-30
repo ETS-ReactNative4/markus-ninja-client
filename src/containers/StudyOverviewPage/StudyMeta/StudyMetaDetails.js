@@ -1,16 +1,17 @@
-import React, {Component} from 'react'
+import * as React from 'react'
 import PropTypes from 'prop-types'
+import cls from 'classnames'
 import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router-dom';
-import TextField, {Input, HelperText} from '@material/react-text-field'
+import {HelperText} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateStudyMutation from 'mutations/UpdateStudyMutation'
 import { get, isEmpty, isNil } from 'utils'
-import cls from 'classnames'
 
-class StudyMetaDetails extends Component {
+class StudyMetaDetails extends React.Component {
   constructor(props) {
     super(props)
 
@@ -18,17 +19,18 @@ class StudyMetaDetails extends Component {
 
     this.state = {
       error: null,
-      description,
-      initialValues: {
-        description,
+      description: {
+        ...defaultTextFieldState,
+        value: description,
+        valid: true,
       },
       open: false,
     }
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
     })
   }
 
@@ -37,7 +39,7 @@ class StudyMetaDetails extends Component {
     const { description } = this.state
     UpdateStudyMutation(
       this.props.study.id,
-      description,
+      description.value,
       null,
       (error) => {
         if (!isNil(error)) {
@@ -58,9 +60,14 @@ class StudyMetaDetails extends Component {
   }
 
   reset_ = () => {
+    const study = get(this.props, "study", {})
     this.setState({
       error: null,
-      ...this.state.initialValues,
+      description: {
+        ...defaultTextFieldState,
+        value: study.description,
+        valid: true,
+      },
     })
   }
 
@@ -99,18 +106,16 @@ class StudyMetaDetails extends Component {
           textarea
           floatingLabelClassName={!isEmpty(description) ? "mdc-floating-label--float-above" : ""}
           helperText={this.renderHelperText()}
-        >
-          <Input
-            name="description"
-            value={description}
-            onChange={this.handleChange}
-          />
-        </TextField>
+          inputProps={{
+            name: "description",
+            value: description.value,
+            onChange: this.handleChange,
+          }}
+        />
         <div className="inline-flex items-center mt2">
           <button
-            className="mdc-button mdc-button--unelevated"
             type="submit"
-            onClick={this.handleSubmit}
+            className="mdc-button mdc-button--unelevated"
           >
             Save
           </button>

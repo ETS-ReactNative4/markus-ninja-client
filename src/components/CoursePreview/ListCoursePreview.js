@@ -7,12 +7,20 @@ import ListAppleButton from 'components/ListAppleButton'
 import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import List from 'components/List'
-import Menu from 'components/Menu'
+import Menu, {Corner} from 'components/mdc/Menu'
 import {get} from 'utils'
 
 class ListCoursePreview extends React.Component {
   state = {
+    anchorElement: null,
     menuOpen: false,
+  }
+
+  setAnchorElement = (el) => {
+    if (this.state.anchorElement) {
+      return
+    }
+    this.setState({anchorElement: el})
   }
 
   get classes() {
@@ -32,7 +40,7 @@ class ListCoursePreview extends React.Component {
   }
 
   render() {
-    const {menuOpen} = this.state
+    const {anchorElement, menuOpen} = this.state
     const course = get(this.props, "course", {})
     const topicNodes = get(course, "topics.nodes", [])
 
@@ -40,16 +48,25 @@ class ListCoursePreview extends React.Component {
       <li className={this.classes}>
         <span className="mdc-list-item">
           <Icon as="span" className="mdc-list-item__graphic" icon="course" />
-          <Link className="mdc-list-item__text" to={course.resourcePath}>
+          <span className="mdc-list-item__text">
             <span className="mdc-list-item__primary-text">
-              {course.name}
-              <span className="mdc-theme--text-secondary-on-light ml1">#{course.number}</span>
+              <Link className="rn-link" to={course.resourcePath}>
+                {course.name}
+                <span className="mdc-theme--text-secondary-on-light ml1">#{course.number}</span>
+              </Link>
             </span>
             <span className="mdc-list-item__secondary-text">
               <span className="mr1">{this.timestamp}</span>
-              by {get(course, "owner.login", "")}
+              by
+              <Link
+                className="rn-link rn-link--secondary ml1"
+                to={get(course, "owner.resourcePath", "")}
+              >
+                {get(course, "owner.login", "")}
+              </Link>
+
             </span>
-          </Link>
+          </span>
           <span className="rn-list-preview__tags">
             {topicNodes.map((node) =>
               node &&
@@ -75,7 +92,7 @@ class ListCoursePreview extends React.Component {
               </Link>
             </span>
           </span>
-          <Menu.Anchor className="rn-list-preview__actions--collapsed">
+          <Menu.Anchor className="rn-list-preview__actions--collapsed" innerRef={this.setAnchorElement}>
             <button
               type="button"
               className="mdc-icon-button material-icons"
@@ -83,8 +100,13 @@ class ListCoursePreview extends React.Component {
             >
               more_vert
             </button>
-            <Menu open={menuOpen} onClose={() => this.setState({menuOpen: false})}>
-              <List className="mdc-list--sub-list">
+            <Menu
+              open={menuOpen}
+              onClose={() => this.setState({menuOpen: false})}
+              anchorElement={anchorElement}
+              anchorCorner={Corner.BOTTOM_LEFT}
+            >
+              <List>
                 {course.viewerCanApple &&
                 <ListAppleButton
                   className="mdc-list-item"

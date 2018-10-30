@@ -22,16 +22,18 @@ class CardLessonPreview extends React.Component {
     return (
       <div className={this.classes}>
         <Link className="mdc-card__primary-action" to={lesson.resourcePath}>
-          <div className="pa3">
-            <h6 className="inline-flex-center">
-              <Icon as="span" className="mr2" icon="lesson" />
-              {lesson.title}
-            </h6>
-            <div className="mdc-typography--subtitle2 mdc-theme--text-secondary-on-light">
-              #{lesson.number} created on
-              <span className="mh1">{moment(lesson.createdAt).format("MMM D, YYYY")}</span>
-              by
-              <span className="ml1">{get(lesson, "author.login", "")}</span>
+          <div className="rn-card__header">
+            <Icon as="span" className="rn-card__header__graphic" icon="lesson" />
+            <div className="rn-card__text">
+              <h6 className="rn-card__title">
+                {lesson.title}
+              </h6>
+              <div className="rn-card__subtitle">
+                #{lesson.number} created on
+                <span className="mh1">{moment(lesson.createdAt).format("MMM D, YYYY")}</span>
+                by
+                <span className="ml1">{get(lesson, "author.login", "")}</span>
+              </div>
             </div>
           </div>
         </Link>

@@ -71,6 +71,7 @@ class ResearchPage extends React.Component {
                   <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     Research
                   </h4>
+                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <div className="mdc-layout-grid__inner">
                       <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">

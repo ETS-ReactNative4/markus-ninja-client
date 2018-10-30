@@ -81,9 +81,9 @@ class StudyOverviewPage extends React.Component {
                 <StudyMeta study={props.study}  />
                 {!isEmpty(lessons) &&
                 <React.Fragment>
-                  <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     Popular lessons
-                  </h5>
+                  </h4>
                   {lessons.map(({node}) => (
                     node &&
                     <div key={node.id} className="mdc-layout-grid__cell">
@@ -93,9 +93,9 @@ class StudyOverviewPage extends React.Component {
                 </React.Fragment>}
                 {!isEmpty(courses) &&
                 <React.Fragment>
-                  <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     Popular courses
-                  </h5>
+                  </h4>
                   {courses.map(({node}) => (
                     node &&
                     <div key={node.id} className="mdc-layout-grid__cell">

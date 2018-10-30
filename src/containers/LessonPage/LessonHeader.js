@@ -5,7 +5,7 @@ import {
   graphql,
 } from 'react-relay'
 import {withRouter} from 'react-router-dom';
-import TextField, {Input} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import Icon from 'components/Icon'
 import StudyLink from 'components/StudyLink'
@@ -17,12 +17,16 @@ class LessonHeader extends React.Component {
   state = {
     error: null,
     open: false,
-    title: this.props.lesson.title,
+    title: {
+      ...defaultTextFieldState,
+      value: get(this.props, "lesson.title", ""),
+      valid: true,
+    }
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
     })
   }
 
@@ -31,7 +35,7 @@ class LessonHeader extends React.Component {
     const { title } = this.state
     UpdateLessonMutation(
       this.props.lesson.id,
-      title,
+      title.value,
       null,
       (updatedLesson, errors) => {
         if (!isNil(errors)) {
@@ -47,6 +51,18 @@ class LessonHeader extends React.Component {
 
   handleToggleOpen = () => {
     this.setState({ open: !this.state.open })
+  }
+
+  reset_ = () => {
+    const lesson = get(this.props, "lesson", {})
+    this.setState({
+      error: null,
+      title: {
+        ...defaultTextFieldState,
+        value: lesson.title,
+        valid: true,
+      },
+    })
   }
 
   get classes() {
@@ -76,19 +92,17 @@ class LessonHeader extends React.Component {
           <TextField
             label="Title"
             floatingLabelClassName={!isEmpty(title) ? "mdc-floating-label--float-above" : ""}
-          >
-            <Input
-              name="title"
-              value={title}
-              required
-              onChange={this.handleChange}
-            />
-          </TextField>
+            inputProps={{
+              name: "title",
+              value: title.value,
+              required: true,
+              onChange: this.handleChange,
+            }}
+          />
           <div className="rn-text-field__actions">
             <button
-              className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
               type="submit"
-              onClick={this.handleSubmit}
+              className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
             >
               Save
             </button>
@@ -110,14 +124,14 @@ class LessonHeader extends React.Component {
 
     return (
       <header className="rn-header">
-        <h5 className="rn-file-path">
+        <h4 className="rn-header__title rn-file-path">
           <UserLink className="rn-link rn-file-path__directory" user={get(lesson, "study.owner", null)} />
           <span className="rn-file-path__separator">/</span>
           <StudyLink className="rn-link rn-file-path__directory" study={get(lesson, "study", null)} />
           <span className="rn-file-path__separator">/</span>
           <span className="rn-file-path__file">
+            <Icon className="rn-file-path__file__icon" icon="lesson" />
             <span className="rn-file-path__file__text">
-              <Icon className="v-mid mr1" icon="lesson" />
               <span className="fw5">{lesson.title}</span>
               <span className="mdc-theme--text-hint-on-light ml2">#{lesson.number}</span>
             </span>
@@ -132,10 +146,13 @@ class LessonHeader extends React.Component {
               edit
             </button>}
           </span>
-        </h5>
-        <div className="rn-header__meta">
+        </h4>
+        <div className="rn-header__actions">
           {lesson.viewerCanEnroll &&
-          <EnrollmentSelect enrollable={lesson} />}
+          <EnrollmentSelect
+            className="rn-header__action rn-header__action--button"
+            enrollable={lesson}
+          />}
         </div>
       </header>
     )

@@ -82,9 +82,9 @@ class CreateCourseForm extends React.Component {
           <button
             type="submit"
             className="mdc-button mdc-button--unelevated"
-            disabled={!this.isFormValid}
           >
-          Create course</button>
+            Create course
+          </button>
         </div>
         <ErrorText
           className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"

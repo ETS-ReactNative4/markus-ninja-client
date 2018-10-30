@@ -3,29 +3,10 @@
 @import "@material/theme/mixins";
 
 .rn-list-preview { 
-  position: relative;
-  overflow: visible;
-
-  >.mdc-list-item {
-    position: unset;
-    // Needed to fix overflow being hidden (`transform` causes the issue) 
-    will-change: unset !important;
-
-    // Need to remove hover effects, because they rely on relative position
-    &::before,
-    &::after {
-      content: none !important;
+  .mdc-list-item .mdc-list-item__graphic {
+    @include mdc-layout-grid-media-query_(phone) {
+      margin-right: 16px;
     }
-
-    >.mdc-list-item__graphic {
-      @include mdc-layout-grid-media-query_(phone) {
-        margin-right: 16px;
-      }
-    }
-  }
-
-  .mdc-menu-surface--anchor {
-    position: unset;
   }
 }
 
