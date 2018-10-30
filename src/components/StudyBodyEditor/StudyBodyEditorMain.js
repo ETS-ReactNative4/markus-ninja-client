@@ -7,8 +7,8 @@ import {
   EditorState,
 } from 'draft-js'
 import Dialog from 'components/Dialog'
-import Tab from 'components/Tab'
-import TabBar from 'components/TabBar'
+import Tab from 'components/mdc/Tab'
+import TabBar from 'components/mdc/TabBar'
 import AttachFile from './AttachFile'
 import Context from './Context'
 import Preview from './Preview'
@@ -22,7 +22,7 @@ class StudyBodyEditorMain extends React.Component {
     this.state = {
       confirmCancelDialogOpen: false,
       loading: false,
-      preview: false,
+      tab: "write",
     }
   }
 
@@ -49,6 +49,10 @@ class StudyBodyEditorMain extends React.Component {
     this.props.onChange(editorState.getCurrentContent().getPlainText())
   }
 
+  handleClickTab_ = (e) => {
+    this.setState({tab: e.target.value})
+  }
+
   handleToggleCancelConfirmation = () => {
     if (this.text !== this.props.initialValue) {
       const {confirmCancelDialogOpen} = this.state
@@ -67,10 +71,10 @@ class StudyBodyEditorMain extends React.Component {
   }
 
   get classes() {
-    const {preview} = this.state
+    const {tab} = this.state
     const {className} = this.props
     return cls("StudyBodyEditorMain", className, {
-      "StudyBodyEditorMain--preview": preview,
+      "StudyBodyEditorMain--preview": tab === "preview",
     })
   }
 
@@ -80,7 +84,7 @@ class StudyBodyEditorMain extends React.Component {
 
   render() {
     const {editorState, toggleSaveDialog} = this.context
-    const {loading, preview} = this.state
+    const {loading, tab} = this.state
     const {placeholder, showFormButtonsFor, study} = this.props
 
     return (
@@ -88,7 +92,7 @@ class StudyBodyEditorMain extends React.Component {
         {this.renderNav()}
         <div className="StudyBodyEditorMain__preview mdc-card mdc-card--outlined">
           <Preview
-            open={preview}
+            open={tab === "preview"}
             studyId={study.id}
             text={this.text}
           />
@@ -188,16 +192,14 @@ class StudyBodyEditorMain extends React.Component {
   }
 
   renderNav() {
-    const {preview} = this.state
+    const {tab} = this.state
 
     return (
-      <TabBar className="mb2">
+      <TabBar className="mb2" onClickTab={this.handleClickTab_}>
         <Tab
-          active={!preview}
+          active={tab === "write"}
           minWidth
-          as="button"
-          type="button"
-          onClick={() => this.setState({preview: false})}
+          value="write"
         >
           <span className="mdc-tab__content">
             <span className="mdc-tab__text-label">
@@ -206,11 +208,9 @@ class StudyBodyEditorMain extends React.Component {
           </span>
         </Tab>
         <Tab
-          active={preview}
+          active={tab === "preview"}
           minWidth
-          as="button"
-          type="button"
-          onClick={() => this.setState({preview: true})}
+          value="preview"
         >
           <span className="mdc-tab__content">
             <span className="mdc-tab__text-label">

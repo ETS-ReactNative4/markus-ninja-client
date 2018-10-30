@@ -34,9 +34,10 @@ class ViewerReceivedActivity extends React.Component {
     return (
       <div className={this.classes}>
         <div className="mdc-layout-grid__inner">
-          <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             Recent activity
-          </h5>
+          </h4>
+          <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
           {isEmpty(edges)
             ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                 There is no recent activity.

@@ -15,7 +15,7 @@ import {get} from 'utils'
 class AppledEvent extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("AppledEvent mdc-list-item", className)
+    return cls("AppledEvent rn-list-preview", className)
   }
 
   get appleableType() {
@@ -36,34 +36,36 @@ class AppledEvent extends React.Component {
 
     return (
       <li className={this.classes}>
-        <FontAwesomeIcon
-          className="mdc-list-item__graphic"
-          aria-label="Appled"
-          title="Appled"
-          icon={faApple}
-        />
-        <span className="mdc-list-item__text">
-          <span className="mdc-list-item__primary-text">
-            {withUser &&
-            <UserLink className="rn-link fw5" user={get(event, "user", null)} />}
-            <span className="ml1">
-              {withUser ? 'a' : 'A'}ppled a {this.appleableType}
+        <span className="mdc-list-item">
+          <FontAwesomeIcon
+            className="mdc-list-item__graphic"
+            aria-label="Appled"
+            title="Appled"
+            icon={faApple}
+          />
+          <span className="mdc-list-item__text">
+            <span className="mdc-list-item__primary-text">
+              {withUser &&
+              <UserLink className="rn-link fw5" user={get(event, "user", null)} />}
+              <span className="ml1">
+                {withUser ? 'a' : 'A'}ppled a {this.appleableType}
+              </span>
+              <Link className="rn-link fw5 ml1" to={appleable.resourcePath}>
+                {appleable.name}
+              </Link>
             </span>
-            <Link className="rn-link fw5 ml1" to={appleable.resourcePath}>
-              {appleable.name}
+            <span className="mdc-list-item__secondary-text">
+              Appled on {moment(event.createdAt).format("MMM D, YYYY")}
+            </span>
+          </span>
+          <span className="mdc-list-item__meta">
+            <Link
+              className="mdc-icon-button"
+              to={appleable.resourcePath}
+            >
+              <Icon className="rn-icon-link__icon" icon={this.appleableType} />
             </Link>
           </span>
-          <span className="mdc-list-item__secondary-text">
-            Appled on {moment(event.createdAt).format("MMM D, YYYY")}
-          </span>
-        </span>
-        <span className="mdc-list-item__meta">
-          <Link
-            className="mdc-icon-button"
-            to={appleable.resourcePath}
-          >
-            <Icon className="rn-icon-link__icon" icon={this.appleableType} />
-          </Link>
         </span>
       </li>
     )

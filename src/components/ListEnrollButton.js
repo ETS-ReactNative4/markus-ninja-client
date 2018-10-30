@@ -1,15 +1,10 @@
 import * as React from 'react'
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import { get, isNil } from 'utils'
 import UpdateEnrollmentMutation from 'mutations/UpdateEnrollmentMutation'
 
-import './styles.css'
-
-export class ListEnrollButton extends React.Component {
+class ListEnrollButton extends React.Component {
   state = {
     on: this.isEnrolled,
   }
@@ -58,13 +53,29 @@ export class ListEnrollButton extends React.Component {
     return cls("mdc-list-item", className)
   }
 
+  get text() {
+    const {notification} = this.props
+    const viewerIsEnrolled = this.isEnrolled
+    if (viewerIsEnrolled) {
+      if (notification) {
+        return "Unsubscribe"
+      } else {
+        return "Unenroll"
+      }
+    } else {
+      if (notification) {
+        return "Subscribe"
+      } else {
+        return "Enroll"
+      }
+    }
+  }
+
   render() {
     const {on} = this.state
-    const enrollable = get(this.props, "enrollable", null)
-    const viewerIsEnrolled = this.isEnrolled
-    if (isNil(enrollable)) {
-      return null
-    }
+    const {enrollable, notification} = this.props
+
+    if (!enrollable) return null;
 
     return (
       <li
@@ -79,20 +90,26 @@ export class ListEnrollButton extends React.Component {
             "mdc-theme--secondary": on,
           },
         )} >
-          school
+          {notification && on
+          ? "notifications"
+          : notification && !on
+            ? "notifications_off"
+          : "school"}
         </i>
         <span className="mdc-list-item__text">
-          {viewerIsEnrolled ? "Unenroll" : "Enroll"}
+          {this.text}
         </span>
       </li>
     )
   }
 }
 
-export default createFragmentContainer(ListEnrollButton, graphql`
-  fragment ListEnrollButton_enrollable on Enrollable {
-    enrollmentStatus
-    id
-    viewerCanEnroll
-  }
-`)
+ListEnrollButton.propTypes = {
+  notification: PropTypes.bool,
+}
+
+ListEnrollButton.defaultProps = {
+  notification: false,
+}
+
+export default ListEnrollButton

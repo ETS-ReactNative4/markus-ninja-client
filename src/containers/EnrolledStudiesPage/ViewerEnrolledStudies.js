@@ -44,11 +44,13 @@ class ViewerEnrolledStudies extends React.Component {
             <div className="mdc-list">
               <li role="separator" className="mdc-list-divider" />
               {enrolledEdges.map(({node}) => (
-                <li key={node.id} className="mdc-list-item">
-                  <Icon as="span" className="mdc-list-item__graphic" icon="study" />
-                  <StudyLink study={node} />
-                  <span className="mdc-list-item__meta">
-                    <EnrollIconButton enrollable={node} />
+                <li key={node.id} className="rn-list-preview">
+                  <span className="mdc-list-item">
+                    <Icon as="span" className="mdc-list-item__graphic" icon="study" />
+                    <StudyLink study={node} />
+                    <span className="mdc-list-item__meta">
+                      <EnrollIconButton enrollable={node} />
+                    </span>
                   </span>
                 </li>
               ))}

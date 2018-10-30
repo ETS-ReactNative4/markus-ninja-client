@@ -1,7 +1,8 @@
 import * as React from 'react'
 import {withRouter} from 'react-router-dom'
-import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
+import pluralize from 'pluralize'
+import TextField, {Icon, Input} from '@material/react-text-field'
 import {SearchProp, SearchPropDefaults} from 'components/Search'
 import SearchNav from './SearchNav'
 import SearchResults from 'components/SearchResults'
@@ -14,7 +15,10 @@ class SearchPageResults extends React.Component {
     const searchQuery = queryString.parse(get(this.props, "location.search", ""))
     const q = get(searchQuery, "q", "")
 
-    this.state = {q}
+    this.state = {
+      open: false,
+      q,
+    }
   }
 
   handleChange = (e) => {
@@ -34,20 +38,38 @@ class SearchPageResults extends React.Component {
     history.replace({pathname: location.pathname, search})
   }, 100)
 
+  get type() {
+    const {type} = this.props.search
+    if (type === "USER_ASSET") return "Assets";
+    const pluralType = pluralize(type.toLowerCase())
+    return pluralType.charAt(0).toUpperCase() + pluralType.slice(1)
+  }
+
   render() {
+    const {open} = this.state
     const {search} = this.props
 
     return (
       <React.Fragment>
-        <SearchNav counts={search.counts} />
-        <div className="flex-auto">
-          <div className="mdc-layout-grid">
-            <div className="mdc-layout-grid__inner">
-              <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                {this.renderInput()}
+        <SearchNav open={open} counts={search.counts} onClose={() => this.setState({open: false})}/>
+        <div className="mdc-layout-grid">
+          <div className="mdc-layout-grid__inner">
+            <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              <div className="flex items-center">
+                <h4>{this.type}</h4>
+                <button
+                  type="button"
+                  className="mdc-button ml2"
+                  onClick={() => this.setState({open: !open})}
+                >
+                  Change type
+                </button>
               </div>
-              <SearchResults search={search} />
             </div>
+            <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              {this.renderInput()}
+            </div>
+            <SearchResults search={search} />
           </div>
         </div>
       </React.Fragment>

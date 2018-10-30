@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import cls from 'classnames'
 import queryString from 'query-string'
 import { Link, withRouter } from 'react-router-dom'
+import Drawer from 'components/mdc/Drawer'
 import Icon from 'components/Icon'
 import List from 'components/List'
 import Counter from 'components/Counter'
@@ -44,18 +45,24 @@ class SearchNav extends React.Component {
     const searchUserAssets = queryString.stringify(query)
 
     return (
-      <aside className="SearchNav mdc-drawer mdc-typography">
-        <header className="mdc-drawer__header">
-          <div className="mdc-drawer__title">
+      <Drawer
+        className={this.classes}
+        modal
+        open={this.props.open}
+        onClose={this.props.onClose}
+      >
+        <Drawer.Header>
+          <Drawer.Title>
             Search
-          </div>
-        </header>
-        <div className="mdc-drawer__content">
+          </Drawer.Title>
+        </Drawer.Header>
+        <Drawer.Content>
           <List as="nav">
             <div role="separator" className="mdc-list-divider"></div>
             <Link
               {...this.getItemProps(type === 'course')}
               to={{pathname, search: searchCourses}}
+              onClick={this.props.onClose}
             >
               <Icon as="span" className="mdc-list-item__graphic" icon="course" />
               Courses
@@ -64,6 +71,7 @@ class SearchNav extends React.Component {
             <Link
               {...this.getItemProps(type === 'lesson')}
               to={{pathname, search: searchLessons}}
+              onClick={this.props.onClose}
             >
               <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
               Lessons
@@ -72,6 +80,7 @@ class SearchNav extends React.Component {
             <Link
               {...this.getItemProps(type === 'study')}
               to={{pathname, search: searchStudies}}
+              onClick={this.props.onClose}
             >
               <Icon as="span" className="mdc-list-item__graphic" icon="study" />
               Studies
@@ -80,6 +89,7 @@ class SearchNav extends React.Component {
             <Link
               {...this.getItemProps(type === 'topic')}
               to={{pathname, search: searchTopics}}
+              onClick={this.props.onClose}
             >
               <Icon as="span" className="mdc-list-item__graphic" icon="topic" />
               Topics
@@ -88,6 +98,7 @@ class SearchNav extends React.Component {
             <Link
               {...this.getItemProps(type === 'user')}
               to={{pathname, search: searchUsers}}
+              onClick={this.props.onClose}
             >
               <Icon as="span" className="mdc-list-item__graphic" icon="user" />
               Users
@@ -96,14 +107,15 @@ class SearchNav extends React.Component {
             <Link
               {...this.getItemProps(type === 'user_asset')}
               to={{pathname, search: searchUserAssets}}
+              onClick={this.props.onClose}
             >
               <Icon as="span" className="mdc-list-item__graphic" icon="asset" />
               Assets
               <Counter>{counts.userAsset}</Counter>
             </Link>
           </List>
-        </div>
-      </aside>
+        </Drawer.Content>
+      </Drawer>
     )
   }
 }
@@ -117,6 +129,7 @@ SearchNav.propTypes = {
     user: PropTypes.number,
     userAsset: PropTypes.number,
   }).isRequired,
+  onClose: PropTypes.func,
 }
 
 SearchNav.defaultProps = {
@@ -127,7 +140,8 @@ SearchNav.defaultProps = {
     topic: 0,
     user: 0,
     userAsset: 0,
-  }
+  },
+  onClose: () => {},
 }
 
 export default withRouter(SearchNav)

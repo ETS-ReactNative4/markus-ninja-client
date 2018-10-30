@@ -102,10 +102,7 @@ class ListStudyPreview extends React.Component {
               <Menu open={menuOpen} onClose={() => this.setState({menuOpen: false})}>
                 <List className="mdc-list--sub-list">
                   {study.viewerCanEnroll &&
-                  <ListEnrollButton
-                    className="mdc-list-item"
-                    enrollable={get(this.props, "study", null)}
-                  />}
+                  <ListEnrollButton enrollable={this.props.study} />}
                   {study.viewerCanApple &&
                   <ListAppleButton
                     className="mdc-list-item"

@@ -38,7 +38,7 @@ class UserStudyApples extends React.Component {
               to those you like.
             </div>
           : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-              No apples found.
+              No studies found.
             </div>)
         : <React.Fragment>
             {appledEdges.map(({node}) => (

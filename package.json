@@ -38,6 +38,7 @@
     "classnames": "^2.2.6",
     "draft-js": "^0.10.5",
     "focus-trap": "^3.0.0",
+    "focus-trap-react": "^4.0.1",
     "graphql": "^0.13.2",
     "highlightjs": "^9.10.0",
     "hoist-non-react-statics": "^3.0.1",

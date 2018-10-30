@@ -7,6 +7,7 @@ import {
 import environment from 'Environment'
 import IconLink from 'components/IconLink'
 import UserLink from 'components/UserLink'
+import Drawer from 'components/mdc/Drawer'
 import SearchViewerStudies from './SearchViewerStudies'
 import ViewerReceivedActivity from './ViewerReceivedActivity'
 import { EVENTS_PER_PAGE } from 'consts'
@@ -26,9 +27,13 @@ const DashboardPageQuery = graphql`
 `
 
 class DashboardPage extends React.Component {
+  state = {
+    drawerOpen: false,
+  }
+
   get classes() {
     const {className} = this.props
-    return cls("DashboardPage rn-page", className)
+    return cls("DashboardPage", className)
   }
 
   render() {
@@ -43,14 +48,27 @@ class DashboardPage extends React.Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            const {drawerOpen} = this.state
+
             return (
               <div className={this.classes}>
-                <aside className="DashboardPage__nav mdc-drawer">
-                  <div className="mdc-drawer__header">
-                    <h4 className="mdc-drawer__title">
+                <button
+                  type="button"
+                  className="mdc-button"
+                  onClick={() => this.setState({drawerOpen: !drawerOpen})}
+                >
+                  Search your studies
+                </button>
+                <Drawer
+                  modal
+                  open={drawerOpen}
+                  onClose={() => this.setState({drawerOpen: false})}
+                >
+                  <Drawer.Header>
+                    <Drawer.Title>
                       <UserLink className="rn-link" user={props.viewer} />
-                    </h4>
-                    <h6 className="mdc-drawer__subtitle">
+                    </Drawer.Title>
+                    <Drawer.Subtitle>
                       <div className="flex relative items-center justify-start">
                         <span>
                           Studies
@@ -65,15 +83,13 @@ class DashboardPage extends React.Component {
                           </IconLink>
                         </span>
                       </div>
-                    </h6>
-                  </div>
-                  <div className="mdc-drawer__content">
+                    </Drawer.Subtitle>
+                  </Drawer.Header>
+                  <Drawer.Content>
                     <SearchViewerStudies />
-                  </div>
-                </aside>
-                <div className="flex-auto">
-                  <ViewerReceivedActivity viewer={props.viewer} />
-                </div>
+                  </Drawer.Content>
+                </Drawer>
+                <ViewerReceivedActivity viewer={props.viewer} />
               </div>
             )
           }

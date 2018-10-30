@@ -13,7 +13,7 @@ import {get} from 'utils'
 class ReferencedEvent extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("ReferencedEvent mdc-list-item", className)
+    return cls("ReferencedEvent rn-list-preview", className)
   }
 
   render() {
@@ -22,29 +22,31 @@ class ReferencedEvent extends React.Component {
 
     return (
       <li className={this.classes}>
-        <Icon className="mdc-list-item__graphic" icon="reference" />
-        <span className="mdc-list-item__text">
-          <UserLink className="rn-link fw5" user={get(event, "user", null)} />
-          <span className="ml1">
-            {event.isCrossStudy && "cross-"}referenced this on {moment(event.createdAt).format("MMM D")} from
-          </span>
-          <Link
-            className="rn-link fw5 ml1"
-            to={source.resourcePath}
-          >
-            {source.title}
-            <span className="mdc-theme--text-secondary-on-light ml1">
-              #{source.number}
+        <span className="mdc-list-item">
+          <Icon className="mdc-list-item__graphic" icon="reference" />
+          <span className="mdc-list-item__text">
+            <UserLink className="rn-link fw5" user={get(event, "user", null)} />
+            <span className="ml1">
+              {event.isCrossStudy && "cross-"}referenced this on {moment(event.createdAt).format("MMM D")} from
             </span>
-          </Link>
-        </span>
-        <span className="mdc-list-item__meta">
-          <Link
-            className="mdc-icon-button"
-            to={source.resourcePath}
-          >
-            <Icon className="rn-icon-link__icon" icon="lesson" />
-          </Link>
+            <Link
+              className="rn-link fw5 ml1"
+              to={source.resourcePath}
+            >
+              {source.title}
+              <span className="mdc-theme--text-secondary-on-light ml1">
+                #{source.number}
+              </span>
+            </Link>
+          </span>
+          <span className="mdc-list-item__meta">
+            <Link
+              className="mdc-icon-button"
+              to={source.resourcePath}
+            >
+              <Icon className="rn-icon-link__icon" icon="lesson" />
+            </Link>
+          </span>
         </span>
       </li>
     )

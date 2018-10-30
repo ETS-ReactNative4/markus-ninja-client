@@ -1,33 +1,38 @@
 import * as React from 'react'
 import cls from 'classnames'
+import List from 'components/List'
 import {UserStudiesProp, UserStudiesPropDefaults} from 'components/UserStudies'
 import StudyLink from 'components/StudyLink'
+import {isEmpty} from 'utils'
 
 class ViewerStudies extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("ViewerStudies mdc-list", className)
+    return cls("ViewerStudies", className)
   }
 
   render() {
     const {studies} = this.props
-    const {edges, hasMore, loadMore} = studies
+    const {edges, hasMore, isLoading, loadMore} = studies
+    const noResults = isEmpty(edges)
 
     return (
-      <div className={this.classes}>
-        {edges.map(({node}) => (
-          node && <StudyLink className="mdc-list-item" key={node.id} study={node} />
-        ))}
+      <List className={this.classes}>
+        {isLoading
+        ? <li className="mdc-list-item">Loading...</li>
+        : noResults
+          ? <li className="mdc-list-item">No studies were found</li>
+        : edges.map(({node}) => (
+            node && <StudyLink className="mdc-list-item" key={node.id} study={node} />
+          ))}
         {hasMore &&
-        <div className="mdc-list-item">
-          <button
-            className="mdc-button mdc-button--unelevated"
-            onClick={loadMore}
-          >
-            More
-          </button>
-        </div>}
-      </div>
+        <List.Item
+          className="mdc-button mdc-theme--primary"
+          onClick={loadMore}
+        >
+          Load More
+        </List.Item>}
+      </List>
     )
   }
 }

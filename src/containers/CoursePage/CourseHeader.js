@@ -72,7 +72,7 @@ class CourseHeader extends React.Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <div className="inline-flex items-center flex-wrap w-100">
+        <div className="rn-text-field">
           <TextField
             className="flex-auto"
             label="Name"
@@ -84,20 +84,22 @@ class CourseHeader extends React.Component {
               onChange={this.handleChange}
             />
           </TextField>
-          <button
-            className="mdc-button mdc-button--unelevated ml2"
-            type="submit"
-            onClick={this.handleSubmit}
-          >
-            Save
-          </button>
-          <button
-            className="mdc-button ml2"
-            type="button"
-            onClick={this.handleToggleOpen}
-          >
-            Cancel
-          </button>
+          <div className="rn-text-field__actions">
+            <button
+              className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
+              type="submit"
+              onClick={this.handleSubmit}
+            >
+              Save
+            </button>
+            <button
+              className="mdc-button rn-text-field__action rn-text-field__action--button"
+              type="button"
+              onClick={this.handleToggleOpen}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </form>
     )

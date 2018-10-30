@@ -6,12 +6,19 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import Icon from 'components/Icon'
+import List from 'components/List'
+import Menu from 'components/Menu'
 import NotificationButton from 'components/NotificationButton'
+import ListEnrollButton from 'components/ListEnrollButton'
 import MarkNotificationAsReadMutation from 'mutations/MarkNotificationAsReadMutation'
 import UpdateEnrollmentMutation from 'mutations/UpdateEnrollmentMutation'
 import {get, isNil, timeDifferenceForDate} from 'utils'
 
 class Notification extends React.Component {
+  state = {
+    menuOpen: false,
+  }
+
   handleMarkAsRead = (e) => {
     const notificationId = get(this.props, "notification.id", "")
 
@@ -40,34 +47,36 @@ class Notification extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("Notification mdc-list-item rn-list-preview", className)
+    return cls("Notification rn-list-preview", className)
   }
 
   render() {
+    const {menuOpen} = this.state
     const notification = get(this.props, "notification", {})
     const subject = get(this.props, "notification.subject", {})
 
     return (
       <li className={this.classes}>
-        <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
-        <span className="mdc-list-item__text pointer" onClick={this.handleMarkAsRead}>
-          <span className="mdc-list-item__primary-text">{subject.title}</span>
-          <span className="mdc-list-item__secondary-text">
-            {timeDifferenceForDate(notification.createdAt)}
+        <span className="mdc-list-item">
+          <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
+          <span className="mdc-list-item__text pointer" onClick={this.handleMarkAsRead}>
+            <span className="mdc-list-item__primary-text">{subject.title}</span>
+            <span className="mdc-list-item__secondary-text">
+              {timeDifferenceForDate(notification.createdAt)}
+            </span>
           </span>
-        </span>
-        <span className="mdc-list-item__meta">
-          <div className="mdc-list-item__meta-actions mdc-list-item__meta-actions--collapsible">
-            <div className="mdc-list-item__meta-actions--spread">
+          <span className="mdc-list-item__meta rn-list-preview__actions">
+            <span className="rn-list-preview__actions--spread">
               <NotificationButton enrollable={subject} />
-              <span
+              <button
+                type="button"
                 className="mdc-icon-button material-icons"
                 onClick={this.handleMarkAsRead}
                 title="Mark as read"
                 aria-label="Mark as read"
               >
                 done
-              </span>
+              </button>
               <span
                 className="Notification__why"
                 aria-label={notification.reason}
@@ -75,8 +84,32 @@ class Notification extends React.Component {
               >
                 ?
               </span>
-            </div>
-          </div>
+            </span>
+            <Menu.Anchor className="rn-list-preview__actions--collapsed">
+              <button
+                type="button"
+                className="mdc-icon-button material-icons"
+                onClick={() => this.setState({menuOpen: !menuOpen})}
+              >
+                more_vert
+              </button>
+              <Menu open={menuOpen} onClose={() => this.setState({menuOpen: false})}>
+                <List className="mdc-list--sub-list">
+                  {subject.viewerCanEnroll &&
+                  <ListEnrollButton notification enrollable={subject} />}
+                  <li
+                    className="mdc-list-item"
+                    onClick={this.handleMarkAsRead}
+                  >
+                    <span className="mdc-list-item__graphic material-icons">
+                      done
+                    </span>
+                    <span className="mdc-list-item__text">Mark as read</span>
+                  </li>
+                </List>
+              </Menu>
+            </Menu.Anchor>
+          </span>
         </span>
       </li>
     )
@@ -90,9 +123,11 @@ export default withRouter(createFragmentContainer(Notification, graphql`
     reason
     subject {
       ...NotificationButton_enrollable
+      enrollmentStatus
       id
       title
       resourcePath
+      viewerCanEnroll
     }
   }
 `))

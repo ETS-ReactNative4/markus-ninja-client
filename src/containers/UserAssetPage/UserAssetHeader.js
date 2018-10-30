@@ -72,32 +72,34 @@ class UserAssetHeader extends React.Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <div className="inline-flex items-center w-100">
+        <div className="rn-text-field">
           <TextField
-            className="flex-auto"
             label="Name"
             floatingLabelClassName={"mdc-floating-label--float-above"}
           >
             <Input
               name="name"
               value={name}
+              required
               onChange={this.handleChange}
             />
           </TextField>
-          <button
-            className="mdc-button mdc-button--unelevated ml2"
-            type="submit"
-            onClick={this.handleSubmit}
-          >
-            Save
-          </button>
-          <button
-            className="mdc-button ml2"
-            type="button"
-            onClick={this.handleToggleOpen}
-          >
-            Cancel
-          </button>
+          <div className="rn-text-field__actions">
+            <button
+              className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
+              type="submit"
+              onClick={this.handleSubmit}
+            >
+              Save
+            </button>
+            <button
+              className="mdc-button rn-text-field__action rn-text-field__action--button"
+              type="button"
+              onClick={this.handleToggleOpen}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </form>
       )
@@ -107,24 +109,28 @@ class UserAssetHeader extends React.Component {
     const asset = get(this.props, "asset", {})
 
     return (
-      <div className="inline-flex w-100">
-        <h5 className="flex-auto">
-          <UserLink className="rn-link" user={get(asset, "study.owner", null)} />
-          <span>/</span>
-          <StudyLink className="rn-link" study={get(asset, "study", null)} />
-          <span>/</span>
-          <Icon className="v-mid mr1" icon="asset" />
-          <span className="fw5">{asset.name}</span>
-        </h5>
-        {asset.viewerCanUpdate &&
-        <button
-          className="material-icons mdc-icon-button mdc-theme--text-icon-on-background"
-          type="button"
-          onClick={this.handleToggleOpen}
-        >
-          edit
-        </button>}
-      </div>
+      <header className="rn-header">
+        <h4 className="rn-file-path">
+          <UserLink className="rn-link rn-file-path__directory" user={get(asset, "study.owner", null)} />
+          <span className="rn-file-path__separator">/</span>
+          <StudyLink className="rn-link rn-file-path__directory" study={get(asset, "study", null)} />
+          <span className="rn-file-path__separator">/</span>
+          <span className="rn-file-path__file">
+            <span className="rn-file-path__file__text">
+              <Icon className="v-mid mr1" icon="asset" />
+              <span className="fw5">{asset.name}</span>
+            </span>
+            {asset.viewerCanUpdate &&
+            <button
+              className="material-icons mdc-icon-button rn-file-path__file__icon"
+              type="button"
+              onClick={this.handleToggleOpen}
+            >
+              edit
+            </button>}
+          </span>
+        </h4>
+      </header>
     )
   }
 }

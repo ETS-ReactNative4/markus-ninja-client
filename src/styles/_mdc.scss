@@ -13,6 +13,11 @@
   }
 }
 
+// Fixes size of FontAwesomeIcon within mdc-list-item
+.mdc-list-item__graphic.svg-inline--fa {
+  width: 24px;
+}
+
 //====================================
 // Get FontAwesome icon to work with mdc
 .mdc-icon-button__icon {

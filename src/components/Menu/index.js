@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import cls from 'classnames'
 import {MDCMenuFoundation} from '@material/menu/dist/mdc.menu'
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/dist/mdc.menuSurface'
+import List from 'components/List'
 import MenuSurface from 'components/MenuSurface'
 
 import MenuSelectionGroup from './MenuSelectionGroup'
@@ -244,10 +245,7 @@ class Menu extends React.Component {
   }
 
   renderList() {
-    let {list} = this.props
-    if (!list) {
-      list = React.Children.only(this.props.children)
-    }
+    const list = React.Children.only(this.props.children)
     const props = Object.assign({
       ref: this.list_,
       role: "menu",
@@ -259,10 +257,18 @@ class Menu extends React.Component {
 
 Menu.propTypes = {
   as: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  children: function(props, propName, componentName) {
+    const prop = props[propName];
+    const child = React.Children.only(prop)
+    let error = null;
+    if (child && child.type !== List) {
+      error = new Error('`' + componentName + '` children should be of type `List`.');
+    }
+    return error;
+  },
   className: PropTypes.string,
   fixed: PropTypes.bool,
   innerRef: PropTypes.func,
-  list: PropTypes.element,
   open: PropTypes.bool,
   onClick: PropTypes.func,
   onClose: PropTypes.func,
@@ -275,7 +281,6 @@ Menu.defaultProps = {
   className: '',
   fixed: false,
   innerRef: () => {},
-  list: null,
   open: false,
   onClick: () => {},
   onClose: () => {},

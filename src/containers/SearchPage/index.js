@@ -11,7 +11,7 @@ import './styles.css'
 class SearchPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("SearchPage rn-page", className)
+    return cls("SearchPage", className)
   }
 
   get _query() {

@@ -57,44 +57,46 @@ class ViewerEmail extends React.Component {
     const email = get(this.props, "email", {})
     return (
       <React.Fragment>
-        <li className="ViewerEmail mdc-list-item rn-list-preview">
-          <Icon as="span" className="mdc-list-item__graphic" icon="email" />
-          <div className="mdc-list-item__text">
-            {email.value}
-          </div>
-          <div className="mdc-list-item__meta">
-            <div className="mdc-list-item__meta-actions">
-              <span className="mdc-button mdc-button--outlined mdc-list-item__meta-action mdc-list-item__meta-action--button">
-                {email.type}
-              </span>
-              {email.isVerified
-              ? <i
-                  className="material-icons mdc-list-item__meta-action mdc-list-item__meta-action--icon"
-                  aria-label="Verified"
-                  title="Verified"
-                >
-                  verified_user
-                </i>
-              : <button
-                  className="material-icons mdc-list-item__meta-action mdc-list-item__meta-action--icon"
-                  onClick={this.handleRequestVerification}
-                  aria-label="Request verification"
-                  title="Request verification"
-                >
-                  email
-                </button>}
-              {email.viewerCanDelete &&
-              <button
-                className="material-icons mdc-icon-button mdc-list-item__meta-action--icon"
-                type="button"
-                onClick={this.handleToggleDeleteConfirmation}
-                aria-label="Delete email"
-                title="Delete email"
-              >
-                delete
-              </button>}
+        <li className="ViewerEmail rn-list-preview">
+          <span className="mdc-list-item">
+            <Icon as="span" className="mdc-list-item__graphic" icon="email" />
+            <div className="mdc-list-item__text">
+              {email.value}
             </div>
-          </div>
+            <div className="mdc-list-item__meta">
+              <div className="mdc-list-item__meta-actions">
+                <span className="mdc-button mdc-button--outlined mdc-list-item__meta-action mdc-list-item__meta-action--button">
+                  {email.type}
+                </span>
+                {email.isVerified
+                ? <i
+                    className="material-icons mdc-list-item__meta-action mdc-list-item__meta-action--icon"
+                    aria-label="Verified"
+                    title="Verified"
+                  >
+                    verified_user
+                  </i>
+                : <button
+                    className="material-icons mdc-list-item__meta-action mdc-list-item__meta-action--icon"
+                    onClick={this.handleRequestVerification}
+                    aria-label="Request verification"
+                    title="Request verification"
+                  >
+                    email
+                  </button>}
+                {email.viewerCanDelete &&
+                <button
+                  className="material-icons mdc-icon-button mdc-list-item__meta-action--icon"
+                  type="button"
+                  onClick={this.handleToggleDeleteConfirmation}
+                  aria-label="Delete email"
+                  title="Delete email"
+                >
+                  delete
+                </button>}
+              </div>
+            </div>
+          </span>
         </li>
         {this.renderConfirmDeleteDialog()}
       </React.Fragment>

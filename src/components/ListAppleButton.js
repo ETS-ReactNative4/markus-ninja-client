@@ -1,8 +1,4 @@
 import * as React from 'react'
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay'
 import cls from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faApple } from '@fortawesome/free-brands-svg-icons'
@@ -10,9 +6,7 @@ import { get, isNil } from 'utils'
 import GiveAppleMutation from 'mutations/GiveAppleMutation'
 import TakeAppleMutation from 'mutations/TakeAppleMutation'
 
-import './styles.css'
-
-export class ListAppleButton extends React.Component {
+class ListAppleButton extends React.Component {
   state = {
     on: this.hasAppled,
   }
@@ -88,10 +82,4 @@ export class ListAppleButton extends React.Component {
   }
 }
 
-export default createFragmentContainer(ListAppleButton, graphql`
-  fragment ListAppleButton_appleable on Appleable {
-    id
-    viewerCanApple
-    viewerHasAppled
-  }
-`)
+export default ListAppleButton

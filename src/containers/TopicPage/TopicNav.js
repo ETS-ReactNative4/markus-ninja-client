@@ -2,10 +2,10 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
 import queryString from 'query-string'
-import { Link, withRouter } from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 import Counter from 'components/Counter'
-import Tab from 'components/Tab'
-import TabBar from 'components/TabBar'
+import Tab from 'components/mdc/Tab'
+import TabBar from 'components/mdc/TabBar'
 import { get } from 'utils'
 
 class TopicNav extends React.Component {
@@ -20,11 +20,15 @@ class TopicNav extends React.Component {
     }
   }
 
+  handleClickTab_ = (e) => {
+    this.props.history.push(e.target.value)
+  }
+
   _tabLink = (query, type) => {
     const pathname = get(this.props, "location.pathname", "")
     query.t = type
     const search = queryString.stringify(query)
-    return {pathname, search}
+    return pathname + "?" + search
   }
 
   get classes() {
@@ -47,12 +51,11 @@ class TopicNav extends React.Component {
     })(query.t)
 
     return (
-      <TabBar className={this.classes}>
+      <TabBar className={this.classes} onClickTab={this.handleClickTab_}>
         <Tab
           minWidth
           active={type === "study"}
-          as={Link}
-          to={this._tabLink(query, "study")}
+          value={this._tabLink(query, "study")}
         >
           <span className="mdc-tab__content">
             <span className="mdc-tab__text-label">
@@ -64,8 +67,7 @@ class TopicNav extends React.Component {
         <Tab
           minWidth
           active={type === "course"}
-          as={Link}
-          to={this._tabLink(query, "course")}
+          value={this._tabLink(query, "course")}
         >
           <span className="mdc-tab__content">
             <span className="mdc-tab__text-label">
