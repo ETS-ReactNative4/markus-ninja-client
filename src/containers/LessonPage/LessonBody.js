@@ -6,31 +6,77 @@ import {
 } from 'react-relay'
 import HTML from 'components/HTML'
 import StudyBodyEditor from 'components/StudyBodyEditor'
+import PublishLessonDraftMutation from 'mutations/PublishLessonDraftMutation'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
-import { get, isNil } from 'utils'
+import {debounce, get, isNil, throttle} from 'utils'
 
 class LessonBody extends React.Component {
   state = {
     edit: false,
     error: null,
-    body: this.props.lesson.body,
+    draft: {
+      dirty: false,
+      initialValue: get(this.props, "lesson.draft", ""),
+      value: get(this.props, "lesson.draft", ""),
+    }
+  }
+
+  autoSaveOnChange = throttle(
+    debounce(() => {
+      this.updateDraft()
+    }, 30000)
+  , 30000)
+
+  updateDraft = () => {
+    const { draft } = this.state
+    if (draft.dirty) {
+      UpdateLessonMutation(
+        this.props.lesson.id,
+        null,
+        draft.value,
+        (lesson, errors) => {
+          if (!isNil(errors)) {
+            this.setState({ error: errors[0].message })
+          }
+          this.setState({
+            draft: {
+              ...this.state.draft,
+              dirty: false,
+              value: lesson.draft
+            }
+          })
+        },
+      )
+    }
+  }
+
+  handleChange = (value) => {
+    const {draft} = this.state
+    this.setState({
+      draft: {
+        dirty: value !== draft.initialValue,
+        value,
+      },
+    })
+    this.autoSaveOnChange()
+  }
+
+  handlePublish = () => {
+    PublishLessonDraftMutation(
+      this.props.lesson.id,
+      (lesson, errors) => {
+        if (errors) {
+          this.setState({ error: errors[0].message })
+          return
+        }
+        this.handleToggleEdit()
+      },
+    )
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { body } = this.state
-    UpdateLessonMutation(
-      this.props.lesson.id,
-      null,
-      body,
-      (lesson, errors) => {
-        if (!isNil(errors)) {
-          this.setState({ error: errors[0].message })
-        }
-        this.setState({body: lesson.body})
-        this.handleToggleEdit()
-      },
-    )
+    this.updateDraft()
   }
 
   handleToggleEdit = () => {
@@ -84,18 +130,20 @@ class LessonBody extends React.Component {
 
   renderForm() {
     const study = get(this.props, "lesson.study", null)
-    const body = get(this.props, "lesson.body", "")
+    const draft = get(this.props, "lesson.draft", "")
 
     return (
       <StudyBodyEditor study={study}>
-        <form id="lesson-body-form" onSubmit={this.handleSubmit}>
+        <form id="lesson-draft-form" onSubmit={this.handleSubmit}>
           <StudyBodyEditor.Main
             placeholder="Begin your lesson"
-            initialValue={body}
-            showFormButtonsFor="lesson-body-form"
-            submitText="Update lesson"
+            initialValue={draft}
+            showFormButtonsFor="lesson-draft-form"
+            submitText="Update draft"
             onCancel={this.handleToggleEdit}
-            onChange={(body) => this.setState({body})}
+            onChange={this.handleChange}
+            onPreview={this.updateDraft}
+            onPublish={this.handlePublish}
             study={study}
           />
         </form>
@@ -109,6 +157,7 @@ export default createFragmentContainer(LessonBody, graphql`
     id
     body
     bodyHTML
+    draft
     study {
       ...StudyBodyEditor_study
     }

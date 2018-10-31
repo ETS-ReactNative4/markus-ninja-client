@@ -7,10 +7,11 @@ import {
 import { Link, withRouter } from 'react-router-dom'
 import AppleButton from 'components/AppleButton'
 import EnrollmentSelect from 'components/EnrollmentSelect'
-import IconLink from 'components/IconLink'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
-import { get, isNil } from 'utils'
+import {get} from 'utils'
+
+import Context from './Context'
 
 class StudyHeader extends React.Component {
   state = {
@@ -23,8 +24,9 @@ class StudyHeader extends React.Component {
   }
 
   render() {
+    const {toggleCreateLessonDialog} = this.context
     const study = get(this.props, "study", null)
-    if (isNil(study)) {
+    if (!study) {
       return null
     }
 
@@ -36,14 +38,15 @@ class StudyHeader extends React.Component {
           <span className="rn-file-path__file">
             <StudyLink className="rn-link rn-file-path__file__text" study={study} />
             {get(study, "viewerCanAdmin", false) &&
-            <IconLink
-              className="mdc-icon-button rn-file-path__file__icon"
-              to={study.resourcePath + "/lessons/new"}
+            <button
+              type="button"
+              className="material-icons mdc-icon-button"
+              onClick={toggleCreateLessonDialog}
               aria-label="New lesson"
               title="New lesson"
             >
               add
-            </IconLink>}
+            </button>}
           </span>
         </h4>
         <div className="rn-header__actions">
@@ -70,6 +73,8 @@ class StudyHeader extends React.Component {
     )
   }
 }
+
+StudyHeader.contextType = Context
 
 export default withRouter(createFragmentContainer(StudyHeader, graphql`
   fragment StudyHeader_study on Study {

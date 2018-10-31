@@ -64,13 +64,28 @@ class Preview extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("Preview", className)
+    return cls("Preview mdc-card", className)
   }
 
   render() {
+    const {onPublish} = this.props
+
     return (
       <div className={this.classes}>
-        {this.renderPreview()}
+        <div className="Preview__body">
+          {this.renderPreview()}
+        </div>
+        <div className="mdc-card__actions bottom">
+          <div className="mdc-card__action-buttons">
+            <button
+              type="button"
+              className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
+              onClick={onPublish}
+            >
+              Publish draft
+            </button>
+          </div>
+        </div>
       </div>
     )
   }
@@ -89,11 +104,13 @@ class Preview extends React.Component {
 }
 
 Preview.propTypes = {
+  onPublish: PropTypes.func,
   studyId: PropTypes.string,
   text: PropTypes.string,
 }
 
 Preview.defaultProps = {
+  onPublish: () => {},
   studyId: "",
   text: "",
 }

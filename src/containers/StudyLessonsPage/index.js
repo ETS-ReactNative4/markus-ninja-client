@@ -7,10 +7,11 @@ import {
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
 import StudyLabelsLink from 'components/StudyLabelsLink'
-import CreateLessonLink from 'components/CreateLessonLink'
 import StudyLessons from 'components/StudyLessons'
 import StudyLessonsPageLessons from './StudyLessonsPageLessons'
 import {debounce, get, isEmpty} from 'utils'
+
+import Context from 'containers/StudyPage/Context'
 
 class StudyLessonsPage extends React.Component {
   constructor(props) {
@@ -80,6 +81,7 @@ class StudyLessonsPage extends React.Component {
   }
 
   render() {
+    const {toggleCreateLessonDialog} = this.context
     const study = get(this.props, "study", null)
 
     return (
@@ -95,12 +97,13 @@ class StudyLessonsPage extends React.Component {
                 Labels
               </StudyLabelsLink>
               {study.viewerCanAdmin &&
-              <CreateLessonLink
-                className="mdc-button mdc-button--unelevated rn-text-field__action--button"
-                study={study}
+              <button
+                type="button"
+                className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
+                onClick={toggleCreateLessonDialog}
               >
                 New lesson
-              </CreateLessonLink>}
+              </button>}
             </div>
           </div>
         </div>
@@ -132,9 +135,10 @@ class StudyLessonsPage extends React.Component {
   }
 }
 
+StudyLessonsPage.contextType = Context
+
 export default createFragmentContainer(StudyLessonsPage, graphql`
   fragment StudyLessonsPage_study on Study {
-    ...CreateLessonLink_study
     ...StudyLabelsLink_study
     resourcePath
     viewerCanAdmin

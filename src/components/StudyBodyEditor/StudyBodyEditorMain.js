@@ -22,7 +22,7 @@ class StudyBodyEditorMain extends React.Component {
     this.state = {
       confirmCancelDialogOpen: false,
       loading: false,
-      tab: "write",
+      tab: "draft",
     }
   }
 
@@ -51,7 +51,21 @@ class StudyBodyEditorMain extends React.Component {
 
   handleClickTab_ = (e) => {
     e.preventDefault()
-    this.setState({tab: e.target.value})
+    const tab = e.target.value
+    this.setState({tab})
+    if (tab === "preview") {
+      this.props.onPreview()
+    }
+  }
+
+  handleReset = () => {
+    const {editorState, onChange} = this.context
+    const {initialValue, onReset} = this.props
+    onChange(EditorState.push(
+      editorState,
+      ContentState.createFromText(initialValue),
+    ))
+    onReset()
   }
 
   handleToggleCancelConfirmation = () => {
@@ -63,6 +77,13 @@ class StudyBodyEditorMain extends React.Component {
     } else {
       this.props.onCancel()
     }
+  }
+
+  handleToggleResetConfirmation = () => {
+    const {confirmResetDialogOpen} = this.state
+    this.setState({
+      confirmResetDialogOpen: !confirmResetDialogOpen,
+    })
   }
 
   focus = () => {
@@ -86,20 +107,21 @@ class StudyBodyEditorMain extends React.Component {
   render() {
     const {editorState, toggleSaveDialog} = this.context
     const {loading, tab} = this.state
-    const {placeholder, showFormButtonsFor, study} = this.props
+    const {onPublish, placeholder, showFormButtonsFor, study} = this.props
 
     return (
       <div className={this.classes}>
         {this.renderNav()}
-        <div className="StudyBodyEditorMain__preview mdc-card mdc-card--outlined">
+        <div className="StudyBodyEditorMain__preview">
           <Preview
             open={tab === "preview"}
             studyId={study.id}
             text={this.text}
+            onPublish={onPublish}
           />
         </div>
-        <div className="StudyBodyEditorMain__write mdc-card mdc-card--outlined">
-          <div className="StudyBodyEditorMain__write-text" onClick={() => this.focus()}>
+        <div className="StudyBodyEditorMain__draft mdc-card mdc-card--outlined">
+          <div className="StudyBodyEditorMain__draft-text" onClick={() => this.focus()}>
             <input
               className="StudyBodyEditorMain__hidden-input"
               type="text"
@@ -136,6 +158,15 @@ class StudyBodyEditorMain extends React.Component {
               </button>
             </div>}
             <div className="mdc-card__action-icons">
+              <button
+                className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                type="button"
+                onClick={this.handleToggleCancelConfirmation}
+                aria-label="Reset draft"
+                title="Reset draft"
+              >
+                restore
+              </button>
               <AttachFile study={this.props.study} />
               {study.viewerCanAdmin &&
               <button
@@ -198,13 +229,13 @@ class StudyBodyEditorMain extends React.Component {
     return (
       <TabBar className="mb2" onClickTab={this.handleClickTab_}>
         <Tab
-          active={tab === "write"}
+          active={tab === "draft"}
           minWidth
-          value="write"
+          value="draft"
         >
           <span className="mdc-tab__content">
             <span className="mdc-tab__text-label">
-              Write
+              Draft
             </span>
           </span>
         </Tab>
@@ -228,6 +259,8 @@ StudyBodyEditorMain.propTypes = {
   initialValue: PropTypes.string,
   onCancel: PropTypes.func,
   onChange: PropTypes.func,
+  onPreview: PropTypes.func,
+  onPublish: PropTypes.func,
   showFormButtonsFor: PropTypes.string,
   study: PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -239,6 +272,8 @@ StudyBodyEditorMain.defaultProps = {
   initialValue: "",
   onCancel: () => {},
   onChange: () => {},
+  onPreview: () => {},
+  onPublish: () => {},
   study: {
     id: "",
     viewerCanAdmin: false,

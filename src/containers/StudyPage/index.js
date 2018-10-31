@@ -10,7 +10,6 @@ import environment from 'Environment'
 import StudyHeader from './StudyHeader'
 import StudyNav from './StudyNav'
 import CreateCoursePage from 'containers/CreateCoursePage'
-import CreateLessonPage from 'containers/CreateLessonPage'
 import LabelPage from 'containers/LabelPage'
 import StudyCoursesPage from 'containers/StudyCoursesPage'
 import StudyLabelsPage from 'containers/StudyLabelsPage'
@@ -21,7 +20,9 @@ import StudyEnrolleesPage from 'containers/StudyEnrolleesPage'
 import StudyOverviewPage from 'containers/StudyOverviewPage'
 import StudySettingsPage from 'containers/StudySettingsPage'
 import NotFound from 'components/NotFound'
-import { isNil } from 'utils'
+
+import Context from './Context'
+import CreateLessonDialog from './CreateLessonDialog'
 
 import "./styles.css"
 
@@ -30,6 +31,7 @@ const StudyPageQuery = graphql`
     study(owner: $owner, name: $name) {
       ...CreateCoursePage_study
       ...CreateLessonPage_study
+      ...CreateLessonDialog_study
       ...LabelPage_study
       ...StudyHeader_study
       ...StudyNav_study
@@ -46,6 +48,20 @@ const StudyPageQuery = graphql`
 `
 
 class StudyPage extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      createLessonDialogOpen: false,
+      toggleCreateLessonDialog: this.handleToggleCreateLessonDialog,
+    }
+  }
+
+  handleToggleCreateLessonDialog = () => {
+    const {createLessonDialogOpen} = this.state
+    this.setState({createLessonDialogOpen: !createLessonDialogOpen})
+  }
+
   get classes() {
     const {className} = this.props
     return cls("StudyPage rn-page mdc-layout-grid", className)
@@ -64,85 +80,86 @@ class StudyPage extends React.Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
-            if (isNil(props.study)) {
+            if (!props.study) {
               return <NotFound />
             }
 
-            const authenticated = !isNil(props.viewer)
+            const {createLessonDialogOpen} = this.state
+            const authenticated = Boolean(props.viewer)
 
             return (
-              <div className={this.classes}>
-                <div className="StudyPage__container mdc-layout-grid__inner">
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <StudyHeader study={props.study} />
-                  </div>
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <StudyNav study={props.study} />
-                  </div>
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <Switch>
-                      <Route
-                        exact
-                        path="/:owner/:name"
-                        render={(routeProps) => <StudyOverviewPage {...routeProps} study={props.study} />}
-                      />
-                      <Route
-                        exact
-                        path="/:owner/:name/courses"
-                        render={(routeProps) => <StudyCoursesPage {...routeProps} study={props.study} />}
-                      />
-                      <PrivateRoute
-                        exact
-                        path="/:owner/:name/courses/new"
-                        authenticated={authenticated}
-                        render={(routeProps) => <CreateCoursePage {...routeProps} study={props.study} />}
-                      />
-                      <Route
-                        exact
-                        path="/:owner/:name/applegivers"
-                        component={StudyAppleGiversPage}
-                      />
-                      <Route
-                        exact
-                        path="/:owner/:name/enrollees"
-                        component={StudyEnrolleesPage}
-                      />
-                      <Route
-                        exact
-                        path="/:owner/:name/labels"
-                        render={(routeProps) => <StudyLabelsPage {...routeProps} study={props.study} />}
-                      />
-                      <Route
-                        exact
-                        path="/:owner/:name/labels/:label"
-                        render={(routeProps) => <LabelPage {...routeProps} study={props.study} />}
-                      />
-                      <Route
-                        exact
-                        path="/:owner/:name/lessons"
-                        render={(routeProps) => <StudyLessonsPage {...routeProps} study={props.study} />}
-                      />
-                      <PrivateRoute
-                        exact
-                        path="/:owner/:name/lessons/new"
-                        authenticated={authenticated}
-                        render={(routeProps) => <CreateLessonPage {...routeProps} study={props.study} />}
-                      />
-                      <Route
-                        exact
-                        path="/:owner/:name/assets"
-                        render={(routeProps) => <StudyAssetsPage {...routeProps} study={props.study} />}
-                      />
-                      <PrivateRoute
-                        exact
-                        path="/:owner/:name/settings"
-                        authenticated={authenticated}
-                        render={(routeProps) => <StudySettingsPage {...routeProps} study={props.study} />}
-                      />
-                    </Switch>
+              <Context.Provider value={this.state}>
+                <div className={this.classes}>
+                  <div className="StudyPage__container mdc-layout-grid__inner">
+                    <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      <StudyHeader study={props.study} />
+                    </div>
+                    <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      <StudyNav study={props.study} />
+                    </div>
+                    <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      <Switch>
+                        <Route
+                          exact
+                          path="/:owner/:name"
+                          render={(routeProps) => <StudyOverviewPage {...routeProps} study={props.study} />}
+                        />
+                        <Route
+                          exact
+                          path="/:owner/:name/courses"
+                          render={(routeProps) => <StudyCoursesPage {...routeProps} study={props.study} />}
+                        />
+                        <PrivateRoute
+                          exact
+                          path="/:owner/:name/courses/new"
+                          authenticated={authenticated}
+                          render={(routeProps) => <CreateCoursePage {...routeProps} study={props.study} />}
+                        />
+                        <Route
+                          exact
+                          path="/:owner/:name/applegivers"
+                          component={StudyAppleGiversPage}
+                        />
+                        <Route
+                          exact
+                          path="/:owner/:name/enrollees"
+                          component={StudyEnrolleesPage}
+                        />
+                        <Route
+                          exact
+                          path="/:owner/:name/labels"
+                          render={(routeProps) => <StudyLabelsPage {...routeProps} study={props.study} />}
+                        />
+                        <Route
+                          exact
+                          path="/:owner/:name/labels/:label"
+                          render={(routeProps) => <LabelPage {...routeProps} study={props.study} />}
+                        />
+                        <Route
+                          exact
+                          path="/:owner/:name/lessons"
+                          render={(routeProps) => <StudyLessonsPage {...routeProps} study={props.study} />}
+                        />
+                        <Route
+                          exact
+                          path="/:owner/:name/assets"
+                          render={(routeProps) => <StudyAssetsPage {...routeProps} study={props.study} />}
+                        />
+                        <PrivateRoute
+                          exact
+                          path="/:owner/:name/settings"
+                          authenticated={authenticated}
+                          render={(routeProps) => <StudySettingsPage {...routeProps} study={props.study} />}
+                        />
+                      </Switch>
+                    </div>
                   </div>
                 </div>
-              </div>
+                <CreateLessonDialog
+                  open={createLessonDialogOpen}
+                  study={props.study}
+                />
+              </Context.Provider>
             )
           }
           return <div>Loading</div>

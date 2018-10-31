@@ -4,14 +4,14 @@ import {
   QueryRenderer,
   graphql,
 } from 'react-relay'
-import { withRouter } from 'react-router'
 import environment from 'Environment'
-import CreateLessonLink from 'components/CreateLessonLink'
 import CoursePreview from 'components/CoursePreview'
 import LessonPreview from 'components/LessonPreview'
+import Context from 'containers/StudyPage/Context'
 import StudyMeta from './StudyMeta'
 import {get, isEmpty} from 'utils'
 import { TOPICS_PER_PAGE } from 'consts'
+
 
 const StudyOverviewPageQuery = graphql`
   query StudyOverviewPageQuery(
@@ -73,6 +73,7 @@ class StudyOverviewPage extends React.Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            const {toggleCreateLessonDialog} = this.context
             const courses = get(props, "study.courses.edges", [])
             const lessons = get(props, "study.lessons.edges", [])
 
@@ -106,9 +107,13 @@ class StudyOverviewPage extends React.Component {
                 {props.study.viewerCanAdmin &&
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   {get(props, "study.lessons.totalCount", 0) < 1 &&
-                  <CreateLessonLink className="rn-link" study={props.study} >
+                  <button
+                    type="button"
+                    className="mdc-button"
+                    onClick={toggleCreateLessonDialog}
+                  >
                     Create a lesson
-                  </CreateLessonLink>}
+                  </button>}
                 </div>}
               </div>
             )
@@ -120,4 +125,6 @@ class StudyOverviewPage extends React.Component {
   }
 }
 
-export default withRouter(StudyOverviewPage)
+StudyOverviewPage.contextType = Context
+
+export default StudyOverviewPage

@@ -74,7 +74,6 @@ class SearchBarInput extends React.Component {
     const { cursor, focus } = this.state
     const searchEdges = get(this.props, "query.search.edges", [])
     if (forwardSlash) {
-      e.preventDefault()
       const activeElement = document.activeElement
       const inputs = ['input', 'select', 'textarea']
       if (activeElement &&
@@ -83,6 +82,7 @@ class SearchBarInput extends React.Component {
       ) {
         return
       }
+      e.preventDefault()
       const element = document.getElementById("search-bar-input")
       if (element) {
         element.focus()

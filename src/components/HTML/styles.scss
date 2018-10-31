@@ -151,14 +151,21 @@
   }
   
   p {
+    margin-top: 0px;
+    margin-bottom: 16px;
+
     &.caption {
       @include mdc-typography(caption);
+
+      margin: 0;
     }
     &.hint {
       @include mdc-theme-prop(color, text-hint-on-light);
     }
     &.overline {
       @include mdc-typography(overline);
+
+      margin: 0;
     }
     &.secondary {
       @include mdc-theme-prop(color, text-secondary-on-light);

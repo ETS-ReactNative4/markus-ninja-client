@@ -34,11 +34,9 @@ const mutation = graphql`
   }
 `
 
-export default (studyId, title, body, courseId, callback) => {
+export default (studyId, title, callback) => {
   const variables = {
     input: {
-      body: nullString(body),
-      courseId: nullString(courseId),
       studyId: nullString(studyId),
       title: nullString(title),
     },
@@ -60,15 +58,6 @@ export default (studyId, title, body, courseId, callback) => {
           if (study) {
             study.setValue(studyAdvancedAt, 'advancedAt')
             study.setLinkedRecord(studyLessonCount, 'lessons', {first: 0})
-          }
-
-          if (!isNil(courseId)) {
-            const lessonEdge = createLessonField.getLinkedRecord('lessonEdge')
-            const node = lessonEdge.getLinkedRecord('node')
-            const lessonCourse = node && node.getLinkedRecord('course')
-            const courseLessonCount = lessonCourse && lessonCourse.getLinkedRecord('lessons', {first: 0})
-            const course = proxyStore.get(courseId)
-            course && courseLessonCount && course.setLinkedRecord(courseLessonCount, 'lessons', {first: 0})
           }
         }
       },

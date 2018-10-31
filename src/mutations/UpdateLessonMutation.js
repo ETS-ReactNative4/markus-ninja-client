@@ -9,18 +9,18 @@ const mutation = graphql`
   mutation UpdateLessonMutation($input: UpdateLessonInput!) {
     updateLesson(input: $input) {
       id
-      body
-      bodyHTML
+      draft
+      lastEditedAt
       title
       updatedAt
     }
   }
 `
 
-export default (lessonId, title, body, callback) => {
+export default (lessonId, title, draft, callback) => {
   const variables = {
     input: {
-      body,
+      draft,
       lessonId: nullString(lessonId),
       title: nullString(title),
     },
@@ -33,8 +33,8 @@ export default (lessonId, title, body, callback) => {
       variables,
       optimisticUpdater: proxyStore => {
         const lesson = proxyStore.get(lessonId)
-        if (!isNil(body)) {
-          lesson.setValue(body, 'body')
+        if (!isNil(draft)) {
+          lesson.setValue(draft, 'draft')
         }
         if (!isEmpty(title)) {
           lesson.setValue(title, 'title')
@@ -43,16 +43,18 @@ export default (lessonId, title, body, callback) => {
       updater: proxyStore => {
         const updateLessonField = proxyStore.getRootField('updateLesson')
         if (updateLessonField) {
-          const newBody = updateLessonField.getValue('body')
-          const newBodyHTML = updateLessonField.getValue('bodyHTML')
+          const newDraft = updateLessonField.getValue('draft')
+          const newLastEditedAt = updateLessonField.getValue('lastEditedAt')
           const newTitle = updateLessonField.getValue('title')
           const newUpdatedAt = updateLessonField.getValue('updatedAt')
 
           const lesson = proxyStore.get(lessonId)
-          lesson.setValue(newBody, 'body')
-          lesson.setValue(newBodyHTML, 'bodyHTML')
-          lesson.setValue(newTitle, 'title')
-          lesson.setValue(newUpdatedAt, 'updatedAt')
+          if (lesson) {
+            lesson.setValue(newDraft, 'draft')
+            lesson.setValue(newLastEditedAt, 'lastEditedAt')
+            lesson.setValue(newTitle, 'title')
+            lesson.setValue(newUpdatedAt, 'updatedAt')
+          }
         }
       },
       onCompleted: (response, error) => {

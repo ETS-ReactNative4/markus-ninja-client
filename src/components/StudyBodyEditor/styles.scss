@@ -1,4 +1,5 @@
 @import "@material/theme/mixins";
+@import "@material/typography/mixins";
 
 .StudyBodyEditor__at {
   color: rgba(98, 177, 254, 1.0);
@@ -14,19 +15,28 @@
   color: rgba(184, 95, 138, 1.0);
 }
 
+.Preview {
+  min-height: 125px;
+}
+
+.Preview__body {
+  padding: 1rem;
+}
+
 .StudyBodyEditorMain {
   display: flex;
   flex-direction: column;
 }
 
-.StudyBodyEditorMain__write {
+.StudyBodyEditorMain__draft {
   @include mdc-theme-prop(background-color, background);
   @include mdc-theme-prop(color, text-primary-on-light);
+  @include mdc-typography(body1);
 
   display: block;
 }
 
-.StudyBodyEditorMain__write-text {
+.StudyBodyEditorMain__draft-text {
   position: relative;
   cursor: text;
   min-height: calc(125px - 54.5px);
@@ -35,16 +45,11 @@
 }
 
 .StudyBodyEditorMain__preview {
-  @include mdc-theme-prop(background-color, background);
-  @include mdc-theme-prop(color, text-primary-on-light);
-
   display: none;
-  min-height: 125px;
-  padding: 1rem;
 }
 
 .StudyBodyEditorMain.StudyBodyEditorMain--preview {
-  .StudyBodyEditorMain__write {
+  .StudyBodyEditorMain__draft {
     display: none;
   }
 

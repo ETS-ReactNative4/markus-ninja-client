@@ -1302,12 +1302,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "CourseConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAssetConnection",
+							"name": "EventConnection",
 							"ofType": null
 						},
 						{
@@ -1317,32 +1312,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AppleGiverConnection",
+							"name": "CourseConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EnrolleeConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "StudyConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EmailConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentConnection",
+							"name": "UserAssetConnection",
 							"ofType": null
 						},
 						{
@@ -1357,12 +1332,37 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserConnection",
+							"name": "LessonCommentConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EventConnection",
+							"name": "EnrolleeConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabelConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EmailConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserConnection",
 							"ofType": null
 						}
 					]
@@ -2405,30 +2405,6 @@
 					"fields": null,
 					"inputFields": [
 						{
-							"name": "body",
-							"description": null,
-							"type": {
-								"kind": "NON_NULL",
-								"name": null,
-								"ofType": {
-									"kind": "SCALAR",
-									"name": "String",
-									"ofType": null
-								}
-							},
-							"defaultValue": null
-						},
-						{
-							"name": "courseId",
-							"description": null,
-							"type": {
-								"kind": "SCALAR",
-								"name": "String",
-								"ofType": null
-							},
-							"defaultValue": null
-						},
-						{
 							"name": "studyId",
 							"description": null,
 							"type": {
@@ -2785,12 +2761,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Course",
 							"ofType": null
 						},
 						{
@@ -3466,12 +3442,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "Label",
 							"ofType": null
 						}
 					]
@@ -3565,12 +3541,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "CourseEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAssetEdge",
+							"name": "EventEdge",
 							"ofType": null
 						},
 						{
@@ -3580,32 +3551,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AppleGiverEdge",
+							"name": "CourseEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EnrolleeEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "StudyEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EmailEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonCommentEdge",
+							"name": "UserAssetEdge",
 							"ofType": null
 						},
 						{
@@ -3620,12 +3571,37 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserEdge",
+							"name": "LessonCommentEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EventEdge",
+							"name": "EnrolleeEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabelEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EmailEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "StudyEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserEdge",
 							"ofType": null
 						}
 					]
@@ -5911,6 +5887,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "draft",
+							"description": "The current draft of changes for the lesson body as Markdown.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "enrollees",
 							"description": "Returns a list users who have enrolled in this enrollable.",
 							"args": [
@@ -6113,6 +6105,22 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "lastEditedAt",
+							"description": "Identifies when the lesson draft was last edited.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "nextLesson",
 							"description": "The next lesson within this lesson's course, if any.",
 							"args": [],
@@ -6154,7 +6162,7 @@
 						},
 						{
 							"name": "publishedAt",
-							"description": "Identifies when the lesson was published at.",
+							"description": "Identifies when the lesson was last published.",
 							"args": [],
 							"type": {
 								"kind": "NON_NULL",
@@ -7337,12 +7345,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "ReferencedEvent",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "ReferencedEvent",
+							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -8280,6 +8288,33 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "publishLessonDraft",
+							"description": "Publishes the body changes proposed in the lesson's draft.",
+							"args": [
+								{
+									"name": "input",
+									"description": null,
+									"type": {
+										"kind": "NON_NULL",
+										"name": null,
+										"ofType": {
+											"kind": "INPUT_OBJECT",
+											"name": "PublishLessonDraftInput",
+											"ofType": null
+										}
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "OBJECT",
+								"name": "Lesson",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "removeCourseLesson",
 							"description": "Removes a lesson from a course.",
 							"args": [
@@ -8807,7 +8842,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "AppledEvent",
+							"name": "Event",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
@@ -8822,41 +8862,6 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UnappledEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CreatedEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Email",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "ReferencedEvent",
 							"ofType": null
 						},
@@ -8867,7 +8872,37 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "UnappledEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Topic",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Email",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Study",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CreatedEvent",
 							"ofType": null
 						},
 						{
@@ -8877,7 +8912,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Event",
+							"name": "AppledEvent",
 							"ofType": null
 						}
 					]
@@ -9349,6 +9384,31 @@
 					"possibleTypes": null
 				},
 				{
+					"kind": "INPUT_OBJECT",
+					"name": "PublishLessonDraftInput",
+					"description": "Input type for PublishLessonDraft.",
+					"fields": null,
+					"inputFields": [
+						{
+							"name": "lessonId",
+							"description": "ID of the lesson.",
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"defaultValue": null
+						}
+					],
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
 					"kind": "OBJECT",
 					"name": "Query",
 					"description": null,
@@ -9786,12 +9846,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "UserAsset",
 							"ofType": null
 						}
 					]
@@ -10403,6 +10463,11 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Course",
 							"ofType": null
 						},
@@ -10413,7 +10478,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Topic",
 							"ofType": null
 						},
 						{
@@ -10424,11 +10489,6 @@
 						{
 							"kind": "OBJECT",
 							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
 							"ofType": null
 						},
 						{
@@ -11849,6 +11909,11 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Course",
 							"ofType": null
 						},
@@ -11859,17 +11924,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "Label",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
 							"ofType": null
 						}
 					]
@@ -12159,7 +12219,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "EVT",
+							"name": "AccessToken",
 							"ofType": null
 						},
 						{
@@ -12169,7 +12229,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AccessToken",
+							"name": "EVT",
 							"ofType": null
 						}
 					]
@@ -13032,6 +13092,11 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Course",
 							"ofType": null
 						},
@@ -13042,7 +13107,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
+							"name": "Topic",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
@@ -13053,16 +13123,6 @@
 						{
 							"kind": "OBJECT",
 							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LessonComment",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Topic",
 							"ofType": null
 						},
 						{
@@ -13282,8 +13342,8 @@
 					"fields": null,
 					"inputFields": [
 						{
-							"name": "body",
-							"description": "The body of the lesson.",
+							"name": "draft",
+							"description": "The draft of the lesson.",
 							"type": {
 								"kind": "SCALAR",
 								"name": "String",
@@ -13685,22 +13745,22 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Label",
+							"name": "UserAsset",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
 							"ofType": null
 						}
 					]
@@ -14954,17 +15014,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "AppledEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "UnappledEvent",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "CreatedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppledEvent",
 							"ofType": null
 						}
 					]
