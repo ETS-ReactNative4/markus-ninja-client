@@ -2,10 +2,10 @@
 
 .rn-page {
   min-height: calc(100vh - #{$mdc-top-app-bar-row-height});
-  display: flex;
-  align-items: stretch;
   
   &.mdc-layout-grid {
+    max-width: 64rem;
+
     >.mdc-layout-grid__inner {
       width: 100%;
     }
@@ -13,13 +13,14 @@
 }
 
 .rn-page--column {
+  display: flex;
   flex-direction: column;
 
   >.mdc-layout-grid {
     width: 100%;
 
     &:last-child {
-      flex: auto
+      flex: 1 1 auto
     }
   }
 }

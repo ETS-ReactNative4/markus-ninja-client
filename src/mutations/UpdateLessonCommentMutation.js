@@ -9,17 +9,17 @@ const mutation = graphql`
   mutation UpdateLessonCommentMutation($input: UpdateLessonCommentInput!) {
     updateLessonComment(input: $input) {
       id
-      body
-      bodyHTML
+      draft
+      lastEditedAt
       updatedAt
     }
   }
 `
 
-export default (lessonCommentId, body, callback) => {
+export default (lessonCommentId, draft, callback) => {
   const variables = {
     input: {
-      body,
+      draft,
       lessonCommentId,
     },
   }
@@ -31,21 +31,21 @@ export default (lessonCommentId, body, callback) => {
       variables,
       optimisticUpdater: proxyStore => {
         const lessonComment = proxyStore.get(lessonCommentId)
-        if (lessonComment && !isNil(body)) {
-          lessonComment.setValue(body, 'body')
+        if (lessonComment && !isNil(draft)) {
+          lessonComment.setValue(draft, 'draft')
         }
       },
       updater: proxyStore => {
         const updateLessonCommentField = proxyStore.getRootField('updateLessonComment')
         if (!isNil(updateLessonCommentField)) {
-          const newBody = updateLessonCommentField.getValue('body')
-          const newBodyHTML = updateLessonCommentField.getValue('bodyHTML')
+          const newDraft = updateLessonCommentField.getValue('draft')
+          const newLastEditedAt = updateLessonCommentField.getValue('lastEditedAt')
           const newUpdatedAt = updateLessonCommentField.getValue('updatedAt')
 
           const lessonComment = proxyStore.get(lessonCommentId)
           if (lessonComment) {
-            lessonComment.setValue(newBody, 'body')
-            lessonComment.setValue(newBodyHTML, 'bodyHTML')
+            lessonComment.setValue(newDraft, 'draft')
+            lessonComment.setValue(newLastEditedAt, 'lastEditedAt')
             lessonComment.setValue(newUpdatedAt, 'updatedAt')
           }
         }

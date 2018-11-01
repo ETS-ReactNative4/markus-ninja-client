@@ -21,6 +21,8 @@ class StudyBodyEditorMain extends React.Component {
 
     this.state = {
       confirmCancelDialogOpen: false,
+      confirmResetDialogOpen: false,
+      initialValue: this.props.draft,
       loading: false,
       tab: "draft",
     }
@@ -28,20 +30,22 @@ class StudyBodyEditorMain extends React.Component {
 
   componentDidMount() {
     const {editorState, onChange} = this.context
-    const {initialValue} = this.props
+    const {draft} = this.props
     if (editorState) {
-      onChange(EditorState.push(editorState, ContentState.createFromText(initialValue)))
+      onChange(EditorState.push(editorState, ContentState.createFromText(draft)))
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const {editorState, onChange} = this.context
+    const {draft} = this.props
+    if (draft !== prevProps.draft && draft !== this.text) {
+      onChange(EditorState.push(editorState, ContentState.createFromText(draft)))
     }
   }
 
   handleCancel = () => {
-    const {editorState, onChange} = this.context
-    const {initialValue, onCancel} = this.props
-    onChange(EditorState.push(
-      editorState,
-      ContentState.createFromText(initialValue),
-    ))
-    onCancel()
+    this.props.onCancel()
   }
 
   handleChange = (editorState) => {
@@ -58,18 +62,22 @@ class StudyBodyEditorMain extends React.Component {
     }
   }
 
+  handlePublish = () => {
+    this.setState({tab: "draft"})
+    this.props.onPublish()
+  }
+
   handleReset = () => {
-    const {editorState, onChange} = this.context
-    const {initialValue, onReset} = this.props
-    onChange(EditorState.push(
+    const {editorState} = this.context
+    const {body} = this.props
+    this.handleChange(EditorState.push(
       editorState,
-      ContentState.createFromText(initialValue),
+      ContentState.createFromText(body),
     ))
-    onReset()
   }
 
   handleToggleCancelConfirmation = () => {
-    if (this.text !== this.props.initialValue) {
+    if (this.text !== this.props.draft) {
       const {confirmCancelDialogOpen} = this.state
       this.setState({
         confirmCancelDialogOpen: !confirmCancelDialogOpen,
@@ -107,7 +115,7 @@ class StudyBodyEditorMain extends React.Component {
   render() {
     const {editorState, toggleSaveDialog} = this.context
     const {loading, tab} = this.state
-    const {onPublish, placeholder, showFormButtonsFor, study} = this.props
+    const {placeholder, showFormButtonsFor, study} = this.props
 
     return (
       <div className={this.classes}>
@@ -117,7 +125,7 @@ class StudyBodyEditorMain extends React.Component {
             open={tab === "preview"}
             studyId={study.id}
             text={this.text}
-            onPublish={onPublish}
+            onPublish={this.handlePublish}
           />
         </div>
         <div className="StudyBodyEditorMain__draft mdc-card mdc-card--outlined">
@@ -147,7 +155,7 @@ class StudyBodyEditorMain extends React.Component {
                 form={showFormButtonsFor}
                 className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
               >
-                {this.props.submitText || "Submit"}
+                {this.props.submitText || "Save draft"}
               </button>
               <button
                 className="mdc-button mdc-card__action mdc-card__action--button"
@@ -161,7 +169,7 @@ class StudyBodyEditorMain extends React.Component {
               <button
                 className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
                 type="button"
-                onClick={this.handleToggleCancelConfirmation}
+                onClick={this.handleToggleResetConfirmation}
                 aria-label="Reset draft"
                 title="Reset draft"
               >
@@ -182,6 +190,7 @@ class StudyBodyEditorMain extends React.Component {
           </div>
         </div>
         {this.renderConfirmCancelDialog()}
+        {this.renderConfirmResetDialog()}
       </div>
     )
   }
@@ -193,7 +202,7 @@ class StudyBodyEditorMain extends React.Component {
       <Dialog
         open={confirmCancelDialogOpen}
         onClose={() => this.setState({confirmCancelDialogOpen: false})}
-        title={<Dialog.Title>Cancel comment</Dialog.Title>}
+        title={<Dialog.Title>Cancel changes made to the draft</Dialog.Title>}
         content={
           <Dialog.Content>
             <div className="flex flex-column mw5">
@@ -214,6 +223,43 @@ class StudyBodyEditorMain extends React.Component {
               type="button"
               className="mdc-button"
               onClick={this.handleCancel}
+              data-mdc-dialog-action="yes"
+            >
+              Yes
+            </button>
+          </Dialog.Actions>}
+        />
+    )
+  }
+
+  renderConfirmResetDialog() {
+    const {confirmResetDialogOpen} = this.state
+
+    return (
+      <Dialog
+        open={confirmResetDialogOpen}
+        onClose={() => this.setState({confirmResetDialogOpen: false})}
+        title={<Dialog.Title>Reset draft to match body</Dialog.Title>}
+        content={
+          <Dialog.Content>
+            <div className="flex flex-column mw5">
+              <p>Are you sure?</p>
+            </div>
+          </Dialog.Content>
+        }
+        actions={
+          <Dialog.Actions>
+            <button
+              type="button"
+              className="mdc-button"
+              data-mdc-dialog-action="no"
+            >
+              No
+            </button>
+            <button
+              type="button"
+              className="mdc-button"
+              onClick={this.handleReset}
               data-mdc-dialog-action="yes"
             >
               Yes
@@ -256,7 +302,7 @@ class StudyBodyEditorMain extends React.Component {
 }
 
 StudyBodyEditorMain.propTypes = {
-  initialValue: PropTypes.string,
+  draft: PropTypes.string,
   onCancel: PropTypes.func,
   onChange: PropTypes.func,
   onPreview: PropTypes.func,
@@ -269,7 +315,7 @@ StudyBodyEditorMain.propTypes = {
 }
 
 StudyBodyEditorMain.defaultProps = {
-  initialValue: "",
+  draft: "",
   onCancel: () => {},
   onChange: () => {},
   onPreview: () => {},

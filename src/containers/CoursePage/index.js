@@ -37,7 +37,7 @@ const CoursePageQuery = graphql`
 class CoursePage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("CoursePage mdc-layout-grid", className)
+    return cls("CoursePage rn-page mdc-layout-grid", className)
   }
 
   render() {

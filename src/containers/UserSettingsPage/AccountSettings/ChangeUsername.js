@@ -104,10 +104,10 @@ class ChangeUsername extends React.Component {
           type="button"
           onClick={() => this.handleChangeStage(FORM_STAGE)}
         >
-          I understand, change my username
+          I understand
         </button>
         <button
-          className="mdc-button mt2"
+          className="mdc-button ml2"
           type="button"
           onClick={() => this.handleChangeStage(INFO_STAGE)}
         >

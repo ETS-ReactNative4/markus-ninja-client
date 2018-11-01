@@ -52,7 +52,7 @@ class SearchPageResults extends React.Component {
     return (
       <React.Fragment>
         <SearchNav open={open} counts={search.counts} onClose={() => this.setState({open: false})}/>
-        <div className="mdc-layout-grid">
+        <div className="rn-page mdc-layout-grid">
           <div className="mdc-layout-grid__inner">
             <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               <div className="flex items-center">

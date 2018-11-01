@@ -14,7 +14,10 @@ import Context from './Context'
 
 const defaultState = {
   error: null,
-  title: defaultTextFieldState,
+  title: {
+    ...defaultTextFieldState,
+    valid: false,
+  }
 }
 
 class CreateLessonDialog extends React.Component {

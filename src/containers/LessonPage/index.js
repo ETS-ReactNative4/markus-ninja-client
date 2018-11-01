@@ -69,7 +69,7 @@ class LessonPage extends React.Component {
 
             return (
               <div className={this.classes}>
-                <div className="mdc-layout-grid">
+                <div className="mdc-layout-grid mw8">
                   <div className="LessonPage__container mdc-layout-grid__inner">
                     <LessonHeader className="LessonPage__header" lesson={lesson}/>
                     <LessonBody className="LessonPage__body" lesson={lesson}/>

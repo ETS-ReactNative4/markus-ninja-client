@@ -10,19 +10,63 @@ import HTML from 'components/HTML'
 import StudyBodyEditor from 'components/StudyBodyEditor'
 import UserLink from 'components/UserLink'
 import DeleteLessonCommentMutation from 'mutations/DeleteLessonCommentMutation'
+import PublishLessonCommentDraftMutation from 'mutations/PublishLessonCommentDraftMutation'
 import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
-import {get, isNil, timeDifferenceForDate} from 'utils'
+import {debounce, get, isNil, throttle, timeDifferenceForDate} from 'utils'
 
 class LessonComment extends React.Component {
   state = {
     confirmDeleteDialogOpen: false,
     edit: false,
     error: null,
-    body: get(this.props, "comment.body", ""),
+    draft: {
+      dirty: false,
+      initialValue: get(this.props, "comment.draft", ""),
+      value: get(this.props, "comment.draft", ""),
+    }
   }
 
-  handleChange = (body) => {
-    this.setState({body})
+  autoSaveOnChange = throttle(
+    debounce(() => this.updateDraft(this.state.draft.value), 30000)
+  , 30000)
+
+  updateDraft = (draft) => {
+    UpdateLessonCommentMutation(
+      this.props.comment.id,
+      draft,
+      (comment, errors) => {
+        if (!isNil(errors)) {
+          this.setState({ error: errors[0].message })
+        }
+        this.setState({
+          draft: {
+            ...this.state.draft,
+            dirty: false,
+            value: comment.draft
+          }
+        })
+      },
+    )
+  }
+
+  handleCancel = () => {
+    const {initialValue} = this.state
+    this.updateDraft(initialValue)
+    this.handleToggleEdit()
+  }
+
+  handleChange = (value) => {
+    const {draft} = this.state
+    const dirty = value !== draft.value
+    this.setState({
+      draft: {
+        dirty,
+        value,
+      },
+    })
+    if (dirty) {
+      this.autoSaveOnChange()
+    }
   }
 
   handleDelete = () => {
@@ -31,20 +75,24 @@ class LessonComment extends React.Component {
     )
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const { body } = this.state
-    UpdateLessonCommentMutation(
+  handlePublish = () => {
+    PublishLessonCommentDraftMutation(
       this.props.comment.id,
-      body,
-      (lessonComment, errors) => {
-        if (!isNil(errors)) {
+      (comment, errors) => {
+        if (errors) {
           this.setState({ error: errors[0].message })
+          return
         }
-        this.setState({body: lessonComment.body})
         this.handleToggleEdit()
       },
     )
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const {draft} = this.state
+    this.updateDraft(draft.value)
+    this.handleToggleEdit()
   }
 
   handleToggleDeleteConfirmation = () => {
@@ -55,10 +103,7 @@ class LessonComment extends React.Component {
   }
 
   handleToggleEdit = () => {
-    this.setState({
-      body: get(this.props, "comment.body", ""),
-      edit: !this.state.edit,
-    })
+    this.setState({ edit: !this.state.edit })
   }
 
   get classes() {
@@ -85,13 +130,15 @@ class LessonComment extends React.Component {
     return (
       <div
         id={`lesson_comment${moment(comment.createdAt).unix()}`}
-        className="mdc-card mdc-card--outlined"
+        className="mdc-card"
       >
-        <div className="mdc-typography--subtitle2 mdc-theme--text-secondary-on-light pa3">
+        <div className="rn-card__overline">
           <UserLink className="rn-link rn-link--secondary" user={get(comment, "author", null)} />
           <span className="ml1">commented {timeDifferenceForDate(comment.createdAt)}</span>
         </div>
-        <HTML className="ph3" html={comment.bodyHTML} />
+        <div className="rn-card__body">
+          <HTML html={comment.bodyHTML} />
+        </div>
         {comment.viewerCanUpdate &&
         <div className="mdc-card__actions">
           <div className="mdc-card__action-buttons">
@@ -170,18 +217,20 @@ class LessonComment extends React.Component {
 
   renderForm() {
     const study = get(this.props, "comment.study", null)
-    const body = get(this.props, "comment.body", "")
+    const comment = get(this.props, "comment", {})
 
     return (
       <StudyBodyEditor study={study}>
         <form id="lesson-comment-form" onSubmit={this.handleSubmit}>
           <StudyBodyEditor.Main
             placeholder="Leave a comment"
-            initialValue={body}
+            body={comment.body}
+            draft={comment.draft}
             showFormButtonsFor="lesson-comment-form"
-            submitText="Update comment"
-            onCancel={this.handleToggleEdit}
+            onCancel={this.handleCancel}
             onChange={this.handleChange}
+            onPreview={this.updateDraft}
+            onPublish={this.handlePublish}
             study={study}
           />
         </form>
@@ -195,9 +244,10 @@ export default createFragmentContainer(LessonComment, graphql`
     author {
       ...UserLink_user
     }
-    createdAt
     body
     bodyHTML
+    createdAt
+    draft
     id
     publishedAt
     study {

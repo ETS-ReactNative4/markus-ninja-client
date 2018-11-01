@@ -33,7 +33,7 @@ class DashboardPage extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("DashboardPage", className)
+    return cls("DashboardPage rn-page mdc-layout-grid", className)
   }
 
   render() {
@@ -51,14 +51,7 @@ class DashboardPage extends React.Component {
             const {drawerOpen} = this.state
 
             return (
-              <div className={this.classes}>
-                <button
-                  type="button"
-                  className="mdc-button"
-                  onClick={() => this.setState({drawerOpen: !drawerOpen})}
-                >
-                  Search your studies
-                </button>
+              <React.Fragment>
                 <Drawer
                   modal
                   open={drawerOpen}
@@ -89,8 +82,21 @@ class DashboardPage extends React.Component {
                     <SearchViewerStudies />
                   </Drawer.Content>
                 </Drawer>
-                <ViewerReceivedActivity viewer={props.viewer} />
-              </div>
+                <div className={this.classes}>
+                  <div className="mdc-layout-grid__inner">
+                    <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      <button
+                        type="button"
+                        className="mdc-button"
+                        onClick={() => this.setState({drawerOpen: !drawerOpen})}
+                      >
+                        Search your studies
+                      </button>
+                    </div>
+                    <ViewerReceivedActivity viewer={props.viewer} />
+                  </div>
+                </div>
+              </React.Fragment>
             )
           }
           return <div>Loading</div>

@@ -9,7 +9,7 @@ import "./styles.css"
 class NotificationsPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("NotificationsPage mdc-layout-grid mw8", className)
+    return cls("NotificationsPage rn-page mdc-layout-grid", className)
   }
 
   render() {

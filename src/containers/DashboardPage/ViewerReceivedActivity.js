@@ -1,5 +1,4 @@
 import * as React from 'react'
-import cls from 'classnames'
 import {
   createPaginationContainer,
   graphql,
@@ -24,41 +23,34 @@ class ViewerReceivedActivity extends React.Component {
     relay.loadMore(EVENTS_PER_PAGE)
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("ViewerReceivedActivity mdc-layout-grid", className)
-  }
-
   render() {
     const edges = get(this.props, "viewer.receivedActivity.edges", [])
     return (
-      <div className={this.classes}>
-        <div className="mdc-layout-grid__inner">
-          <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            Recent activity
-          </h4>
-          <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-          {isEmpty(edges)
-            ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                There is no recent activity.
-              </div>
-            : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                <ul className="mdc-list mdc-list--two-line">
-                  {edges.map(({node}) => (
-                    node &&
-                    <UserActivityEvent key={node.id} withUser event={node} />
-                  ))}
-                </ul>
-                {this.props.relay.hasMore() &&
-                <button
-                  className="mdc-button mdc-button--unelevated"
-                  onClick={this._loadMore}
-                >
-                  Load more activity
-                </button>}
-              </div>}
-          </div>
-      </div>
+      <React.Fragment>
+        <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          Recent activity
+        </h4>
+        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+        {isEmpty(edges)
+          ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              There is no recent activity.
+            </div>
+          : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              <ul className="mdc-list mdc-list--two-line">
+                {edges.map(({node}) => (
+                  node &&
+                  <UserActivityEvent key={node.id} withUser event={node} />
+                ))}
+              </ul>
+              {this.props.relay.hasMore() &&
+              <button
+                className="mdc-button mdc-button--unelevated"
+                onClick={this._loadMore}
+              >
+                Load more activity
+              </button>}
+            </div>}
+      </React.Fragment>
     )
   }
 }

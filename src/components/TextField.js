@@ -64,6 +64,7 @@ class TextField extends React.Component {
       const onChange = get(this.props, "inputProps.onChange", () => {})
       onChange({
         ...this.state,
+        valid: e.target.validity.valid,
         visited: true,
       })
     }

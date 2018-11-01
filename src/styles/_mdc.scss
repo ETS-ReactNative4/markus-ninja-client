@@ -1,4 +1,5 @@
 @import "@material/button/mixins";
+@import "@material/icon-button/mixins";
 @import "@material/layout-grid/mixins";
 @import "@material/list/mixins";
 @import "@material/rtl/mixins";
@@ -11,6 +12,17 @@
     width: 24px;
     height: 24px;
   }
+}
+
+// automatically reduce size of icon buttons under media query phone
+.mdc-icon-button {
+  @include mdc-layout-grid-media-query_(phone) {
+    @include mdc-icon-button-size(22px);
+  }
+}
+
+.mdc-card__actions {
+  min-height: 60px;
 }
 
 // Fixes size of FontAwesomeIcon within mdc-list-item
@@ -74,6 +86,10 @@
   @include mdc-layout-grid-media-query_(phone) {
     @include mdc-button--dense_;
   }
+}
+
+.mdc-card__action {
+  flex-shrink: 0;
 }
 
 .mdc-list-item {

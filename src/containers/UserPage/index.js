@@ -71,7 +71,7 @@ class UserPage extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("UserPage mdc-layout-grid", className)
+    return cls("UserPage rn-page mdc-layout-grid", className)
   }
 
   render() {

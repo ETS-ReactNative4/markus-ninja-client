@@ -2,7 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
 import HTML from 'components/HTML'
-import {makeCancelable} from 'utils'
+import {makeCancelable, throttle} from 'utils'
 
 class Preview extends React.Component {
   state = {
@@ -31,7 +31,7 @@ class Preview extends React.Component {
     }
   }
 
-  fetchPreview = () => {
+  fetchPreview = throttle(() => {
     this.setState({loading: true})
     const {studyId, text} = this.props
 
@@ -49,7 +49,16 @@ class Preview extends React.Component {
     ))
     this.setState({request})
 
-    request.promise.then((response) => {
+
+    return Promise.race([
+      request.promise,
+      new Promise((_, reject) =>
+        setTimeout(() => {
+          request.cancel()
+          reject(new Error('timeout'))
+        }, 7000)
+      )
+    ]).then((response) => {
       return response.text()
     }).then((preview) => {
       this.setState({
@@ -58,9 +67,14 @@ class Preview extends React.Component {
       })
     }).catch((error) => {
       console.error(error)
+      this.setState({
+        dirty: true,
+        loading: false,
+        preview: "",
+      })
       return
     })
-  }
+  }, 3000)
 
   get classes() {
     const {className} = this.props

@@ -11,7 +11,7 @@ import './styles.css'
 class UserSettingsPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("UserSettingsPage mdc-layout-grid mw8", className)
+    return cls("UserSettingsPage rn-page mdc-layout-grid", className)
   }
 
   render() {

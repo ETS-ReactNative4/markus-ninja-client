@@ -22,43 +22,56 @@ class LessonBody extends React.Component {
   }
 
   autoSaveOnChange = throttle(
-    debounce(() => {
-      this.updateDraft()
-    }, 30000)
+    debounce(() => this.updateDraft(this.state.draft.value), 30000)
   , 30000)
 
-  updateDraft = () => {
-    const { draft } = this.state
-    if (draft.dirty) {
+  updateDraft = throttle((draft) => {
+    if (this.state.draft.dirty) {
       UpdateLessonMutation(
         this.props.lesson.id,
         null,
-        draft.value,
+        draft,
         (lesson, errors) => {
           if (!isNil(errors)) {
             this.setState({ error: errors[0].message })
           }
-          this.setState({
-            draft: {
-              ...this.state.draft,
-              dirty: false,
-              value: lesson.draft
-            }
-          })
+          if (lesson) {
+            this.setState({
+              draft: {
+                ...this.state.draft,
+                dirty: false,
+                value: lesson.draft
+              }
+            })
+          }
         },
       )
     }
+  }, 2000)
+
+  handleCancel = () => {
+    const {initialValue} = this.state
+    this.updateDraft(initialValue)
+    this.handleToggleEdit()
   }
 
   handleChange = (value) => {
     const {draft} = this.state
+    const dirty = draft.dirty || value !== draft.value
     this.setState({
       draft: {
-        dirty: value !== draft.initialValue,
+        dirty,
         value,
       },
     })
-    this.autoSaveOnChange()
+    if (dirty) {
+      this.autoSaveOnChange()
+    }
+  }
+
+  handlePreview = () => {
+    const {draft} = this.state
+    this.updateDraft(draft.value)
   }
 
   handlePublish = () => {
@@ -76,7 +89,9 @@ class LessonBody extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.updateDraft()
+    const {draft} = this.state
+    this.updateDraft(draft.value)
+    this.handleToggleEdit()
   }
 
   handleToggleEdit = () => {
@@ -107,7 +122,7 @@ class LessonBody extends React.Component {
 
     return (
       <div className="mdc-card h-100">
-        <div className="ph3 pv2">
+        <div className="rn-card__body">
           <HTML html={lesson.bodyHTML} />
         </div>
         {lesson.viewerCanUpdate &&
@@ -130,19 +145,19 @@ class LessonBody extends React.Component {
 
   renderForm() {
     const study = get(this.props, "lesson.study", null)
-    const draft = get(this.props, "lesson.draft", "")
+    const lesson = get(this.props, "lesson", {})
 
     return (
       <StudyBodyEditor study={study}>
         <form id="lesson-draft-form" onSubmit={this.handleSubmit}>
           <StudyBodyEditor.Main
             placeholder="Begin your lesson"
-            initialValue={draft}
+            body={lesson.body}
+            draft={lesson.draft}
             showFormButtonsFor="lesson-draft-form"
-            submitText="Update draft"
-            onCancel={this.handleToggleEdit}
+            onCancel={this.handleCancel}
             onChange={this.handleChange}
-            onPreview={this.updateDraft}
+            onPreview={this.handlePreview}
             onPublish={this.handlePublish}
             study={study}
           />

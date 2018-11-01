@@ -15,15 +15,22 @@ const mutation = graphql`
           ...LessonComment_comment
         }
       }
+      lesson {
+        id
+        viewerNewComment {
+          body
+          draft
+          id
+        }
+      }
     }
   }
 `
 
-export default (lessonId, body, callback) => {
+export default (lessonCommentId, callback) => {
   const variables = {
     input: {
-      body,
-      lessonId,
+      lessonCommentId,
     },
   }
 
@@ -35,14 +42,22 @@ export default (lessonId, body, callback) => {
       updater: proxyStore => {
         const addLessonCommentField = proxyStore.getRootField("addLessonComment")
         if (!isNil(addLessonCommentField)) {
-          const lesson = proxyStore.get(lessonId)
-          const timeline = ConnectionHandler.getConnection(
-            lesson,
-            "LessonTimeline_timeline",
-          )
-          const edge = addLessonCommentField.getLinkedRecord("commentEdge")
+          const commentLesson = addLessonCommentField.getLinkedRecord("lesson")
+          if (commentLesson) {
+            const commentLessonId = commentLesson.getValue("id")
+            const viewerNewComment = commentLesson.getLinkedRecord("viewerNewComment")
+            const lesson = proxyStore.get(commentLessonId)
+            if (lesson) {
+              lesson.setLinkedRecord(viewerNewComment, "viewerNewComment")
+              const timeline = ConnectionHandler.getConnection(
+                lesson,
+                "LessonTimeline_timeline",
+              )
+              const edge = addLessonCommentField.getLinkedRecord("commentEdge")
 
-          ConnectionHandler.insertEdgeBefore(timeline, edge)
+              ConnectionHandler.insertEdgeBefore(timeline, edge)
+            }
+          }
         }
       },
       onCompleted: (response, error) => {

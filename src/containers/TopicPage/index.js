@@ -42,7 +42,7 @@ class TopicPage extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("TopicPage mdc-layout-grid", className)
+    return cls("TopicPage rn-page mdc-layout-grid", className)
   }
 
   get _orderBy() {

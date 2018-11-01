@@ -7,27 +7,102 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import AddLessonCommentMutation from 'mutations/AddLessonCommentMutation'
+import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
 import StudyBodyEditor from 'components/StudyBodyEditor'
-import { get, isNil } from 'utils'
+import {debounce, get, isNil, throttle} from 'utils'
 
 class AddLessonCommentForm extends React.Component {
-  state = {
-    error: null,
-    body: "",
+  constructor(props) {
+    super(props)
+
+    const comment = get(this.props, "lesson.viewerNewComment", {})
+
+    this.state = {
+      error: null,
+      draft: {
+        dirty: false,
+        initialValue: comment.draft,
+        value: comment.draft,
+      }
+    }
+  }
+
+  autoSaveOnChange = throttle(
+    debounce(() => this.updateDraft(this.state.draft.value), 30000)
+  , 30000)
+
+  updateDraft = throttle((draft) => {
+    const comment = get(this.props, "lesson.viewerNewComment", {})
+
+    if (this.state.draft.dirty) {
+      UpdateLessonCommentMutation(
+        comment.id,
+        draft,
+        (comment, errors) => {
+          if (!isNil(errors)) {
+            this.setState({ error: errors[0].message })
+          }
+          if (comment) {
+            this.setState({
+              draft: {
+                ...this.state.draft,
+                dirty: false,
+                value: comment.draft
+              }
+            })
+          }
+        },
+      )
+    }
+  }, 2000)
+
+  handleCancel = () => {
+    const {initialValue} = this.state
+    this.updateDraft(initialValue)
+  }
+
+  handleChange = (value) => {
+    const {draft} = this.state
+    const dirty = draft.dirty || value !== draft.value
+    this.setState({
+      draft: {
+        dirty,
+        value,
+      },
+    })
+    if (dirty) {
+      this.autoSaveOnChange()
+    }
+  }
+
+  handlePreview = () => {
+    const {draft} = this.state
+    this.updateDraft(draft.value)
+  }
+
+  handlePublish = () => {
+    AddLessonCommentMutation(
+      get(this.props, "lesson.viewerNewComment.id", ""),
+      (comment, errors) => {
+        if (errors) {
+          this.setState({ error: errors[0].message })
+          return
+        }
+        this.setState({
+          draft: {
+            dirty: false,
+            initialValue: comment.draft,
+            value: comment.draft,
+          }
+        })
+      }
+    )
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { body } = this.state
-    AddLessonCommentMutation(
-      this.props.lesson.id,
-      body,
-      (response, errors) => {
-        if (!isNil(errors)) {
-          this.setState({ error: errors[0].message })
-        }
-      }
-    )
+    const {draft} = this.state
+    this.updateDraft(draft.value)
   }
 
   get classes() {
@@ -37,25 +112,27 @@ class AddLessonCommentForm extends React.Component {
 
   render() {
     const study = get(this.props, "lesson.study", null)
+    const comment = get(this.props, "lesson.viewerNewComment", {})
 
     return (
       <StudyBodyEditor study={study}>
-        <StudyBodyEditor.Context.Consumer>
-          {({clearText}) =>
-            <form
-              id="add-lesson-comment-form"
-              className={this.classes}
-              onSubmit={(e) => {this.handleSubmit(e); clearText()}}
-            >
-              <StudyBodyEditor.Main
-                onChange={(body) => this.setState({body})}
-                submitText="Comment"
-                showFormButtonsFor="add-lesson-comment-form"
-                placeholder="Leave a comment"
-                study={study}
-              />
-            </form>}
-        </StudyBodyEditor.Context.Consumer>
+        <form
+          id="add-lesson-comment-form"
+          className={this.classes}
+          onSubmit={this.handleSubmit}
+        >
+          <StudyBodyEditor.Main
+            placeholder="Leave a comment"
+            body={comment.body}
+            draft={comment.draft}
+            showFormButtonsFor="add-lesson-comment-form"
+            onCancel={this.handleCancel}
+            onChange={this.handleChange}
+            onPreview={this.handlePreview}
+            onPublish={this.handlePublish}
+            study={study}
+          />
+        </form>
       </StudyBodyEditor>
     )
   }
@@ -78,6 +155,11 @@ export default withRouter(createFragmentContainer(AddLessonCommentForm, graphql`
     id
     study {
       ...StudyBodyEditor_study
+    }
+    viewerNewComment {
+      body
+      draft
+      id
     }
   }
 `))

@@ -29,7 +29,7 @@ const UserAssetPageQuery = graphql`
 class UserAssetPage extends React.Component {
   get classes() {
     const {className} = this.props
-    return cls("UserAssetPage mdc-layout-grid", className)
+    return cls("UserAssetPage rn-page mdc-layout-grid", className)
   }
 
   render() {
