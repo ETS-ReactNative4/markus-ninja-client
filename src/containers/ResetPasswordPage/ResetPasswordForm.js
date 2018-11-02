@@ -52,7 +52,7 @@ class ResetPasswordForm extends React.Component {
             this.setState({ error: errors[0].message })
             return
           }
-          this.props.history.replace("/login")
+          this.props.history.replace("/signin")
         },
       )
     }

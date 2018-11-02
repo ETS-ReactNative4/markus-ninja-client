@@ -9,6 +9,9 @@ import Dialog from 'components/Dialog'
 import HTML from 'components/HTML'
 import StudyBodyEditor from 'components/StudyBodyEditor'
 import UserLink from 'components/UserLink'
+import Icon from 'components/Icon'
+import List from 'components/List'
+import Menu, {Corner} from 'components/mdc/Menu'
 import DeleteLessonCommentMutation from 'mutations/DeleteLessonCommentMutation'
 import PublishLessonCommentDraftMutation from 'mutations/PublishLessonCommentDraftMutation'
 import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
@@ -16,6 +19,7 @@ import {debounce, get, isNil, throttle, timeDifferenceForDate} from 'utils'
 
 class LessonComment extends React.Component {
   state = {
+    anchorElement: null,
     confirmDeleteDialogOpen: false,
     edit: false,
     error: null,
@@ -23,7 +27,15 @@ class LessonComment extends React.Component {
       dirty: false,
       initialValue: get(this.props, "comment.draft", ""),
       value: get(this.props, "comment.draft", ""),
+    },
+    menuOpen: false,
+  }
+
+  setAnchorElement = (el) => {
+    if (this.state.anchorElement) {
+      return
     }
+    this.setState({anchorElement: el})
   }
 
   autoSaveOnChange = throttle(
@@ -103,7 +115,11 @@ class LessonComment extends React.Component {
   }
 
   handleToggleEdit = () => {
-    this.setState({ edit: !this.state.edit })
+    this.setState({
+      // reset anchorElement when switching between modes
+      anchorElement: null,
+      edit: !this.state.edit,
+    })
   }
 
   get classes() {
@@ -125,6 +141,7 @@ class LessonComment extends React.Component {
   }
 
   renderComment() {
+    const {anchorElement, menuOpen} = this.state
     const comment = get(this.props, "comment", {})
 
     return (
@@ -140,7 +157,7 @@ class LessonComment extends React.Component {
           <HTML html={comment.bodyHTML} />
         </div>
         {comment.viewerCanUpdate &&
-        <div className="mdc-card__actions">
+        <div className="mdc-card__actions rn-card__actions">
           <div className="mdc-card__action-buttons">
             {comment.viewerDidAuthor &&
             <button
@@ -150,7 +167,7 @@ class LessonComment extends React.Component {
               Author
             </button>}
           </div>
-          <div className="mdc-card__action-icons">
+          <div className="mdc-card__action-icons rn-card__actions--spread">
             {comment.viewerCanDelete &&
             <button
               className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
@@ -172,6 +189,45 @@ class LessonComment extends React.Component {
               edit
             </button>}
           </div>
+          <Menu.Anchor
+            className="mdc-card__action-icons rn-card__actions--collapsed"
+            innerRef={this.setAnchorElement}
+          >
+            <button
+              type="button"
+              className="mdc-icon-button material-icons"
+              onClick={() => this.setState({menuOpen: !menuOpen})}
+            >
+              more_vert
+            </button>
+            <Menu
+              open={menuOpen}
+              onClose={() => this.setState({menuOpen: false})}
+              anchorElement={anchorElement}
+              anchorCorner={Corner.BOTTOM_LEFT}
+            >
+              <List>
+                {comment.viewerCanDelete &&
+                <li
+                  className="mdc-list-item"
+                  role="button"
+                  onClick={this.handleToggleDeleteConfirmation}
+                >
+                  <Icon as="span" className="mdc-list-item__graphic" icon="delete" />
+                  <span className="mdc-list-item__text">Delete comment</span>
+                </li>}
+                {comment.viewerCanUpdate &&
+                <li
+                  className="mdc-list-item"
+                  role="button"
+                  onClick={this.handleToggleEdit}
+                >
+                  <Icon as="span" className="mdc-list-item__graphic" icon="edit" />
+                  <span className="mdc-list-item__text">Edit comment</span>
+                </li>}
+              </List>
+            </Menu>
+          </Menu.Anchor>
         </div>}
         {comment.viewerCanDelete && this.renderConfirmDeleteDialog()}
       </div>

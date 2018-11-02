@@ -8,17 +8,35 @@ import {
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import EnrollIconButton from 'components/EnrollIconButton'
+import ListEnrollButton from 'components/ListEnrollButton'
+import Counter from 'components/Counter'
 import Icon from 'components/Icon'
+import List from 'components/List'
+import Menu, {Corner} from 'components/mdc/Menu'
 import { get } from 'utils'
 
 class CardLessonPreview extends React.Component {
+  state = {
+    anchorElement: null,
+    menuOpen: false,
+  }
+
+  setAnchorElement = (el) => {
+    if (this.state.anchorElement) {
+      return
+    }
+    this.setState({anchorElement: el})
+  }
+
   get classes() {
     const {className} = this.props
     return cls("CardLessonPreview mdc-card", className)
   }
 
   render() {
+    const {anchorElement, menuOpen} = this.state
     const lesson = get(this.props, "lesson", {})
+
     return (
       <div className={this.classes}>
         <Link className="mdc-card__primary-action" to={lesson.resourcePath}>
@@ -37,7 +55,7 @@ class CardLessonPreview extends React.Component {
             </div>
           </div>
         </Link>
-        <div className="mdc-card__actions">
+        <div className="mdc-card__actions rn-card__actions">
           <div className="mdc-card__action-buttons">
             <Link
               className="mdc-button mdc-card__action mdc-card__action--button"
@@ -46,7 +64,7 @@ class CardLessonPreview extends React.Component {
               Read
             </Link>
           </div>
-          <div className="mdc-card__action-icons">
+          <div className="mdc-card__action-icons rn-card__actions--spread">
             {lesson.viewerCanEnroll &&
             <EnrollIconButton
               className="mdc-card__action mdc-card__action--icon"
@@ -60,6 +78,39 @@ class CardLessonPreview extends React.Component {
               {get(lesson, "comments.totalCount", 0)}
             </Link>
           </div>
+          <Menu.Anchor
+            className="mdc-card__action-icons rn-card__actions--collapsed"
+            innerRef={this.setAnchorElement}
+          >
+            <button
+              type="button"
+              className="mdc-icon-button material-icons"
+              onClick={() => this.setState({menuOpen: !menuOpen})}
+            >
+              more_vert
+            </button>
+            <Menu
+              open={menuOpen}
+              onClose={() => this.setState({menuOpen: false})}
+              anchorElement={anchorElement}
+              anchorCorner={Corner.BOTTOM_LEFT}
+            >
+              <List>
+                {lesson.viewerCanEnroll &&
+                <ListEnrollButton enrollable={get(this.props, "lesson", null)}/>}
+                <Link
+                  className="mdc-list-item"
+                  to={lesson.resourcePath}
+                >
+                  <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="comment" />
+                  <span className="mdc-list-item__text">
+                    Comments
+                    <Counter>{get(lesson, "comments.totalCount", 0)}</Counter>
+                  </span>
+                </Link>
+              </List>
+            </Menu>
+          </Menu.Anchor>
         </div>
       </div>
     )

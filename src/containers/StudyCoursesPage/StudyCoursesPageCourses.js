@@ -20,6 +20,7 @@ class StudyCoursesPageCourses extends React.Component {
       <div className={this.classes}>
         <div className="mdc-card mdc-card--outlined ph2">
           {this.renderCourses()}
+          {(hasMore || study.viewerCanAdmin) &&
           <div className="mdc-card__actions">
             <div className="mdc-card__action-buttons">
               {hasMore &&
@@ -32,6 +33,7 @@ class StudyCoursesPageCourses extends React.Component {
               </button>}
             </div>
             <div className="mdc-card__action-icons">
+              {study.viewerCanAdmin &&
               <Link
                 className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
                 to={study.resourcePath+"/courses/new"}
@@ -39,9 +41,9 @@ class StudyCoursesPageCourses extends React.Component {
                 title="New course"
               >
                 add
-              </Link>
+              </Link>}
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     )
@@ -70,6 +72,7 @@ StudyCoursesPageCourses.propTypes = {
   courses: StudyCoursesProp,
   study: PropTypes.shape({
     resourcePath: PropTypes.string.isRequired,
+    viewerCanAdmin: PropTypes.bool.isRequired,
   }).isRequired,
 }
 
@@ -77,6 +80,7 @@ StudyCoursesPageCourses.defaultProps = {
   courses: StudyCoursesPropDefaults,
   study: {
     resourcePath: "",
+    viewerCanAdmin: false,
   }
 }
 

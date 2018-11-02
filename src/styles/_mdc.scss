@@ -25,6 +25,12 @@
   min-height: 60px;
 }
 
+.mdc-list-item .mdc-list-item__graphic {
+  @include mdc-layout-grid-media-query_(phone) {
+    margin-right: 16px;
+  }
+}
+
 // Fixes size of FontAwesomeIcon within mdc-list-item
 .mdc-list-item__graphic.svg-inline--fa {
   width: 24px;

@@ -75,18 +75,21 @@ class UserStudiesTab extends React.Component {
   }
 
   render() {
+    const user = get(this.props, "user", {})
+
     return (
       <React.Fragment>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="rn-text-field">
             {this.renderInput()}
+            {user.isViewer &&
             <div className="rn-text-field__actions">
               <Link className="mdc-button mdc-button--unelevated" to="/new">New study</Link>
-            </div>
+            </div>}
           </div>
         </div>
         <UserStudies filterBy={this._filterBy} orderBy={this._orderBy}>
-          <UserStudiesTabStudies />
+          <UserStudiesTabStudies user={user} />
         </UserStudies>
       </React.Fragment>
     )

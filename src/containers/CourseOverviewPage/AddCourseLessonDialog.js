@@ -10,7 +10,7 @@ import Dialog from 'components/Dialog'
 import StudyLessons from 'components/StudyLessons'
 import LessonPreview from 'components/LessonPreview'
 import AddCourseLessonMutation from 'mutations/AddCourseLessonMutation'
-import {get, isEmpty} from 'utils'
+import {get, isEmpty, throttle} from 'utils'
 
 class Lessons extends React.Component {
   state = {
@@ -58,6 +58,7 @@ class AddCourseLessonDialog extends React.Component {
   state = {
     lessonsFetched: false,
     lessonId: "",
+    loading: false,
     query: "",
   }
 
@@ -83,15 +84,20 @@ class AddCourseLessonDialog extends React.Component {
     this.setState({lessonId})
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = throttle((e) => {
     e.preventDefault()
     const { lessonId } = this.state
+
+    this.setState({loading: true})
+
     AddCourseLessonMutation(
       this.props.course.id,
       lessonId,
       (response, errors) => {
+        this.setState({loading: false})
         if (errors) {
           this.setState({ error: errors[0].message })
+          return
         }
         this.setState({
           lessonsFetched: false,
@@ -100,11 +106,15 @@ class AddCourseLessonDialog extends React.Component {
         })
       }
     )
-  }
+  }, 1000)
 
   get classes() {
     const {className} = this.props
     return cls("AddCourseLessonDialog", className)
+  }
+
+  get isLoading() {
+    return this.state.loading
   }
 
   get _filterBy() {
@@ -145,6 +155,7 @@ class AddCourseLessonDialog extends React.Component {
             <button
               type="button"
               className="mdc-button mdc-button--unelevated"
+              disabled={this.isLoading}
               onClick={this.handleSubmit}
               data-mdc-dialog-action="add"
             >

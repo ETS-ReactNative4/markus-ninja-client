@@ -83,20 +83,25 @@ class StudyLabelsPage extends React.Component {
     return (
       <div className={this.classes}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <div className="flex items-center w-100">
+          <div className="rn-text-field">
             {this.renderInput()}
             {study.viewerCanAdmin &&
-            <button
-              className="mdc-button mdc-button--unelevated flex-stable ml2"
-              type="button"
-              onClick={() => this.setState({open: !open})}
-            >
-              New label
-            </button>}
+            <div className="rn-text-field__actions">
+              <button
+                className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
+                type="button"
+                onClick={() => this.setState({open: !open})}
+              >
+                New label
+              </button>
+            </div>}
           </div>
         </div>
         <StudyLabels filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
-          <StudyLabelsPageLabels onAddAction={() => this.setState({open: !open})}/>
+          <StudyLabelsPageLabels
+            onAddAction={() => this.setState({open: !open})}
+            study={study}
+          />
         </StudyLabels>
         {study.viewerCanAdmin &&
         <CreateLabelDialog

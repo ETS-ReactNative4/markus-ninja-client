@@ -5,6 +5,7 @@ import {
   Modifier,
 } from 'draft-js'
 import cls from 'classnames'
+import Icon from 'components/Icon'
 import { withUID } from 'components/UniqueId'
 import {get, makeCancelable} from 'utils'
 import Context from './Context'
@@ -18,6 +19,7 @@ const defaultState = {
 }
 
 class AttachFile extends React.Component {
+  fileInputElement_ = React.createRef()
   state = defaultState
 
   componentWillUnmount() {
@@ -61,6 +63,13 @@ class AttachFile extends React.Component {
     return
   }
 
+  handleClick = (e) => {
+    const fileInput = this.fileInputElement_
+    if (fileInput && fileInput.current) {
+      fileInput.current.click()
+    }
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
     const file = e.target.files[0]
@@ -102,30 +111,61 @@ class AttachFile extends React.Component {
     }
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("material-icons mdc-icon-button", className)
+  render() {
+    const {variant} = this.props
+
+    switch (variant) {
+      case "icon-button":
+        return this.renderIconButton()
+      case "list-item":
+        return this.renderListItem()
+      default:
+        return null
+    }
   }
 
-  render() {
-    const {uid} = this.props
+  renderListItem() {
+    const {className} = this.props
 
     return (
-      <label
-        className={this.classes}
-        htmlFor={`file-input${uid}`}
-        title="Attach file"
-        aria-label="Attach file"
+      <li
+        className={cls("mdc-list-item", className)}
+        role="button"
+        onClick={this.handleClick}
       >
-        attach_file
         <input
-          id={`file-input${uid}`}
+          ref={this.fileInputElement_}
           className="dn"
           type="file"
           accept=".jpg,jpeg,.png,.gif"
           onChange={this.handleSubmit}
         />
-      </label>
+        <Icon as="span" className="mdc-list-item__graphic" icon="attach_file" />
+        <span className="mdc-list-item__text">Attach file</span>
+      </li>
+    )
+  }
+
+  renderIconButton() {
+    const {className} = this.props
+
+    return (
+      <button
+        type="button"
+        className={cls("material-icons mdc-icon-button", className)}
+        title="Attach file"
+        aria-label="Attach file"
+        onClick={this.handleClick}
+      >
+        attach_file
+        <input
+          ref={this.fileInputElement_}
+          className="dn"
+          type="file"
+          accept=".jpg,jpeg,.png,.gif"
+          onChange={this.handleSubmit}
+        />
+      </button>
     )
   }
 }
@@ -134,12 +174,14 @@ AttachFile.propTypes = {
   study: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }).isRequired,
+  variant: PropTypes.oneOf(["icon-button", "list-item"]),
 }
 
 AttachFile.defaultProps = {
   study: {
     id: "",
-  }
+  },
+  variant: "icon-button",
 }
 
 AttachFile.contextType = Context

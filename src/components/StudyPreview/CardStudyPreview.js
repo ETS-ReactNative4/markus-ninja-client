@@ -4,17 +4,36 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 import AppleIconButton from 'components/AppleIconButton'
 import EnrollIconButton from 'components/EnrollIconButton'
+import ListAppleButton from 'components/ListAppleButton'
+import ListEnrollButton from 'components/ListEnrollButton'
+import Counter from 'components/Counter'
 import Icon from 'components/Icon'
+import List from 'components/List'
+import Menu, {Corner} from 'components/mdc/Menu'
 import { get } from 'utils'
 
 class CardStudyPreview extends React.Component {
+  state = {
+    anchorElement: null,
+    menuOpen: false,
+  }
+
+  setAnchorElement = (el) => {
+    if (this.state.anchorElement) {
+      return
+    }
+    this.setState({anchorElement: el})
+  }
+
   get classes() {
     const {className} = this.props
     return cls("CardStudyPreview mdc-card", className)
   }
 
   render() {
+    const {anchorElement, menuOpen} = this.state
     const study = get(this.props, "study", {})
+
     return (
       <div className={this.classes}>
         <Link className="mdc-card__primary-action" to={study.resourcePath}>
@@ -36,7 +55,7 @@ class CardStudyPreview extends React.Component {
             {study.description}
           </div>
         </Link>
-        <div className="mdc-card__actions bottom">
+        <div className="mdc-card__actions rn-card__actions bottom">
           <div className="mdc-card__action-buttons">
             <Link
               className="mdc-button mdc-card__action mdc-card__action--button"
@@ -45,7 +64,7 @@ class CardStudyPreview extends React.Component {
               Explore
             </Link>
           </div>
-          <div className="mdc-card__action-icons">
+          <div className="mdc-card__action-icons rn-card__actions--spread">
             {study.viewerCanEnroll &&
             <EnrollIconButton
               className="mdc-card__action mdc-card__action--icon"
@@ -64,6 +83,41 @@ class CardStudyPreview extends React.Component {
               {get(study, "lessons.totalCount", 0)}
             </Link>
           </div>
+          <Menu.Anchor className="mdc-card__action-icons rn-card__actions--collapsed" innerRef={this.setAnchorElement}>
+            <button
+              type="button"
+              className="mdc-icon-button material-icons"
+              onClick={() => this.setState({menuOpen: !menuOpen})}
+            >
+              more_vert
+            </button>
+            <Menu
+              open={menuOpen}
+              onClose={() => this.setState({menuOpen: false})}
+              anchorElement={anchorElement}
+              anchorCorner={Corner.BOTTOM_LEFT}
+            >
+              <List>
+                {study.viewerCanEnroll &&
+                <ListEnrollButton enrollable={this.props.study} />}
+                {study.viewerCanApple &&
+                <ListAppleButton
+                  className="mdc-list-item"
+                  appleable={get(this.props, "study", null)}
+                />}
+                <Link
+                  className="mdc-list-item"
+                  to={study.resourcePath+"/lessons"}
+                >
+                  <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="lesson" />
+                  <span className="mdc-list-item__text">
+                    Lessons
+                    <Counter>{get(study, "lessons.totalCount", 0)}</Counter>
+                  </span>
+                </Link>
+              </List>
+            </Menu>
+          </Menu.Anchor>
         </div>
       </div>
     )

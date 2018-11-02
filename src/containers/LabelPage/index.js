@@ -1,15 +1,29 @@
 import * as React from 'react'
 import cls from 'classnames'
 import {
-  createFragmentContainer,
+  QueryRenderer,
   graphql,
 } from 'react-relay'
+import environment from 'Environment'
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
+import Label from 'components/Label'
 import StudyLabelsLink from 'components/StudyLabelsLink'
 import StudyLessons from 'components/StudyLessons'
 import LabelPageLessons from './LabelPageLessons'
 import {debounce, get, isEmpty} from 'utils'
+
+const LabelPageQuery = graphql`
+  query LabelPageQuery($owner: String!, $name: String!, $labelName: String!) {
+    study(owner: $owner, name: $name) {
+      ...StudyLabelsLink_study
+      label(name: $labelName) {
+        ...Label_label
+      }
+      viewerCanAdmin
+    }
+  }
+`
 
 class LabelPage extends React.Component {
   constructor(props) {
@@ -83,25 +97,48 @@ class LabelPage extends React.Component {
   }
 
   render() {
-    const study = get(this.props, "study", null)
+    const { match } = this.props
 
     return (
-      <div className={this.classes}>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <div className="flex items-center w-100">
-            {this.renderInput()}
-            <StudyLabelsLink
-              className="mdc-button mdc-button--unelevated mh2"
-              study={study}
-            >
-              Labels
-            </StudyLabelsLink>
-          </div>
-        </div>
-        <StudyLessons filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
-          <LabelPageLessons />
-        </StudyLessons>
-      </div>
+      <QueryRenderer
+        environment={environment}
+        query={LabelPageQuery}
+        variables={{
+          owner: match.params.owner,
+          name: match.params.name,
+          labelName: match.params.label,
+        }}
+        render={({error,  props}) => {
+          if (error) {
+            return <div>{error.message}</div>
+          } else if (props) {
+            return (
+              <div className={this.classes}>
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <Label className="mdc-typography--headline5" label={props.study.label} />
+                </div>
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <div className="rn-text-field">
+                    {this.renderInput()}
+                    <div className="rn-text-field__actions">
+                      <StudyLabelsLink
+                        className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
+                        study={props.study}
+                      >
+                        Labels
+                      </StudyLabelsLink>
+                    </div>
+                  </div>
+                </div>
+                <StudyLessons filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
+                  <LabelPageLessons />
+                </StudyLessons>
+              </div>
+            )
+          }
+          return <div>Loading</div>
+        }}
+      />
     )
   }
 
@@ -126,9 +163,4 @@ class LabelPage extends React.Component {
   }
 }
 
-export default createFragmentContainer(LabelPage, graphql`
-  fragment LabelPage_study on Study {
-    ...StudyLabelsLink_study
-    viewerCanAdmin
-  }
-`)
+export default LabelPage

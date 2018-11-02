@@ -1,10 +1,11 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
-import {Link} from 'react-router-dom'
 import {StudyLessonsProp, StudyLessonsPropDefaults} from 'components/StudyLessons'
 import LessonPreview from 'components/LessonPreview'
 import {isEmpty} from 'utils'
+
+import Context from 'containers/StudyPage/Context'
 
 class StudyLessonsPageLessons extends React.Component {
   get classes() {
@@ -13,6 +14,7 @@ class StudyLessonsPageLessons extends React.Component {
   }
 
   render() {
+    const {toggleCreateLessonDialog} = this.context
     const {lessons, study} = this.props
     const {hasMore, loadMore} = lessons
 
@@ -20,6 +22,7 @@ class StudyLessonsPageLessons extends React.Component {
       <div className={this.classes}>
         <div className="mdc-card mdc-card--outlined ph2">
           {this.renderLessons()}
+          {(hasMore || study.viewerCanAdmin) &&
           <div className="mdc-card__actions">
             <div className="mdc-card__action-buttons">
               {hasMore &&
@@ -32,16 +35,18 @@ class StudyLessonsPageLessons extends React.Component {
               </button>}
             </div>
             <div className="mdc-card__action-icons">
-              <Link
+              {study.viewerCanAdmin &&
+              <button
+                type="button"
                 className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
-                to={study.resourcePath+"/lessons/new"}
+                onClick={toggleCreateLessonDialog}
                 aria-label="New lesson"
                 title="New lesson"
               >
                 add
-              </Link>
+              </button>}
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     )
@@ -70,6 +75,7 @@ StudyLessonsPageLessons.propTypes = {
   lessons: StudyLessonsProp,
   study: PropTypes.shape({
     resourcePath: PropTypes.string.isRequired,
+    viewerCanAdmin: PropTypes.bool.isRequired,
   }).isRequired,
 }
 
@@ -77,7 +83,10 @@ StudyLessonsPageLessons.defaultProps = {
   lessons: StudyLessonsPropDefaults,
   study: {
     resourcePath: "",
+    viewerCanAdmin: false,
   }
 }
+
+StudyLessonsPageLessons.contextType = Context
 
 export default StudyLessonsPageLessons

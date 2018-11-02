@@ -12,9 +12,9 @@ class LoginLink extends React.Component {
     return (
       <Link
         {...props}
-        to={{pathname: "/login", search: returnTo }}
+        to={{pathname: "/signin", search: returnTo }}
       >
-        {this.props.children || "Login"}
+        {this.props.children || "Sign in"}
       </Link>
     )
   }

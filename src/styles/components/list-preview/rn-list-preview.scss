@@ -3,11 +3,6 @@
 @import "@material/theme/mixins";
 
 .rn-list-preview { 
-  .mdc-list-item .mdc-list-item__graphic {
-    @include mdc-layout-grid-media-query_(phone) {
-      margin-right: 16px;
-    }
-  }
 }
 
 .rn-list-preview__tags {

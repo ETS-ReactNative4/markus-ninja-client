@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import {Link} from 'react-router-dom'
 import {UserStudiesProp, UserStudiesPropDefaults} from 'components/UserStudies'
@@ -12,13 +13,14 @@ class UserStudiesTabStudies extends React.Component {
   }
 
   render() {
-    const {studies} = this.props
+    const {studies, user} = this.props
     const {hasMore, loadMore} = studies
 
     return (
       <div className={this.classes}>
         <div className="mdc-card mdc-card--outlined ph2">
           {this.renderStudies()}
+          {(hasMore || user.isViewer) &&
           <div className="mdc-card__actions">
             <div className="mdc-card__action-buttons">
               {hasMore &&
@@ -31,6 +33,7 @@ class UserStudiesTabStudies extends React.Component {
               </button>}
             </div>
             <div className="mdc-card__action-icons">
+              {user.isViewer &&
               <Link
                 className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
                 to="/new"
@@ -38,9 +41,9 @@ class UserStudiesTabStudies extends React.Component {
                 title="New study"
               >
                 add
-              </Link>
+              </Link>}
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     )
@@ -68,10 +71,16 @@ class UserStudiesTabStudies extends React.Component {
 
 UserStudiesTabStudies.propTypes = {
   studies: UserStudiesProp,
+  user: PropTypes.shape({
+    isViewer: PropTypes.bool.isRequired,
+  }).isRequired,
 }
 
 UserStudiesTabStudies.defaultProps = {
   studies: UserStudiesPropDefaults,
+  user: {
+    isViewer: false,
+  }
 }
 
 export default UserStudiesTabStudies

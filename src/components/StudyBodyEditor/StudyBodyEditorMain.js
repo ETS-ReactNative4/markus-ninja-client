@@ -7,6 +7,9 @@ import {
   EditorState,
 } from 'draft-js'
 import Dialog from 'components/Dialog'
+import Icon from 'components/Icon'
+import List from 'components/List'
+import Menu, {Corner} from 'components/mdc/Menu'
 import Tab from 'components/mdc/Tab'
 import TabBar from 'components/mdc/TabBar'
 import AttachFile from './AttachFile'
@@ -20,12 +23,21 @@ class StudyBodyEditorMain extends React.Component {
     this.editorElement = React.createRef()
 
     this.state = {
+      anchorElement: null,
       confirmCancelDialogOpen: false,
       confirmResetDialogOpen: false,
       initialValue: this.props.draft,
       loading: false,
+      menuOpen: false,
       tab: "draft",
     }
+  }
+
+  setAnchorElement = (el) => {
+    if (this.state.anchorElement) {
+      return
+    }
+    this.setState({anchorElement: el})
   }
 
   componentDidMount() {
@@ -114,7 +126,7 @@ class StudyBodyEditorMain extends React.Component {
 
   render() {
     const {editorState, toggleSaveDialog} = this.context
-    const {loading, tab} = this.state
+    const {anchorElement, loading, menuOpen, tab} = this.state
     const {placeholder, showFormButtonsFor, study} = this.props
 
     return (
@@ -147,7 +159,7 @@ class StudyBodyEditorMain extends React.Component {
               ref={this.editorElement}
             />
           </div>
-          <div className="mdc-card__actions">
+          <div className="mdc-card__actions rn-card__actions">
             {showFormButtonsFor &&
             <div className="mdc-card__action-buttons">
               <button
@@ -165,7 +177,7 @@ class StudyBodyEditorMain extends React.Component {
                 Cancel
               </button>
             </div>}
-            <div className="mdc-card__action-icons">
+            <div className="mdc-card__action-icons rn-card__actions--spread">
               <button
                 className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
                 type="button"
@@ -187,6 +199,45 @@ class StudyBodyEditorMain extends React.Component {
                 save
               </button>}
             </div>
+            <Menu.Anchor
+              className="mdc-card__action-icons rn-card__actions--collapsed"
+              innerRef={this.setAnchorElement}
+            >
+              <button
+                type="button"
+                className="mdc-icon-button material-icons"
+                onClick={() => this.setState({menuOpen: !menuOpen})}
+              >
+                more_vert
+              </button>
+              <Menu
+                open={menuOpen}
+                onClose={() => this.setState({menuOpen: false})}
+                anchorElement={anchorElement}
+                anchorCorner={Corner.BOTTOM_LEFT}
+              >
+                <List>
+                  <li
+                    className="mdc-list-item"
+                    role="button"
+                    onClick={this.handleToggleResetConfirmation}
+                  >
+                    <Icon as="span" className="mdc-list-item__graphic" icon="restore" />
+                    <span className="mdc-list-item__text">Reset draft</span>
+                  </li>
+                  <AttachFile variant="list-item" study={this.props.study} />
+                  {study.viewerCanAdmin &&
+                  <li
+                    className="mdc-list-item"
+                    role="button"
+                    onClick={toggleSaveDialog}
+                  >
+                    <Icon as="span" className="mdc-list-item__graphic" icon="save" />
+                    <span className="mdc-list-item__text">Save file</span>
+                  </li>}
+                </List>
+              </Menu>
+            </Menu.Anchor>
           </div>
         </div>
         {this.renderConfirmCancelDialog()}

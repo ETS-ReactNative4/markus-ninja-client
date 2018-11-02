@@ -81,7 +81,7 @@ class ListTopicPreview extends React.Component {
                   >
                     <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="course" />
                     <span className="mdc-list-item__text">
-                      Lessons
+                      Courses
                       <Counter>{get(topic, "topicables.courseCount", 0)}</Counter>
                     </span>
                   </Link>
@@ -91,7 +91,7 @@ class ListTopicPreview extends React.Component {
                   >
                     <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="study" />
                     <span className="mdc-list-item__text">
-                      Lessons
+                      Studies
                       <Counter>{get(topic, "topicables.studyCount", 0)}</Counter>
                     </span>
                   </Link>

@@ -80,7 +80,7 @@ class AppContainer extends React.Component {
         <Switch>
           <Route
             exact
-            path="/login"
+            path="/signin"
             render={() => <LoginPage onLogin={() => this.setState({authenticated: true})} />}
           />
           <Route

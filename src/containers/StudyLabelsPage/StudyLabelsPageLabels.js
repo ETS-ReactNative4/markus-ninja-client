@@ -12,7 +12,7 @@ class StudyLabelsPageLabels extends React.Component {
   }
 
   render() {
-    const {labels} = this.props
+    const {labels, study} = this.props
     const {edges, hasMore, isLoading, loadMore} = labels
 
     const noResults = isEmpty(edges)
@@ -22,6 +22,7 @@ class StudyLabelsPageLabels extends React.Component {
         <div className="mdc-card mdc-card--outlined ph2">
           {isLoading && noResults && <div>Loading...</div>}
           {this.renderLabels()}
+          {(hasMore || study.viewerCanAdmin) &&
           <div className="mdc-card__actions">
             <div className="mdc-card__action-buttons">
               {hasMore &&
@@ -33,6 +34,7 @@ class StudyLabelsPageLabels extends React.Component {
                 More
               </button>}
             </div>
+            {study.viewerCanAdmin &&
             <div className="mdc-card__action-icons">
               <button
                 className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
@@ -42,8 +44,8 @@ class StudyLabelsPageLabels extends React.Component {
               >
                 add
               </button>
-            </div>
-          </div>
+            </div>}
+          </div>}
         </div>
       </div>
     )
@@ -68,11 +70,17 @@ class StudyLabelsPageLabels extends React.Component {
 StudyLabelsPageLabels.propTypes = {
   labels: StudyLabelsProp,
   onAddAction: PropTypes.func,
+  study: PropTypes.shape({
+    viewerCanAdmin: PropTypes.bool.isRequired,
+  }).isRequired,
 }
 
 StudyLabelsPageLabels.defaultProps = {
   labels: StudyLabelsPropDefaults,
   onAddAction: () => {},
+  study: {
+    viewerCanAdmin: false,
+  }
 }
 
 export default StudyLabelsPageLabels

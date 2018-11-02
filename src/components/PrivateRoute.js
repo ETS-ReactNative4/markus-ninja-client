@@ -13,7 +13,7 @@ class PrivateRoute extends React.Component {
     if (authenticated) {
       return <Route {...this.props} />
     } else {
-      return <Redirect to={{pathname: "/login", search: returnTo }} />
+      return <Redirect to={{pathname: "/signin", search: returnTo }} />
     }
   }
 }

@@ -1,3 +1,4 @@
+@import "@material/layout-grid/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 
@@ -57,4 +58,21 @@
 .rn-card__header + .rn-card__body,
 .rn-card__overline + .rn-card__body {
   padding: 0 16px 8px 16px;
+}
+
+.rn-card__actions {
+  .rn-card__actions--collapsed {
+    @include mdc-layout-grid-media-query_(desktop) {
+      display: none;
+    }
+    @include mdc-layout-grid-media-query_(tablet) {
+      display: none;
+    }
+  }
+
+  .rn-card__actions--spread {
+    @include mdc-layout-grid-media-query_(phone) {
+      display: none;
+    }
+  }
 }

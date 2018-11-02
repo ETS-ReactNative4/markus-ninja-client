@@ -20,10 +20,11 @@ import NotFound from 'components/NotFound'
 const UserPageQuery = graphql`
   query UserPageQuery($login: String!) {
     user(login: $login) {
-      id
       ...UserHeader_user
       ...UserNav_user
       ...UserStudiesTab_user
+      id
+      isViewer
     }
   }
 `

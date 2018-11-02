@@ -32,7 +32,6 @@ const StudyPageQuery = graphql`
       ...CreateCoursePage_study
       ...CreateLessonPage_study
       ...CreateLessonDialog_study
-      ...LabelPage_study
       ...StudyHeader_study
       ...StudyNav_study
       ...StudyLabelsPage_study
@@ -151,6 +150,7 @@ class StudyPage extends React.Component {
                           authenticated={authenticated}
                           render={(routeProps) => <StudySettingsPage {...routeProps} study={props.study} />}
                         />
+                        <Route component={NotFound} />
                       </Switch>
                     </div>
                   </div>

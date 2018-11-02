@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom';
 import {HelperText} from '@material/react-text-field'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateCourseMutation from 'mutations/UpdateCourseMutation'
-import {get, isEmpty} from 'utils'
+import {get, isEmpty, throttle} from 'utils'
 
 class CourseMetaDetails extends React.Component {
   constructor(props) {
@@ -24,8 +24,8 @@ class CourseMetaDetails extends React.Component {
         initialValue: description,
         value: description,
       },
+      loading: false,
       open: false,
-      submitted: false,
     }
   }
 
@@ -42,40 +42,43 @@ class CourseMetaDetails extends React.Component {
     }
   }
 
+  handleCancel = () => {
+    this.setState({open: false})
+    this._reset()
+  }
+
   handleChange = (field) => {
     this.setState({
       [field.name]: field,
     })
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = throttle((e) => {
     e.preventDefault()
     const { description } = this.state
 
-    this.setState({submitted: true})
+    this.setState({loading: true})
 
     UpdateCourseMutation(
       this.props.course.id,
       description.value,
       null,
       (updateCourse, errors) => {
+        this.setState({loading: false})
         if (errors) {
           this.setState({ error: errors[0].message })
+          return
         }
         this.handleToggleOpen()
       },
     )
-  }
+  }, 1000)
 
   handleToggleOpen = () => {
     const open = !this.state.open
 
     this.setState({ open })
     this.props.onOpen(open)
-
-    if (!this.state.submitted) {
-      this._reset()
-    }
   }
 
   _reset = () => {
@@ -85,13 +88,16 @@ class CourseMetaDetails extends React.Component {
         ...defaultTextFieldState,
         value: this.state.description.initialValue,
       },
-      submitted: false,
     })
   }
 
   get classes() {
     const {className} = this.props
     return cls("mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+  }
+
+  get isLoading() {
+    return this.state.loading
   }
 
   render() {
@@ -132,15 +138,16 @@ class CourseMetaDetails extends React.Component {
         />
         <div className="inline-flex items-center mt2">
           <button
-            className="mdc-button mdc-button--unelevated"
             type="submit"
+            className="mdc-button mdc-button--unelevated"
+            disabled={this.isLoading}
           >
             Save
           </button>
           <button
             className="mdc-button ml2"
             type="button"
-            onClick={this.handleToggleOpen}
+            onClick={this.handleCancel}
           >
             Cancel
           </button>
