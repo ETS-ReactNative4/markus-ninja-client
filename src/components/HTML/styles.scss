@@ -42,41 +42,30 @@
 
   h1, h2, h3, h4, h5, h6 {
     margin-bottom: 16px;
+    font-family: unquote("Arima Madurai, cursive") !important;
   }
 
   h1 {
     @include mdc-layout-grid-media-query_(desktop) {
       @include mdc-typography(headline1);
-
-      font-family: unquote("Abril Fatface, cursive");
     }
     @include mdc-layout-grid-media-query_(tablet) {
       @include mdc-typography(headline2);
-
-      font-family: unquote("Abril Fatface, cursive");
     }
     @include mdc-layout-grid-media-query_(phone) {
       @include mdc-typography(headline3);
-
-      font-family: unquote("Abril Fatface, cursive");
     }
   }
 
   h2 {
     @include mdc-layout-grid-media-query_(desktop) {
       @include mdc-typography(headline2);
-
-      font-family: unquote("Abril Fatface, cursive");
     }
     @include mdc-layout-grid-media-query_(tablet) {
       @include mdc-typography(headline3);
-
-      font-family: unquote("Abril Fatface, cursive");
     }
     @include mdc-layout-grid-media-query_(phone) {
       @include mdc-typography(headline4);
-
-      font-family: unquote("Abril Fatface, cursive");
     }
   }
 
@@ -161,6 +150,16 @@
     }
     &.hint {
       @include mdc-theme-prop(color, text-hint-on-light);
+    }
+    &.main {
+      &::first-letter {
+        @include mdc-typography(headline2);
+
+        font-family: unquote("Arima Madurai, cursive");
+        text-transform: capitalize;
+        display: block;
+        float: left;
+      }
     }
     &.overline {
       @include mdc-typography(overline);

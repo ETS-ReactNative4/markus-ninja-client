@@ -12,7 +12,8 @@ WebFontLoader.load({
   google: {
     families: [
       'Roboto:300,400,500,700',
-      'Abril Fatface:300,400,500,700',
+      'Arima Madurai:300,400,500,700',
+      'Mali:300,400,500,700',
     ],
   },
 })

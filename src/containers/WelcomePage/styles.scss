@@ -1,0 +1,73 @@
+@import "@material/layout-grid/mixins";
+@import "@material/theme/mixins";
+
+.WelcomePage {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: unquote("Mali, cursive") !important;
+  }
+}
+
+.WelcomePage__section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.WelcomePage__section-content {
+  width: 64rem;
+
+  @include mdc-layout-grid-media-query_(desktop) {
+    padding: 4rem;
+  }
+  @include mdc-layout-grid-media-query_(tablet) {
+    padding: 2rem;
+  }
+  @include mdc-layout-grid-media-query_(phone) {
+    padding: 1rem;
+  }
+}
+
+.WelcomePage__welcome {
+  @include mdc-theme-prop(color, text-primary-on-dark);
+
+  text-align: center;
+  background-image: 
+    linear-gradient(
+      rgba(mdc-theme-prop-value(on-surface), .32),
+      rgba(mdc-theme-prop-value(on-surface), .32)
+    ),
+    url("school.jpg");
+  background-size: cover;
+}
+
+.WelcomePage__who {
+  @include mdc-theme-prop(color, text-primary-on-dark);
+
+  background-image: url("chalkboard.jpg");
+}
+
+.WelcomePage__what {
+  @include mdc-theme-prop(color, text-primary-on-dark);
+
+  background-image: 
+    linear-gradient(
+      rgba(mdc-theme-prop-value(on-surface), .48),
+      rgba(mdc-theme-prop-value(on-surface), .48)
+    ),
+    url("chairs.jpg");
+  background-size: cover;
+}
+
+.WelcomePage__why {
+  @include mdc-theme-prop(color, text-primary-on-dark);
+
+  background-image: 
+    linear-gradient(
+      rgba(mdc-theme-prop-value(on-surface), .56),
+      rgba(mdc-theme-prop-value(on-surface), .56)
+    ),
+    url("books.jpg");
+  background-size: cover;
+}

@@ -34,7 +34,7 @@ class SignupForm extends React.Component {
           console.error(errors[0].message)
         }
 
-        const credentials = btoa(username + ":" + password)
+        const credentials = btoa(username.value + ":" + password.value)
         return fetch(process.env.REACT_APP_API_URL + "/token", {
           method: "GET",
           headers: {

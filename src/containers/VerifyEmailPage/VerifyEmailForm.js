@@ -1,21 +1,20 @@
 import * as React from 'react'
 import cls from 'classnames'
 import { withRouter } from 'react-router'
-import TextField, {Input} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import RequestEmailVerificationMutation from 'mutations/RequestEmailVerificationMutation'
-import {isEmpty, isNil} from 'utils'
 
 import './styles.css'
 
 class VerifyEmailForm extends React.Component {
   state = {
     error: null,
-    email: "",
+    email: defaultTextFieldState,
   }
 
-  handleChange = (e) => {
+  handleChange = (email) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      email,
     })
   }
 
@@ -23,9 +22,9 @@ class VerifyEmailForm extends React.Component {
     e.preventDefault()
     const {email} = this.state
     RequestEmailVerificationMutation(
-      email,
+      email.value,
       (errors) => {
-        if (!isNil(errors)) {
+        if (errors) {
           this.setState({ error: errors[0].message })
           return
         }
@@ -34,7 +33,7 @@ class VerifyEmailForm extends React.Component {
   }
 
   isValidEmail(email) {
-    return !isEmpty(email)
+    return email.valid
   }
 
   get classes() {
@@ -48,27 +47,25 @@ class VerifyEmailForm extends React.Component {
   }
 
   render() {
-    const {email} = this.state
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <TextField
             className="w-100"
-            outlined
             label="Email"
-          >
-            <Input
-              name="email"
-              value={email}
-              onChange={this.handleChange}
-            />
-          </TextField>
+            inputProps={{
+              autoComplete: "off",
+              type: "email",
+              name: "email",
+              required: true,
+              onChange: this.handleChange,
+            }}
+          />
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <button
-            className="mdc-button mdc-button--unelevated w-100"
             type="submit"
-            disabled={!this.formValidForRequest}
+            className="mdc-button mdc-button--unelevated w-100"
           >
             Send verification mail
           </button>
