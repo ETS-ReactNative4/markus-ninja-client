@@ -28,9 +28,6 @@ const CoursePageQuery = graphql`
         ...CourseNav_course
       }
     }
-    viewer {
-      id
-    }
   }
 `
 

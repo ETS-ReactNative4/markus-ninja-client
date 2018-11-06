@@ -20,6 +20,7 @@
 .rn-header__title {
   @include mdc-typography-overflow-ellipsis;
 
+  margin: 0;
   flex: 1 1 auto;
   align-self: stretch;
 }
@@ -27,6 +28,7 @@
 .rn-header__actions {
   display: flex;
   flex-direction: row;
+  flex-shrink: 0;
   align-items: center;
   box-sizing: border-box;
   margin-left: auto;

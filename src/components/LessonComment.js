@@ -42,7 +42,7 @@ class LessonComment extends React.Component {
     debounce(() => this.updateDraft(this.state.draft.value), 30000)
   , 30000)
 
-  updateDraft = (draft) => {
+  updateDraft = throttle((draft) => {
     UpdateLessonCommentMutation(
       this.props.comment.id,
       draft,
@@ -59,17 +59,17 @@ class LessonComment extends React.Component {
         })
       },
     )
-  }
+  }, 2000)
 
   handleCancel = () => {
-    const {initialValue} = this.state
-    this.updateDraft(initialValue)
+    const {draft} = this.state
+    this.updateDraft(draft.initialValue)
     this.handleToggleEdit()
   }
 
   handleChange = (value) => {
     const {draft} = this.state
-    const dirty = value !== draft.value
+    const dirty = draft.dirty || value !== draft.value
     this.setState({
       draft: {
         dirty,
@@ -85,6 +85,11 @@ class LessonComment extends React.Component {
     DeleteLessonCommentMutation(
       this.props.comment.id,
     )
+  }
+
+  handlePreview = () => {
+    const {draft} = this.state
+    this.updateDraft(draft.value)
   }
 
   handlePublish = () => {
@@ -285,7 +290,7 @@ class LessonComment extends React.Component {
             showFormButtonsFor="lesson-comment-form"
             onCancel={this.handleCancel}
             onChange={this.handleChange}
-            onPreview={this.updateDraft}
+            onPreview={this.handlePreview}
             onPublish={this.handlePublish}
             study={study}
           />

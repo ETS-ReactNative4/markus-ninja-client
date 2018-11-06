@@ -33,6 +33,12 @@
   @include mdc-theme-prop(color, text-primary-on-dark);
 
   text-align: center;
+  background-image: url("chalkboard.jpg");
+}
+
+.WelcomePage__who {
+  @include mdc-theme-prop(color, text-primary-on-dark);
+
   background-image: 
     linear-gradient(
       rgba(mdc-theme-prop-value(on-surface), .32),
@@ -40,12 +46,6 @@
     ),
     url("school.jpg");
   background-size: cover;
-}
-
-.WelcomePage__who {
-  @include mdc-theme-prop(color, text-primary-on-dark);
-
-  background-image: url("chalkboard.jpg");
 }
 
 .WelcomePage__what {

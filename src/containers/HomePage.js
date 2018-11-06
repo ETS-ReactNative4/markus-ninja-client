@@ -1,20 +1,20 @@
 import * as React from 'react'
 import DashboardPage from 'containers/DashboardPage'
 import WelcomePage from 'containers/WelcomePage'
-import {get, isNil} from 'utils'
+import Context from 'containers/App/Context'
 
 class HomePage extends React.Component {
   render() {
-    const viewer = get(this.props, "viewer", null)
-
     return (
       <React.Fragment>
-        {isNil(viewer)
+        {!this.context.isAuthenticated()
         ? <WelcomePage />
         : <DashboardPage />}
       </React.Fragment>
     )
   }
 }
+
+HomePage.contextType = Context
 
 export default HomePage

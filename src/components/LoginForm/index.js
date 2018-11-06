@@ -1,10 +1,10 @@
 import * as React from 'react'
-import PropTypes from 'prop-types'
 import cls from 'classnames'
 import { withRouter } from 'react-router'
 import queryString from 'query-string'
 import ErrorText from 'components/ErrorText'
 import TextField, {defaultTextFieldState} from 'components/TextField'
+import AppContext from 'containers/App/Context'
 import {get, isEmpty} from 'utils'
 
 import './styles.css'
@@ -57,10 +57,11 @@ class LoginForm extends React.Component {
         }
       }
 
-      this.props.onLogin()
-      const search = queryString.parse(get(this.props, "location.search", ""))
-      const returnTo = get(search, "return_to", undefined)
-      this.props.history.replace(returnTo || "/")
+      this.context.refetchViewer().then(() => {
+        const search = queryString.parse(get(this.props, "location.search", ""))
+        const returnTo = get(search, "return_to", undefined)
+        this.props.history.replace(returnTo || "/")
+      })
     })
   }
 
@@ -124,12 +125,6 @@ class LoginForm extends React.Component {
   }
 }
 
-LoginForm.propTypes = {
-  onLogin: PropTypes.func,
-}
-
-LoginForm.defaultProps = {
-  onLogin: () => {},
-}
+LoginForm.contextType = AppContext
 
 export default withRouter(LoginForm)

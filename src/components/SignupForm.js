@@ -1,11 +1,11 @@
 import * as React from 'react'
-import PropTypes from 'prop-types'
 import cls from 'classnames'
 import {withRouter} from 'react-router-dom'
 import {HelperText} from '@material/react-text-field'
 import ErrorText from 'components/ErrorText'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import CreateUserMutation from 'mutations/CreateUserMutation'
+import AppContext from 'containers/App/Context'
 import {isEmpty, isNil} from 'utils'
 
 class SignupForm extends React.Component {
@@ -46,8 +46,9 @@ class SignupForm extends React.Component {
             console.error("failed to login")
             return
           }
-          this.props.onLogin()
-          this.props.history.replace("/")
+          this.context.refetchViewer().then(() => {
+            this.props.history.replace("/")
+          })
         })
       }
     )
@@ -151,12 +152,6 @@ class SignupForm extends React.Component {
   }
 }
 
-SignupForm.propTypes = {
-  onLogin: PropTypes.func,
-}
-
-SignupForm.defaultProps = {
-  onLogin: () => {},
-}
+SignupForm.contextType = AppContext
 
 export default withRouter(SignupForm)

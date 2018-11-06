@@ -11,7 +11,8 @@ import Menu, {Corner} from 'components/mdc/Menu'
 import IconLink from 'components/IconLink'
 import LoginLink from 'components/LoginLink'
 import SearchBar from './SearchBar'
-import {get, isNil} from 'utils'
+import {get} from 'utils'
+import AppContext from 'containers/App/Context'
 
 import './styles.css'
 
@@ -38,7 +39,7 @@ class Header extends Component {
   }
 
   render() {
-    const authenticated = !isNil(this.props.viewer)
+    const authenticated = this.context.isAuthenticated()
     const {searchBarOpen} = this.state
 
     return (
@@ -230,6 +231,8 @@ class Header extends Component {
     )
   }
 }
+
+Header.contextType = AppContext
 
 export default withRouter(createFragmentContainer(Header, graphql`
   fragment Header_viewer on User {

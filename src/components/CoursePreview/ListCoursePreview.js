@@ -91,40 +91,40 @@ class ListCoursePreview extends React.Component {
                 {get(course, "lessons.totalCount", 0)}
               </Link>
             </span>
+            <Menu.Anchor className="rn-list-preview__actions--collapsed" innerRef={this.setAnchorElement}>
+              <button
+                type="button"
+                className="mdc-icon-button material-icons"
+                onClick={() => this.setState({menuOpen: !menuOpen})}
+              >
+                more_vert
+              </button>
+              <Menu
+                open={menuOpen}
+                onClose={() => this.setState({menuOpen: false})}
+                anchorElement={anchorElement}
+                anchorCorner={Corner.BOTTOM_LEFT}
+              >
+                <List>
+                  {course.viewerCanApple &&
+                  <ListAppleButton
+                    className="mdc-list-item"
+                    appleable={get(this.props, "course", null)}
+                  />}
+                  <Link
+                    className="mdc-list-item"
+                    to={course.resourcePath}
+                  >
+                    <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="lesson" />
+                    <span className="mdc-list-item__text">
+                      Lessons
+                      <Counter>{get(course, "lessons.totalCount", 0)}</Counter>
+                    </span>
+                  </Link>
+                </List>
+              </Menu>
+            </Menu.Anchor>
           </span>
-          <Menu.Anchor className="rn-list-preview__actions--collapsed" innerRef={this.setAnchorElement}>
-            <button
-              type="button"
-              className="mdc-icon-button material-icons"
-              onClick={() => this.setState({menuOpen: !menuOpen})}
-            >
-              more_vert
-            </button>
-            <Menu
-              open={menuOpen}
-              onClose={() => this.setState({menuOpen: false})}
-              anchorElement={anchorElement}
-              anchorCorner={Corner.BOTTOM_LEFT}
-            >
-              <List>
-                {course.viewerCanApple &&
-                <ListAppleButton
-                  className="mdc-list-item"
-                  appleable={get(this.props, "course", null)}
-                />}
-                <Link
-                  className="mdc-list-item"
-                  to={course.resourcePath}
-                >
-                  <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="lesson" />
-                  <span className="mdc-list-item__text">
-                    Lessons
-                    <Counter>{get(course, "lessons.totalCount", 0)}</Counter>
-                  </span>
-                </Link>
-              </List>
-            </Menu>
-          </Menu.Anchor>
         </span>
       </li>
     )

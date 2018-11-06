@@ -57,8 +57,8 @@ class AddLessonCommentForm extends React.Component {
   }, 2000)
 
   handleCancel = () => {
-    const {initialValue} = this.state
-    this.updateDraft(initialValue)
+    const {draft} = this.state
+    this.updateDraft(draft.initialValue)
   }
 
   handleChange = (value) => {

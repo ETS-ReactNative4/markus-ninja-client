@@ -20,6 +20,7 @@ import StudyEnrolleesPage from 'containers/StudyEnrolleesPage'
 import StudyOverviewPage from 'containers/StudyOverviewPage'
 import StudySettingsPage from 'containers/StudySettingsPage'
 import NotFound from 'components/NotFound'
+import AppContext from 'containers/App/Context'
 
 import Context from './Context'
 import CreateLessonDialog from './CreateLessonDialog'
@@ -39,9 +40,6 @@ const StudyPageQuery = graphql`
       ...StudyAssetsPage_study
       ...StudyCoursesPage_study
       ...StudySettingsPage_study
-    }
-    viewer {
-      id
     }
   }
 `
@@ -84,7 +82,7 @@ class StudyPage extends React.Component {
             }
 
             const {createLessonDialogOpen} = this.state
-            const authenticated = Boolean(props.viewer)
+            const authenticated = this.context.isAuthenticated()
 
             return (
               <Context.Provider value={this.state}>
@@ -168,5 +166,7 @@ class StudyPage extends React.Component {
     )
   }
 }
+
+StudyPage.contextType = AppContext
 
 export default StudyPage

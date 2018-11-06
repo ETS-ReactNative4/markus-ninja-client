@@ -14,7 +14,8 @@ import LessonLabels from './LessonLabels'
 import LessonBody from './LessonBody'
 import AddLessonCommentForm from './AddLessonCommentForm'
 import LessonTimeline from './LessonTimeline'
-import {get, isNil} from 'utils'
+import AppContext from 'containers/App/Context'
+import {get} from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
 
@@ -33,9 +34,6 @@ const LessonPageQuery = graphql`
         ...LessonTimeline_lesson
         ...AddLessonCommentForm_lesson
       }
-    }
-    viewer {
-      id
     }
   }
 `
@@ -85,7 +83,7 @@ class LessonPage extends React.Component {
                 </div>
                 <div className="LessonPage__comments mdc-layout-grid">
                   <div className="LessonPage__comments__container mdc-layout-grid__inner mw8">
-                    {isNil(props.viewer)
+                    {!this.context.isAuthenticated()
                     ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                         <LoginLink>Login to leave a comment</LoginLink>
                       </div>
@@ -102,5 +100,7 @@ class LessonPage extends React.Component {
     )
   }
 }
+
+LessonPage.contextType = AppContext
 
 export default LessonPage

@@ -27,134 +27,157 @@ import HomePage from 'containers/HomePage'
 import UserPage from 'containers/UserPage'
 import UserAssetPage from 'containers/UserAssetPage'
 import VerifyEmailPage from 'containers/VerifyEmailPage'
+import {get} from 'utils'
 
-import {get, isNil} from 'utils'
+import Context from './Context'
 
 import './styles.css'
 
 class AppContainer extends React.Component {
-  state = {
-    authenticated: !isNil(this.props.viewer),
-    loading: false,
-  }
+  constructor(props) {
+    super(props)
 
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevState.authenticated && this.state.authenticated) {
-      this._refetch()
+    this.state = {
+      isAuthenticated: () => Boolean(this.state.viewer),
+      isLoadingViewer: false,
+      refetchViewer: this.refetch_,
+      removeViewer: () => this.setState({viewer: null}),
+      viewer: this.props.viewer,
     }
   }
 
-  _refetch = () => {
+  // NOTE: this is needed, because relay's refetch doesn't call callback
+  // sometimes
+  componentDidUpdate(prevProps, prevState) {
+    const {
+      isLoadingViewer: wasLoadingViewer,
+      viewer: oldViewer,
+    } = prevState
+    const {viewer} = this.props
+    if (wasLoadingViewer && !oldViewer && viewer) {
+      this.setState({
+        isLoadingViewer: false,
+        viewer,
+      })
+    }
+  }
+
+  refetch_ = () => {
     this.setState({
-      loading: true,
+      isLoadingViewer: true,
+      viewer: null,
     })
     this.props.relay.refetch(
       null,
       null,
       (error) => {
-        if (!isNil(error)) {
+        if (error) {
           console.log(error)
+          return
         }
         this.setState({
-          loading: false
+          isLoadingViewer: false,
+          viewer: this.props.viewer,
         })
       },
       {force: true},
     )
+    return Promise.resolve()
   }
 
   get viewerNeedsVerification() {
-    const {authenticated} = this.state
-    const {viewer} = this.props
-    return !isNil(viewer) &&
-      !get(viewer, "isVerified", false) &&
-      authenticated
+    const {viewer} = this.state
+    return viewer && !viewer.isVerified
   }
 
   render() {
     const viewer = get(this.props, "viewer", null)
-    const authenticated = !isNil(viewer)
+
+    if (this.state.isLoadingViewer) {
+      return <div>Loading...</div>
+    }
 
     return (
-      <div className="AppContainer mdc-typography">
-        <Switch>
-          <Route
-            exact
-            path="/signin"
-            render={() => <LoginPage onLogin={() => this.setState({authenticated: true})} />}
-          />
-          <Route
-            exact
-            path="/logout"
-            render={() => <LogoutPage onLogout={() => this.setState({authenticated: false})} />}
-          />
-          <Route exact path="/reset_password" component={ResetPasswordPage} />
-          <Route
-            exact
-            path="/signup"
-            render={() => <SignupPage onLogin={() => this.setState({authenticated: true})} />}
-          />
-          <Route exact path="/verify_email" component={VerifyEmailPage} />
-          <Route render={() => {
-            if (this.viewerNeedsVerification) {
-              return <Redirect to="/verify_email" />
-            }
+      <Context.Provider value={this.state}>
+        <div className="AppContainer mdc-typography">
+          <Switch>
+            <Route
+              exact
+              path="/signin"
+              component={LoginPage}
+            />
+            <Route
+              exact
+              path="/logout"
+              component={LogoutPage}
+            />
+            <Route exact path="/reset_password" component={ResetPasswordPage} />
+            <Route
+              exact
+              path="/signup"
+              component={SignupPage}
+            />
+            <Route exact path="/verify_email" component={VerifyEmailPage} />
+            <Route render={() => {
+              if (this.viewerNeedsVerification) {
+                return <Redirect to="/verify_email" />
+              }
 
-            return (
-              <React.Fragment>
-                <Header viewer={viewer} />
-                <div className="mdc-top-app-bar--fixed-adjust">
-                  <Switch>
-                    <Route
-                      exact
-                      path="/"
-                      render={(routeProps) => <HomePage viewer={viewer} {...routeProps} />}
-                    />
-                    <PrivateRoute
-                      exact
-                      path="/new"
-                      authenticated={authenticated}
-                      render={(routeProps) => <CreateStudyPage user={viewer} {...routeProps} />}
-                    />
-                    <PrivateRoute
-                      path="/(enrolled|notifications)"
-                      authenticated={authenticated}
-                      component={NotificationsPage}
-                    />
-                    <Route exact path="/research" component={ResearchPage} />
-                    <Route exact path="/search" component={SearchPage} />
-                    <PrivateRoute
-                      path="/settings"
-                      authenticated={authenticated}
-                      component={UserSettingsPage}
-                    />
-                    <Route exact path="/topics" component={TopicsPage} />
-                    <Route exact path="/topics/:name" component={TopicPage} />
-                    <Route exact path="/:login" component={UserPage} />
-                    <Route
-                      path="/:owner/:name/asset/:filename"
-                      component={UserAssetPage}
-                    />
-                    <Route
-                      path="/:owner/:name/course/:number"
-                      component={CoursePage}
-                    />
-                    <Route
-                      path="/:owner/:name/lesson/:number"
-                      component={LessonPage}
-                    />
-                    <Route path="/:owner/:name" component={StudyPage} />
-                    <Route component={NotFound} />
-                  </Switch>
-                </div>
-              </React.Fragment>
-            )
-          }}/>
-        </Switch>
-      </div>
+              return (
+                <React.Fragment>
+                  <Header viewer={viewer} />
+                  <div className="mdc-top-app-bar--fixed-adjust">
+                    <Switch>
+                      <Route
+                        exact
+                        path="/"
+                        component={HomePage}
+                      />
+                      <PrivateRoute
+                        exact
+                        path="/new"
+                        render={(routeProps) => <CreateStudyPage user={viewer} {...routeProps} />}
+                      />
+                      <PrivateRoute
+                        path="/(enrolled|notifications)"
+                        component={NotificationsPage}
+                      />
+                      <Route exact path="/research" component={ResearchPage} />
+                      <Route exact path="/search" component={SearchPage} />
+                      <PrivateRoute
+                        path="/settings"
+                        component={UserSettingsPage}
+                      />
+                      <Route exact path="/topics" component={TopicsPage} />
+                      <Route exact path="/topics/:name" component={TopicPage} />
+                      <Route exact path="/:login" component={UserPage} />
+                      <Route
+                        path="/:owner/:name/asset/:filename"
+                        component={UserAssetPage}
+                      />
+                      <Route
+                        path="/:owner/:name/course/:number"
+                        component={CoursePage}
+                      />
+                      <Route
+                        path="/:owner/:name/lesson/:number"
+                        component={LessonPage}
+                      />
+                      <Route path="/:owner/:name" component={StudyPage} />
+                      <Route component={NotFound} />
+                    </Switch>
+                  </div>
+                </React.Fragment>
+              )
+            }}/>
+          </Switch>
+        </div>
+      </Context.Provider>
     )
   }
 }
+
+AppContainer.contextType = Context
 
 export default withRouter(createRefetchContainer(AppContainer,
   {

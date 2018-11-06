@@ -59,20 +59,37 @@ class Preview extends React.Component {
         }, 7000)
       )
     ]).then((response) => {
-      return response.text()
-    }).then((preview) => {
-      this.setState({
-        loading: false,
-        preview,
-      })
+      if (response.ok) {
+        return response.text()
+      }
+      return Promise.reject(response.statusText)
+    }).then((response) => {
+      if (response) {
+        try {
+          const error = JSON.parse(response)
+          if (error) {
+            this.setState({
+              dirty: true,
+              error: error.error_description,
+              loading: false,
+              preview: "",
+            })
+          }
+        } catch (error) {
+          this.setState({
+            loading: false,
+            preview: response,
+          })
+        }
+      }
     }).catch((error) => {
       console.error(error)
       this.setState({
         dirty: true,
+        error,
         loading: false,
-        preview: "",
+        preview: "Something went wrong",
       })
-      return
     })
   }, 3000)
 
@@ -105,11 +122,9 @@ class Preview extends React.Component {
   }
 
   renderPreview() {
-    const {dirty, loading, preview} = this.state
+    const {loading, preview} = this.state
     if (loading) {
       return <div className="mdc-theme--text-hint-on-light">Loading...</div>
-    } else if (dirty) {
-      return <div />
     } else if (preview === "") {
       return <div className="mdc-theme--text-hint-on-light">Nothing to preview</div>
     }

@@ -3,7 +3,6 @@ import cls from 'classnames'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import AppleIconButton from 'components/AppleIconButton'
-import EnrollIconButton from 'components/EnrollIconButton'
 import ListAppleButton from 'components/ListAppleButton'
 import ListEnrollButton from 'components/ListEnrollButton'
 import Counter from 'components/Counter'
@@ -65,11 +64,6 @@ class CardStudyPreview extends React.Component {
             </Link>
           </div>
           <div className="mdc-card__action-icons rn-card__actions--spread">
-            {study.viewerCanEnroll &&
-            <EnrollIconButton
-              className="mdc-card__action mdc-card__action--icon"
-              enrollable={get(this.props, "study", null)}
-            />}
             {study.viewerCanApple &&
             <AppleIconButton
               className="mdc-card__action mdc-card__action--icon"

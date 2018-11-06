@@ -1,6 +1,6 @@
 import * as React from 'react'
-import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
+import AppContext from 'containers/App/Context'
 
 class LogoutPage extends React.Component {
   state = {
@@ -16,7 +16,7 @@ class LogoutPage extends React.Component {
         console.error("failed to logout")
         return
       }
-      this.props.onLogout()
+      this.context.removeViewer()
       this.setState({ loggedOut: true })
     })
   }
@@ -30,12 +30,6 @@ class LogoutPage extends React.Component {
   }
 }
 
-LogoutPage.propTypes = {
-  onLogout: PropTypes.func,
-}
-
-LogoutPage.defaultProps = {
-  onLogout: () => {},
-}
+LogoutPage.contextType = AppContext
 
 export default LogoutPage

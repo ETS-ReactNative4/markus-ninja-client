@@ -31,8 +31,6 @@ class WelcomePage extends React.Component {
               Built for Students
             </h3>
             <h5>
-              We provide tools that will assist you in teaching others about what you're learning,
-              and at the same time strengthen your own knowledge.
             </h5>
           </div>
         </section>
@@ -42,10 +40,8 @@ class WelcomePage extends React.Component {
               Learning Platform
             </h3>
             <h5>
-              Inspired by an idea:
-              <blockquote>
-                "If you can't explain it simply, you really don't understand it yourself."
-              </blockquote>
+              We provide tools that will assist you in teaching others about what you're learning,
+              and at the same time strengthen your own knowledge.
             </h5>
           </div>
         </section>
