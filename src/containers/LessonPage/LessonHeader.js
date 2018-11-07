@@ -148,6 +148,10 @@ class LessonHeader extends React.Component {
           </span>
         </h4>
         <div className="rn-header__actions">
+          {!lesson.isPublished &&
+          <span className="mdc-button mdc-button--unelevated mdc-theme--secondary-bg rn-header__action rn-header__action--button">
+            Unpublished
+          </span>}
           {lesson.viewerCanEnroll &&
           <EnrollmentSelect
             className="rn-header__action rn-header__action--button"
@@ -163,6 +167,7 @@ export default withRouter(createFragmentContainer(LessonHeader, graphql`
   fragment LessonHeader_lesson on Lesson {
     enrollmentStatus
     id
+    isPublished
     number
     study {
       ...StudyLink_study

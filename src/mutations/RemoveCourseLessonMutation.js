@@ -18,6 +18,7 @@ const mutation = graphql`
       removedLessonEdge {
         node {
           id
+          courseNumber
           number
           title
         }

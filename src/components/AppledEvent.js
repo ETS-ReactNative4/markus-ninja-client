@@ -30,9 +30,12 @@ class AppledEvent extends React.Component {
   }
 
   render() {
-    const {withUser} = this.props
-    const event = get(this.props, "event", {})
-    const appleable = get(event, "appleable", {})
+    const {event, withUser} = this.props
+    const appleable = get(event, "appleable")
+
+    if (!event || !appleable) {
+      return null
+    }
 
     return (
       <li className={this.classes}>

@@ -121,6 +121,7 @@ class AddCourseLessonDialog extends React.Component {
     const {query} = this.state
     return {
       isCourseLesson: false,
+      isPublished: true,
       search: query,
     }
   }
@@ -134,7 +135,7 @@ class AddCourseLessonDialog extends React.Component {
         className={this.classes}
         open={open}
         onClose={this.handleCancel}
-        title={<Dialog.Title>Add course lesson</Dialog.Title>}
+        title={<Dialog.Title>Add published lesson to course</Dialog.Title>}
         content={
           <Dialog.Content>
             {this.renderInput()}

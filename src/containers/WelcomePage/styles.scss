@@ -36,31 +36,7 @@
   background-image: url("chalkboard.jpg");
 }
 
-.WelcomePage__who {
-  @include mdc-theme-prop(color, text-primary-on-dark);
-
-  background-image: 
-    linear-gradient(
-      rgba(mdc-theme-prop-value(on-surface), .32),
-      rgba(mdc-theme-prop-value(on-surface), .32)
-    ),
-    url("school.jpg");
-  background-size: cover;
-}
-
 .WelcomePage__what {
-  @include mdc-theme-prop(color, text-primary-on-dark);
-
-  background-image: 
-    linear-gradient(
-      rgba(mdc-theme-prop-value(on-surface), .48),
-      rgba(mdc-theme-prop-value(on-surface), .48)
-    ),
-    url("chairs.jpg");
-  background-size: cover;
-}
-
-.WelcomePage__why {
   @include mdc-theme-prop(color, text-primary-on-dark);
 
   background-image: 
@@ -70,4 +46,31 @@
     ),
     url("books.jpg");
   background-size: cover;
+  background-position: center;
+}
+
+.WelcomePage__who {
+  @include mdc-theme-prop(color, text-primary-on-dark);
+
+  background-image: 
+    linear-gradient(
+      rgba(mdc-theme-prop-value(on-surface), .48),
+      rgba(mdc-theme-prop-value(on-surface), .48)
+    ),
+    url("chairs.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.WelcomePage__why {
+  @include mdc-theme-prop(color, text-primary-on-dark);
+
+  background-image: 
+    linear-gradient(
+      rgba(mdc-theme-prop-value(on-surface), .32),
+      rgba(mdc-theme-prop-value(on-surface), .32)
+    ),
+    url("school.jpg");
+  background-size: cover;
+  background-position: center;
 }

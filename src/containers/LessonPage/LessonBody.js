@@ -12,7 +12,7 @@ import {debounce, get, isNil, throttle} from 'utils'
 
 class LessonBody extends React.Component {
   state = {
-    edit: false,
+    edit: !get(this.props, "lesson.isPublished", false),
     error: null,
     draft: {
       dirty: false,
@@ -173,6 +173,7 @@ export default createFragmentContainer(LessonBody, graphql`
     body
     bodyHTML
     draft
+    isPublished
     study {
       ...StudyBodyEditor_study
     }

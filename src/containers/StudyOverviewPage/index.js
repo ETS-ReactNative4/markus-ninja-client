@@ -36,7 +36,7 @@ const StudyOverviewPageQuery = graphql`
           }
         }
       }
-      lessons(first: 6, orderBy:{direction:DESC, field:COMMENT_COUNT}) {
+      lessons(first: 6, filterBy:{isPublished:true} orderBy:{direction:DESC, field:COMMENT_COUNT}) {
         edges {
           node {
             id

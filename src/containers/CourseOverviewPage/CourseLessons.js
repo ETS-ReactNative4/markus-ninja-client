@@ -97,6 +97,7 @@ class CourseLessons extends React.Component {
         return get(edge, "node.resourcePath", "")
       }
     }
+    return ""
   }
 
   render() {
@@ -110,6 +111,7 @@ class CourseLessons extends React.Component {
           {edit
           ? this.renderEdittableLessons()
           : this.renderLessons()}
+          {(!noResults || viewerCanAdmin) &&
           <div className="mdc-card__actions">
             <div className="mdc-card__action-buttons">
               {!noResults
@@ -138,7 +140,7 @@ class CourseLessons extends React.Component {
               </button>}
             </div>
             <div className="mdc-card__action-icons">
-              {get(this.props, "course.viewerCanAdmin", false) &&
+              {viewerCanAdmin &&
               <button
                 className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
                 type="button"
@@ -148,7 +150,7 @@ class CourseLessons extends React.Component {
               >
                 add
               </button>}
-              {!noResults && get(this.props, "course.viewerCanAdmin", false) &&
+              {!noResults && viewerCanAdmin &&
               <button
                 className={cls(
                   "mdc-icon-button mdc-card__action mdc-card__action--icon",
@@ -164,7 +166,7 @@ class CourseLessons extends React.Component {
                 <i className="material-icons mdc-icon-button__icon mdc-icon-button__icon--on mdc-theme--text-primary-on-background">edit</i>
               </button>}
             </div>
-          </div>
+          </div>}
         </div>
         <AddCourseLessonDialog
           course={get(this.props, "course", null)}
@@ -241,9 +243,10 @@ class CourseLessons extends React.Component {
         {viewerCanAdmin
         ? "Add the first lesson"
         : "No lessons"}
+        {viewerCanAdmin &&
         <span className="mdc-list-item__meta">
           <i className="material-icons">add</i>
-        </span>
+        </span>}
       </li>
     )
   }

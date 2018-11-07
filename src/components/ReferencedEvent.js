@@ -17,8 +17,12 @@ class ReferencedEvent extends React.Component {
   }
 
   render() {
-    const event = get(this.props, "event", {})
-    const source = get(event, "source", {})
+    const {event} = this.props
+    const source = get(event, "source")
+
+    if (!event || !source) {
+      return null
+    }
 
     return (
       <div className={this.classes}>

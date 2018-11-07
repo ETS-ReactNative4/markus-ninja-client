@@ -44,9 +44,12 @@ class CreatedEvent extends React.Component {
   }
 
   render() {
-    const {withUser} = this.props
-    const event = get(this.props, "event", {})
-    const createable = get(event, "createable", {})
+    const {event, withUser} = this.props
+    const createable = get(event, "createable")
+
+    if (!event || !createable) {
+      return null
+    }
 
     return (
       <li className={this.classes}>

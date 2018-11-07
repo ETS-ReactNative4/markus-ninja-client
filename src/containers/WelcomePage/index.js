@@ -25,15 +25,6 @@ class WelcomePage extends React.Component {
             </Link>
           </div>
         </header>
-        <section className="WelcomePage__section WelcomePage__who">
-          <div className="WelcomePage__section-content">
-            <h3>
-              Built for Students
-            </h3>
-            <h5>
-            </h5>
-          </div>
-        </section>
         <section className="WelcomePage__section WelcomePage__what">
           <div className="WelcomePage__section-content">
             <h3>
@@ -42,6 +33,15 @@ class WelcomePage extends React.Component {
             <h5>
               We provide tools that will assist you in teaching others about what you're learning,
               and at the same time strengthen your own knowledge.
+            </h5>
+          </div>
+        </section>
+        <section className="WelcomePage__section WelcomePage__who">
+          <div className="WelcomePage__section-content">
+            <h3>
+              Built for Students
+            </h3>
+            <h5>
             </h5>
           </div>
         </section>
