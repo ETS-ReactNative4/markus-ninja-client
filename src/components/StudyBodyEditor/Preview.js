@@ -103,7 +103,7 @@ class Preview extends React.Component {
 
     return (
       <div className={this.classes}>
-        <div className="Preview__body">
+        <div className="rn-card__body">
           {this.renderPreview()}
         </div>
         <div className="mdc-card__actions bottom">
@@ -113,7 +113,7 @@ class Preview extends React.Component {
               className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
               onClick={onPublish}
             >
-              Publish draft
+              Publish
             </button>
           </div>
         </div>

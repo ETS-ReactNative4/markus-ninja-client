@@ -84,10 +84,10 @@ class ListCoursePreview extends React.Component {
               {course.viewerCanApple &&
               <AppleIconButton appleable={get(this.props, "course", null)} />}
               <Link
-                className="rn-icon-link"
+                className="mdc-button rn-list-preview__action rn-list-preview__action--button"
                 to={course.resourcePath}
               >
-                <Icon className="rn-icon-link__icon" icon="lesson" />
+                <Icon className="mdc-button__icon" icon="lesson" />
                 {get(course, "lessons.totalCount", 0)}
               </Link>
             </span>

@@ -92,10 +92,10 @@ class ListStudyPreview extends React.Component {
                 appleable={get(this.props, "study", null)}
               />}
               <Link
-                className="rn-icon-link rn-list-preview__action rn-list-preview__action--icon"
+                className="mdc-button rn-list-preview__action rn-list-preview__action--button"
                 to={study.resourcePath+"/lessons"}
               >
-                <Icon className="rn-icon-link__icon" icon="lesson" />
+                <Icon className="mdc-button__icon" icon="lesson" />
                 {get(study, "lessons.totalCount", 0)}
               </Link>
             </span>

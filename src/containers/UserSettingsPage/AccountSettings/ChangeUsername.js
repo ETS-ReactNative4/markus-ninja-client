@@ -4,24 +4,43 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import TextField, {Input} from '@material/react-text-field'
+import {HelperText} from '@material/react-text-field'
+import ErrorText from 'components/ErrorText'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateViewerAccountMutation from 'mutations/UpdateViewerAccountMutation'
-import { get, isNil } from 'utils'
+import {get} from 'utils'
 
 const INFO_STAGE = 'info'
 const AGREEMENT_STAGE = 'agreement'
 const FORM_STAGE = 'form'
 
+const defaultState = {
+  error: null,
+  stage: INFO_STAGE,
+  username: defaultTextFieldState,
+}
+
 class ChangeUsername extends React.Component {
-  state = {
-    error: null,
-    stage: INFO_STAGE,
-    username: get(this.props, "user.login", ""),
+  constructor(props) {
+    super(props)
+
+    const value = get(this.props, "user.login", "")
+
+    this.state = {
+      ...defaultState,
+      username: {
+        ...defaultState.username,
+        initialValue: value,
+        value,
+        valid: true,
+      }
+    }
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      error: null,
+      [field.name]: field,
     })
   }
 
@@ -29,13 +48,24 @@ class ChangeUsername extends React.Component {
     e.preventDefault()
     const { username } = this.state
     UpdateViewerAccountMutation(
-      username,
+      username.value,
       null,
       null,
-      (error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
+      (viewer, errors) => {
+        if (errors) {
+          this.setState({ error: errors[0].message })
+          return
         }
+        const value = get(viewer, "login", "")
+        this.setState({
+          ...defaultState,
+          username: {
+            ...defaultState.username,
+            initialValue: value,
+            value,
+            valid: true,
+          }
+        })
       },
     )
   }
@@ -118,7 +148,7 @@ class ChangeUsername extends React.Component {
   }
 
   renderForm() {
-    const {username} = this.state
+    const {error, username} = this.state
 
     return (
       <form
@@ -129,14 +159,24 @@ class ChangeUsername extends React.Component {
           className="rn-form__input"
           label="New username"
           floatingLabelClassName="mdc-floating-label--float-above"
-        >
-          <Input
-            name="username"
-            value={username}
-            required
-            onChange={this.handleChange}
-          />
-        </TextField>
+          helperText={
+            <HelperText persistent validation={!username.valid}>
+              {username.valid
+              ? "Your name by which other users will know you."
+              : "Usernames must be less than 40 characters, and may only " +
+                "contain alphanumeric characters or hyphens. Cannot have " +
+                "multiple consecutive hyphens, and begin or end with a hyphen."}
+            </HelperText>
+          }
+          inputProps={{
+            name: "username",
+            value: username.value,
+            required: true,
+            pattern: "^([a-zA-Z0-9]+-)*[a-zA-Z0-9]+$",
+            maxLength: 39,
+            onChange: this.handleChange,
+          }}
+        />
         <div className="mt2">
           <button
             type="submit"
@@ -151,6 +191,9 @@ class ChangeUsername extends React.Component {
           >
             Cancel
           </button>
+        </div>
+        <div className="mt2">
+          <ErrorText error={error} />
         </div>
       </form>
     )

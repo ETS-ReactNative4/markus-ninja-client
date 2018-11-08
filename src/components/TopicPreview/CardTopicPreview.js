@@ -60,17 +60,17 @@ class CardTopicPreview extends React.Component {
           </div>
           <div className="mdc-card__action-icons rn-card__actions--spread">
             <Link
-              className="rn-icon-link mdc-card__action mdc-card__action--icon"
+              className="mdc-button mdc-card__action mdc-card__action--button"
               to={topic.resourcePath+"?t=course"}
             >
-              <Icon className="rn-icon-link__icon" icon="course" />
+              <Icon className="mdc-button__icon" icon="course" />
               {get(topic, "topicables.courseCount", 0)}
             </Link>
             <Link
-              className="rn-icon-link mdc-card__action mdc-card__action--icon"
+              className="mdc-button mdc-card__action mdc-card__action--button"
               to={topic.resourcePath+"?t=study"}
             >
-              <Icon className="rn-icon-link__icon" icon="study" />
+              <Icon className="mdc-button__icon" icon="study" />
               {get(topic, "topicables.studyCount", 0)}
             </Link>
           </div>

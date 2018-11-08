@@ -11,6 +11,7 @@ import ErrorText from 'components/ErrorText'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import UserAssetNameInput, {defaultUserAssetNameState} from 'components/UserAssetNameInput'
 import CreateUserAssetMutation from 'mutations/CreateUserAssetMutation'
+import StudyContext from 'containers/StudyPage/Context'
 import {get, isNil, makeCancelable, replaceAll} from 'utils'
 
 const defaultState = {
@@ -31,7 +32,9 @@ class CreateUserAssetDialog extends React.Component {
   }
 
   handleClose = (action) => {
+    const {toggleCreateUserAssetDialog} = this.context
     this.setState(defaultState)
+    toggleCreateUserAssetDialog()
     this.props.onClose()
   }
 
@@ -152,10 +155,10 @@ class CreateUserAssetDialog extends React.Component {
 
     return (
       <form id="create-user-asset-form" onSubmit={this.handleSubmit}>
-        <div className="CreateUserAssetDialog__file">
+        <div className="rn-file-field">
           <input
             id="file-input"
-            className="CreateUserAssetDialog__file-input"
+            className="rn-file-field__input"
             type="file"
             accept=".jpg,.jpeg,.png,.gif"
             required
@@ -195,6 +198,8 @@ CreateUserAssetDialog.propTypes = {
 CreateUserAssetDialog.defaultProps = {
   onClose: () => {},
 }
+
+CreateUserAssetDialog.contextType = StudyContext
 
 export default createFragmentContainer(CreateUserAssetDialog, graphql`
   fragment CreateUserAssetDialog_study on Study {

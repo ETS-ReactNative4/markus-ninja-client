@@ -1,4 +1,9 @@
 .rn-form__input {
   width: 440px;
   max-width: 100%;
+
+  + .mdc-text-field-helper-text {
+    width: 440px;
+    max-width: 100%;
+  }
 }

@@ -4,6 +4,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import moment from 'moment'
 import HTML from 'components/HTML'
 import StudyBodyEditor from 'components/StudyBodyEditor'
 import PublishLessonDraftMutation from 'mutations/PublishLessonDraftMutation'
@@ -122,8 +123,11 @@ class LessonBody extends React.Component {
 
     return (
       <div className="mdc-card h-100">
+        <div className="rn-card__overline">
+          Updated on {moment(lesson.publishedAt).format("MMM D, YYYY")}
+        </div>
         <div className="rn-card__body">
-          <HTML html={lesson.bodyHTML} />
+          <HTML className="mdc-typography--body1" html={lesson.bodyHTML} />
         </div>
         {lesson.viewerCanUpdate &&
         <div className="mdc-card__actions bottom">
@@ -152,8 +156,7 @@ class LessonBody extends React.Component {
         <form id="lesson-draft-form" onSubmit={this.handleSubmit}>
           <StudyBodyEditor.Main
             placeholder="Begin your lesson"
-            body={lesson.body}
-            draft={lesson.draft}
+            object={lesson}
             showFormButtonsFor="lesson-draft-form"
             onCancel={this.handleCancel}
             onChange={this.handleChange}
@@ -174,6 +177,8 @@ export default createFragmentContainer(LessonBody, graphql`
     bodyHTML
     draft
     isPublished
+    lastEditedAt
+    publishedAt
     study {
       ...StudyBodyEditor_study
     }

@@ -20,6 +20,7 @@ class CreateStudyForm extends React.Component {
 
   handleChange = (field) => {
     this.setState({
+      error: null,
       [field.name]: field,
     })
   }

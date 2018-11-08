@@ -1,24 +1,28 @@
 import * as React from 'react'
 import cls from 'classnames'
-import TextField, {Input} from '@material/react-text-field'
+import {HelperText} from '@material/react-text-field'
+import ErrorText from 'components/ErrorText'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateViewerAccountMutation from 'mutations/UpdateViewerAccountMutation'
-import { isNil } from 'utils'
 
 const INFO_STAGE = 'info'
 const FORM_STAGE = 'form'
 
-class ChangePassword extends React.Component {
-  state = {
-    error: null,
-    confirmNewPassword: "",
-    newPassword: "",
-    oldPassword: "",
-    stage: INFO_STAGE,
-  }
+const defaultState = {
+  error: null,
+  confirmNewPassword: defaultTextFieldState,
+  newPassword: defaultTextFieldState,
+  oldPassword: defaultTextFieldState,
+  stage: INFO_STAGE,
+}
 
-  handleChange = (e) => {
+class ChangePassword extends React.Component {
+  state = defaultState
+
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      error: null,
+      [field.name]: field,
     })
   }
 
@@ -28,14 +32,16 @@ class ChangePassword extends React.Component {
     if (newPassword !== confirmNewPassword) {
       this.setState({ error: "passwords do not match" })
     } else {
-      return UpdateViewerAccountMutation(
+      UpdateViewerAccountMutation(
         null,
         newPassword,
         oldPassword,
-        (error) => {
-          if (!isNil(error)) {
-            this.setState({ error: error.message })
+        (viewer, errors) => {
+          if (errors) {
+            this.setState({ error: errors[0].message })
+            return
           }
+          this.setState(defaultState)
         },
       )
     }
@@ -85,51 +91,55 @@ class ChangePassword extends React.Component {
   }
 
   renderForm() {
-    const {confirmNewPassword, newPassword, oldPassword} = this.state
+    const {error, newPassword} = this.state
+
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="mb1">
           <TextField
             className="rn-form__input"
             label="Old password"
-          >
-            <Input
-              type="password"
-              name="oldPassword"
-              value={oldPassword}
-              required
-              onChange={this.handleChange}
-            />
-          </TextField>
+            inputProps={{
+              type: "password",
+              name: "oldPassword",
+              required: true,
+              pattern: "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{7,255}$",
+              minLength: 7,
+              onChange: this.handleChange,
+            }}
+          />
         </div>
         <div className="mb1">
           <TextField
             className="rn-form__input"
             label="New password"
-          >
-            <Input
-              type="password"
-              name="newPassword"
-              value={newPassword}
-              required
-              onChange={this.handleChange}
-            />
-          </TextField>
+            helperText={
+              <HelperText persistent validation={!newPassword.valid}>
+                Use at least one lowercase letter, one uppercase letter, and one numeral in a minimum of seven characters.
+              </HelperText>
+            }
+            inputProps={{
+              type: "password",
+              name: "newPassword",
+              required: true,
+              pattern: "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{7,255}$",
+              minLength: 7,
+              onChange: this.handleChange,
+            }}
+          />
         </div>
         <div className="mb1">
           <TextField
             className="rn-form__input"
             label="Confirm new password"
-          >
-            <Input
-              type="password"
-              name="confirmNewPassword"
-              value={confirmNewPassword}
-              required
-              pattern={newPassword}
-              onChange={this.handleChange}
-            />
-          </TextField>
+            inputProps={{
+              type: "password",
+              name: "confirmNewPassword",
+              required: true,
+              pattern: newPassword.value,
+              onChange: this.handleChange,
+            }}
+          />
         </div>
         <div>
           <button
@@ -145,6 +155,9 @@ class ChangePassword extends React.Component {
           >
             Cancel
           </button>
+        </div>
+        <div className="mt2">
+          <ErrorText error={error} />
         </div>
       </form>
     )

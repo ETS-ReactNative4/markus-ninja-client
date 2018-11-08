@@ -2,7 +2,7 @@ import * as React from 'react'
 import cls from 'classnames'
 import queryString from 'query-string'
 import Search from 'components/Search'
-import TopicSearchResults from 'components/TopicSearchResults'
+import SearchResults from 'components/SearchResults'
 import {get} from 'utils'
 
 class TopicsPage extends React.Component {
@@ -50,7 +50,7 @@ class TopicsPage extends React.Component {
             query={query.query}
             orderBy={query.orderBy}
           >
-            <TopicSearchResults />
+            <SearchResults />
           </Search>
         </div>
       </div>

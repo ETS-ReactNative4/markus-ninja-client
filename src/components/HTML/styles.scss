@@ -4,9 +4,6 @@
 @import "@material/typography/variables";
 
 .HTML {
-  @include mdc-typography(body1); 
-  @include mdc-theme-prop(color, text-primary-on-light);
-
   a {
     text-decoration: none;
     transition: color 100ms;

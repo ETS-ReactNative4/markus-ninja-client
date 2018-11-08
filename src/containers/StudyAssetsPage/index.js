@@ -8,8 +8,9 @@ import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
 import StudyAssets from 'components/StudyAssets'
 import StudyAssetsPageAssets from './StudyAssetsPageAssets'
-import CreateUserAssetDialog from './CreateUserAssetDialog'
 import {debounce, get, isEmpty} from 'utils'
+
+import Context from 'containers/StudyPage/Context'
 
 import "./styles.css"
 
@@ -20,12 +21,7 @@ class StudyAssetsPage extends React.Component {
     const searchQuery = queryString.parse(get(this.props, "location.search", ""))
     const {o, q, s} = searchQuery
 
-    this.state = {
-      open: false,
-      o,
-      q,
-      s,
-    }
+    this.state = {o, q, s}
   }
 
   handleChange = (e) => {
@@ -84,7 +80,7 @@ class StudyAssetsPage extends React.Component {
   }
 
   render() {
-    const {open} = this.state
+    const {toggleCreateUserAssetDialog} = this.context
     const study = get(this.props, "study", null)
 
     return (
@@ -97,7 +93,7 @@ class StudyAssetsPage extends React.Component {
                 <button
                   className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
                   type="button"
-                  onClick={() => this.setState({open: !open})}
+                  onClick={toggleCreateUserAssetDialog}
                 >
                   New asset
                 </button>}
@@ -105,14 +101,8 @@ class StudyAssetsPage extends React.Component {
           </div>
         </div>
         <StudyAssets filterBy={this._filterBy} orderBy={this._orderBy}>
-          <StudyAssetsPageAssets />
+          <StudyAssetsPageAssets study={study} />
         </StudyAssets>
-        {study.viewerCanAdmin &&
-        <CreateUserAssetDialog
-          open={open}
-          study={get(this.props, "study", null)}
-          onClose={() => this.setState({open: false})}
-        />}
       </div>
     )
   }
@@ -137,6 +127,8 @@ class StudyAssetsPage extends React.Component {
     )
   }
 }
+
+StudyAssetsPage.contextType = Context
 
 export default createFragmentContainer(StudyAssetsPage, graphql`
   fragment StudyAssetsPage_study on Study {

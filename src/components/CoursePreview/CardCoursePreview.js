@@ -69,10 +69,10 @@ class CardCoursePreview extends React.Component {
               appleable={get(this.props, "course", null)}
             />}
             <Link
-              className="rn-icon-link mdc-card__action mdc-card__action--icon"
+              className="mdc-button mdc-card__action mdc-card__action--button"
               to={course.resourcePath}
             >
-              <Icon className="rn-icon-link__icon" icon="lesson" />
+              <Icon className="mdc-button__icon" icon="lesson" />
               {get(course, "lessons.totalCount", 0)}
             </Link>
           </div>

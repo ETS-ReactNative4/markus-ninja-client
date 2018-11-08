@@ -10,29 +10,28 @@ import {HelperText} from '@material/react-text-field'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import { GithubPicker } from 'react-color'
 import Dialog from 'components/Dialog'
+import ErrorText from 'components/ErrorText'
 import {Label} from 'components/Label'
+import StudyContext from 'containers/StudyPage/Context'
 import CreateLabelMutation from 'mutations/CreateLabelMutation'
 import {isEmpty, replaceAll} from 'utils'
 
-class CreateLabelDialog extends React.Component {
-  constructor(props) {
-    super(props)
+import './styles.css'
 
-    this.state = {
-      error: null,
-      color: defaultTextFieldState,
-      description: defaultTextFieldState,
-      name: defaultTextFieldState,
-    }
-  }
+const defaultState = {
+  error: null,
+  color: defaultTextFieldState,
+  description: defaultTextFieldState,
+  name: defaultTextFieldState,
+}
+
+class CreateLabelDialog extends React.Component {
+  state = defaultState
 
   handleClose = (action) => {
-    this.setState({
-      error: null,
-      color: defaultTextFieldState,
-      description: defaultTextFieldState,
-      name: defaultTextFieldState,
-    })
+    const {toggleCreateLabelDialog} = this.context
+    this.setState(defaultState)
+    toggleCreateLabelDialog()
     this.props.onClose()
   }
 
@@ -100,6 +99,7 @@ class CreateLabelDialog extends React.Component {
 
   render() {
     const {open} = this.props
+    const {error} = this.state
 
     return (
       <Dialog
@@ -115,6 +115,7 @@ class CreateLabelDialog extends React.Component {
         content={
           <Dialog.Content>
             {open && this.renderForm()}
+            <ErrorText error={error} />
           </Dialog.Content>}
         actions={
           <Dialog.Actions>
@@ -200,6 +201,8 @@ CreateLabelDialog.propTypes = {
 CreateLabelDialog.defaultProps = {
   onClose: () => {},
 }
+
+CreateLabelDialog.contextType = StudyContext
 
 export default createFragmentContainer(CreateLabelDialog, graphql`
   fragment CreateLabelDialog_study on Study {

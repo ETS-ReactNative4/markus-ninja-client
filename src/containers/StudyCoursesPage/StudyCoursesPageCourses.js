@@ -51,12 +51,12 @@ class StudyCoursesPageCourses extends React.Component {
 
   renderCourses() {
     const {courses} = this.props
-    const {edges, isLoading} = courses
+    const {dataIsStale, edges, isLoading} = courses
     const noResults = isEmpty(edges)
 
     return (
       <ul className="mdc-list mdc-list--two-line">
-        {isLoading
+        {isLoading && (dataIsStale || noResults)
         ? <li className="mdc-list-item">Loading...</li>
         : noResults
           ? <li className="mdc-list-item">No courses were found</li>

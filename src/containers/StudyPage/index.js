@@ -5,10 +5,11 @@ import {
   graphql,
 } from 'react-relay'
 import { Route, Switch } from 'react-router-dom'
-import PrivateRoute from 'components/PrivateRoute'
 import environment from 'Environment'
-import StudyHeader from './StudyHeader'
-import StudyNav from './StudyNav'
+import PrivateRoute from 'components/PrivateRoute'
+import CreateLabelDialog from 'components/CreateLabelDialog'
+import CreateLessonDialog from 'components/CreateLessonDialog'
+import CreateUserAssetDialog from 'components/CreateUserAssetDialog'
 import CreateCoursePage from 'containers/CreateCoursePage'
 import LabelPage from 'containers/LabelPage'
 import StudyCoursesPage from 'containers/StudyCoursesPage'
@@ -21,9 +22,11 @@ import StudyOverviewPage from 'containers/StudyOverviewPage'
 import StudySettingsPage from 'containers/StudySettingsPage'
 import NotFound from 'components/NotFound'
 import AppContext from 'containers/App/Context'
+import {get} from 'utils'
 
 import Context from './Context'
-import CreateLessonDialog from './CreateLessonDialog'
+import StudyHeader from './StudyHeader'
+import StudyNav from './StudyNav'
 
 import "./styles.css"
 
@@ -33,6 +36,7 @@ const StudyPageQuery = graphql`
       ...CreateCoursePage_study
       ...CreateLessonPage_study
       ...CreateLessonDialog_study
+      ...CreateUserAssetDialog_study
       ...StudyHeader_study
       ...StudyNav_study
       ...StudyLabelsPage_study
@@ -40,6 +44,7 @@ const StudyPageQuery = graphql`
       ...StudyAssetsPage_study
       ...StudyCoursesPage_study
       ...StudySettingsPage_study
+      viewerCanAdmin
     }
   }
 `
@@ -49,14 +54,28 @@ class StudyPage extends React.Component {
     super(props)
 
     this.state = {
+      createLabelDialogOpen: false,
       createLessonDialogOpen: false,
+      createUserAssetDialogOpen: false,
+      toggleCreateLabelDialog: this.handleToggleCreateLabelDialog,
       toggleCreateLessonDialog: this.handleToggleCreateLessonDialog,
+      toggleCreateUserAssetDialog: this.handleToggleCreateUserAssetDialog,
     }
+  }
+
+  handleToggleCreateLabelDialog = () => {
+    const {createLabelDialogOpen} = this.state
+    this.setState({createLabelDialogOpen: !createLabelDialogOpen})
   }
 
   handleToggleCreateLessonDialog = () => {
     const {createLessonDialogOpen} = this.state
     this.setState({createLessonDialogOpen: !createLessonDialogOpen})
+  }
+
+  handleToggleCreateUserAssetDialog = () => {
+    const {createUserAssetDialogOpen} = this.state
+    this.setState({createUserAssetDialogOpen: !createUserAssetDialogOpen})
   }
 
   get classes() {
@@ -81,8 +100,13 @@ class StudyPage extends React.Component {
               return <NotFound />
             }
 
-            const {createLessonDialogOpen} = this.state
+            const {
+              createLabelDialogOpen,
+              createLessonDialogOpen,
+              createUserAssetDialogOpen,
+            } = this.state
             const authenticated = this.context.isAuthenticated()
+            const viewerCanAdmin = get(props, "study.viewerCanAdmin", false)
 
             return (
               <Context.Provider value={this.state}>
@@ -153,10 +177,21 @@ class StudyPage extends React.Component {
                     </div>
                   </div>
                 </div>
+                {viewerCanAdmin &&
+                <CreateLabelDialog
+                  open={createLabelDialogOpen}
+                  study={props.study}
+                />}
+                {viewerCanAdmin &&
                 <CreateLessonDialog
                   open={createLessonDialogOpen}
                   study={props.study}
-                />
+                />}
+                {viewerCanAdmin &&
+                <CreateUserAssetDialog
+                  open={createUserAssetDialogOpen}
+                  study={props.study}
+                />}
               </Context.Provider>
             )
           }

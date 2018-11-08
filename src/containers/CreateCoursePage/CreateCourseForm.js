@@ -59,6 +59,7 @@ class CreateCourseForm extends React.Component {
       <form className={this.classes} onSubmit={this.handleSubmit}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet">
           <TextField
+            className="rn-form__input"
             label="Course name"
             inputProps={{
               name: "name",

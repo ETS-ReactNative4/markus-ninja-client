@@ -46,17 +46,17 @@ class ListTopicPreview extends React.Component {
           <span className="mdc-list-item__meta rn-list-preview__actions">
             <span className="rn-list-preview__actions--spread">
               <Link
-                className="rn-icon-link"
+                className="mdc-button rn-list-preview__action rn-list-preview__action--button"
                 to={topic.resourcePath+"?t=course"}
               >
-                <Icon className="rn-icon-link__icon" icon="course" />
+                <Icon className="mdc-button__icon" icon="course" />
                 {get(topic, "topicables.courseCount", 0)}
               </Link>
               <Link
-                className="rn-icon-link"
+                className="mdc-button rn-list-preview__action rn-list-preview__action--button"
                 to={topic.resourcePath+"?t=study"}
               >
-                <Icon className="rn-icon-link__icon" icon="study" />
+                <Icon className="mdc-button__icon" icon="study" />
                 {get(topic, "topicables.studyCount", 0)}
               </Link>
             </span>

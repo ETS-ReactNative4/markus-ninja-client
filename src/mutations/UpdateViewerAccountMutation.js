@@ -3,6 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
+import {get} from 'utils'
 
 const mutation = graphql`
   mutation UpdateViewerAccountMutation($input: UpdateViewerAccountInput!) {
@@ -48,7 +49,10 @@ export default (login, newPassword, oldPassword, callback) => {
           }
         }
       },
-      onCompleted: callback,
+      onCompleted: (response, error) => {
+        console.log(error)
+        callback(get(response, "updateViewerAccount"), error)
+      },
       onError: err => console.error(err),
     },
   )

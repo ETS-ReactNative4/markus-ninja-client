@@ -5,30 +5,39 @@ import {
   graphql,
 } from 'react-relay'
 import {withRouter} from 'react-router-dom'
-import TextField, {Input} from '@material/react-text-field'
+import {HelperText} from '@material/react-text-field'
+import ErrorText from 'components/ErrorText'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateStudyMutation from 'mutations/UpdateStudyMutation'
-import { isNil } from 'utils'
+import {get, isEmpty, replaceAll} from 'utils'
+
+const defaultState = {
+  error: null,
+  name: defaultTextFieldState,
+}
 
 class UpdateStudyNameForm extends React.Component {
-  state = {
-    error: null,
-    name: this.props.study.name,
-    originalName: this.props.study.name,
+  constructor(props) {
+    super(props)
+
+    const value = get(this.props, "study.name", "")
+
+    this.state = {
+      ...defaultState,
+      name: {
+        ...defaultState.name,
+        initialValue: value,
+        value,
+        valid: true,
+      }
+    }
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      name: e.target.value,
+      error: null,
+      [field.name]: field,
     })
-    if (this.state.originalName !== e.target.value) {
-      this.setState({
-        dirty: true,
-      })
-    } else if (this.state.dirty) {
-      this.setState({
-        dirty: false,
-      })
-    }
   }
 
   handleSubmit = (e) => {
@@ -37,12 +46,22 @@ class UpdateStudyNameForm extends React.Component {
     UpdateStudyMutation(
       this.props.study.id,
       null,
-      name,
-      (updateStudy, error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
+      name.value,
+      (updateStudy, errors) => {
+        if (errors) {
+          this.setState({ error: errors[0].message })
+          return
         }
-        this.setState({ dirty: false })
+        const value = get(updateStudy, "name", "")
+        this.setState({
+          error: null,
+          name: {
+            ...defaultState.name,
+            initialValue: value,
+            value,
+            valid: true,
+          }
+        })
         this.props.history.push(updateStudy.resourcePath+"/settings")
       },
     )
@@ -57,28 +76,38 @@ class UpdateStudyNameForm extends React.Component {
   }
 
   render() {
-    const {name} = this.state
+    const {error, name} = this.state
+
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
-        <div className="flex items-center">
-          <TextField
-            label="Study name"
-            floatingLabelClassName="mdc-floating-label--float-above"
-          >
-            <Input
-              name="name"
-              value={name}
-              required
-              onChange={this.handleChange}
-            />
-          </TextField>
-          <button
-            type="submit"
-            className="mdc-button mdc-button--unelevated ml2"
-            disabled={!this.state.dirty}
-          >
-            Rename
-          </button>
+        <TextField
+          className="rn-form__input"
+          label="Study name"
+          floatingLabelClassName="mdc-floating-label--float-above"
+          helperText={
+            <HelperText persistent>
+              {!isEmpty(name.value) && name.dirty
+              ? `Name will be ${replaceAll(name.value, " ", "_")}`
+              : ""}
+            </HelperText>
+          }
+          inputProps={{
+            name: "name",
+            value: name.value,
+            required: true,
+            maxLength: 39,
+            onChange: this.handleChange,
+          }}
+        />
+        <button
+          type="submit"
+          className="mdc-button mdc-button--unelevated mt2"
+          disabled={!this.state.dirty}
+        >
+          Rename
+        </button>
+        <div className="mt2">
+          <ErrorText error={error} />
         </div>
       </form>
     )

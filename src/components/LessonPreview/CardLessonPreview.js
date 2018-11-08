@@ -71,10 +71,10 @@ class CardLessonPreview extends React.Component {
               enrollable={get(this.props, "lesson", null)}
             />}
             <Link
-              className="rn-icon-link mdc-card__action mdc-card__action--icon"
+              className="mdc-button mdc-card__action mdc-card__action--button"
               to={lesson.resourcePath}
             >
-              <Icon className="rn-icon-link__icon" icon="comment" />
+              <Icon className="mdc-button__icon" icon="comment" />
               {get(lesson, "comments.totalCount", 0)}
             </Link>
           </div>

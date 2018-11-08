@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import cls from 'classnames'
 import {StudyLessonsProp, StudyLessonsPropDefaults} from 'components/StudyLessons'
 import LessonPreview from 'components/LessonPreview'
+import Context from 'containers/StudyPage/Context'
 import {isEmpty} from 'utils'
 
-import Context from 'containers/StudyPage/Context'
 
 class StudyLessonsPageLessons extends React.Component {
   get classes() {
@@ -54,12 +54,12 @@ class StudyLessonsPageLessons extends React.Component {
 
   renderLessons() {
     const {lessons} = this.props
-    const {edges, isLoading} = lessons
+    const {dataIsStale, edges, isLoading} = lessons
     const noResults = isEmpty(edges)
 
     return (
       <ul className="mdc-list mdc-list--two-line">
-        {isLoading
+        {isLoading && (dataIsStale || noResults)
         ? <li className="mdc-list-item">Loading...</li>
         : noResults
           ? <li className="mdc-list-item">No lessons were found</li>
@@ -74,7 +74,6 @@ class StudyLessonsPageLessons extends React.Component {
 StudyLessonsPageLessons.propTypes = {
   lessons: StudyLessonsProp,
   study: PropTypes.shape({
-    resourcePath: PropTypes.string.isRequired,
     viewerCanAdmin: PropTypes.bool.isRequired,
   }).isRequired,
 }
@@ -82,7 +81,6 @@ StudyLessonsPageLessons.propTypes = {
 StudyLessonsPageLessons.defaultProps = {
   lessons: StudyLessonsPropDefaults,
   study: {
-    resourcePath: "",
     viewerCanAdmin: false,
   }
 }

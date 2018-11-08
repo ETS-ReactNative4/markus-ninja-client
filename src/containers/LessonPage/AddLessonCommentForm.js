@@ -123,8 +123,7 @@ class AddLessonCommentForm extends React.Component {
         >
           <StudyBodyEditor.Main
             placeholder="Leave a comment"
-            body={comment.body}
-            draft={comment.draft}
+            object={comment}
             showFormButtonsFor="add-lesson-comment-form"
             onCancel={this.handleCancel}
             onChange={this.handleChange}
@@ -160,6 +159,7 @@ export default withRouter(createFragmentContainer(AddLessonCommentForm, graphql`
       body
       draft
       id
+      lastEditedAt
     }
   }
 `))

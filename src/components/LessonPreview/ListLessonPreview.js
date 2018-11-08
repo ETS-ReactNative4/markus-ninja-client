@@ -144,13 +144,20 @@ class ListLessonPreview extends React.Component {
     return (
       <span className="mdc-list-item__meta rn-list-preview__actions">
         <span className="rn-list-preview__actions--spread">
+          {lesson.viewerCanUpdate && lesson.isPublished &&
+          <Icon
+            as="span"
+            className="mdc-theme--secondary rn-list-preview__action rn-list-preview__action--icon"
+            icon="publish"
+            label="Published"
+          />}
           {lesson.viewerCanEnroll &&
           <EnrollIconButton enrollable={get(this.props, "lesson", null)} />}
           <Link
-            className="rn-icon-link"
+            className="mdc-button rn-list-preview__action rn-list-preview__action--button"
             to={lesson.resourcePath}
           >
-            <Icon className="rn-icon-link__icon" icon="comment" />
+            <Icon className="mdc-button__icon" icon="comment" />
             {get(lesson, "comments.totalCount", 0)}
           </Link>
         </span>
@@ -211,12 +218,15 @@ ListLessonPreview.propTypes = {
     }),
     courseNumber: PropTypes.number,
     id: PropTypes.string.isRequired,
+    isPublished: PropTypes.bool.isRequired,
     labels: PropTypes.shape({
       nodes: PropTypes.array,
     }).isRequired,
     number: PropTypes.number.isRequired,
     resourcePath: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
+    viewerCanEnroll: PropTypes.bool.isRequired,
+    viewerCanUpdate: PropTypes.bool.isRequired,
   }),
 }
 
@@ -239,12 +249,15 @@ ListLessonPreview.defaultProps = {
     },
     courseNumber: 0,
     id: "",
+    isPublished: false,
     labels: {
       nodes: [],
     },
     number: 0,
     resourcePath: "",
     title: "",
+    viewerCanEnroll: false,
+    viewerCanUpdate: false,
   }
 }
 
@@ -265,6 +278,7 @@ export default createFragmentContainer(ListLessonPreview, graphql`
     createdAt
     enrollmentStatus
     id
+    isPublished
     labels(first: 5) {
       nodes {
         ...Label_label
@@ -276,5 +290,6 @@ export default createFragmentContainer(ListLessonPreview, graphql`
     resourcePath
     title
     viewerCanEnroll
+    viewerCanUpdate
   }
 `)

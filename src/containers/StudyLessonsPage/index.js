@@ -140,7 +140,6 @@ StudyLessonsPage.contextType = Context
 export default createFragmentContainer(StudyLessonsPage, graphql`
   fragment StudyLessonsPage_study on Study {
     ...StudyLabelsLink_study
-    resourcePath
     viewerCanAdmin
   }
 `)

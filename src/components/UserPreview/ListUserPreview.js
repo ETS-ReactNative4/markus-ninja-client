@@ -50,10 +50,10 @@ class ListUserPreview extends React.Component {
               {user.viewerCanEnroll && !user.isViewer &&
               <EnrollIconButton enrollable={user} />}
               <Link
-                className="rn-icon-link"
+                className="mdc-button rn-list-preview__action rn-list-preview__action--button"
                 to={user.resourcePath+"?tab=studies"}
               >
-                <Icon className="rn-icon-link__icon" icon="study" />
+                <Icon className="mdc-button__icon" icon="study" />
                 {get(user, "studies.totalCount", 0)}
               </Link>
             </span>

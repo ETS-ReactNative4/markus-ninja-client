@@ -55,7 +55,7 @@ class SearchPageResults extends React.Component {
         <div className="rn-page mdc-layout-grid">
           <div className="mdc-layout-grid__inner">
             <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-              <div className="flex items-center">
+              <div className="flex items-start">
                 <h4>{this.type}</h4>
                 <button
                   type="button"

@@ -8,9 +8,9 @@ import {
 import {withRouter} from 'react-router-dom'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import Dialog from 'components/Dialog'
+import StudyContext from 'containers/StudyPage/Context'
 import CreateLessonMutation from 'mutations/CreateLessonMutation'
 
-import Context from './Context'
 
 const defaultState = {
   error: null,
@@ -123,7 +123,7 @@ CreateLessonDialog.defaultProps = {
   onClose: () => {},
 }
 
-CreateLessonDialog.contextType = Context
+CreateLessonDialog.contextType = StudyContext
 
 export default withRouter(createFragmentContainer(CreateLessonDialog, graphql`
   fragment CreateLessonDialog_study on Study {

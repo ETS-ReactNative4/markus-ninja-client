@@ -8,10 +8,9 @@ import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
 import StudyLabels from 'components/StudyLabels'
 import StudyLabelsPageLabels from './StudyLabelsPageLabels'
-import CreateLabelDialog from './CreateLabelDialog'
 import {debounce, get, isEmpty} from 'utils'
 
-import "./styles.css"
+import Context from 'containers/StudyPage/Context'
 
 class StudyLabelsPage extends React.Component {
   constructor(props) {
@@ -77,7 +76,7 @@ class StudyLabelsPage extends React.Component {
   }
 
   render() {
-    const {open} = this.state
+    const {toggleCreateLabelDialog} = this.context
     const study = get(this.props, "study", {})
 
     return (
@@ -90,7 +89,7 @@ class StudyLabelsPage extends React.Component {
               <button
                 className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
                 type="button"
-                onClick={() => this.setState({open: !open})}
+                onClick={toggleCreateLabelDialog}
               >
                 New label
               </button>
@@ -98,17 +97,8 @@ class StudyLabelsPage extends React.Component {
           </div>
         </div>
         <StudyLabels filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
-          <StudyLabelsPageLabels
-            onAddAction={() => this.setState({open: !open})}
-            study={study}
-          />
+          <StudyLabelsPageLabels study={study} />
         </StudyLabels>
-        {study.viewerCanAdmin &&
-        <CreateLabelDialog
-          open={open}
-          study={get(this.props, "study", null)}
-          onClose={() => this.setState({open: false})}
-        />}
       </div>
     )
   }
@@ -133,6 +123,8 @@ class StudyLabelsPage extends React.Component {
     )
   }
 }
+
+StudyLabelsPage.contextType = Context
 
 export default createFragmentContainer(StudyLabelsPage, graphql`
   fragment StudyLabelsPage_study on Study {

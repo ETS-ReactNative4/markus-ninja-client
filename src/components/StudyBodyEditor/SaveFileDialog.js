@@ -13,9 +13,9 @@ import {get, makeCancelable, replaceAll} from 'utils'
 import Context from './Context'
 
 const defaultState = {
+  description: defaultTextFieldState,
   error: null,
   file: null,
-  description: defaultTextFieldState,
   loading: false,
   name: defaultUserAssetNameState,
   request: {
@@ -36,15 +36,15 @@ class SaveFileDialog extends React.Component {
     toggleSaveDialog()
   }
 
-  handleChangeFile = (e) => {
-    const file = e.target.files[0]
-    this.setState({file})
-  }
-
   handleChangeField = (field) => {
     this.setState({
       [field.name]: field,
     })
+  }
+
+  handleChangeFile = (e) => {
+    const file = e.target.files[0]
+    this.setState({file})
   }
 
   handleSaveFileRequest = (file) => {
@@ -191,19 +191,20 @@ class SaveFileDialog extends React.Component {
           A reference will be attached in the text body,
           which will translate into an image link.
         </p>
-        <label
-          className="mdc-button mdc-button--outlined mb2"
-          htmlFor="file-input"
-        >
-          File
+        <div className="rn-file-field">
           <input
             id="file-input"
-            className="dn"
+            className="rn-file-field__input"
             type="file"
             accept=".jpg,jpeg,.png,.gif"
+            required
             onChange={this.handleChangeFile}
           />
-        </label>
+          <label className="mdc-button mb1" htmlFor="file-input">
+            <i className="material-icons mdc-button__icon">attach_file</i>
+            File
+          </label>
+        </div>
         <UserAssetNameInput
           initialValue={filename}
           label={!file ? "No file chosen" : "Name"}

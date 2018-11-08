@@ -12,6 +12,7 @@ import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
 import Tab from 'components/mdc/Tab'
 import TabBar from 'components/mdc/TabBar'
+import {timeDifferenceForDate} from 'utils'
 import AttachFile from './AttachFile'
 import Context from './Context'
 import Preview from './Preview'
@@ -26,7 +27,7 @@ class StudyBodyEditorMain extends React.Component {
       anchorElement: null,
       confirmCancelDialogOpen: false,
       confirmResetDialogOpen: false,
-      initialValue: this.props.draft,
+      initialValue: this.props.object.draft,
       loading: false,
       menuOpen: false,
       tab: "draft",
@@ -42,7 +43,7 @@ class StudyBodyEditorMain extends React.Component {
 
   componentDidMount() {
     const {editorState, onChange} = this.context
-    const {draft} = this.props
+    const {draft} = this.props.object
     if (editorState) {
       onChange(EditorState.push(editorState, ContentState.createFromText(draft)))
     }
@@ -50,7 +51,7 @@ class StudyBodyEditorMain extends React.Component {
 
   componentDidUpdate(prevProps) {
     const {editorState, onChange} = this.context
-    const {draft} = this.props
+    const {draft} = this.props.object
     if (draft !== prevProps.draft && draft !== this.text) {
       onChange(EditorState.push(editorState, ContentState.createFromText(draft)))
     }
@@ -81,7 +82,7 @@ class StudyBodyEditorMain extends React.Component {
 
   handleReset = () => {
     const {editorState} = this.context
-    const {body} = this.props
+    const {body} = this.props.object
     this.handleChange(EditorState.push(
       editorState,
       ContentState.createFromText(body),
@@ -89,7 +90,7 @@ class StudyBodyEditorMain extends React.Component {
   }
 
   handleToggleCancelConfirmation = () => {
-    if (this.text !== this.props.draft) {
+    if (this.text !== this.props.object.draft) {
       const {confirmCancelDialogOpen} = this.state
       this.setState({
         confirmCancelDialogOpen: !confirmCancelDialogOpen,
@@ -127,7 +128,7 @@ class StudyBodyEditorMain extends React.Component {
   render() {
     const {editorState, toggleSaveDialog} = this.context
     const {anchorElement, loading, menuOpen, tab} = this.state
-    const {placeholder, showFormButtonsFor, study} = this.props
+    const {object, placeholder, showFormButtonsFor, study} = this.props
 
     return (
       <div className={this.classes}>
@@ -141,7 +142,10 @@ class StudyBodyEditorMain extends React.Component {
           />
         </div>
         <div className="StudyBodyEditorMain__draft mdc-card mdc-card--outlined">
-          <div className="StudyBodyEditorMain__draft-text" onClick={() => this.focus()}>
+          <div className="rn-card__overline">
+            <span className="ml1">Last edited {timeDifferenceForDate(object.lastEditedAt)}</span>
+          </div>
+          <div className="StudyBodyEditorMain__draft-text rn-card__body" onClick={() => this.focus()}>
             <input
               className="StudyBodyEditorMain__hidden-input"
               type="text"
@@ -353,7 +357,11 @@ class StudyBodyEditorMain extends React.Component {
 }
 
 StudyBodyEditorMain.propTypes = {
-  draft: PropTypes.string,
+  object: PropTypes.shape({
+    body: PropTypes.string.isRequired,
+    draft: PropTypes.string.isRequired,
+    lastEditedAt: PropTypes.string.isRequired,
+  }),
   onCancel: PropTypes.func,
   onChange: PropTypes.func,
   onPreview: PropTypes.func,
@@ -366,7 +374,11 @@ StudyBodyEditorMain.propTypes = {
 }
 
 StudyBodyEditorMain.defaultProps = {
-  draft: "",
+  object: {
+    body: "",
+    draft: "",
+    lastEditedAt: "",
+  },
   onCancel: () => {},
   onChange: () => {},
   onPreview: () => {},

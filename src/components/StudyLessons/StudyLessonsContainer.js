@@ -14,11 +14,13 @@ class StudyLessonsContainer extends React.Component {
   state = {
     error: null,
     loading: false,
+    stale: false,
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (!isEqual(prevProps.filterBy, this.props.filterBy) ||
         !isEqual(prevProps.orderBy, this.props.orderBy)) {
+      this.setState({stale: true})
       this._refetch()
     }
   }
@@ -58,6 +60,7 @@ class StudyLessonsContainer extends React.Component {
           console.log(error)
         }
         this.setState({
+          stale: false,
           loading: false,
         })
       },
@@ -72,10 +75,11 @@ class StudyLessonsContainer extends React.Component {
   render() {
     const child = React.Children.only(this.props.children)
     const studyLessons = get(this.props, "study.lessons", {})
-    const {loading} = this.state
+    const {loading, stale} = this.state
 
     return React.cloneElement(child, {
       lessons: {
+        dataIsStale: stale,
         edges: studyLessons.edges,
         hasMore: this._hasMore,
         isLoading: loading,
@@ -104,14 +108,16 @@ StudyLessonsContainer.defaultProps = {
 }
 
 export const StudyLessonsProp = PropTypes.shape({
+  dataIsStale: PropTypes.bool,
   edges: PropTypes.array,
-  idLoading: PropTypes.bool,
+  isLoading: PropTypes.bool,
   hasMore: PropTypes.bool,
   loadMore: PropTypes.func,
   totalCount: PropTypes.number,
 })
 
 export const StudyLessonsPropDefaults = {
+  dataIsStale: false,
   edges: [],
   isLoading: false,
   hasMore: false,

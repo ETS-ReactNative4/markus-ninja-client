@@ -6,8 +6,8 @@ import {
 } from 'react-relay'
 import { withRouter } from 'react-router'
 import TextField, {Input} from '@material/react-text-field'
+import ErrorText from 'components/ErrorText'
 import DeleteStudyMutation from 'mutations/DeleteStudyMutation'
-import { isNil } from 'utils'
 
 class StudyDangerZone extends React.Component {
   state = {
@@ -22,7 +22,7 @@ class StudyDangerZone extends React.Component {
       DeleteStudyMutation(
         this.props.study.id,
         (response, errors) => {
-          if (!isNil(errors)) {
+          if (errors) {
             this.setState({ error: errors[0].message })
           } else {
             this.props.history.push("/")
@@ -59,7 +59,7 @@ class StudyDangerZone extends React.Component {
   }
 
   renderForm() {
-    const {confirmation} = this.state
+    const {confirmation, error} = this.state
 
     return (
       <form className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12" onSubmit={this.handleSubmit}>
@@ -93,6 +93,10 @@ class StudyDangerZone extends React.Component {
               Cancel
             </button>
           </div>
+          <ErrorText
+            className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+            error={error}
+          />
         </div>
       </form>
     )
