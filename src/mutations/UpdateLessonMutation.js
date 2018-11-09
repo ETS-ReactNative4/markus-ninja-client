@@ -3,7 +3,7 @@ import {
   graphql,
 } from 'react-relay'
 import environment from 'Environment'
-import { isEmpty, isNil, nullString } from 'utils'
+import {nullString} from 'utils'
 
 const mutation = graphql`
   mutation UpdateLessonMutation($input: UpdateLessonInput!) {
@@ -33,11 +33,13 @@ export default (lessonId, title, draft, callback) => {
       variables,
       optimisticUpdater: proxyStore => {
         const lesson = proxyStore.get(lessonId)
-        if (!isNil(draft)) {
-          lesson.setValue(draft, 'draft')
-        }
-        if (!isEmpty(title)) {
-          lesson.setValue(title, 'title')
+        if (lesson) {
+          if (draft) {
+            lesson.setValue(draft, 'draft')
+          }
+          if (title) {
+            lesson.setValue(title, 'title')
+          }
         }
       },
       updater: proxyStore => {

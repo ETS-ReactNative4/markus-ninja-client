@@ -33,12 +33,15 @@
 
   font-weight: 500;
   display: block;
+  margin: 0;
 }
 
 .rn-card__subtitle {
   @include mdc-typography-overflow-ellipsis;
   @include mdc-typography(subtitle2);
   @include mdc-theme-prop(color, text-secondary-on-light);
+
+  margin: 0;
 }
 
 .rn-card__overline {

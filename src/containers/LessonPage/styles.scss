@@ -1,3 +1,5 @@
+@import "@material/typography/mixins";
+
 .LessonPage__container {
 }
 
@@ -8,4 +10,8 @@
 .LessonPage__comments__container {
   margin-left: auto;
   margin-right: auto;
+}
+
+.LessonBody .StudyBodyEditorMain .rn-card__body {
+  @include mdc-typography(body1);
 }

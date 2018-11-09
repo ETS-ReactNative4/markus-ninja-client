@@ -4,8 +4,13 @@
 @import "@material/typography/variables";
 
 .HTML {
+  * {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
   a {
-    text-decoration: none;
+    text-decoration: underline;
     transition: color 100ms;
     color: inherit;
 
@@ -15,162 +20,355 @@
   }
 
   blockquote {
-    @include mdc-theme-prop(border-color, primary);
+    @include mdc-typography(headline6);
 
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: -1rem;
-    padding-left: 1rem;
-    border-left-width: 5px;
-    border-left-style: solid;
+    font-family: unquote("Arima Madurai, cursive");
+    font-style: italic;
+    margin: 0;
+    padding-left: 32px;
 
     cite {
       @include mdc-typography(caption);
       @include mdc-theme-prop(color, text-secondary-on-light);
+
+      display: block;
+    }
+
+    + * {
+      margin-top: 32px;
+    }
+    + h1, + h2 {
+      margin-top: 48px;
+    }
+    + h3 {
+      margin-top: 40px;
+    }
+    + h4 {
+      margin-top: 32px;
     }
   }
 
   dl {
-    dt {
-      @include mdc-typography(subtitle1);
-      font-weight: 500;
+    margin: 0;
+
+  }
+
+  dt {
+    @include mdc-typography(subtitle1);
+    font-weight: 500;
+  }
+
+  dd {
+    + dt {
+      margin-top: 8px;
     }
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    margin-bottom: 16px;
+  h1, h2, h3, h4 {
     font-family: unquote("Arima Madurai, cursive") !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
   }
 
   h1 {
     @include mdc-layout-grid-media-query_(desktop) {
-      @include mdc-typography(headline1);
+      @include mdc-typography(headline2);
+
+      font-weight: 500;
+
+      + h5, + h6 {
+        margin-top: 16px;
+      }
     }
     @include mdc-layout-grid-media-query_(tablet) {
-      @include mdc-typography(headline2);
+      @include mdc-typography(headline3);
+
+      font-weight: 500;
+
+      + h5, + h6 {
+        margin-top: 8px;
+      }
     }
     @include mdc-layout-grid-media-query_(phone) {
       @include mdc-typography(headline3);
+
+      font-weight: 500;
+
+      + h5, + h6 {
+        margin-top: 8px;
+      }
+    }
+
+    + * {
+      margin-top: 32px;
+    }
+    + h1, + h2 {
+      margin-top: 48px;
+    }
+    + h3 {
+      margin-top: 40px;
+    }
+    + h4 {
+      margin-top: 32px;
     }
   }
 
   h2 {
     @include mdc-layout-grid-media-query_(desktop) {
-      @include mdc-typography(headline2);
+      @include mdc-typography(headline3);
+
+      + h5, + h6 {
+        margin-top: 16px;
+      }
     }
     @include mdc-layout-grid-media-query_(tablet) {
-      @include mdc-typography(headline3);
+      @include mdc-typography(headline4);
+
+      + h5, + h6 {
+        margin-top: 8px;
+      }
     }
     @include mdc-layout-grid-media-query_(phone) {
       @include mdc-typography(headline4);
+
+      + h5, + h6 {
+        margin-top: 8px;
+      }
+    }
+
+    + * {
+      margin-top: 32px;
+    }
+    + h1, + h2 {
+      margin-top: 48px;
+    }
+    + h3 {
+      margin-top: 40px;
+    }
+    + h4 {
+      margin-top: 32px;
     }
   }
 
   h3 {
     @include mdc-layout-grid-media-query_(desktop) {
-      @include mdc-typography(headline3);
+      @include mdc-typography(headline4);
+
+      + h5, + h6 {
+        margin-top: 16px;
+      }
     }
     @include mdc-layout-grid-media-query_(tablet) {
-      @include mdc-typography(headline4);
+      @include mdc-typography(headline5);
+
+      + h5, + h6 {
+        margin-top: 8px;
+      }
     }
     @include mdc-layout-grid-media-query_(phone) {
       @include mdc-typography(headline5);
+
+      + h5, + h6 {
+        margin-top: 8px;
+      }
+    }
+
+    + * {
+      margin-top: 32px;
+    }
+    + h1, + h2 {
+      margin-top: 48px;
+    }
+    + h3 {
+      margin-top: 40px;
+    }
+    + h4 {
+      margin-top: 32px;
     }
   }
 
   h4 {
     @include mdc-layout-grid-media-query_(desktop) {
-      @include mdc-typography(headline4);
+      @include mdc-typography(headline5);
+
+      + h5, + h6 {
+        margin-top: 16px;
+      }
     }
     @include mdc-layout-grid-media-query_(tablet) {
-      @include mdc-typography(headline5);
+      @include mdc-typography(headline6);
+
+      + h5, + h6 {
+        margin-top: 8px;
+      }
     }
     @include mdc-layout-grid-media-query_(phone) {
       @include mdc-typography(headline6);
+
+      + h5, + h6 {
+        margin-top: 8px;
+      }
     }
 
+    + * {
+      margin-top: 32px;
+    }
+    + h1, + h2 {
+      margin-top: 48px;
+    }
+    + h3 {
+      margin-top: 40px;
+    }
+    + h4 {
+      margin-top: 32px;
+    }
   }
 
   h5 {
     @include mdc-layout-grid-media-query_(desktop) {
-      @include mdc-typography(headline5);
+      @include mdc-typography(subtitle1)
+      @include mdc-theme-prop(color, text-secondary-on-light);
+
+      + h5, + h6 {
+        margin-top: 16px;
+      }
     }
     @include mdc-layout-grid-media-query_(tablet) {
-      @include mdc-typography(headline6);
+      @include mdc-typography(subtitle1);
+      @include mdc-theme-prop(color, text-secondary-on-light);
+
+      + h5, + h6 {
+        margin-top: 8px;
+      }
     }
     @include mdc-layout-grid-media-query_(phone) {
       @include mdc-typography(subtitle1);
+      @include mdc-theme-prop(color, text-secondary-on-light);
+
+      + h5, + h6 {
+        margin-top: 8px;
+      }
+    }
+
+    + * {
+      margin-top: 32px;
+    }
+    + h1, + h2 {
+      margin-top: 48px;
+    }
+    + h3 {
+      margin-top: 40px;
+    }
+    + h4 {
+      margin-top: 32px;
     }
   }
 
   h6 {
-    @include mdc-layout-grid-media-query_(desktop) {
-      @include mdc-typography(headline6);
-    }
-    @include mdc-layout-grid-media-query_(tablet) {
-      @include mdc-typography(subtitle1);
-    }
-    @include mdc-layout-grid-media-query_(phone) {
-      @include mdc-typography(subtitle2);
+    @include mdc-typography(overline);
+    @include mdc-theme-prop(color, text-secondary-on-light);
+
+    + * {
+      margin-top: 12px;
     }
   }
 
   hr {
     box-sizing: content-box;
     height: 0;
-    margin: 24px 0;
+    margin-bottom: 0;
+    margin-top: 56px !important;
     overflow: visible;
     border: none;
     border-top-color: rgba(0, 0, 0, 0.12);
     border-top-style: solid;
     border-top-width: 1px;
+
+    + * {
+      margin-top: 56px;
+    }
   }
 
   img {
-    width: 100%;
+    max-width: 100%;
   }
 
   ol, ul {
-    padding-left: 2rem;
-    margin-top: 0;
-    margin-bottom: 16px;
+    padding-left: 40px;
+    margin-top: 32px;
+    margin-bottom: 0;
+
+    + * {
+      margin-top: 32px;
+    }
+    + h1, + h2 {
+      margin-top: 48px;
+    }
+    + h3 {
+      margin-top: 40px;
+    }
+    + h4 {
+      margin-top: 32px;
+    }
+
+    li:not(:first-child) {
+      margin-top: 8px;
+    }
+
+    ol, ul {
+      margin-top: 8px !important;
+    }
   }
   
   p {
-    margin-top: 0px;
-    margin-bottom: 16px;
-
     &.caption {
       @include mdc-typography(caption);
+      @include mdc-theme-prop(color, text-secondary-on-light);
 
-      margin: 0;
+      margin-top: 0 !important;
     }
-    &.hint {
-      @include mdc-theme-prop(color, text-hint-on-light);
-    }
-    &.main {
+    &.leading {
+      margin-top: 48px !important;
+
       &::first-letter {
         @include mdc-typography(headline2);
 
         font-family: unquote("Arima Madurai, cursive");
+        margin-right: 8px;
         text-transform: capitalize;
         display: block;
         float: left;
       }
     }
-    &.overline {
-      @include mdc-typography(overline);
 
-      margin: 0;
+    + * {
+      margin-top: 32px;
     }
-    &.secondary {
-      @include mdc-theme-prop(color, text-secondary-on-light);
+    + h1, + h2 {
+      margin-top: 48px;
     }
-    &.subtitle1 {
-      @include mdc-typography(subtitle1);
+    + h3 {
+      margin-top: 40px;
     }
-    &.subtitle2 {
-      @include mdc-typography(subtitle2);
+    + h4 {
+      margin-top: 32px;
+    }
+  }
+
+  pre {
+    + * {
+      margin-top: 32px;
+    }
+    + h1, + h2 {
+      margin-top: 48px;
+    }
+    + h3 {
+      margin-top: 40px;
+    }
+    + h4 {
+      margin-top: 32px;
     }
   }
 
@@ -183,6 +381,19 @@
 
     caption {
       @include mdc-typography(caption);
+    }
+
+    + * {
+      margin-top: 32px;
+    }
+    + h1, + h2 {
+      margin-top: 48px;
+    }
+    + h3 {
+      margin-top: 40px;
+    }
+    + h4 {
+      margin-top: 32px;
     }
   }
 

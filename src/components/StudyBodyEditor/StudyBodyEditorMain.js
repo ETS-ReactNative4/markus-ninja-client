@@ -52,7 +52,8 @@ class StudyBodyEditorMain extends React.Component {
   componentDidUpdate(prevProps) {
     const {editorState, onChange} = this.context
     const {draft} = this.props.object
-    if (draft !== prevProps.draft && draft !== this.text) {
+    const {draft: prevDraft} = prevProps.object
+    if (draft !== prevDraft && draft !== this.text) {
       onChange(EditorState.push(editorState, ContentState.createFromText(draft)))
     }
   }

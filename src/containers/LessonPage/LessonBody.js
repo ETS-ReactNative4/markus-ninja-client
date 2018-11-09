@@ -101,7 +101,7 @@ class LessonBody extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+    return cls("LessonBody mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   render() {

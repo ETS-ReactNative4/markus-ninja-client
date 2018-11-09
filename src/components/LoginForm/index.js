@@ -18,6 +18,7 @@ class LoginForm extends React.Component {
 
   handleChange = (field) => {
     this.setState({
+      error: null,
       [field.name]: field,
     })
   }

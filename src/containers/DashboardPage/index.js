@@ -87,7 +87,7 @@ class DashboardPage extends React.Component {
                     <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                       <h4>
                         Welcome back @
-                        <UserLink className="rn-link" user={props.viewer} />
+                        <UserLink className="rn-link" user={props.viewer} />!
                       </h4>
                       <button
                         type="button"
