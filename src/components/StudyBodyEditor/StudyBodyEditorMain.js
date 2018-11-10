@@ -82,12 +82,7 @@ class StudyBodyEditorMain extends React.Component {
   }
 
   handleReset = () => {
-    const {editorState} = this.context
-    const {body} = this.props.object
-    this.handleChange(EditorState.push(
-      editorState,
-      ContentState.createFromText(body),
-    ))
+    this.props.onReset()
   }
 
   handleToggleCancelConfirmation = () => {
@@ -295,7 +290,7 @@ class StudyBodyEditorMain extends React.Component {
       <Dialog
         open={confirmResetDialogOpen}
         onClose={() => this.setState({confirmResetDialogOpen: false})}
-        title={<Dialog.Title>Reset draft to match body</Dialog.Title>}
+        title={<Dialog.Title>Reset draft</Dialog.Title>}
         content={
           <Dialog.Content>
             <div className="flex flex-column mw5">
@@ -359,7 +354,6 @@ class StudyBodyEditorMain extends React.Component {
 
 StudyBodyEditorMain.propTypes = {
   object: PropTypes.shape({
-    body: PropTypes.string.isRequired,
     draft: PropTypes.string.isRequired,
     lastEditedAt: PropTypes.string.isRequired,
   }),
@@ -367,6 +361,7 @@ StudyBodyEditorMain.propTypes = {
   onChange: PropTypes.func,
   onPreview: PropTypes.func,
   onPublish: PropTypes.func,
+  onReset: PropTypes.func,
   showFormButtonsFor: PropTypes.string,
   study: PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -376,7 +371,6 @@ StudyBodyEditorMain.propTypes = {
 
 StudyBodyEditorMain.defaultProps = {
   object: {
-    body: "",
     draft: "",
     lastEditedAt: "",
   },
@@ -384,6 +378,7 @@ StudyBodyEditorMain.defaultProps = {
   onChange: () => {},
   onPreview: () => {},
   onPublish: () => {},
+  onReset: () => {},
   study: {
     id: "",
     viewerCanAdmin: false,

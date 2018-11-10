@@ -14,6 +14,7 @@ import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
 import DeleteLessonCommentMutation from 'mutations/DeleteLessonCommentMutation'
 import PublishLessonCommentDraftMutation from 'mutations/PublishLessonCommentDraftMutation'
+import ResetLessonCommentDraftMutation from 'mutations/ResetLessonCommentDraftMutation'
 import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
 import {debounce, get, isNil, throttle, timeDifferenceForDate} from 'utils'
 
@@ -101,6 +102,18 @@ class LessonComment extends React.Component {
           return
         }
         this.handleToggleEdit()
+      },
+    )
+  }
+
+  handleReset = () => {
+    ResetLessonCommentDraftMutation(
+      this.props.comment.id,
+      (comment, errors) => {
+        if (errors) {
+          this.setState({ error: errors[0].message })
+          return
+        }
       },
     )
   }
@@ -291,6 +304,7 @@ class LessonComment extends React.Component {
             onChange={this.handleChange}
             onPreview={this.handlePreview}
             onPublish={this.handlePublish}
+            onReset={this.handleReset}
             study={study}
           />
         </form>

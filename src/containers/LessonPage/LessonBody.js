@@ -8,6 +8,7 @@ import moment from 'moment'
 import HTML from 'components/HTML'
 import StudyBodyEditor from 'components/StudyBodyEditor'
 import PublishLessonDraftMutation from 'mutations/PublishLessonDraftMutation'
+import ResetLessonDraftMutation from 'mutations/ResetLessonDraftMutation'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
 import {debounce, get, isNil, throttle} from 'utils'
 
@@ -88,6 +89,18 @@ class LessonBody extends React.Component {
     )
   }
 
+  handleReset = () => {
+    ResetLessonDraftMutation(
+      this.props.lesson.id,
+      (lesson, errors) => {
+        if (errors) {
+          this.setState({ error: errors[0].message })
+          return
+        }
+      },
+    )
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
     const {draft} = this.state
@@ -162,6 +175,7 @@ class LessonBody extends React.Component {
             onChange={this.handleChange}
             onPreview={this.handlePreview}
             onPublish={this.handlePublish}
+            onReset={this.handleReset}
             study={study}
           />
         </form>

@@ -99,6 +99,32 @@ class AddLessonCommentForm extends React.Component {
     )
   }
 
+  handleReset = () => {
+    const comment = get(this.props, "lesson.viewerNewComment", {})
+    const {draft} = this.state
+
+    if (draft.value !== "") {
+      UpdateLessonCommentMutation(
+        comment.id,
+        "",
+        (comment, errors) => {
+          if (!isNil(errors)) {
+            this.setState({ error: errors[0].message })
+          }
+          if (comment) {
+            this.setState({
+              draft: {
+                ...this.state.draft,
+                dirty: false,
+                value: comment.draft
+              }
+            })
+          }
+        },
+      )
+    }
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
     const {draft} = this.state
@@ -129,6 +155,7 @@ class AddLessonCommentForm extends React.Component {
             onChange={this.handleChange}
             onPreview={this.handlePreview}
             onPublish={this.handlePublish}
+            onReset={this.handleReset}
             study={study}
           />
         </form>
