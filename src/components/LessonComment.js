@@ -318,7 +318,6 @@ export default createFragmentContainer(LessonComment, graphql`
     author {
       ...UserLink_user
     }
-    body
     bodyHTML
     createdAt
     draft

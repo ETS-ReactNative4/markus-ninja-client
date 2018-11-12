@@ -183,7 +183,6 @@ export default withRouter(createFragmentContainer(AddLessonCommentForm, graphql`
       ...StudyBodyEditor_study
     }
     viewerNewComment {
-      body
       draft
       id
       lastEditedAt

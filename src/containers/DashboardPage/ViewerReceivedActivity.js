@@ -65,7 +65,7 @@ export default withRouter(createPaginationContainer(ViewerReceivedActivity,
         receivedActivity(
           first: $count,
           after: $after,
-          orderBy: {direction: ASC, field: CREATED_AT}
+          orderBy: {direction: DESC, field: CREATED_AT}
         ) @connection(key: "ViewerReceivedActivity_receivedActivity", filters: []) {
           edges {
             node {

@@ -59,7 +59,7 @@ class StudyLessonsPage extends React.Component {
       case "desc":
         return "DESC"
       default:
-        return "ASC"
+        return "DESC"
       }
     })()
     const field = (() => {
@@ -70,6 +70,8 @@ class StudyLessonsPage extends React.Component {
         return "COMMENT_COUNT"
       case "number":
         return "NUMBER"
+      case "published":
+        return "PUBLISHED_AT"
       case "updated":
         return "UPDATED_AT"
       default:

@@ -187,7 +187,6 @@ class LessonBody extends React.Component {
 export default createFragmentContainer(LessonBody, graphql`
   fragment LessonBody_lesson on Lesson {
     id
-    body
     bodyHTML
     draft
     isPublished

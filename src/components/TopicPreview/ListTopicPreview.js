@@ -33,7 +33,9 @@ class ListTopicPreview extends React.Component {
     return (
       <li className={this.classes}>
         <span className="mdc-list-item">
-          <Icon as="span" className="mdc-list-item__graphic" icon="topic" />
+          <span className="mdc-list-item__graphic">
+            <Icon as={Link} className="mdc-icon-button" to={topic.resourcePath} icon="topic" />
+          </span>
           <Link className="mdc-list-item__text" to={topic.resourcePath}>
             <span className="mdc-list-item__primary-text">
               {topic.name}

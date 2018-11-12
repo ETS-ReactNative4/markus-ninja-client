@@ -12,7 +12,7 @@ import NotificationButton from 'components/NotificationButton'
 import ListEnrollButton from 'components/ListEnrollButton'
 import MarkNotificationAsReadMutation from 'mutations/MarkNotificationAsReadMutation'
 import UpdateEnrollmentMutation from 'mutations/UpdateEnrollmentMutation'
-import {get, isNil, timeDifferenceForDate} from 'utils'
+import {get, timeDifferenceForDate} from 'utils'
 
 class Notification extends React.Component {
   state = {
@@ -25,7 +25,7 @@ class Notification extends React.Component {
     MarkNotificationAsReadMutation(
       notificationId,
       (response, error) => {
-        if (!isNil(error)) {
+        if (error) {
           console.error(error)
         }
         this.props.history.push(get(this.props, "notification.subject.resourcePath", "."))
@@ -38,7 +38,7 @@ class Notification extends React.Component {
       get(this.props, "notification.subject.id", ""),
       'UNENROLLED',
       (errors) => {
-        if (!isNil(errors)) {
+        if (errors) {
           console.error(errors[0].message)
         }
       }
@@ -58,7 +58,9 @@ class Notification extends React.Component {
     return (
       <li className={this.classes}>
         <span className="mdc-list-item">
-          <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
+          <span className="mdc-list-item__graphic">
+            <Icon className="mdc-icon-button" icon="lesson" onClick={this.handleMarkAsRead} />
+          </span>
           <span className="mdc-list-item__text pointer" onClick={this.handleMarkAsRead}>
             <span className="mdc-list-item__primary-text">{subject.title}</span>
             <span className="mdc-list-item__secondary-text">

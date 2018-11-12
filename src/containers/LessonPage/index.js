@@ -7,7 +7,7 @@ import {
 import environment from 'Environment'
 import NotFound from 'components/NotFound'
 import StudyLabels from 'components/StudyLabels'
-import LoginLink from 'components/LoginLink'
+import {Link} from 'react-router-dom'
 import LessonCourse from './LessonCourse'
 import LessonHeader from './LessonHeader'
 import LessonLabels from './LessonLabels'
@@ -85,9 +85,16 @@ class LessonPage extends React.Component {
                   <div className="LessonPage__comments__container mdc-layout-grid__inner mw8">
                     {!this.context.isAuthenticated()
                     ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                        <LoginLink>Login to leave a comment</LoginLink>
+                        <div className="mdc-card mdc-card--outlined">
+                          <div className="rn-card__header">
+                            <Link className="rn-link rn-link--underlined mr1" to="signin">Sign in</Link>
+                            or
+                            <Link className="rn-link rn-link--underlined mh1" to="signup">Sign up</Link>
+                            to leave a comment
+                          </div>
+                        </div>
                       </div>
-                    : <AddLessonCommentForm className="mt3" lesson={lesson} />}
+                    : <AddLessonCommentForm lesson={lesson} />}
                     <LessonTimeline lesson={lesson} />
                   </div>
                 </div>

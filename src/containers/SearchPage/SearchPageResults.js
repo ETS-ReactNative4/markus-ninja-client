@@ -59,7 +59,7 @@ class SearchPageResults extends React.Component {
                 <h4>{this.type}</h4>
                 <button
                   type="button"
-                  className="mdc-button ml2"
+                  className="mdc-button ml2 mt1"
                   onClick={() => this.setState({open: !open})}
                 >
                   Change type

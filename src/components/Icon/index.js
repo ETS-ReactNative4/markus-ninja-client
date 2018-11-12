@@ -72,10 +72,23 @@ class Icon extends React.PureComponent {
     }
   }
 
+  get otherProps() {
+    const {
+      as,
+      className,
+      children,
+      icon,
+      label,
+      ...otherProps
+    } = this.props
+    return otherProps
+  }
+
   render() {
     const { as: Component } = this.props
     return (
       <Component
+        {...this.otherProps}
         className={this.classes}
         aria-hidden="true"
         aria-label={this.label}

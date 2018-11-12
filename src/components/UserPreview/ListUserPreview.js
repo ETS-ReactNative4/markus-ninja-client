@@ -35,7 +35,9 @@ class ListUserPreview extends React.Component {
     return (
       <li className={this.classes}>
         <span className="mdc-list-item">
-          <Icon as="span" className="mdc-list-item__graphic" icon="user" />
+          <span className="mdc-list-item__graphic">
+            <Icon as={Link} className="mdc-icon-button" to={user.resourcePath} icon="user" />
+          </span>
           <Link className="mdc-list-item__text" to={user.resourcePath}>
             <span className="mdc-list-item__primary-text" to={user.resourcePath}>
               {user.login}

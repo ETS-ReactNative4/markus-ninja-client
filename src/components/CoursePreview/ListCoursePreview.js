@@ -47,7 +47,9 @@ class ListCoursePreview extends React.Component {
     return (
       <li className={this.classes}>
         <span className="mdc-list-item">
-          <Icon as="span" className="mdc-list-item__graphic" icon="course" />
+          <span className="mdc-list-item__graphic">
+            <Icon as={Link} className="mdc-icon-button" to={course.resourcePath} icon="course" />
+          </span>
           <span className="mdc-list-item__text">
             <span className="mdc-list-item__primary-text">
               <Link className="rn-link" to={course.resourcePath}>

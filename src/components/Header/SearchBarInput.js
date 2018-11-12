@@ -153,6 +153,7 @@ class SearchBarInput extends React.Component {
           return null
         })
         this.setState({
+          cursor: 1,
           cursors,
           ids,
           loading: false

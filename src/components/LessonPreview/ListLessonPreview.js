@@ -87,7 +87,9 @@ class ListLessonPreview extends React.Component {
         className={this.classes}
       >
         <span className="mdc-list-item">
-          <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
+          <span className="mdc-list-item__graphic">
+            <Icon as={Link} className="mdc-icon-button" to={lesson.resourcePath} icon="lesson" />
+          </span>
           <span className="mdc-list-item__text">
             <span className="mdc-list-item__primary-text" >
               <Link className="rn-link" to={lesson.resourcePath}>
@@ -223,6 +225,7 @@ ListLessonPreview.propTypes = {
       nodes: PropTypes.array,
     }).isRequired,
     number: PropTypes.number.isRequired,
+    publishedAt: PropTypes.string.isRequired,
     resourcePath: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     viewerCanEnroll: PropTypes.bool.isRequired,
@@ -254,6 +257,7 @@ ListLessonPreview.defaultProps = {
       nodes: [],
     },
     number: 0,
+    publishedAt: "",
     resourcePath: "",
     title: "",
     viewerCanEnroll: false,
@@ -287,6 +291,7 @@ export default createFragmentContainer(ListLessonPreview, graphql`
       }
     }
     number
+    publishedAt
     resourcePath
     title
     viewerCanEnroll

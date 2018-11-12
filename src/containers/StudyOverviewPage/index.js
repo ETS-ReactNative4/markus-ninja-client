@@ -7,20 +7,27 @@ import {
 import environment from 'Environment'
 import CoursePreview from 'components/CoursePreview'
 import LessonPreview from 'components/LessonPreview'
+import StudyActivity from './StudyActivity'
 import StudyMeta from './StudyMeta'
 import {get, isEmpty} from 'utils'
-import { TOPICS_PER_PAGE } from 'consts'
+import {STUDY_ACTIVITY_PER_PAGE, TOPICS_PER_PAGE} from 'consts'
 
 
 const StudyOverviewPageQuery = graphql`
   query StudyOverviewPageQuery(
     $owner: String!,
     $name: String!,
+    $eventCount: Int!,
+    $afterEvent: String,
     $topicCount: Int!,
     $afterTopic: String,
   ) {
     study(owner: $owner, name: $name) {
       ...CreateLessonLink_study
+      ...StudyActivity_study @arguments(
+        after: $afterEvent,
+        count: $eventCount,
+      )
       ...StudyMeta_study @arguments(
         after: $afterTopic,
         count: $topicCount,
@@ -66,6 +73,7 @@ class StudyOverviewPage extends React.Component {
         variables={{
           owner: match.params.owner,
           name: match.params.name,
+          eventCount: STUDY_ACTIVITY_PER_PAGE,
           topicCount: TOPICS_PER_PAGE,
         }}
         render={({error,  props}) => {
@@ -80,9 +88,9 @@ class StudyOverviewPage extends React.Component {
                 <StudyMeta study={props.study}  />
                 {!isEmpty(lessons) &&
                 <React.Fragment>
-                  <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     Popular lessons
-                  </h4>
+                  </h5>
                   {lessons.map(({node}) => (
                     node &&
                     <div key={node.id} className="mdc-layout-grid__cell">
@@ -92,9 +100,9 @@ class StudyOverviewPage extends React.Component {
                 </React.Fragment>}
                 {!isEmpty(courses) &&
                 <React.Fragment>
-                  <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     Popular courses
-                  </h4>
+                  </h5>
                   {courses.map(({node}) => (
                     node &&
                     <div key={node.id} className="mdc-layout-grid__cell">
@@ -102,6 +110,7 @@ class StudyOverviewPage extends React.Component {
                     </div>
                   ))}
                 </React.Fragment>}
+                <StudyActivity study={props.study} />
               </div>
             )
           }
