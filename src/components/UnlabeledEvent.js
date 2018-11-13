@@ -25,7 +25,7 @@ class UnlabeledEvent extends React.Component {
     }
 
     return (
-      <div className={this.classes}>
+      <li className={this.classes}>
         <span className="mdc-list-item">
           <Icon className="mdc-list-item__graphic" icon="label" />
           <span className="mdc-list-item__text">
@@ -39,7 +39,7 @@ class UnlabeledEvent extends React.Component {
             </span>
           </span>
         </span>
-      </div>
+      </li>
     )
   }
 }

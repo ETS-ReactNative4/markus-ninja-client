@@ -148,6 +148,29 @@ export function groupBy(array = [], field = "") {
   )
 }
 
+export function groupInOrderByFunc(array = [], f = () => false) {
+  const groups = []
+  for (let i = 0; i < array.length; i++) {
+    if (f(array[i])) {
+      const group = []
+      do {
+        group.push(array[i])
+        i++
+      } while (i < array.length && f(array[i]))
+      groups.push(group)
+    } else {
+      const group = []
+      while (i < array.length && !f(array[i])) {
+        group.push(array[i])
+        i++
+      }
+      groups.push(group)
+    }
+    i--
+  }
+  return groups
+}
+
 export function recursiveReactChildrenMap(children, f) {
   return React.Children.map(children, (child) => {
     if (!React.isValidElement(child)) {

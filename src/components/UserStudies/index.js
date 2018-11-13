@@ -79,23 +79,23 @@ class UserStudies extends React.Component {
         render={({error,  props}) => {
           if (error) {
             return <div>{error.message}</div>
-          } else if (props) {
-            const {children, orderBy, filterBy, isViewer} = this.props
-            const user = isViewer ? props.viewer : props.user
-
-            return (
-              <UserStudiesContainer
-                count={count}
-                orderBy={orderBy}
-                filterBy={filterBy}
-                isViewer={isViewer}
-                user={user}
-              >
-                {children}
-              </UserStudiesContainer>
-            )
           }
-          return <div>Loading</div>
+
+          props = props ? props : {}
+          const {children, orderBy, filterBy, isViewer} = this.props
+          const user = isViewer ? props.viewer : props.user
+
+          return (
+            <UserStudiesContainer
+              count={count}
+              orderBy={orderBy}
+              filterBy={filterBy}
+              isViewer={isViewer}
+              user={user ? user : null}
+            >
+              {children}
+            </UserStudiesContainer>
+          )
         }}
       />
     )

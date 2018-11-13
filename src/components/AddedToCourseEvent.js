@@ -25,7 +25,7 @@ class AddedToCourseEvent extends React.Component {
     }
 
     return (
-      <div className={this.classes}>
+      <li className={this.classes}>
         <span className="mdc-list-item">
           <Icon className="mdc-list-item__graphic" icon="add" />
           <span className="mdc-list-item__text">
@@ -55,7 +55,7 @@ class AddedToCourseEvent extends React.Component {
             </Link>
           </span>
         </span>
-      </div>
+      </li>
     )
   }
 }

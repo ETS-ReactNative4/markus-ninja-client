@@ -24,7 +24,7 @@ class RenamedEvent extends React.Component {
     }
 
     return (
-      <div className={this.classes}>
+      <li className={this.classes}>
         <span className="mdc-list-item">
           <Icon className="mdc-list-item__graphic" icon="edit" />
           <span className="mdc-list-item__text">
@@ -40,7 +40,7 @@ class RenamedEvent extends React.Component {
             on {moment(event.createdAt).format("MMM D")}
           </span>
         </span>
-      </div>
+      </li>
     )
   }
 }

@@ -124,45 +124,47 @@ class UserHeader extends React.Component {
     const email = get(user, "email.value", null)
 
     return (
-      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <div className="flex">
-          <div className="inline-flex flex-column flex-auto">
+      <React.Fragment>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <header className="rn-header">
             <h4>
               {user.login}
               {!isEmpty(user.name) &&
               <span className="ml1 v-btm mdc-typography--subtitle1 mdc-theme--text-secondary-on-light">
                 ({user.name})
               </span>}
+              <div className="mdc-typography--subtitle2 mdc-theme--text-secondary-on-light">
+                {email &&
+                <div className="User__email">{email}</div>}
+                Joined on {moment(user.createdAt).format("MMM D, YYYY")}
+              </div>
             </h4>
-            <div className="mdc-typography--subtitle2 mdc-theme--text-secondary-on-light">
-              {email &&
-              <div className="User__email">{email}</div>}
-              Joined on {moment(user.createdAt).format("MMM D, YYYY")}
+            <div className="rn-header__actions">
+              {user.viewerCanEnroll && !user.isViewer &&
+              <EnrollmentSelect className="rn-header__action rn-header__action--button" enrollable={userProp} />}
             </div>
-          </div>
-          {user.viewerCanEnroll && !user.isViewer &&
-          <EnrollmentSelect enrollable={userProp} />}
+          </header>
         </div>
-        <div className="flex items-center w-100">
-          <div className="truncate">
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <div className="rn-description">
             {isEmpty(user.bio)
             ? <div className="mdc-theme--text-secondary-on-light">No bio provided</div>
             : <HTML html={user.bioHTML} />}
-          </div>
-          <div className="ml-auto">
-            {user.isViewer &&
-            <button
-              className="mdc-icon-button material-icons mdc-theme--text-icon-on-background"
-              type="button"
-              onClick={this.handleToggleOpen}
-              aria-label="Edit bio"
-              title="Edit bio"
-            >
-              edit
-            </button>}
+            <div className="ml-auto">
+              {user.isViewer &&
+              <button
+                className="mdc-icon-button material-icons mdc-theme--text-icon-on-background"
+                type="button"
+                onClick={this.handleToggleOpen}
+                aria-label="Edit bio"
+                title="Edit bio"
+              >
+                edit
+              </button>}
+            </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 }

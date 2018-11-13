@@ -110,7 +110,7 @@ class UserAssetDescription extends React.Component {
     const asset = get(this.props, "asset", {})
 
     return (
-      <div className="flex items-center w-100">
+      <div className="rn-description">
         {isEmpty(asset.description)
         ? <div className="mdc-theme--text-secondary-on-light">No description provided</div>
         : <HTML html={asset.descriptionHTML} />}

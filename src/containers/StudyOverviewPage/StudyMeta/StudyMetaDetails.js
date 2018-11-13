@@ -135,7 +135,7 @@ class StudyMetaDetails extends React.Component {
     const study = get(this.props, "study", {})
 
     return (
-      <div className="inline-flex items-center w-100">
+      <div className="rn-description">
         <div className={cls("mdc-theme--subtitle1 flex-auto", {
           "mdc-theme--text-secondary-on-light": !study.description,
         })}>

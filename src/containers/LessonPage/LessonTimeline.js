@@ -1,42 +1,68 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import {
-  createPaginationContainer,
+  createRefetchContainer,
   graphql,
 } from 'react-relay'
-import { withRouter } from 'react-router'
 import LessonTimelineEvent from './LessonTimelineEvent'
-import { get } from 'utils'
+import {debounce, get, groupInOrderByFunc} from 'utils'
 
 import {EVENTS_PER_PAGE} from 'consts'
 
-class LessonTimeline extends Component {
+class LessonTimeline extends React.Component {
+  state = {
+    error: null,
+    loading: false,
+  }
+
   _loadMore = () => {
-    const relay = get(this.props, "relay")
-    if (!relay.hasMore()) {
+    const {loading} = this.state
+    const after = get(this.props, "lesson.timeline.pageInfo.endCursor")
+
+    if (!this._hasMore) {
       console.log("Nothing more to load")
       return
-    } else if (relay.isLoading()){
+    } else if (loading){
       console.log("Request is already pending")
       return
     }
 
-    relay.loadMore(EVENTS_PER_PAGE)
+    this.refetch(after)
+  }
+
+  refetch = debounce((after) => {
+    const {relay} = this.props
+
+    this.setState({
+      loading: true,
+    })
+
+    relay.refetch(
+      {
+        after,
+        count: EVENTS_PER_PAGE,
+      },
+      null,
+      (error) => {
+        if (error) {
+          console.log(error)
+        }
+        this.setState({
+          loading: false,
+        })
+      },
+      {force: true},
+    )
+  }, 200)
+
+  get _hasMore() {
+    return get(this.props, "lesson.timeline.pageInfo.hasNextPage", false)
   }
 
   render() {
-    const timelineEdges = get(this.props, "lesson.timeline.edges", [])
-
     return (
       <React.Fragment>
-        {timelineEdges.map(({node}) => (
-          node &&
-          <LessonTimelineEvent
-            key={node.id}
-            className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-            item={node}
-          />
-        ))}
-        {this.props.relay.hasMore() &&
+        {this.renderTimelineEdges()}
+        {this._hasMore &&
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="flex justify-center">
             <button
@@ -50,9 +76,44 @@ class LessonTimeline extends Component {
       </React.Fragment>
     )
   }
+
+  renderTimelineEdges() {
+    const timelineEdges = groupInOrderByFunc(
+      get(this.props, "lesson.timeline.edges", []),
+      ({node}) => node && node.__typename !== "LessonComment",
+    )
+
+    return (
+      <React.Fragment>
+        {timelineEdges.map((group) => {
+          if (group[0].node.__typename === "LessonComment") {
+            return group.map(({node}) =>
+              node &&
+              <LessonTimelineEvent
+                key={node.id}
+                className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+                item={node}
+              />
+            )
+          } else {
+            return (
+              <div key={group[0].node.id} className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                <div className="mdc-card mdc-card--outlined ph2">
+                  <ul className="mdc-list">
+                    {group.map(({node}) =>
+                      node && <LessonTimelineEvent key={node.id} item={node} />)}
+                  </ul>
+                </div>
+              </div>
+            )
+          }
+        })}
+      </React.Fragment>
+    )
+  }
 }
 
-export default withRouter(createPaginationContainer(LessonTimeline,
+export default createRefetchContainer(LessonTimeline,
   {
     lesson: graphql`
       fragment LessonTimeline_lesson on Lesson {
@@ -96,40 +157,19 @@ export default withRouter(createPaginationContainer(LessonTimeline,
       }
     `,
   },
-  {
-    direction: 'forward',
-    query: graphql`
-      query LessonTimelineForwardQuery(
-        $owner: String!,
-        $name: String!,
-        $number: Int!,
-        $count: Int!,
-        $after: String,
-      ) {
-        study(owner: $owner, name: $name) {
-          lesson(number: $number) {
-            ...LessonTimeline_lesson
-          }
+  graphql`
+    query LessonTimelineForwardQuery(
+      $owner: String!,
+      $name: String!,
+      $number: Int!,
+      $count: Int!,
+      $after: String,
+    ) {
+      study(owner: $owner, name: $name) {
+        lesson(number: $number) {
+          ...LessonTimeline_lesson
         }
       }
-    `,
-    getConnectionFromProps(props) {
-      return get(props, "lesson.timeline")
-    },
-    getFragmentVariables(previousVariables, totalCount) {
-      return {
-        ...previousVariables,
-        count: totalCount,
-      }
-    },
-    getVariables(props, paginationInfo, getFragmentVariables) {
-      return {
-        owner: props.match.params.owner,
-        name: props.match.params.name,
-        number: parseInt(props.match.params.number, 10),
-        count: paginationInfo.count,
-        after: paginationInfo.cursor,
-      }
-    },
-  },
-))
+    }
+  `,
+)

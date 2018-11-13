@@ -160,7 +160,7 @@ class CourseMetaDetails extends React.Component {
     const course = get(this.props, "course", {})
 
     return (
-      <div className="inline-flex items-center w-100">
+      <div className="rn-description">
         <span className={cls("mdc-theme--subtitle1 flex-auto", {
           "mdc-theme--text-secondary-on-light": !course.description,
         })}>

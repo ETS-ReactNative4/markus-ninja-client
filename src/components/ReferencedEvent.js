@@ -25,7 +25,7 @@ class ReferencedEvent extends React.Component {
     }
 
     return (
-      <div className={this.classes}>
+      <li className={this.classes}>
         <span className="mdc-list-item">
           <Icon className="mdc-list-item__graphic" icon="reference" />
           <span className="mdc-list-item__text">
@@ -52,7 +52,7 @@ class ReferencedEvent extends React.Component {
             </Link>
           </span>
         </span>
-      </div>
+      </li>
     )
   }
 }

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import {
   createPaginationContainer,
   graphql,
@@ -25,6 +26,10 @@ class LessonLabels extends React.Component {
     }
 
     relay.loadMore(LABELS_PER_PAGE)
+  }
+
+  handleLabelChecked_ = (checked) => {
+    this.props.onLabelToggled(checked)
   }
 
   get _hasMore() {
@@ -62,6 +67,7 @@ class LessonLabels extends React.Component {
               label={node}
               labelableId={lessonId}
               disabled={!viewerCanUpdate}
+              onLabelChecked={this.handleLabelChecked_}
             />)}
         </LabelSet>
         {this._hasMore &&
@@ -79,10 +85,12 @@ class LessonLabels extends React.Component {
 
 LessonLabels.propTypes = {
   labels: StudyLabelsProp,
+  onLabelToggled: PropTypes.func,
 }
 
 LessonLabels.defaultProps = {
   labels: StudyLabelsPropDefaults,
+  onLabelToggled: () => {},
 }
 
 

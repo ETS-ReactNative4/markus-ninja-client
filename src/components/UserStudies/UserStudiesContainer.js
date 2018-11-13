@@ -13,13 +13,15 @@ import {STUDIES_PER_PAGE} from 'consts'
 class UserStudiesContainer extends React.Component {
   state = {
     error: null,
-    loading: false,
+    loading: !Boolean(get(this.props, "user.studies")),
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (!isEqual(prevProps.filterBy, this.props.filterBy) ||
         !isEqual(prevProps.orderBy, this.props.orderBy)) {
       this._refetch(null, true)
+    } else if (!Boolean(get(prevProps, "user.studies")) && Boolean(get(this.props, "user.studies"))) {
+      this.setState({loading: false})
     }
   }
 

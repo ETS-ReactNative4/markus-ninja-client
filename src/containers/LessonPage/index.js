@@ -39,6 +39,14 @@ const LessonPageQuery = graphql`
 `
 
 class LessonPage extends React.Component {
+  lessonTimelineElement_ = React.createRef()
+
+  handleLabelToggled_ = (checked) => {
+    this.lessonTimelineElement_ && this.lessonTimelineElement_.current &&
+      this.lessonTimelineElement_.current.refetch()
+  }
+
+
   get classes() {
     const {className} = this.props
     return cls("LessonPage rn-page rn-page--column", className)
@@ -74,7 +82,7 @@ class LessonPage extends React.Component {
                     <div className="LessonPage__meta mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                       <div className="center mw8">
                         <StudyLabels fragment="toggle">
-                          <LessonLabels lesson={lesson}/>
+                          <LessonLabels lesson={lesson} onLabelToggled={this.handleLabelToggled_} />
                         </StudyLabels>
                         {lesson.isCourseLesson && <LessonCourse lesson={lesson} />}
                       </div>
@@ -95,7 +103,7 @@ class LessonPage extends React.Component {
                         </div>
                       </div>
                     : <AddLessonCommentForm lesson={lesson} />}
-                    <LessonTimeline lesson={lesson} />
+                    <LessonTimeline ref={this.lessonTimelineElement_} lesson={lesson} />
                   </div>
                 </div>
               </div>

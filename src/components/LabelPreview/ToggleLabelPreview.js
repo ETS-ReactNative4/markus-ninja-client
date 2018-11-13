@@ -17,6 +17,7 @@ class ToggleLabelPreview extends React.Component {
 
   handleLabelChecked = (labelId, checked) => {
     const {loading} = this.state
+
     if (loading) {
       console.log("request is already pending")
       return
@@ -46,6 +47,8 @@ class ToggleLabelPreview extends React.Component {
         },
       )
     }
+
+    this.props.onLabelChecked(checked)
   }
 
   get classes() {
@@ -58,6 +61,7 @@ class ToggleLabelPreview extends React.Component {
       disabled,
       label,
       labelableId,
+      onLabelChecked,
       selected,
       ...otherProps
     } = this.props
@@ -91,6 +95,7 @@ ToggleLabelPreview.propTypes = {
     id: PropTypes.string.isRequired,
   }).isRequired,
   labelableId: PropTypes.string.isRequired,
+  onLabelChecked: PropTypes.func,
   selected: PropTypes.bool,
 }
 
@@ -100,7 +105,8 @@ ToggleLabelPreview.defaultProps = {
     id: ""
   },
   labelableId: "",
-  selected: true
+  onLabelChecked: () => {},
+  selected: true,
 }
 
 export default createFragmentContainer(ToggleLabelPreview, graphql`
