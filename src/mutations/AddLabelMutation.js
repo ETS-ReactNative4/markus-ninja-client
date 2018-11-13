@@ -40,8 +40,9 @@ export default (labelId, labelableId, callback) => {
             "LessonLabels_labels",
           )
           const edge = addLabelField.getLinkedRecord("labelEdge")
-
-          ConnectionHandler.insertEdgeAfter(labels, edge)
+          if (edge) {
+            ConnectionHandler.insertEdgeAfter(labels, edge)
+          }
         }
       },
       onCompleted: (response, error) => {

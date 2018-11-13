@@ -388,6 +388,124 @@
 				},
 				{
 					"kind": "OBJECT",
+					"name": "AddedToCourseEvent",
+					"description": "Represents a added to course event on a given subject.",
+					"fields": [
+						{
+							"name": "course",
+							"description": "The course to which the lesson was added.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Course",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "createdAt",
+							"description": "Identifies the date and time when the object was created.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "lesson",
+							"description": "The lesson which was added.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Lesson",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "study",
+							"description": "The study from which the event occurred.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Study",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "user",
+							"description": "The user who performed the event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "User",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "LessonTimelineEvent",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Node",
+							"ofType": null
+						}
+					],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "OBJECT",
 					"name": "AppleGiverConnection",
 					"description": "A connection type for User.",
 					"fields": [
@@ -715,12 +833,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "Study",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "Course",
 							"ofType": null
 						}
 					]
@@ -1288,27 +1406,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "AppleGiverConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CourseConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationConnection",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelConnection",
+							"name": "StudyConnection",
 							"ofType": null
 						},
 						{
@@ -1318,17 +1416,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonConnection",
+							"name": "UserConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "StudyConnection",
+							"name": "LabelConnection",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAssetConnection",
+							"name": "EmailConnection",
 							"ofType": null
 						},
 						{
@@ -1338,7 +1436,27 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserConnection",
+							"name": "LessonConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CourseConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EventConnection",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverConnection",
 							"ofType": null
 						},
 						{
@@ -1348,7 +1466,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EmailConnection",
+							"name": "UserAssetConnection",
 							"ofType": null
 						}
 					]
@@ -2747,7 +2865,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "Study",
 							"ofType": null
 						},
 						{
@@ -2757,7 +2875,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "Course",
 							"ofType": null
 						}
 					]
@@ -3433,12 +3551,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						}
 					]
@@ -3532,27 +3650,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "AppleGiverEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "CourseEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "EventEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "NotificationEdge",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "LabelEdge",
+							"name": "StudyEdge",
 							"ofType": null
 						},
 						{
@@ -3562,17 +3660,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonEdge",
+							"name": "UserEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "StudyEdge",
+							"name": "LabelEdge",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAssetEdge",
+							"name": "EmailEdge",
 							"ofType": null
 						},
 						{
@@ -3582,7 +3680,27 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserEdge",
+							"name": "LessonEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CourseEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "NotificationEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "EventEdge",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AppleGiverEdge",
 							"ofType": null
 						},
 						{
@@ -3592,7 +3710,7 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "EmailEdge",
+							"name": "UserAssetEdge",
 							"ofType": null
 						}
 					]
@@ -4069,17 +4187,17 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Study",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
 							"ofType": null
 						}
 					]
@@ -5707,6 +5825,124 @@
 				},
 				{
 					"kind": "OBJECT",
+					"name": "LabeledEvent",
+					"description": "Represents a labeled event on a given subject.",
+					"fields": [
+						{
+							"name": "createdAt",
+							"description": "Identifies the date and time when the object was created.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "label",
+							"description": "The label removed.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Label",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "labelable",
+							"description": "The object labeled.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "INTERFACE",
+									"name": "Labelable",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "study",
+							"description": "The study from which the event occurred.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Study",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "user",
+							"description": "The user who performed the event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "User",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "LessonTimelineEvent",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Node",
+							"ofType": null
+						}
+					],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "OBJECT",
 					"name": "Lesson",
 					"description": "Represents a lesson.",
 					"fields": [
@@ -6426,6 +6662,11 @@
 						{
 							"kind": "INTERFACE",
 							"name": "Referenceable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Renameable",
 							"ofType": null
 						},
 						{
@@ -7321,6 +7562,12 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "PUBLISHED_AT",
+							"description": "Order lessons by publish time.",
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "UPDATED_AT",
 							"description": "Order lessons by update time.",
 							"isDeprecated": false,
@@ -7432,7 +7679,32 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
+							"name": "RenamedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "RemovedFromCourseEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "ReferencedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AddedToCourseEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UnlabeledEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabeledEvent",
 							"ofType": null
 						},
 						{
@@ -9010,27 +9282,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "PublishedEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Course",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Event",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Notification",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
+							"name": "Study",
 							"ofType": null
 						},
 						{
@@ -9040,32 +9292,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "ReferencedEvent",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Lesson",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "UnappledEvent",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "CreatedEvent",
+							"name": "RenamedEvent",
 							"ofType": null
 						},
 						{
@@ -9075,7 +9307,67 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "RemovedFromCourseEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "AppledEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "ReferencedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Email",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "AddedToCourseEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UnlabeledEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Course",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Notification",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Event",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "CreatedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "LabeledEvent",
 							"ofType": null
 						},
 						{
@@ -9085,7 +9377,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Email",
+							"name": "PublishedEvent",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
 							"ofType": null
 						}
 					]
@@ -10542,6 +10839,296 @@
 					"possibleTypes": null
 				},
 				{
+					"kind": "OBJECT",
+					"name": "RemovedFromCourseEvent",
+					"description": "Represents a removed from course event on a given subject.",
+					"fields": [
+						{
+							"name": "course",
+							"description": "The course from which the lesson was removed.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Course",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "createdAt",
+							"description": "Identifies the date and time when the object was created.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "lesson",
+							"description": "The lesson which was removed.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Lesson",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "study",
+							"description": "The study from which the event occurred.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Study",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "user",
+							"description": "The user who performed the event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "User",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "LessonTimelineEvent",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Node",
+							"ofType": null
+						}
+					],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
+					"kind": "INTERFACE",
+					"name": "Renameable",
+					"description": "Entities that can be renamed.",
+					"fields": [
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": [
+						{
+							"kind": "OBJECT",
+							"name": "Lesson",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
+							"ofType": null
+						}
+					]
+				},
+				{
+					"kind": "OBJECT",
+					"name": "RenamedEvent",
+					"description": "Represents a renamed event on a given subject.",
+					"fields": [
+						{
+							"name": "createdAt",
+							"description": "Identifies the date and time when the object was created.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "renameable",
+							"description": "The object renamed.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "INTERFACE",
+									"name": "Renameable",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "renamedFrom",
+							"description": "The name before the change.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "renamedTo",
+							"description": "The name after the change.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "String",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "study",
+							"description": "The study from which the event occurred.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Study",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "user",
+							"description": "The user who performed the event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "User",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "LessonTimelineEvent",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Node",
+							"ofType": null
+						}
+					],
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
 					"kind": "INPUT_OBJECT",
 					"name": "RequestEmailVerificationInput",
 					"description": "Input type for RequestEmailVerification",
@@ -10879,12 +11466,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
+							"name": "Study",
 							"ofType": null
 						},
 						{
@@ -10894,22 +11476,27 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "Course",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "User",
 							"ofType": null
 						}
 					]
@@ -12329,12 +12916,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "PublishedEvent",
+							"name": "CreatedEvent",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "CreatedEvent",
+							"name": "PublishedEvent",
 							"ofType": null
 						}
 					]
@@ -12571,11 +13158,6 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
 							"name": "Label",
 							"ofType": null
 						},
@@ -12586,12 +13168,17 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "Course",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "LessonComment",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
 							"ofType": null
 						}
 					]
@@ -12961,12 +13548,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "PRT",
+							"name": "AccessToken",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AccessToken",
+							"name": "PRT",
 							"ofType": null
 						}
 					]
@@ -13454,12 +14041,12 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
+							"name": "Study",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
+							"name": "Course",
 							"ofType": null
 						}
 					]
@@ -13829,12 +14416,7 @@
 					"possibleTypes": [
 						{
 							"kind": "OBJECT",
-							"name": "Course",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "Label",
+							"name": "Study",
 							"ofType": null
 						},
 						{
@@ -13844,30 +14426,153 @@
 						},
 						{
 							"kind": "OBJECT",
+							"name": "User",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "Label",
+							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
 							"name": "Lesson",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "Study",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "UserAsset",
-							"ofType": null
-						},
-						{
-							"kind": "OBJECT",
-							"name": "User",
+							"name": "Course",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
 							"name": "LessonComment",
 							"ofType": null
+						},
+						{
+							"kind": "OBJECT",
+							"name": "UserAsset",
+							"ofType": null
 						}
 					]
+				},
+				{
+					"kind": "OBJECT",
+					"name": "UnlabeledEvent",
+					"description": "Represents a unlabeled event on a given subject.",
+					"fields": [
+						{
+							"name": "createdAt",
+							"description": "Identifies the date and time when the object was created.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "Time",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "id",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "SCALAR",
+									"name": "ID",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "label",
+							"description": "The label removed.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Label",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "labelable",
+							"description": "The object unlabeled.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "INTERFACE",
+									"name": "Labelable",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "study",
+							"description": "The study from which the event occurred.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "Study",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "user",
+							"description": "The user who performed the event.",
+							"args": [],
+							"type": {
+								"kind": "NON_NULL",
+								"name": null,
+								"ofType": {
+									"kind": "OBJECT",
+									"name": "User",
+									"ofType": null
+								}
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						}
+					],
+					"inputFields": null,
+					"interfaces": [
+						{
+							"kind": "INTERFACE",
+							"name": "LessonTimelineEvent",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Node",
+							"ofType": null
+						}
+					],
+					"enumValues": null,
+					"possibleTypes": null
 				},
 				{
 					"kind": "INPUT_OBJECT",
@@ -14488,12 +15193,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "UserAsset",
+							"name": "LessonComment",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "LessonComment",
+							"name": "UserAsset",
 							"ofType": null
 						}
 					]
@@ -15752,12 +16457,12 @@
 						},
 						{
 							"kind": "OBJECT",
-							"name": "CreatedEvent",
+							"name": "AppledEvent",
 							"ofType": null
 						},
 						{
 							"kind": "OBJECT",
-							"name": "AppledEvent",
+							"name": "CreatedEvent",
 							"ofType": null
 						}
 					]
@@ -16173,6 +16878,11 @@
 						{
 							"kind": "INTERFACE",
 							"name": "Referenceable",
+							"ofType": null
+						},
+						{
+							"kind": "INTERFACE",
+							"name": "Renameable",
 							"ofType": null
 						},
 						{
