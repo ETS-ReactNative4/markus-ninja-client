@@ -43,7 +43,7 @@ export default (email, callback) => {
         const email = get(response, "addEmail.emailEdge.node")
         callback(email, error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

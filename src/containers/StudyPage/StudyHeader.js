@@ -20,7 +20,7 @@ class StudyHeader extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("rn-header", className)
+    return cls("rn-header rn-header--title", className)
   }
 
   render() {

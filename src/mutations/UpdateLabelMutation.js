@@ -51,7 +51,7 @@ export default (labelId, color, description, callback) => {
         }
       },
       onCompleted: callback,
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

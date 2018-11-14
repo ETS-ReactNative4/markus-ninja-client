@@ -63,7 +63,7 @@ export default (assetId, studyId, name, description, callback) => {
         const userAsset = get(response, "createUserAsset.userAssetEdge.node")
         callback(userAsset, error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

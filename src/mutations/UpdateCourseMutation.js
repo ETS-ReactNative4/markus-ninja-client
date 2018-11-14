@@ -50,7 +50,7 @@ export default (courseId, description, name, callback) => {
       onCompleted: (response, error) => {
         callback(response.updateCourse, error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

@@ -35,15 +35,23 @@ class LoginPage extends React.Component {
           </div>
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             <p className="mdc-card pa3">
-              <span>
+              <div>
                 New here?
                 <Link
                   className="rn-link ml1"
                   to="/signup"
                 >
-                  Create an account
+                  Create an account.
                 </Link>
-              </span>
+              </div>
+              <div>
+                <Link
+                  className="rn-link"
+                  to="/reset_password"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
             </p>
           </div>
         </div>

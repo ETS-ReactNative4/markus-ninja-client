@@ -56,7 +56,7 @@ export default (studyId, name, description, color, callback) => {
         }
       },
       onCompleted: callback,
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

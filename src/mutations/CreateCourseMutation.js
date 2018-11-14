@@ -56,7 +56,7 @@ export default (studyId, name, description, callback) => {
       onCompleted: (response, error) => {
         callback(get(response, "createCourse.courseEdge.node"), error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

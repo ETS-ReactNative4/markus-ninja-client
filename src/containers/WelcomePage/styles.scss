@@ -33,7 +33,7 @@
   @include mdc-theme-prop(color, text-primary-on-dark);
 
   text-align: center;
-  background-image: url("chalkboard.jpg");
+  background-image: url("/chalkboard.jpg");
 }
 
 .WelcomePage__what {
@@ -44,7 +44,7 @@
       rgba(mdc-theme-prop-value(on-surface), .56),
       rgba(mdc-theme-prop-value(on-surface), .56)
     ),
-    url("books.jpg");
+    url("/books.jpg");
   background-size: cover;
   background-position: center;
 }
@@ -57,7 +57,7 @@
       rgba(mdc-theme-prop-value(on-surface), .48),
       rgba(mdc-theme-prop-value(on-surface), .48)
     ),
-    url("chairs.jpg");
+    url("/chairs.jpg");
   background-size: cover;
   background-position: center;
 }
@@ -70,7 +70,7 @@
       rgba(mdc-theme-prop-value(on-surface), .32),
       rgba(mdc-theme-prop-value(on-surface), .32)
     ),
-    url("school.jpg");
+    url("/school.jpg");
   background-size: cover;
   background-position: center;
 }

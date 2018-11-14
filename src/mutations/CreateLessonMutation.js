@@ -65,7 +65,7 @@ export default (studyId, title, callback) => {
         const lesson = get(response, "createLesson.lessonEdge.node")
         callback(lesson, error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

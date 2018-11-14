@@ -19,7 +19,7 @@ class SearchViewerStudies extends React.Component {
     return cls("SearchViewerStudies", className)
   }
 
-  get _filterBy() {
+  get filterBy_() {
     const {q} = this.state
     return {search: q}
   }
@@ -30,7 +30,7 @@ class SearchViewerStudies extends React.Component {
         <div className="mh3">
           {this.renderInput()}
         </div>
-        <UserStudies isViewer fragment="link" count={3} filterBy={this._filterBy}>
+        <UserStudies isViewer fragment="link" count={3} filterBy={this.filterBy_}>
           <ViewerStudies />
         </UserStudies>
       </div>

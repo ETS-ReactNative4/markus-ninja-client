@@ -29,7 +29,7 @@ export default (email, login, password, callback) => {
       onCompleted: (response, error) => {
         callback(response.createUser, error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

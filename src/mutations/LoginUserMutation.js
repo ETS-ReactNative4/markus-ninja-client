@@ -33,7 +33,7 @@ export default (login, password, callback) => {
       onCompleted: (response, error) => {
         callback(get(response, "loginUser.token", null), error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

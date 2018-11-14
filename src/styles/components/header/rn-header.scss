@@ -5,9 +5,12 @@
 
 .rn-header {
   display: flex;
-  position: relative;
   flex-direction: row;
   align-items: center;
+}
+
+.rn-header--title {
+  position: relative;
   overflow: hidden;
   min-height: 48px;
   
@@ -21,7 +24,40 @@
   }
 }
 
-.rn-header__title {
+.rn-header--hero {
+  @include mdc-theme-prop(color, text-primary-on-dark);
+  @include mdc-layout-grid-media-query_(desktop) {
+    min-height: 400px;
+  }
+  @include mdc-layout-grid-media-query_(tablet) {
+    min-height: 300px;
+  }
+  @include mdc-layout-grid-media-query_(phone) {
+    min-height: 200px;
+  }
+
+  justify-content: center;
+}
+
+.rn-header--hero__content {
+  @include mdc-layout-grid-media-query_(desktop) {
+    padding: 4rem;
+  }
+  @include mdc-layout-grid-media-query_(tablet) {
+    padding: 2rem;
+  }
+  @include mdc-layout-grid-media-query_(phone) {
+    padding: 1rem;
+  }
+
+  width: 64rem;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: unquote("Mali, cursive") !important;
+  }
+}
+
+.rn-header--title .rn-header__text {
   @include mdc-typography-overflow-ellipsis;
 
   margin: 0;

@@ -38,7 +38,7 @@ export default (name, description, callback) => {
         const study = get(response, "createStudy.studyEdge.node")
         callback(study, error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

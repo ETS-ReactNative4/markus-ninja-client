@@ -49,7 +49,7 @@ export default (bio, emailId, name, callback) => {
         user.setValue(newProfileUpdatedAt, 'profileUpdatedAt')
       },
       onCompleted: callback,
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

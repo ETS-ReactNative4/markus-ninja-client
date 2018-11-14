@@ -5,17 +5,18 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import {withRouter} from 'react-router-dom'
 import Label from 'components/Label'
 import AddLabelMutation from 'mutations/AddLabelMutation'
 import RemoveLabelMutation from 'mutations/RemoveLabelMutation'
-import {get, isNil} from 'utils'
+import {get} from 'utils'
 
 class ToggleLabelPreview extends React.Component {
   state = {
     loading: false,
   }
 
-  handleLabelChecked = (labelId, checked) => {
+  handleLabelChecked_ = (labelId, checked) => {
     const {loading} = this.state
 
     if (loading) {
@@ -28,10 +29,11 @@ class ToggleLabelPreview extends React.Component {
         labelId,
         this.props.labelableId,
         (response, errors) => {
-          if (!isNil(errors)) {
+          if (errors) {
             console.error(errors[0].message)
           }
           this.setState({loading: false})
+          this.props.onLabelChecked(checked)
         },
       )
     } else {
@@ -40,15 +42,24 @@ class ToggleLabelPreview extends React.Component {
         labelId,
         this.props.labelableId,
         (response, errors) => {
-          if (!isNil(errors)) {
+          if (errors) {
             console.error(errors[0].message)
           }
           this.setState({loading: false})
+          this.props.onLabelChecked(checked)
         },
       )
     }
+  }
 
-    this.props.onLabelChecked(checked)
+  handleClick_ = (e) => {
+    const {disabled, label, selected} = this.props
+
+    if (disabled) {
+      this.props.history.push(label.resourcePath)
+    } else {
+      this.handleLabelChecked_(label.id, !selected)
+    }
   }
 
   get classes() {
@@ -69,13 +80,7 @@ class ToggleLabelPreview extends React.Component {
   }
 
   render() {
-    const {disabled, selected} = this.props
-    const labelId = get(this.props, "label.id", "")
-    const onClick = !disabled
-      ? () => {
-        this.handleLabelChecked(labelId, !selected)
-      }
-      : null
+    const {selected} = this.props
 
     return (
       <Label
@@ -83,7 +88,7 @@ class ToggleLabelPreview extends React.Component {
         className={this.classes}
         selected={selected}
         label={get(this.props, "label", null)}
-        onClick={onClick}
+        onClick={this.handleClick_}
       />
     )
   }
@@ -93,6 +98,7 @@ ToggleLabelPreview.propTypes = {
   disabled: PropTypes.bool,
   label: PropTypes.shape({
     id: PropTypes.string.isRequired,
+    resourcePath: PropTypes.string.isRequired,
   }).isRequired,
   labelableId: PropTypes.string.isRequired,
   onLabelChecked: PropTypes.func,
@@ -102,16 +108,18 @@ ToggleLabelPreview.propTypes = {
 ToggleLabelPreview.defaultProps = {
   disabled: false,
   label: {
-    id: ""
+    id: "",
+    resourcePath: "",
   },
   labelableId: "",
   onLabelChecked: () => {},
   selected: true,
 }
 
-export default createFragmentContainer(ToggleLabelPreview, graphql`
+export default withRouter(createFragmentContainer(ToggleLabelPreview, graphql`
   fragment ToggleLabelPreview_label on Label {
     ...Label_label
     id
+    resourcePath
   }
-`)
+`))

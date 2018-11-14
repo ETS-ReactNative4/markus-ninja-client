@@ -28,7 +28,7 @@ export default (callback) => {
       onCompleted: (response, error) => {
         callback(error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

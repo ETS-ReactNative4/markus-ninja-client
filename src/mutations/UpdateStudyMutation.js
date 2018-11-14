@@ -59,7 +59,7 @@ export default (studyId, description, name, callback) => {
       onCompleted: (response, error) => {
         callback(response.updateStudy, error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

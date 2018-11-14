@@ -23,7 +23,7 @@ export default (studyId, callback) => {
       mutation,
       variables,
       onCompleted: callback,
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

@@ -62,7 +62,7 @@ export default (lessonId, title, draft, callback) => {
       onCompleted: (response, error) => {
         callback(response.updateLesson, error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

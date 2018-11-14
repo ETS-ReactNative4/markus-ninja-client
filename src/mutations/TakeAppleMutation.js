@@ -55,7 +55,7 @@ export default (appleableId, callback) => {
       onCompleted: (response, error) => {
         callback(get(response, 'takeApple.viewerHasAppled', error))
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

@@ -24,7 +24,6 @@ class ViewerReceivedActivity extends React.Component {
   }
 
   render() {
-    console.log(this.props.relay.hasMore())
     return (
       <React.Fragment>
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">

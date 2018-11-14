@@ -68,7 +68,7 @@ export default (userAssetId, description, name, callback) => {
       onCompleted: (response, error) => {
         callback(response.updateUserAsset, error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

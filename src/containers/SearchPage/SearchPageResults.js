@@ -2,7 +2,8 @@ import * as React from 'react'
 import {withRouter} from 'react-router-dom'
 import queryString from 'query-string'
 import pluralize from 'pluralize'
-import TextField, {Icon, Input} from '@material/react-text-field'
+import TextField, {Input} from '@material/react-text-field'
+import Icon from 'components/Icon'
 import {SearchProp, SearchPropDefaults} from 'components/Search'
 import SearchNav from './SearchNav'
 import SearchResults from 'components/SearchResults'
@@ -56,7 +57,10 @@ class SearchPageResults extends React.Component {
           <div className="mdc-layout-grid__inner">
             <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               <div className="flex items-start">
-                <h4>{this.type}</h4>
+                <h4>
+                  <Icon className="mr2" icon={search.type} />
+                  {this.type}
+                </h4>
                 <button
                   type="button"
                   className="mdc-button ml2 mt1"
@@ -83,7 +87,7 @@ class SearchPageResults extends React.Component {
       <TextField
         fullWidth
         label="Search..."
-        trailingIcon={<Icon><i className="material-icons">search</i></Icon>}
+        trailingIcon={<i className="material-icons">search</i>}
       >
         <Input
           name="q"

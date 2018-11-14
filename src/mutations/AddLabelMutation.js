@@ -49,7 +49,7 @@ export default (labelId, labelableId, callback) => {
         const label = get(response, "addLabel.labelEdge.node")
         callback(label, error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

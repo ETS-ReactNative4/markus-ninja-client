@@ -28,6 +28,8 @@ class Icon extends React.PureComponent {
         return "label"
       case "lesson":
         return "subject"
+      case "lesson_comment":
+        return "comment"
       case "reference":
         return "attach_money"
       case "study":
@@ -36,6 +38,8 @@ class Icon extends React.PureComponent {
         return "bookmark"
       case "user":
         return "person"
+      case "user_asset":
+        return "image"
       default:
         return icon
     }

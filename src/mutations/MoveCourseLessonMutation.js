@@ -69,7 +69,7 @@ export default (courseId, lessonId, afterLessonId, oldCourseNumber, callback) =>
         }
       },
       onCompleted: callback,
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

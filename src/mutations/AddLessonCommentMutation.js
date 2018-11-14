@@ -18,9 +18,9 @@ const mutation = graphql`
       lesson {
         id
         viewerNewComment {
-          body
           draft
           id
+          lastEditedAt
         }
       }
     }
@@ -64,7 +64,7 @@ export default (lessonCommentId, callback) => {
         const lessonComment = get(response, "addLessonComment.commentEdge.node")
         callback(lessonComment, error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

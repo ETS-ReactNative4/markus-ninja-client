@@ -123,8 +123,8 @@ class LessonHeader extends React.Component {
     const lesson = get(this.props, "lesson", {})
 
     return (
-      <header className="rn-header">
-        <h4 className="rn-header__title rn-file-path">
+      <header className="rn-header rn-header--title">
+        <h4 className="rn-header__text rn-file-path">
           <UserLink className="rn-link rn-file-path__directory" user={get(lesson, "study.owner", null)} />
           <span className="rn-file-path__separator">/</span>
           <StudyLink className="rn-link rn-file-path__directory" study={get(lesson, "study", null)} />

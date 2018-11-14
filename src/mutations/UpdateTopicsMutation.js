@@ -65,7 +65,7 @@ export default (topicableId, topicNames, callback) => {
           topicable.setValue(topics, "topics")
         }
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

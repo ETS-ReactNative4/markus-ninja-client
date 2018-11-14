@@ -53,7 +53,7 @@ export default (emailId, callback) => {
         }
       },
       onCompleted: callback,
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

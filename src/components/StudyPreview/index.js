@@ -30,7 +30,7 @@ const FRAGMENT = graphql`
       resourcePath
     }
     resourcePath
-    topics(first: 5) {
+    topics(first: 2) {
       nodes {
         id
         name

@@ -26,7 +26,7 @@ export default (notificationId, callback) => {
         // const markNotificationAsReadField = proxyStore.getRootField('markNotificationAsRead')
       },
       onCompleted: callback,
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

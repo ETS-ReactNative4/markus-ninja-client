@@ -28,7 +28,7 @@ export default (login, password, callback) => {
         proxyStore.delete(userId)
       },
       onCompleted: callback,
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

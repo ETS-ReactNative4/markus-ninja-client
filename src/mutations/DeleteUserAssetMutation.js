@@ -58,7 +58,7 @@ export default (userAssetId, callback) => {
         const deletedUserAssetId = get(response, "deleteUserAsset.deletedUserAssetId")
         callback(deletedUserAssetId, error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }

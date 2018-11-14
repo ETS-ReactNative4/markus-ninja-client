@@ -125,7 +125,7 @@ class UserHeader extends React.Component {
     return (
       <React.Fragment>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <header className="rn-header">
+          <header className="rn-header rn-header--title">
             <h4>
               {user.login}
               {!isEmpty(user.name) &&

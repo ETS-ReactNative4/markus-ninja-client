@@ -53,7 +53,7 @@ export default (login, newPassword, oldPassword, callback) => {
         console.log(error)
         callback(get(response, "updateViewerAccount"), error)
       },
-      onError: err => console.error(err),
+      onError: err => callback(null, err),
     },
   )
 }
