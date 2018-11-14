@@ -5,7 +5,6 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import moment from 'moment'
 import {Link} from 'react-router-dom'
 import EnrollIconButton from 'components/EnrollIconButton'
 import ListEnrollButton from 'components/ListEnrollButton'
@@ -15,7 +14,7 @@ import Label from 'components/Label'
 import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
 import RemoveCourseLessonMutation from 'mutations/RemoveCourseLessonMutation'
-import {get} from 'utils'
+import {get, timeDifferenceForDate} from 'utils'
 
 class ListLessonPreview extends React.Component {
   state = {
@@ -98,9 +97,7 @@ class ListLessonPreview extends React.Component {
               </Link>
             </span>
             <span className="mdc-list-item__secondary-text">
-              Created on
-              <span className="mh1">{moment(lesson.createdAt).format("MMM D")}</span>
-              by
+              Created {timeDifferenceForDate(lesson.createdAt)} by
               <Link
                 className="rn-link rn-link--secondary ml1"
                 to={get(lesson, "author.resourcePath", "")}

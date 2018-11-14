@@ -1,6 +1,5 @@
 import * as React from 'react'
 import cls from 'classnames'
-import moment from 'moment'
 import {
   createFragmentContainer,
   graphql,
@@ -9,7 +8,7 @@ import {Link, withRouter} from 'react-router-dom'
 import Dialog from 'components/Dialog'
 import DeleteUserAssetMutation from 'mutations/DeleteUserAssetMutation'
 import UserAssetDescription from './UserAssetDescription'
-import {byteSizeToString, get, isNil} from 'utils'
+import {byteSizeToString, get, isNil, timeDifferenceForDate} from 'utils'
 
 class UserAsset extends React.Component {
   state = {
@@ -57,9 +56,7 @@ class UserAsset extends React.Component {
           <h6>{asset.name}</h6>
           <div className="mdc-typography--subtitle2 mdc-theme--text-secondary-on-light">
             <div>
-              Added on
-              <span className="mh1">{moment(asset.createdAt).format("MMM D, YYYY")}</span>
-              by
+              Added {timeDifferenceForDate(asset.createdAt)} by
               <Link
                 className="rn-link rn-link--secondary ml1"
                 to={get(asset, "resourcePath", "")}

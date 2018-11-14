@@ -1,6 +1,5 @@
 import * as React from 'react'
 import cls from 'classnames'
-import moment from 'moment'
 import {Link} from 'react-router-dom'
 import EnrollIconButton from 'components/EnrollIconButton'
 import ListEnrollButton from 'components/ListEnrollButton'
@@ -8,7 +7,7 @@ import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
-import {get} from 'utils'
+import {get, timeDifferenceForDate} from 'utils'
 
 class ListUserPreview extends React.Component {
   state = {
@@ -43,8 +42,7 @@ class ListUserPreview extends React.Component {
               {user.login}
             </span>
             <span className="mdc-list-item__secondary-text">
-              Joined on
-              <span className="ml1">{moment(user.createdAt).format("MMM D, YYYY")}</span>
+              Joined {timeDifferenceForDate(user.createdAt)}
             </span>
           </Link>
           <span className="mdc-list-item__meta rn-list-preview__actions">

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import moment from 'moment'
 
 export function byteSizeToString(size) {
   const bytesPerKB = 1000
@@ -19,48 +20,17 @@ export function byteSizeToString(size) {
   }
 }
 
-function timeDifference(current, previous) {
-  const milliSecondsPerMinute = 60 * 1000
-  const milliSecondsPerHour = milliSecondsPerMinute * 60
-  const milliSecondsPerDay = milliSecondsPerHour * 24
-  const milliSecondsPerMonth = milliSecondsPerDay * 30
-  const milliSecondsPerYear = milliSecondsPerDay * 365
-
-  const elapsed = current - previous
-
-  if (elapsed < milliSecondsPerMinute / 3) {
-    return 'just now'
-  }
-
-  if (elapsed < milliSecondsPerMinute) {
-    return 'less than 1 min ago'
-  }
-
-  else if (elapsed < milliSecondsPerHour) {
-    return Math.round(elapsed/milliSecondsPerMinute) + ' min ago'
-  }
-
-  else if (elapsed < milliSecondsPerDay ) {
-    return Math.round(elapsed/milliSecondsPerHour ) + ' h ago'
-  }
-
-  else if (elapsed < milliSecondsPerMonth) {
-    return Math.round(elapsed/milliSecondsPerDay) + ' days ago'
-  }
-
-  else if (elapsed < milliSecondsPerYear) {
-    return Math.round(elapsed/milliSecondsPerMonth) + ' mo ago'
-  }
-
-  else {
-    return Math.round(elapsed/milliSecondsPerYear ) + ' years ago'
-  }
-}
-
 export function timeDifferenceForDate(date) {
-  const now = new Date().getTime()
-  const updated = new Date(date).getTime()
-  return timeDifference(now, updated)
+  const now = moment()
+  const updated = moment(date)
+
+  if (now.diff(updated, 'years') === 1) {
+    return "on " + updated.format('MMM D, YYYY')
+  } else if (now.diff(updated, 'days') === 0) {
+    return updated.fromNow()
+  } else {
+    return "on " + updated.format('MMM Do')
+  }
 }
 
 export function isNil(value) {

@@ -4,10 +4,9 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import moment from 'moment'
 import Icon from 'components/Icon'
 import UserLink from 'components/UserLink'
-import {get} from 'utils'
+import {get, timeDifferenceForDate} from 'utils'
 
 class RenamedEvent extends React.Component {
   get classes() {
@@ -37,7 +36,7 @@ class RenamedEvent extends React.Component {
             <span className="mh1 fw5">
               {event.renamedTo}
             </span>
-            on {moment(event.createdAt).format("MMM D")}
+            {timeDifferenceForDate(event.createdAt)}
           </span>
         </span>
       </li>

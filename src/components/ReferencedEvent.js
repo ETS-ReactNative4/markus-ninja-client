@@ -4,11 +4,10 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import moment from 'moment'
 import {Link} from 'react-router-dom'
 import Icon from 'components/Icon'
 import UserLink from 'components/UserLink'
-import {get} from 'utils'
+import {get, timeDifferenceForDate} from 'utils'
 
 class ReferencedEvent extends React.Component {
   get classes() {
@@ -31,7 +30,7 @@ class ReferencedEvent extends React.Component {
           <span className="mdc-list-item__text">
             <UserLink className="rn-link fw5" user={get(event, "user", null)} />
             <span className="ml1">
-              {event.isCrossStudy && "cross-"}referenced this on {moment(event.createdAt).format("MMM D")} from
+              {event.isCrossStudy && "cross-"}referenced this {timeDifferenceForDate(event.createdAt)} from
             </span>
             <Link
               className="rn-link fw5 ml1"

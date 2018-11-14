@@ -4,13 +4,12 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import moment from 'moment'
 import HTML from 'components/HTML'
 import StudyBodyEditor from 'components/StudyBodyEditor'
 import PublishLessonDraftMutation from 'mutations/PublishLessonDraftMutation'
 import ResetLessonDraftMutation from 'mutations/ResetLessonDraftMutation'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
-import {debounce, get, isNil, throttle} from 'utils'
+import {debounce, get, isNil, throttle, timeDifferenceForDate} from 'utils'
 
 class LessonBody extends React.Component {
   state = {
@@ -137,7 +136,7 @@ class LessonBody extends React.Component {
     return (
       <div className="mdc-card h-100">
         <div className="rn-card__overline">
-          Updated on {moment(lesson.publishedAt).format("MMM D, YYYY")}
+          Updated {timeDifferenceForDate(lesson.publishedAt)}
         </div>
         <div className="rn-card__body">
           <HTML className="mdc-typography--body1" html={lesson.bodyHTML} />

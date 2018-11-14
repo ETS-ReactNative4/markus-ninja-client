@@ -1,6 +1,5 @@
 import * as React from 'react'
 import cls from 'classnames'
-import moment from 'moment'
 import { Link } from 'react-router-dom'
 import AppleIconButton from 'components/AppleIconButton'
 import ListAppleButton from 'components/ListAppleButton'
@@ -9,7 +8,7 @@ import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
-import { get } from 'utils'
+import {get, timeDifferenceForDate} from 'utils'
 
 class CardStudyPreview extends React.Component {
   state = {
@@ -43,9 +42,7 @@ class CardStudyPreview extends React.Component {
                 {study.name}
               </h6>
               <div className="rn-card__subtitle">
-                Created on
-                <span className="mh1">{moment(study.createdAt).format("MMM D, YYYY")}</span>
-                by
+                Created {timeDifferenceForDate(study.createdAt)} by
                 <span className="ml1">{get(study, "owner.login", "")}</span>
               </div>
             </div>

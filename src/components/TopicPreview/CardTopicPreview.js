@@ -1,12 +1,11 @@
 import * as React from 'react'
 import cls from 'classnames'
-import moment from 'moment'
 import { Link } from 'react-router-dom'
 import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
-import { get } from 'utils'
+import {get, timeDifferenceForDate} from 'utils'
 
 class CardTopicPreview extends React.Component {
   state = {
@@ -40,8 +39,8 @@ class CardTopicPreview extends React.Component {
                 {topic.name}
               </h6>
               <div className="rn-card__subtitle">
-                First used on
-                <span className="mh1">{moment(topic.createdAt).format("MMM D, YYYY")}</span>
+                First used
+                <span className="mh1">{timeDifferenceForDate(topic.createdAt)}</span>
               </div>
             </div>
           </div>

@@ -1,6 +1,5 @@
 import * as React from 'react'
 import cls from 'classnames'
-import moment from 'moment'
 import {
   createFragmentContainer,
   graphql,
@@ -10,7 +9,7 @@ import TextField, {defaultTextFieldState} from 'components/TextField'
 import HTML from 'components/HTML'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import UpdateViewerProfileMutation from 'mutations/UpdateViewerProfileMutation'
-import {get, isEmpty, isNil} from 'utils'
+import {get, isEmpty, isNil, timeDifferenceForDate} from 'utils'
 
 class UserHeader extends React.Component {
   state = {
@@ -136,7 +135,7 @@ class UserHeader extends React.Component {
               <div className="mdc-typography--subtitle2 mdc-theme--text-secondary-on-light">
                 {email &&
                 <div className="User__email">{email}</div>}
-                Joined on {moment(user.createdAt).format("MMM D, YYYY")}
+                Joined {timeDifferenceForDate(user.createdAt)}
               </div>
             </h4>
             <div className="rn-header__actions">

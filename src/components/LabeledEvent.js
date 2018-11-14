@@ -4,11 +4,10 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import moment from 'moment'
 import Icon from 'components/Icon'
 import Label from 'components/Label'
 import UserLink from 'components/UserLink'
-import {get} from 'utils'
+import {get, timeDifferenceForDate} from 'utils'
 
 class LabeledEvent extends React.Component {
   get classes() {
@@ -34,9 +33,7 @@ class LabeledEvent extends React.Component {
               added label
               <Label className="ml1" label={label} />
             </span>
-            <span className="ml1">
-              on {moment(event.createdAt).format("MMM D")}
-            </span>
+            <span className="ml1">{timeDifferenceForDate(event.createdAt)}</span>
           </span>
         </span>
       </li>

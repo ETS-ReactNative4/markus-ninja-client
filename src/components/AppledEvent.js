@@ -4,13 +4,12 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import moment from 'moment'
 import { Link } from 'react-router-dom'
 import Icon from 'components/Icon'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faApple } from '@fortawesome/free-brands-svg-icons'
 import UserLink from 'components/UserLink'
-import {get} from 'utils'
+import {get, timeDifferenceForDate} from 'utils'
 
 class AppledEvent extends React.Component {
   get classes() {
@@ -58,7 +57,7 @@ class AppledEvent extends React.Component {
               </Link>
             </span>
             <span className="mdc-list-item__secondary-text">
-              Appled on {moment(event.createdAt).format("MMM D, YYYY")}
+              Appled {timeDifferenceForDate(event.createdAt)}
             </span>
           </span>
           <span className="mdc-list-item__meta">

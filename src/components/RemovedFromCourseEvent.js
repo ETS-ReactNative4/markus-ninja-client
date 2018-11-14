@@ -4,11 +4,10 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import moment from 'moment'
 import {Link} from 'react-router-dom'
 import Icon from 'components/Icon'
 import UserLink from 'components/UserLink'
-import {get} from 'utils'
+import {get, timeDifferenceForDate} from 'utils'
 
 class RemovedFromCourseEvent extends React.Component {
   get classes() {
@@ -41,9 +40,7 @@ class RemovedFromCourseEvent extends React.Component {
                   #{course.number}
                 </span>
               </Link>
-              <span className="ml1">
-                on {moment(event.createdAt).format("MMM D")}
-              </span>
+              <span className="ml1">{timeDifferenceForDate(event.createdAt)}</span>
             </span>
           </span>
           <span className="mdc-list-item__meta">

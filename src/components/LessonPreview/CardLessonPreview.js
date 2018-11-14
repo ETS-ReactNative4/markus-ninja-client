@@ -5,7 +5,6 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
-import moment from 'moment'
 import { Link } from 'react-router-dom'
 import EnrollIconButton from 'components/EnrollIconButton'
 import ListEnrollButton from 'components/ListEnrollButton'
@@ -13,7 +12,7 @@ import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
-import { get } from 'utils'
+import {get, timeDifferenceForDate} from 'utils'
 
 class CardLessonPreview extends React.Component {
   state = {
@@ -47,9 +46,7 @@ class CardLessonPreview extends React.Component {
                 {lesson.title}
               </h6>
               <div className="rn-card__subtitle">
-                #{lesson.number} created on
-                <span className="mh1">{moment(lesson.createdAt).format("MMM D, YYYY")}</span>
-                by
+                #{lesson.number} created {timeDifferenceForDate(lesson.createdAt)} by
                 <span className="ml1">{get(lesson, "author.login", "")}</span>
               </div>
             </div>

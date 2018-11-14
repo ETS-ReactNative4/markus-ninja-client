@@ -1,6 +1,5 @@
 import * as React from 'react'
 import cls from 'classnames'
-import moment from 'moment'
 import {Link} from 'react-router-dom'
 import AppleIconButton from 'components/AppleIconButton'
 import EnrollIconButton from 'components/EnrollIconButton'
@@ -10,7 +9,7 @@ import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
-import {get} from 'utils'
+import {get, timeDifferenceForDate} from 'utils'
 
 class ListStudyPreview extends React.Component {
   state = {
@@ -35,9 +34,9 @@ class ListStudyPreview extends React.Component {
     const createdAt = get(this.props, "study.createdAt")
 
     if (advancedAt) {
-      return `Advanced ${moment(advancedAt).format("MMM D")}`
+      return `Advanced ${timeDifferenceForDate(advancedAt)}`
     } else {
-      return `Created ${moment(createdAt).format("MMM D")}`
+      return `Created ${timeDifferenceForDate(createdAt)}`
     }
   }
 
