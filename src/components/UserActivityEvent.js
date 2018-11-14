@@ -2,6 +2,7 @@ import * as React from 'react'
 import { get } from 'utils'
 import AppledEvent from 'components/AppledEvent'
 import CreatedEvent from 'components/CreatedEvent'
+import PublishedEvent from 'components/PublishedEvent'
 
 class UserActivityEvent extends React.Component {
   get otherProps() {
@@ -22,6 +23,8 @@ class UserActivityEvent extends React.Component {
         return <AppledEvent {...this.otherProps} className={className} event={event} />
       case "CreatedEvent":
         return <CreatedEvent {...this.otherProps} className={className} event={event} />
+      case "PublishedEvent":
+        return <PublishedEvent {...this.otherProps} className={className} event={event} />
       default:
         return null
     }

@@ -24,33 +24,48 @@ class ViewerReceivedActivity extends React.Component {
   }
 
   render() {
-    const edges = get(this.props, "viewer.receivedActivity.edges", [])
+    console.log(this.props.relay.hasMore())
     return (
       <React.Fragment>
-        <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           Recent activity
-        </h4>
-        <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-        {isEmpty(edges)
-          ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-              There is no recent activity.
-            </div>
-          : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-              <ul className="mdc-list mdc-list--two-line">
-                {edges.map(({node}) => (
-                  node &&
-                  <UserActivityEvent key={node.id} withUser event={node} />
-                ))}
-              </ul>
-              {this.props.relay.hasMore() &&
-              <button
-                className="mdc-button mdc-button--unelevated"
-                onClick={this._loadMore}
-              >
-                Load more activity
-              </button>}
+        </h5>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <div className="mdc-card mdc-card--outlined ph2">
+            {this.renderActivity()}
+            {this.props.relay.hasMore() &&
+            <div className="mdc-card__actions">
+              <div className="mdc-card__action-buttons">
+                <button
+                className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
+                  onClick={this._loadMore}
+                >
+                  Load more activity
+                </button>
+              </div>
             </div>}
+          </div>
+        </div>
       </React.Fragment>
+    )
+  }
+
+  renderActivity() {
+    const {relay} = this.props
+    const edges = get(this.props, "viewer.receivedActivity.edges", [])
+    const noResults = isEmpty(edges)
+
+    return (
+      <ul className="mdc-list mdc-list--two-line">
+        {relay.isLoading() && noResults
+        ? <li className="mdc-list-item">Loading...</li>
+        : noResults
+          ? <li className="mdc-list-item">No recent activity</li>
+        : edges.map(({node}) => (
+            node &&
+            <UserActivityEvent key={node.id} withUser event={node} />
+          ))}
+      </ul>
     )
   }
 }
@@ -76,6 +91,9 @@ export default withRouter(createPaginationContainer(ViewerReceivedActivity,
               }
               ...on CreatedEvent {
                 ...CreatedEvent_event
+              }
+              ...on PublishedEvent {
+                ...PublishedEvent_event
               }
             }
           }
@@ -103,7 +121,7 @@ export default withRouter(createPaginationContainer(ViewerReceivedActivity,
       }
     `,
     getConnectionFromProps(props) {
-      return get(props, "viewer.activity")
+      return get(props, "viewer.receivedActivity")
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { get } from 'utils'
 import ReferencedEvent from 'components/ReferencedEvent'
+import RenamedEvent from 'components/RenamedEvent'
 
 class UserAssetTimelineEvent extends React.Component {
   render() {
@@ -9,6 +10,8 @@ class UserAssetTimelineEvent extends React.Component {
     switch(item.__typename) {
       case "ReferencedEvent":
         return <ReferencedEvent event={item} />
+      case "RenamedEvent":
+        return <RenamedEvent event={item} />
       default:
         return null
     }

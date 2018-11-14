@@ -70,6 +70,9 @@ export default withRouter(createPaginationContainer(UserAssetTimeline,
               ...on ReferencedEvent {
                 ...ReferencedEvent_event
               }
+              ...on RenamedEvent {
+                ...RenamedEvent_event
+              }
             }
           }
           pageInfo {
