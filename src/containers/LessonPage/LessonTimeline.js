@@ -135,6 +135,9 @@ export default createRefetchContainer(LessonTimeline,
               ...on LessonComment {
                 ...LessonComment_comment
               }
+              ...on PublishedEvent {
+                ...PublishedEvent_event
+              }
               ...on ReferencedEvent {
                 ...ReferencedEvent_event
               }

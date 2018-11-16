@@ -15,17 +15,24 @@
   color: rgba(184, 95, 138, 1.0);
 }
 
-.Preview {
-  min-height: 125px;
-}
-
-.Preview__body {
-  padding: 1rem;
-}
-
 .StudyBodyEditorMain {
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.StudyBodyEditorMain__menu {
+  position: absolute;
+  left: -140px;
+}
+
+.StudyBodyEditorMain__menu-content {
+  height: 112px;
+  width: 128.5px;
+
+  .mdc-list-item .mdc-list-item__graphic {
+    margin-right: 16px;
+  }
 }
 
 .StudyBodyEditorMain__draft {

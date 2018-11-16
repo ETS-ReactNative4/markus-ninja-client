@@ -22,7 +22,11 @@ class ProfileSettings extends React.Component {
         query={ProfileSettingsQuery}
         render={({error,  props}) => {
           if (error) {
-            return <div>{error.message}</div>
+            return (
+              <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                {error.message}
+              </div>
+            )
           } else if (props) {
             return (
               <React.Fragment>

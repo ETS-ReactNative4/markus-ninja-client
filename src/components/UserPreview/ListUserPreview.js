@@ -52,6 +52,8 @@ class ListUserPreview extends React.Component {
               <Link
                 className="mdc-button rn-list-preview__action rn-list-preview__action--button"
                 to={user.resourcePath+"?tab=studies"}
+                aria-label="Studies"
+                title="Studies"
               >
                 <Icon className="mdc-button__icon" icon="study" />
                 {get(user, "studies.totalCount", 0)}

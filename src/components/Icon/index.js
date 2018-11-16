@@ -83,20 +83,23 @@ class Icon extends React.PureComponent {
       children,
       icon,
       label,
+      withLabel,
       ...otherProps
     } = this.props
     return otherProps
   }
 
   render() {
-    const { as: Component } = this.props
+    const {as: Component, label: labelProp, withLabel} = this.props
+    const label = labelProp ? this.label : withLabel ? this.label : null
+
     return (
       <Component
         {...this.otherProps}
         className={this.classes}
         aria-hidden="true"
-        aria-label={this.label}
-        title={this.label}
+        aria-label={label}
+        title={label}
       >
         {this.icon}
       </Component>
@@ -110,6 +113,7 @@ Icon.propTypes = {
   children: PropTypes.node,
   icon: PropTypes.string,
   label: PropTypes.string,
+  withLabel: PropTypes.bool,
 }
 
 Icon.defaultProps = {
@@ -118,6 +122,7 @@ Icon.defaultProps = {
   children: null,
   icon: "",
   label: "",
+  withLabel: false,
 }
 
 export default Icon

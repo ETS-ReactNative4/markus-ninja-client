@@ -88,9 +88,11 @@ class UserStudiesTab extends React.Component {
             </div>}
           </div>
         </div>
-        <UserStudies filterBy={this._filterBy} orderBy={this._orderBy}>
-          <UserStudiesTabStudies user={user} />
-        </UserStudies>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <UserStudies filterBy={this._filterBy} orderBy={this._orderBy}>
+            <UserStudiesTabStudies user={user} />
+          </UserStudies>
+        </div>
       </React.Fragment>
     )
   }

@@ -21,7 +21,7 @@ class StudyActivityEvent extends React.Component {
       case "CreatedEvent":
         return <CreatedEvent {...this.otherProps} className={className} withUser event={event} />
       case "PublishedEvent":
-        return <PublishedEvent {...this.otherProps} className={className} event={event} />
+        return <PublishedEvent {...this.otherProps} className={className} twoLine event={event} />
       default:
         return null
     }

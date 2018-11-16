@@ -6,7 +6,6 @@ import {
 } from 'draft-js'
 import cls from 'classnames'
 import Icon from 'components/Icon'
-import { withUID } from 'components/UniqueId'
 import {get, makeCancelable} from 'utils'
 import Context from './Context'
 
@@ -186,4 +185,4 @@ AttachFile.defaultProps = {
 
 AttachFile.contextType = Context
 
-export default withUID((getUID) => ({ uid: getUID() }))(AttachFile)
+export default AttachFile

@@ -1,17 +1,10 @@
 @import "@material/typography/mixins";
 
-.LessonPage__container {
-}
-
-.LessonPage__comments {
+.LessonPage__timeline {
   background-color: #fafafa;
 }
 
-.LessonPage__comments__container {
+.LessonPage__timeline__container {
   margin-left: auto;
   margin-right: auto;
-}
-
-.LessonBody .StudyBodyEditorMain .rn-card__body {
-  @include mdc-typography(body1);
 }

@@ -1,14 +1,15 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
-import cls from 'classnames'
 import HTML from 'components/HTML'
 import {makeCancelable, throttle} from 'utils'
+
+import Context from './Context'
 
 class Preview extends React.Component {
   state = {
     dirty: true,
     open: false,
-    preview: "",
+    preview: this.props.initialPreview,
     request: {
       cancel() {}
     },
@@ -19,15 +20,19 @@ class Preview extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.open && this.props.open && this.state.dirty) {
-      if (this.props.text !== "") {
-        this.fetchPreview()
-        this.setState({dirty: false})
-      } else {
-        this.setState({dirty: false, preview: ""})
+    if (!prevProps.open && this.props.open) {
+      if (this.state.dirty) {
+        if (this.props.text !== "") {
+          this.fetchPreview()
+          this.setState({dirty: false})
+        } else {
+          this.setState({dirty: false, preview: ""})
+        }
       }
     } else if (this.props.text !== prevProps.text) {
-      this.setState({dirty: true})
+      this.setState({
+        dirty: true,
+      })
     }
   }
 
@@ -93,38 +98,15 @@ class Preview extends React.Component {
     })
   }, 3000)
 
-  get classes() {
-    const {className} = this.props
-    return cls("Preview mdc-card", className)
-  }
-
   render() {
-    const {onPublish} = this.props
-
-    return (
-      <div className={this.classes}>
-        <div className="rn-card__body">
-          {this.renderPreview()}
-        </div>
-        <div className="mdc-card__actions bottom">
-          <div className="mdc-card__action-buttons">
-            <button
-              type="button"
-              className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
-              onClick={onPublish}
-            >
-              Publish
-            </button>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  renderPreview() {
     const {loading, preview} = this.state
+
     if (loading) {
-      return <div className="mdc-theme--text-hint-on-light">Loading...</div>
+      return (
+        <div className="rn-loading">
+          <HTML html={preview} />
+        </div>
+      )
     } else if (preview === "") {
       return <div className="mdc-theme--text-hint-on-light">Nothing to preview</div>
     }
@@ -133,15 +115,19 @@ class Preview extends React.Component {
 }
 
 Preview.propTypes = {
+  handleChangeTab: PropTypes.func,
   onPublish: PropTypes.func,
   studyId: PropTypes.string,
   text: PropTypes.string,
 }
 
 Preview.defaultProps = {
+  handleChangeTab: () => {},
   onPublish: () => {},
   studyId: "",
   text: "",
 }
+
+Preview.contextType = Context
 
 export default Preview

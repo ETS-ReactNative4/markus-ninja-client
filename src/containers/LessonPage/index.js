@@ -89,8 +89,8 @@ class LessonPage extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="LessonPage__comments mdc-layout-grid">
-                  <div className="LessonPage__comments__container mdc-layout-grid__inner mw8">
+                <div className="LessonPage__timeline mdc-layout-grid">
+                  <div className="LessonPage__timeline__container mdc-layout-grid__inner mw7">
                     {!this.context.isAuthenticated()
                     ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                         <div className="mdc-card mdc-card--outlined">

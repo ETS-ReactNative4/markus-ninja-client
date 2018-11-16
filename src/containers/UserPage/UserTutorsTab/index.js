@@ -65,9 +65,11 @@ class UserTutorsTab extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           {this.renderInput()}
         </div>
-        <UserEnrolled orderBy={this._orderBy} search={q} type="USER">
-          <UserTutorsTabTutors />
-        </UserEnrolled>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <UserEnrolled orderBy={this._orderBy} search={q} type="USER">
+            <UserTutorsTabTutors />
+          </UserEnrolled>
+        </div>
       </React.Fragment>
     )
   }

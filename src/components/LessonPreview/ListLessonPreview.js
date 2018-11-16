@@ -123,6 +123,13 @@ class ListLessonPreview extends React.Component {
   renderEditMeta() {
     return (
       <span className="mdc-list-item__meta">
+        <i
+          className="material-icons rn-list-preview__action--icon"
+          aria-label="Move lesson"
+          title="Move lesson"
+        >
+          swap_vert
+        </i>
         <button
           className="material-icons mdc-icon-button"
           type="button"
@@ -155,6 +162,8 @@ class ListLessonPreview extends React.Component {
           <Link
             className="mdc-button rn-list-preview__action rn-list-preview__action--button"
             to={lesson.resourcePath}
+            aria-label="Comments"
+            title="Comments"
           >
             <Icon className="mdc-button__icon" icon="comment" />
             {get(lesson, "comments.totalCount", 0)}

@@ -1,3 +1,4 @@
+@import "@material/elevation/mixins";
 @import "@material/layout-grid/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
@@ -48,14 +49,16 @@
   @include mdc-typography-overflow-ellipsis;
   @include mdc-typography(overline);
   @include mdc-theme-prop(color, text-secondary-on-light);
+}
+
+.rn-card__body {
+  @include mdc-typography(body1);
 
   padding: 16px;
 }
 
-.rn-card__body {
+.rn-card__body-2 {
   @include mdc-typography(body2);
-
-  padding: 16px;
 }
 
 .rn-card__header + .rn-card__body,
@@ -82,4 +85,14 @@
       display: none;
     }
   }
+
+  .rn-card__overline {
+    padding: 0;
+    padding-left: 8px;
+  }
+}
+
+.rn-card__actions--sticky .rn-card__actions {
+  @include mdc-theme-prop(background-color, surface);
+  @include mdc-elevation(3);
 }

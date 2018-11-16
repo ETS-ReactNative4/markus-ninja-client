@@ -167,9 +167,11 @@ class LessonComment extends React.Component {
         id={`lesson_comment${moment(comment.createdAt).unix()}`}
         className="mdc-card"
       >
-        <div className="rn-card__overline">
-          <UserLink className="rn-link rn-link--secondary" user={get(comment, "author", null)} />
-          <span className="ml1">commented {timeDifferenceForDate(comment.createdAt)}</span>
+        <div className="rn-card__header">
+          <span className="rn-card__overline">
+            <UserLink className="rn-link rn-link--secondary" user={get(comment, "author", null)} />
+            <span className="ml1">commented {timeDifferenceForDate(comment.createdAt)}</span>
+          </span>
         </div>
         <div className="rn-card__body">
           <HTML html={comment.bodyHTML} />

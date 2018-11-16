@@ -97,9 +97,11 @@ class StudyCoursesPage extends React.Component {
             </div>
           </div>
         </div>
-        <StudyCourses filterBy={this._filterBy} orderBy={this._orderBy}>
-          <StudyCoursesPageCourses study={study} />
-        </StudyCourses>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <StudyCourses filterBy={this._filterBy} orderBy={this._orderBy}>
+            <StudyCoursesPageCourses study={study} />
+          </StudyCourses>
+        </div>
       </div>
     )
   }

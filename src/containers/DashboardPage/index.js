@@ -68,9 +68,7 @@ class DashboardPage extends React.Component {
                     </Drawer.Title>
                     <Drawer.Subtitle>
                       <div className="flex relative items-center justify-start">
-                        <span>
-                          Studies
-                        </span>
+                        <h5 className="ma0">Studies</h5>
                         <span className="ml-auto mr0">
                           <IconLink
                             className="mdc-icon-button ml-auto mr0" to="/new"

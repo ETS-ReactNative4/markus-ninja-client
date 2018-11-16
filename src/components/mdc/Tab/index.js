@@ -48,6 +48,8 @@ export default class Tab extends Component {
     this.foundation_ = new MDCTabFoundation(this.adapter);
     this.foundation_.init();
 
+    this.foundation_.setFocusOnActivate(false);
+
     if (this.props.active) {
       this.foundation_.activate();
     }
@@ -115,14 +117,6 @@ export default class Tab extends Component {
       // computeIndicatorClientRect is redundant in mdc-tab and is going to be
       // removed in another release
     };
-  }
-
-  get active() {
-    return this.foundation_.isActive();
-  }
-
-  set focusOnActivate(focusOnActivate) {
-    this.foundation_.setFocusOnActivate && this.foundation_.setFocusOnActivate(focusOnActivate);
   }
 
   activate(computeIndicatorClientRect) {

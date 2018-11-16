@@ -46,7 +46,7 @@ class CardCoursePreview extends React.Component {
               </div>
             </div>
           </div>
-          <div className="rn-card__body">
+          <div className="rn-card__body rn-card__body-2">
             {course.description}
           </div>
         </Link>
@@ -68,6 +68,8 @@ class CardCoursePreview extends React.Component {
             <Link
               className="mdc-button mdc-card__action mdc-card__action--button"
               to={course.resourcePath}
+              aria-label="Lessons"
+              title="Lessons"
             >
               <Icon className="mdc-button__icon" icon="lesson" />
               {get(course, "lessons.totalCount", 0)}

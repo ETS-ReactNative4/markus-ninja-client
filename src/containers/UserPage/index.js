@@ -34,7 +34,7 @@ class UserPage extends React.Component {
     super(props)
 
     this.state = {
-      tab: this._tab,
+      tab: this.tab_,
     }
   }
 
@@ -45,11 +45,11 @@ class UserPage extends React.Component {
     const newTab = get(newQuery, "tab", "")
 
     if (prevTab !== newTab) {
-      this.setState({tab: this._tab})
+      this.setState({tab: this.tab_})
     }
   }
 
-  get _tab() {
+  get tab_() {
     const query = queryString.parse(get(this.props, "location.search", ""))
     const tab = get(query, "tab", "")
     return (() => {

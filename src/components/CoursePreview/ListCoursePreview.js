@@ -87,6 +87,8 @@ class ListCoursePreview extends React.Component {
               <Link
                 className="mdc-button rn-list-preview__action rn-list-preview__action--button"
                 to={course.resourcePath}
+                aria-label="Lessons"
+                title="Lessons"
               >
                 <Icon className="mdc-button__icon" icon="lesson" />
                 {get(course, "lessons.totalCount", 0)}

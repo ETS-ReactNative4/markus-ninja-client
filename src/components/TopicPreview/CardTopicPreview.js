@@ -44,7 +44,7 @@ class CardTopicPreview extends React.Component {
               </div>
             </div>
           </div>
-          <div className="rn-card__body">
+          <div className="rn-card__body rn-card__body-2">
             {topic.description}
           </div>
         </Link>
@@ -61,6 +61,8 @@ class CardTopicPreview extends React.Component {
             <Link
               className="mdc-button mdc-card__action mdc-card__action--button"
               to={topic.resourcePath+"?t=course"}
+              aria-label="Courses"
+              title="Courses"
             >
               <Icon className="mdc-button__icon" icon="course" />
               {get(topic, "topicables.courseCount", 0)}
@@ -68,6 +70,8 @@ class CardTopicPreview extends React.Component {
             <Link
               className="mdc-button mdc-card__action mdc-card__action--button"
               to={topic.resourcePath+"?t=study"}
+              aria-label="Studies"
+              title="Studies"
             >
               <Icon className="mdc-button__icon" icon="study" />
               {get(topic, "topicables.studyCount", 0)}

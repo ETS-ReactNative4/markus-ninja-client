@@ -1,4 +1,5 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import {
   createFragmentContainer,
@@ -39,8 +40,8 @@ class PublishedEvent extends React.Component {
   }
 
   render() {
-    const {event} = this.props
-    const publishable = get(event, "publishable")
+    const {event, twoLine} = this.props
+    const publishable = get(this.props.event, "publishable")
 
     if (!event || !publishable) {
       return null
@@ -50,7 +51,29 @@ class PublishedEvent extends React.Component {
       <li className={this.classes}>
         <span className="mdc-list-item">
           <Icon className="mdc-list-item__graphic" label="Published">publish</Icon>
-          <span className="mdc-list-item__text">
+          {this.renderText()}
+          {twoLine &&
+          <span className="mdc-list-item__meta">
+            <Link
+              className="mdc-icon-button"
+              to={publishable.resourcePath}
+            >
+              <Icon className="rn-icon-link__icon" icon={this.publishableType} />
+            </Link>
+          </span>}
+        </span>
+      </li>
+    )
+  }
+
+  renderText() {
+    const {event, twoLine} = this.props
+    const publishable = get(event, "publishable")
+
+    return (
+      <span className="mdc-list-item__text">
+        {twoLine
+        ? <React.Fragment>
             <span className="mdc-list-item__primary-text">
               <UserLink className="rn-link fw5" user={get(event, "user", null)} />
               <span className="ml1">
@@ -63,19 +86,22 @@ class PublishedEvent extends React.Component {
             <span className="mdc-list-item__secondary-text">
               Published {timeDifferenceForDate(event.createdAt)}
             </span>
-          </span>
-          <span className="mdc-list-item__meta">
-            <Link
-              className="mdc-icon-button"
-              to={publishable.resourcePath}
-            >
-              <Icon className="rn-icon-link__icon" icon={this.publishableType} />
-            </Link>
-          </span>
-        </span>
-      </li>
+          </React.Fragment>
+        : <React.Fragment>
+            <UserLink className="rn-link fw5 mr1" user={get(event, "user", null)} />
+            published this {timeDifferenceForDate(event.createdAt)}
+          </React.Fragment>}
+      </span>
     )
   }
+}
+
+PublishedEvent.propTypes = {
+  twoLine: PropTypes.bool,
+}
+
+PublishedEvent.defaultProps = {
+  twoLine: false,
 }
 
 export default createFragmentContainer(PublishedEvent, graphql`

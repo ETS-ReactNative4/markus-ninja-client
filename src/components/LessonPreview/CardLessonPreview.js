@@ -70,6 +70,8 @@ class CardLessonPreview extends React.Component {
             <Link
               className="mdc-button mdc-card__action mdc-card__action--button"
               to={lesson.resourcePath}
+              aria-label="Comments"
+              title="Comments"
             >
               <Icon className="mdc-button__icon" icon="comment" />
               {get(lesson, "comments.totalCount", 0)}

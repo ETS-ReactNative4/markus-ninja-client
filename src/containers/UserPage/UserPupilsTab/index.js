@@ -68,9 +68,11 @@ class UserPupilsTab extends React.Component {
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           {this.renderInput()}
         </div>
-        <UserEnrollees filterBy={this._filterBy} orderBy={this._orderBy}>
-          <UserPupilsTabPupils />
-        </UserEnrollees>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <UserEnrollees filterBy={this._filterBy} orderBy={this._orderBy}>
+            <UserPupilsTabPupils />
+          </UserEnrollees>
+        </div>
       </React.Fragment>
     )
   }

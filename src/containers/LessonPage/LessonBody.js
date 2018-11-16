@@ -135,8 +135,22 @@ class LessonBody extends React.Component {
 
     return (
       <div className="mdc-card h-100">
-        <div className="rn-card__overline">
-          Updated {timeDifferenceForDate(lesson.publishedAt)}
+        <div className="rn-card__actions mdc-card__actions">
+          <span className="rn-card__overline">
+            Updated {timeDifferenceForDate(lesson.publishedAt)}
+          </span>
+          {lesson.viewerCanUpdate &&
+          <div className="mdc-card__action-icons">
+            <button
+              className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+              type="button"
+              onClick={this.handleToggleEdit}
+              aria-label="Edit lesson"
+              title="Edit lesson"
+            >
+              edit
+            </button>
+          </div>}
         </div>
         <div className="rn-card__body">
           <HTML className="mdc-typography--body1" html={lesson.bodyHTML} />

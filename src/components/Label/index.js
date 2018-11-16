@@ -57,6 +57,7 @@ export class Label extends React.Component {
       label,
       onClick,
       selected,
+      staticContext,
       ...otherProps
     } = this.props
     const {backgroundColor} = this.state

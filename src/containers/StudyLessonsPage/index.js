@@ -109,9 +109,11 @@ class StudyLessonsPage extends React.Component {
             </div>
           </div>
         </div>
-        <StudyLessons filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
-          <StudyLessonsPageLessons study={study} />
-        </StudyLessons>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <StudyLessons filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
+            <StudyLessonsPageLessons study={study} />
+          </StudyLessons>
+        </div>
       </div>
     )
   }

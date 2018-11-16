@@ -3,6 +3,7 @@ import { get } from 'utils'
 import AddedToCourseEvent from 'components/AddedToCourseEvent'
 import LabeledEvent from 'components/LabeledEvent'
 import LessonComment from 'components/LessonComment'
+import PublishedEvent from 'components/PublishedEvent'
 import ReferencedEvent from 'components/ReferencedEvent'
 import RemovedFromCourseEvent from 'components/RemovedFromCourseEvent'
 import RenamedEvent from 'components/RenamedEvent'
@@ -20,6 +21,8 @@ class LessonTimelineEvent extends React.PureComponent {
         return <LabeledEvent className={className} event={item} />
       case "LessonComment":
         return <LessonComment className={className} comment={item} />
+      case "PublishedEvent":
+        return <PublishedEvent className={className} event={item} />
       case "ReferencedEvent":
         return <ReferencedEvent className={className} event={item} />
       case "RemovedFromCourseEvent":

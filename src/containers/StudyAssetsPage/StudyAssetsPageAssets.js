@@ -1,52 +1,44 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
-import cls from 'classnames'
 import {StudyAssetsProp, StudyAssetsPropDefaults} from 'components/StudyAssets'
 import UserAssetPreview from 'components/UserAssetPreview'
 import Context from 'containers/StudyPage/Context'
 import {isEmpty} from 'utils'
 
 class StudyAssetsPageAssets extends React.Component {
-  get classes() {
-    const {className} = this.props
-    return cls("mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
-  }
-
   render() {
     const {toggleCreateUserAssetDialog} = this.context
     const {assets, study} = this.props
     const {hasMore, loadMore} = assets
 
     return (
-      <div className={this.classes}>
-        <div className="mdc-card mdc-card--outlined ph2">
-          {this.renderAssets()}
-          {(hasMore || study.viewerCanAdmin) &&
-          <div className="mdc-card__actions">
-            <div className="mdc-card__action-buttons">
-              {hasMore &&
-              <button
-                className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
-                type="button"
-                onClick={loadMore}
-              >
-                More
-              </button>}
-            </div>
-            <div className="mdc-card__action-icons">
-              {study.viewerCanAdmin &&
-              <button
-                type="button"
-                className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
-                onClick={toggleCreateUserAssetDialog}
-                aria-label="New asset"
-                title="New asset"
-              >
-                add
-              </button>}
-            </div>
-          </div>}
-        </div>
+      <div className="mdc-card mdc-card--outlined ph2">
+        {this.renderAssets()}
+        {(hasMore || study.viewerCanAdmin) &&
+        <div className="mdc-card__actions">
+          <div className="mdc-card__action-buttons">
+            {hasMore &&
+            <button
+              className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
+              type="button"
+              onClick={loadMore}
+            >
+              More
+            </button>}
+          </div>
+          <div className="mdc-card__action-icons">
+            {study.viewerCanAdmin &&
+            <button
+              type="button"
+              className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+              onClick={toggleCreateUserAssetDialog}
+              aria-label="New asset"
+              title="New asset"
+            >
+              add
+            </button>}
+          </div>
+        </div>}
       </div>
     )
   }

@@ -6,12 +6,12 @@ import {
   Editor,
   EditorState,
 } from 'draft-js'
+import Sticky from 'react-stickynode'
 import Dialog from 'components/Dialog'
 import Icon from 'components/Icon'
 import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
-import Tab from 'components/mdc/Tab'
-import TabBar from 'components/mdc/TabBar'
+import { withUID } from 'components/UniqueId'
 import {timeDifferenceForDate} from 'utils'
 import AttachFile from './AttachFile'
 import Context from './Context'
@@ -30,7 +30,6 @@ class StudyBodyEditorMain extends React.Component {
       initialValue: this.props.object.draft,
       loading: false,
       menuOpen: false,
-      tab: "draft",
     }
   }
 
@@ -67,17 +66,17 @@ class StudyBodyEditorMain extends React.Component {
     this.props.onChange(editorState.getCurrentContent().getPlainText())
   }
 
-  handleClickTab_ = (e) => {
-    e.preventDefault()
-    const tab = e.target.value
-    this.setState({tab})
+  handleChangeTab_ = (tab) => {
+    const {changeTab} = this.context
+    changeTab(tab)
     if (tab === "preview") {
       this.props.onPreview()
     }
   }
 
   handlePublish = () => {
-    this.setState({tab: "draft"})
+    const {changeTab} = this.context
+    changeTab("draft")
     this.props.onPublish()
   }
 
@@ -110,7 +109,7 @@ class StudyBodyEditorMain extends React.Component {
   }
 
   get classes() {
-    const {tab} = this.state
+    const {tab} = this.context
     const {className} = this.props
     return cls("StudyBodyEditorMain", className, {
       "StudyBodyEditorMain--preview": tab === "preview",
@@ -122,122 +121,172 @@ class StudyBodyEditorMain extends React.Component {
   }
 
   render() {
-    const {editorState, toggleSaveDialog} = this.context
-    const {anchorElement, loading, menuOpen, tab} = this.state
-    const {object, placeholder, showFormButtonsFor, study} = this.props
+    const {editorState, tab, toggleSaveDialog} = this.context
+    const {anchorElement, loading, menuOpen} = this.state
+    const {object, placeholder, showFormButtonsFor, study, uid} = this.props
 
     return (
-      <div className={this.classes}>
-        {this.renderNav()}
-        <div className="StudyBodyEditorMain__preview">
-          <Preview
-            open={tab === "preview"}
-            studyId={study.id}
-            text={this.text}
-            onPublish={this.handlePublish}
-          />
-        </div>
-        <div className="StudyBodyEditorMain__draft mdc-card mdc-card--outlined">
-          <div className="rn-card__overline">
-            <span className="ml1">Last edited {timeDifferenceForDate(object.lastEditedAt)}</span>
-          </div>
-          <div className="StudyBodyEditorMain__draft-text rn-card__body" onClick={() => this.focus()}>
-            <input
-              className="StudyBodyEditorMain__hidden-input"
-              type="text"
-              value={this.text}
-              required
-              onChange={() => {}}
-              onInvalid={this.focus}
-              onFocus={this.focus}
-            />
-            <Editor
-              editorState={editorState}
-              readOnly={loading}
-              onChange={this.handleChange}
-              placeholder={placeholder || "Enter text"}
-              ref={this.editorElement}
-            />
-          </div>
-          <div className="mdc-card__actions rn-card__actions">
-            {showFormButtonsFor &&
-            <div className="mdc-card__action-buttons">
-              <button
-                type="submit"
-                form={showFormButtonsFor}
-                className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
-              >
-                {this.props.submitText || "Save draft"}
-              </button>
-              <button
-                className="mdc-button mdc-card__action mdc-card__action--button"
-                type="button"
-                onClick={this.handleToggleCancelConfirmation}
-              >
-                Cancel
-              </button>
-            </div>}
-            <div className="mdc-card__action-icons rn-card__actions--spread">
-              <button
-                className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
-                type="button"
-                onClick={this.handleToggleResetConfirmation}
-                aria-label="Reset draft"
-                title="Reset draft"
-              >
-                restore
-              </button>
-              <AttachFile study={this.props.study} />
-              {study.viewerCanAdmin &&
-              <button
-                className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
-                type="button"
-                onClick={toggleSaveDialog}
-                aria-label="Save file"
-                title="Save file"
-              >
-                save
-              </button>}
+      <div id={`draft-${uid}`} className={this.classes}>
+        <div className="mdc-card">
+          <Sticky top={64} bottomBoundary={`#draft-${uid}`} innerZ={2} activeClass="rn-card__actions--sticky">
+            <div className="rn-card__actions mdc-card__actions">
+              <span className="rn-card__overline">
+                {tab === "draft"
+                ? `Last edited ${timeDifferenceForDate(object.lastEditedAt)}`
+                : "Preview"}
+              </span>
+              <div className="mdc-card__action-icons">
+                {tab === "draft"
+                ? <button
+                    className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                    type="button"
+                    onClick={() => this.handleChangeTab_("preview")}
+                    aria-label="Preview"
+                    title="Preview"
+                  >
+                    visibility
+                  </button>
+                : <button
+                    className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                    type="button"
+                    onClick={() => this.handleChangeTab_("draft")}
+                    aria-label="Draft"
+                    title="Draft"
+                  >
+                    edit
+                  </button>}
+                <button
+                  className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                  type="button"
+                  onClick={this.handleToggleCancelConfirmation}
+                  aria-label="Cancel"
+                  title="Cancel"
+                >
+                  cancel
+                </button>
+              </div>
             </div>
-            <Menu.Anchor
-              className="mdc-card__action-icons rn-card__actions--collapsed"
-              innerRef={this.setAnchorElement}
-            >
-              <button
-                type="button"
-                className="mdc-icon-button material-icons"
-                onClick={() => this.setState({menuOpen: !menuOpen})}
+          </Sticky>
+          <div className="StudyBodyEditorMain__preview">
+            <div className="rn-card__body">
+              <Preview
+                open={tab === "preview"}
+                studyId={study.id}
+                text={this.text}
+                initialPreview={object.bodyHTML}
+              />
+            </div>
+            <div className="mdc-card__actions bottom">
+              <div className="mdc-card__action-buttons">
+                <button
+                  type="button"
+                  className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
+                  onClick={this.handlePublish}
+                >
+                  Publish
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="StudyBodyEditorMain__draft">
+            <div className="StudyBodyEditorMain__draft-text rn-card__body" onClick={() => this.focus()}>
+              <input
+                className="StudyBodyEditorMain__hidden-input"
+                type="text"
+                value={this.text}
+                required
+                onChange={() => {}}
+                onInvalid={this.focus}
+                onFocus={this.focus}
+              />
+              <Editor
+                editorState={editorState}
+                readOnly={loading}
+                onChange={this.handleChange}
+                placeholder={placeholder || "Enter text"}
+                ref={this.editorElement}
+              />
+            </div>
+            <div className="mdc-card__actions rn-card__actions">
+              {showFormButtonsFor &&
+              <div className="mdc-card__action-buttons">
+                <button
+                  type="submit"
+                  form={showFormButtonsFor}
+                  className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
+                >
+                  {this.props.submitText || "Save draft"}
+                </button>
+                <button
+                  className="mdc-button mdc-card__action mdc-card__action--button"
+                  type="button"
+                  onClick={this.handleToggleCancelConfirmation}
+                >
+                  Cancel
+                </button>
+              </div>}
+              <div className="mdc-card__action-icons rn-card__actions--spread">
+                <button
+                  className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                  type="button"
+                  onClick={this.handleToggleResetConfirmation}
+                  aria-label="Reset draft"
+                  title="Reset draft"
+                >
+                  restore
+                </button>
+                <AttachFile study={this.props.study} />
+                {study.viewerCanAdmin &&
+                <button
+                  className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                  type="button"
+                  onClick={toggleSaveDialog}
+                  aria-label="Save file"
+                  title="Save file"
+                >
+                  save
+                </button>}
+              </div>
+              <Menu.Anchor
+                className="mdc-card__action-icons rn-card__actions--collapsed"
+                innerRef={this.setAnchorElement}
               >
-                more_vert
-              </button>
-              <Menu
-                open={menuOpen}
-                onClose={() => this.setState({menuOpen: false})}
-                anchorElement={anchorElement}
-                anchorCorner={Corner.BOTTOM_LEFT}
-              >
-                <List>
-                  <li
-                    className="mdc-list-item"
-                    role="button"
-                    onClick={this.handleToggleResetConfirmation}
-                  >
-                    <Icon as="span" className="mdc-list-item__graphic" icon="restore" />
-                    <span className="mdc-list-item__text">Reset draft</span>
-                  </li>
-                  <AttachFile variant="list-item" study={this.props.study} />
-                  {study.viewerCanAdmin &&
-                  <li
-                    className="mdc-list-item"
-                    role="button"
-                    onClick={toggleSaveDialog}
-                  >
-                    <Icon as="span" className="mdc-list-item__graphic" icon="save" />
-                    <span className="mdc-list-item__text">Save file</span>
-                  </li>}
-                </List>
-              </Menu>
-            </Menu.Anchor>
+                <button
+                  type="button"
+                  className="mdc-icon-button material-icons"
+                  onClick={() => this.setState({menuOpen: !menuOpen})}
+                >
+                  more_vert
+                </button>
+                <Menu
+                  open={menuOpen}
+                  onClose={() => this.setState({menuOpen: false})}
+                  anchorElement={anchorElement}
+                  anchorCorner={Corner.BOTTOM_LEFT}
+                >
+                  <List>
+                    <li
+                      className="mdc-list-item"
+                      role="button"
+                      onClick={this.handleToggleResetConfirmation}
+                    >
+                      <Icon as="span" className="mdc-list-item__graphic" icon="restore" />
+                      <span className="mdc-list-item__text">Reset draft</span>
+                    </li>
+                    <AttachFile variant="list-item" study={this.props.study} />
+                    {study.viewerCanAdmin &&
+                    <li
+                      className="mdc-list-item"
+                      role="button"
+                      onClick={toggleSaveDialog}
+                    >
+                      <Icon as="span" className="mdc-list-item__graphic" icon="save" />
+                      <span className="mdc-list-item__text">Save file</span>
+                    </li>}
+                  </List>
+                </Menu>
+              </Menu.Anchor>
+            </div>
           </div>
         </div>
         {this.renderConfirmCancelDialog()}
@@ -320,40 +369,45 @@ class StudyBodyEditorMain extends React.Component {
     )
   }
 
-  renderNav() {
-    const {tab} = this.state
+  renderMenu() {
+    const {tab} = this.context
+    const {uid} = this.props
 
     return (
-      <TabBar className="mb2" onClickTab={this.handleClickTab_}>
-        <Tab
-          active={tab === "draft"}
-          minWidth
-          value="draft"
+      <div className="StudyBodyEditorMain__menu">
+        <Sticky
+          top={400}
+          bottomBoundary={`#draft-${uid}`}
         >
-          <span className="mdc-tab__content">
-            <span className="mdc-tab__text-label">
-              Draft
-            </span>
-          </span>
-        </Tab>
-        <Tab
-          active={tab === "preview"}
-          minWidth
-          value="preview"
-        >
-          <span className="mdc-tab__content">
-            <span className="mdc-tab__text-label">
-              Preview
-            </span>
-          </span>
-        </Tab>
-      </TabBar>
+          <div className="StudyBodyEditorMain__menu-content mdc-card">
+            <List>
+              <List.Item
+                className="pointer"
+                onClick={() => this.handleChangeTab_("draft")}
+                selected={tab === "draft"}
+              >
+                <span className="material-icons mdc-list-item__graphic">edit</span>
+                <span className="mdc-list-item__text">Draft</span>
+              </List.Item>
+              <List.Item
+                className="pointer"
+                onClick={() => this.handleChangeTab_("preview")}
+                selected={tab === "preview"}
+              >
+                <span className="material-icons mdc-list-item__graphic">visibility</span>
+                <span className="mdc-list-item__text">Preview</span>
+              </List.Item>
+            </List>
+          </div>
+        </Sticky>
+      </div>
     )
   }
 }
 
 StudyBodyEditorMain.propTypes = {
   object: PropTypes.shape({
+    bodyHTML: PropTypes.string.isRequired,
     draft: PropTypes.string.isRequired,
     lastEditedAt: PropTypes.string.isRequired,
   }),
@@ -371,6 +425,7 @@ StudyBodyEditorMain.propTypes = {
 
 StudyBodyEditorMain.defaultProps = {
   object: {
+    bodyHTML: "",
     draft: "",
     lastEditedAt: "",
   },
@@ -387,4 +442,4 @@ StudyBodyEditorMain.defaultProps = {
 
 StudyBodyEditorMain.contextType = Context
 
-export default StudyBodyEditorMain
+export default withUID((getUID) => ({ uid: getUID() }))(StudyBodyEditorMain)

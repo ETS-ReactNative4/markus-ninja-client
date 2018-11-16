@@ -47,7 +47,7 @@ class CardStudyPreview extends React.Component {
               </div>
             </div>
           </div>
-          <div className="rn-card__body">
+          <div className="rn-card__body rn-card__body-2">
             {study.description}
           </div>
         </Link>
@@ -69,6 +69,8 @@ class CardStudyPreview extends React.Component {
             <Link
               className="mdc-button mdc-card__action mdc-card__action--button"
               to={study.resourcePath+"/lessons"}
+              aria-label="Lessons"
+              title="Lessons"
             >
               <Icon className="mdc-button__icon" icon="lesson" />
               {get(study, "lessons.totalCount", 0)}

@@ -8,5 +8,8 @@ export default React.createContext({
   editorState: EditorState.createEmpty(),
   onChange: () => {},
   saveFileDialogOpen: false,
+  show: "",
+  showDraft: () => {},
+  showPreview: () => {},
   toggleSaveDialog: () => {},
 })

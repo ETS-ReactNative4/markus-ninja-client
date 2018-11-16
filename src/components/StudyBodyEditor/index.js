@@ -51,6 +51,8 @@ class StudyBodyEditor extends React.Component {
         compositeDecorator,
       ),
       onChange: this.handleChange,
+      tab: "draft",
+      changeTab: this.handleChangeTab,
       saveFileDialogOpen: false,
       toggleSaveDialog: this.handleToggleSaveDialog,
     }
@@ -58,6 +60,10 @@ class StudyBodyEditor extends React.Component {
 
   handleChange = (editorState) => {
     this.setState({editorState})
+  }
+
+  handleChangeTab = (tab) => {
+    this.setState({tab})
   }
 
   handleClearText = () => {

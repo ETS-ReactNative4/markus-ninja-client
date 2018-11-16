@@ -91,6 +91,9 @@ export default withRouter(createPaginationContainer(UserActivity,
               ...on CreatedEvent {
                 ...CreatedEvent_event
               }
+              ...on PublishedEvent {
+                ...PublishedEvent_event
+              }
             }
           }
           pageInfo {

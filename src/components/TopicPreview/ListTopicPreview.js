@@ -49,6 +49,8 @@ class ListTopicPreview extends React.Component {
               <Link
                 className="mdc-button rn-list-preview__action rn-list-preview__action--button"
                 to={topic.resourcePath+"?t=course"}
+                aria-label="Courses"
+                title="Courses"
               >
                 <Icon className="mdc-button__icon" icon="course" />
                 {get(topic, "topicables.courseCount", 0)}
@@ -56,6 +58,8 @@ class ListTopicPreview extends React.Component {
               <Link
                 className="mdc-button rn-list-preview__action rn-list-preview__action--button"
                 to={topic.resourcePath+"?t=study"}
+                aria-label="Studies"
+                title="Studies"
               >
                 <Icon className="mdc-button__icon" icon="study" />
                 {get(topic, "topicables.studyCount", 0)}

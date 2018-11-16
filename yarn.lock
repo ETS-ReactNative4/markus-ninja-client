@@ -72,6 +72,11 @@
   version "0.40.1"
   resolved "https://registry.yarnpkg.com/@material/animation/-/animation-0.40.1.tgz#c5ff31e7d7e17324a0045e889d3530b150b9fcec"
 
+"@material/animation@^0.41.0":
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/@material/animation/-/animation-0.41.0.tgz#315b45b32e1aeebee8a4cf555b8ad52076d09ddd"
+  integrity sha512-yYAwJbX3Q2AFd4dr6IYOsWLQy2HN8zWOFVl9AbUXunjzTfJCa/ecfXCriaT6qkmoNoHeTdJHRrsQJZC5GsPvzA==
+
 "@material/base@^0.35.0":
   version "0.35.0"
   resolved "https://registry.yarnpkg.com/@material/base/-/base-0.35.0.tgz#8640c2da385e8cc393ff56153c5a319f5a7704cb"
@@ -83,6 +88,11 @@
 "@material/base@^0.40.1":
   version "0.40.1"
   resolved "https://registry.yarnpkg.com/@material/base/-/base-0.40.1.tgz#a0d8e19cee98dae0f96dbf0887a14b3f7acd2aac"
+
+"@material/base@^0.41.0":
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/@material/base/-/base-0.41.0.tgz#badadce711b4c25b1eb889a5e7581e32cd07c421"
+  integrity sha512-tEyzwBRu3d1H120SfKsDVYZHcqT5lKohh/7cWKR93aAaPDkSvjpKJIjyu2yuSkjpDduVZGzVocYbOvhUKhhzXQ==
 
 "@material/button@^0.40.1":
   version "0.40.1"
@@ -173,6 +183,14 @@
   dependencies:
     "@material/animation" "^0.40.1"
     "@material/theme" "^0.40.1"
+
+"@material/elevation@^0.41.0":
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/@material/elevation/-/elevation-0.41.0.tgz#db6b75ea43354fe35936cba2d78c55390faf4e9e"
+  integrity sha512-ZtZS8z5ie9c7Cx5PVudgSorGYa0C3lu3dA+Nn6qJdhGUokl01msh54NfNuwk+EZsk65bNRRqw1Td/63TCbKIzg==
+  dependencies:
+    "@material/animation" "^0.41.0"
+    "@material/theme" "^0.41.0"
 
 "@material/floating-label@^0.39.0", "@material/floating-label@^0.39.0-0", "@material/floating-label@^0.39.1":
   version "0.39.1"
@@ -412,6 +430,15 @@
     "@material/base" "^0.40.1"
     "@material/theme" "^0.40.1"
 
+"@material/ripple@^0.41.0":
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-0.41.0.tgz#73dbb9bf0e1d72382926b39f2527c011e689dde2"
+  integrity sha512-rxEUVWM4AByDlTCH0kkthZQmUuY6eeN0X6cOHBoioFN2vUDk0D0Nfzz/N9FF2AlAf8C2lDDLrTuqnJPVIn+NHA==
+  dependencies:
+    "@material/animation" "^0.41.0"
+    "@material/base" "^0.41.0"
+    "@material/theme" "^0.41.0"
+
 "@material/rtl@^0.36.0":
   version "0.36.0"
   resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.36.0.tgz#a81b587981dc6e09f51e26da8a7447f89358ccd5"
@@ -463,14 +490,15 @@
   version "0.40.1"
   resolved "https://registry.yarnpkg.com/@material/shape/-/shape-0.40.1.tgz#bd4224902896c3d45fab353d788fe6c4866483a8"
 
-"@material/tab-bar@^0.40.1":
-  version "0.40.1"
-  resolved "https://registry.yarnpkg.com/@material/tab-bar/-/tab-bar-0.40.1.tgz#d9a324ca8d67e7427f5a6664c79419ede6b71d7b"
+"@material/tab-bar@^0.41.0":
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/@material/tab-bar/-/tab-bar-0.41.0.tgz#23f54233dd0595a68a66daacf279614fba534cfb"
+  integrity sha512-RL+0CA4ZeZAmhz3vlyFsm8h9sLim8JHTLkosfZSYRnx2o9iQHQHpV58jz76ZSWG+0iuDoHFnwZ2oNKNmImn0KQ==
   dependencies:
-    "@material/base" "^0.40.1"
-    "@material/elevation" "^0.40.1"
-    "@material/tab" "^0.40.1"
-    "@material/tab-scroller" "^0.40.1"
+    "@material/base" "^0.41.0"
+    "@material/elevation" "^0.41.0"
+    "@material/tab" "^0.41.0"
+    "@material/tab-scroller" "^0.41.0"
 
 "@material/tab-indicator@^0.40.1":
   version "0.40.1"
@@ -480,6 +508,15 @@
     "@material/base" "^0.40.1"
     "@material/theme" "^0.40.1"
 
+"@material/tab-indicator@^0.41.0":
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/@material/tab-indicator/-/tab-indicator-0.41.0.tgz#396fb0902621d1f5fff195abf77738de7d4a91d3"
+  integrity sha512-IBJEO+O8OnFVgRAn4CCGccpyNPF1bvTp5+1foD46S2u7XZLD7ejfxTQhqE5HYWtVLQ3zk1aYo3+N9+oSUkpM2w==
+  dependencies:
+    "@material/animation" "^0.41.0"
+    "@material/base" "^0.41.0"
+    "@material/theme" "^0.41.0"
+
 "@material/tab-scroller@^0.40.1":
   version "0.40.1"
   resolved "https://registry.yarnpkg.com/@material/tab-scroller/-/tab-scroller-0.40.1.tgz#41dd9086ce0f6a3294464e6e6c51e6794b7059ee"
@@ -487,6 +524,15 @@
     "@material/animation" "^0.40.1"
     "@material/base" "^0.40.1"
     "@material/tab" "^0.40.1"
+
+"@material/tab-scroller@^0.41.0":
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/@material/tab-scroller/-/tab-scroller-0.41.0.tgz#8978def0d2ae4672d99e0b199de55473f120a522"
+  integrity sha512-dyxaxLLSiDigIUVJ0BwqnKBtBseALrOhmPgvk6BQVDbynnRQ2bOvaNZ7cbpe3A0i8zOQGOoTZF4i9D38/iubcg==
+  dependencies:
+    "@material/animation" "^0.41.0"
+    "@material/base" "^0.41.0"
+    "@material/tab" "^0.41.0"
 
 "@material/tab@^0.40.1":
   version "0.40.1"
@@ -498,6 +544,18 @@
     "@material/tab-indicator" "^0.40.1"
     "@material/theme" "^0.40.1"
     "@material/typography" "^0.40.1"
+
+"@material/tab@^0.41.0":
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/@material/tab/-/tab-0.41.0.tgz#df5e6b3e72f409c710262b2ff11582a282eae594"
+  integrity sha512-yM6eYD8Kgrk2cHa+zN3GYIK4Mt6EsSxDIpaArE6JopqRpalULjiOk83hWVPR1V95xphnzYAWM1YF6I6JexE9kw==
+  dependencies:
+    "@material/base" "^0.41.0"
+    "@material/ripple" "^0.41.0"
+    "@material/rtl" "^0.40.1"
+    "@material/tab-indicator" "^0.41.0"
+    "@material/theme" "^0.41.0"
+    "@material/typography" "^0.41.0"
 
 "@material/textfield@^0.39.0":
   version "0.39.3"
@@ -540,6 +598,11 @@
   version "0.40.1"
   resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.40.1.tgz#3cc3f1bf87ee9581df03e347a1979e53ae617221"
 
+"@material/theme@^0.41.0":
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.41.0.tgz#4f8252a872b17845cc661b867cbbf54e51a26759"
+  integrity sha512-ohW2JxObKOWvP34EkIIcrEVtL3g0Gs/T3/MdOsM36euyshY8Jwl1f6fjVUQvVjSpixUtSb30/+ulblF8fTOwBg==
+
 "@material/top-app-bar@^0.38.1":
   version "0.38.1"
   resolved "https://registry.yarnpkg.com/@material/top-app-bar/-/top-app-bar-0.38.1.tgz#e3dd6fa59c9510c99d311840272f6b93fca62e08"
@@ -563,6 +626,11 @@
 "@material/typography@^0.40.1":
   version "0.40.1"
   resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.40.1.tgz#68ecb767f7c54ca2f4053cccdd1c4a0198e60f9b"
+
+"@material/typography@^0.41.0":
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.41.0.tgz#645e0199bdba6b09d935352ab2095d07c33ec395"
+  integrity sha512-15dlqSU+9uGcWdg4KXXcmDzTKJPb7/5Z9kmooONb2Laot1uiuntDXQS0yL+U2FYLW5Ros+WVMosDBKFruWx68A==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -2084,7 +2152,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.5, classnames@^2.2.6:
+classnames@^2.0.0, classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
 
@@ -3406,7 +3474,7 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "^2.0.0"
 
-fbjs@0.8.17, fbjs@^0.8.15:
+fbjs@0.8.17, fbjs@^0.8.15, fbjs@^0.8.4:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   dependencies:
@@ -6541,6 +6609,13 @@ raf@3.4.0, raf@^3.1.0:
   dependencies:
     performance-now "^2.1.0"
 
+raf@^3.0.0:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
+  integrity sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==
+  dependencies:
+    performance-now "^2.1.0"
+
 randomatic@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/randomatic/-/randomatic-3.1.0.tgz#36f2ca708e9e567f5ed2ec01949026d50aa10116"
@@ -6583,6 +6658,14 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.2.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+"react-addons-shallow-compare@^0.14.2 || ^15.0.0":
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.6.2.tgz#198a00b91fc37623db64a28fd17b596ba362702f"
+  integrity sha1-GYoAuR/DdiPbZKKP0XtZa6NicC8=
+  dependencies:
+    fbjs "^0.8.4"
+    object-assign "^4.1.0"
 
 react-attr-converter@^0.3.1:
   version "0.3.1"
@@ -6755,6 +6838,16 @@ react-scripts@1.1.4:
     whatwg-fetch "2.0.3"
   optionalDependencies:
     fsevents "^1.1.3"
+
+react-stickynode@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-stickynode/-/react-stickynode-2.1.0.tgz#22cf4fdca3e86aa67a0d64c7f285e494035ec80b"
+  integrity sha512-K7OiqEYPNRZ/2ZvU58X0sLVocLCbN+TO/nVFlBD4YMep2a/OzorQdiXtCh8O0qjW4XNv8jHOk+hg4Nd3g6Wd6A==
+  dependencies:
+    classnames "^2.0.0"
+    prop-types "^15.6.0"
+    react-addons-shallow-compare "^0.14.2 || ^15.0.0"
+    subscribe-ui-event "^2.0.0"
 
 react@^16.3.2, react@^16.4.2:
   version "16.5.2"
@@ -7711,6 +7804,15 @@ style-loader@0.19.0:
   dependencies:
     loader-utils "^1.0.2"
     schema-utils "^0.3.0"
+
+subscribe-ui-event@^2.0.0:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/subscribe-ui-event/-/subscribe-ui-event-2.0.4.tgz#2f58d75799a44e5013bc753cfcce1f5958f3ffe5"
+  integrity sha512-RSONnfaJGDux1ErifEFfg+bpDxUzr1+jB/ww8owlqScu4AvcEhFVclTBkiuEyJfI0OWKVAIHi8okexL9TCU5MQ==
+  dependencies:
+    eventemitter3 "^3.0.0"
+    lodash "^4.17.10"
+    raf "^3.0.0"
 
 supports-color@^2.0.0:
   version "2.0.0"
