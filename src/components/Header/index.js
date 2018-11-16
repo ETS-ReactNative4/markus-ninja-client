@@ -173,7 +173,7 @@ class Header extends Component {
                   <span className="material-icons mdc-list-item__graphic">account_box</span>
                   <span className="mdc-list-item__text">Profile</span>
                 </Link>
-                <Link className="mdc-list-item" to="/logout">
+                <Link className="mdc-list-item" to="/signout">
                   <span className="material-icons mdc-list-item__graphic">power_settings_new</span>
                   <span className="mdc-list-item__text">Sign out</span>
                 </Link>
@@ -212,7 +212,7 @@ class Header extends Component {
           </IconLink>
           <IconLink
             className="mdc-top-app-bar__navigation-icon"
-            to="/logout"
+            to="/signout"
             aria-label="Sign out"
             title="Sign out"
           >

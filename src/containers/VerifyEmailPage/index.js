@@ -40,9 +40,9 @@ class VerifyEmailPage extends React.Component {
                 If you would like to do this later, please
                 <Link
                   className="rn-link rn-link--underlined mh1"
-                  to="/logout"
+                  to="/signout"
                 >
-                  logout
+                  Sign out
                 </Link>
                 to go back to the website.
               </span>

@@ -41,7 +41,7 @@ class AuthLinks extends Component {
                     <Link className="link" to={resourcePath}>Your profile</Link>
                   </li>
                   <li className="mdc-list-item" role="menuitem" tabindex="0">
-                    <Link className="link" to="/logout">Logout</Link>
+                    <Link className="link" to="/signout">Sign out</Link>
                   </li>
                   <li className="mdc-list-item" role="menuitem" tabindex="0">
                     <Link className="link" to="/settings">Settings</Link>

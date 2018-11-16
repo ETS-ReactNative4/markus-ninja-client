@@ -108,7 +108,7 @@ class AppContainer extends React.Component {
             />
             <Route
               exact
-              path="/logout"
+              path="/signout"
               component={LogoutPage}
             />
             <Route exact path="/reset_password" component={ResetPasswordPage} />

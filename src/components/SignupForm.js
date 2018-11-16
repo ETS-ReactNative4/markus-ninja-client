@@ -6,7 +6,7 @@ import ErrorText from 'components/ErrorText'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import CreateUserMutation from 'mutations/CreateUserMutation'
 import AppContext from 'containers/App/Context'
-import {isEmpty, isNil} from 'utils'
+import {isEmpty} from 'utils'
 
 class SignupForm extends React.Component {
   state = {
@@ -30,8 +30,10 @@ class SignupForm extends React.Component {
       username.value,
       password.value,
       (token, errors) => {
-        if (!isNil(errors)) {
-          console.error(errors[0].message)
+        if (errors) {
+          const error = errors[0].message
+          this.setState({error})
+          return
         }
 
         const credentials = btoa(username.value + ":" + password.value)

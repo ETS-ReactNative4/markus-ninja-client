@@ -86,3 +86,7 @@ h6 {
     @include mdc-typography(subtitle1);
   }
 }
+
+p {
+  margin: 0;
+}

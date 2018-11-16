@@ -89,8 +89,8 @@ class DashboardPage extends React.Component {
                   <div className="rn-header--hero__content">
                     <h3>
                       Welcome back
-                      <Link className="rn-link rn-link--on-primary ml1" to={props.viewer.resourcePath}>
-                        @{props.viewer.login}
+                      <Link className="rn-link rn-link--on-primary" to={props.viewer.resourcePath}>
+                        {` @${props.viewer.login}`}
                       </Link>
                     </h3>
                     <button

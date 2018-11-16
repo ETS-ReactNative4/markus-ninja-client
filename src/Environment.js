@@ -25,10 +25,8 @@ const network = Network.create((operation, variables) => {
     return response.json()
   }).then(json => {
     if (!isNil(json.error)) {
-      if (json.error === 'unauthorized') {
-        console.error("unauthorized user")
-        window.sessionStorage.removeItem("access_token")
-      }
+      console.error(json.error_description)
+      setTimeout(() => window.location.replace(""), 1000)
     }
     return json
   })
