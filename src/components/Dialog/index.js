@@ -180,7 +180,7 @@ class Dialog extends React.Component {
       onScrimClick,
       open,
       title,
-      ...otherProps,
+      ...otherProps
     } = this.props
     return otherProps
   }

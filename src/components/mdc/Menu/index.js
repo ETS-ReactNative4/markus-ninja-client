@@ -137,7 +137,7 @@ class Menu extends React.Component {
       onOpen,
       onSelected,
       quickOpen,
-      ...otherProps,
+      ...otherProps
     } = this.props
     return otherProps
   }

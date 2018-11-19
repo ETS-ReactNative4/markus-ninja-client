@@ -42,7 +42,7 @@ class HTML extends React.Component {
     const {
       className,
       html,
-      ...otherProps,
+      ...otherProps
     } = this.props
     return otherProps
   }

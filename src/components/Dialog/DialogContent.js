@@ -7,7 +7,7 @@ class DialogContent extends React.Component {
     const {
       className,
       children,
-      ...otherProps,
+      ...otherProps
     } = this.props
     const classes = cls('mdc-dialog__content', className)
 

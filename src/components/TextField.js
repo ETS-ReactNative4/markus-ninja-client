@@ -89,7 +89,7 @@ class TextField extends React.Component {
   render() {
     const {
       inputProps,
-      ...textFieldProps,
+      ...textFieldProps
     } = this.props
     const {value} = this.state
 

@@ -6,7 +6,7 @@ const DialogTitle = (props) => {
   const {
     className,
     children,
-    ...otherProps,
+    ...otherProps
   } = props
   const classes = cls('mdc-dialog__title', className)
 

@@ -2,8 +2,8 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import {
   createRefetchContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import { debounce, get, isNil, isEmpty } from 'utils'
 
 class SearchContainer extends React.Component {

@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {
   createRefetchContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import cls from 'classnames'
 import { Link, withRouter } from 'react-router-dom'
 import queryString from 'query-string'

@@ -8,7 +8,7 @@ class StudyActivityEvent extends React.Component {
     const {
       className,
       event,
-      ...otherProps,
+      ...otherProps
     } = this.props
     return otherProps
   }

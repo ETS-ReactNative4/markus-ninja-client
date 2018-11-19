@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {
   QueryRenderer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import environment from 'Environment'

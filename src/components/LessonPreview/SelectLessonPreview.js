@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import cls from 'classnames'
 import {
   createFragmentContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 
 class SelectLessonPreview extends React.Component {
   handleClick = (e) => {

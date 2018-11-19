@@ -22,7 +22,7 @@ class DialogActions extends React.Component {
     const {
       className,
       children,
-      ...otherProps,
+      ...otherProps
     } = this.props
     return otherProps
   }

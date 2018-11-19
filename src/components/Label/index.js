@@ -4,8 +4,8 @@ import cls from 'classnames'
 import tinycolor from 'tinycolor2'
 import {
   createFragmentContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import {get} from 'utils'
 
 import "./styles.css"

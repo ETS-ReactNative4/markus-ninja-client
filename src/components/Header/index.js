@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import cls from 'classnames'
 import {
   createFragmentContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import { Link, withRouter } from 'react-router-dom'
 import MediaQuery from 'react-responsive'
 import List from 'components/mdc/List'

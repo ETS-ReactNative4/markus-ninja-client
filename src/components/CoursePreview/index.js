@@ -1,8 +1,7 @@
 import * as React from 'react'
 import cls from 'classnames'
-import Relay, {
-  graphql,
-} from 'react-relay'
+import Relay from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import hoistNonReactStatic from 'hoist-non-react-statics'
 import { Link } from 'react-router-dom'
 import pluralize from 'pluralize'
