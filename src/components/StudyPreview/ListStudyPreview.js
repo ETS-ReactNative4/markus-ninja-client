@@ -1,15 +1,16 @@
 import * as React from 'react'
 import cls from 'classnames'
 import {Link} from 'react-router-dom'
+// import List, {ListItemGraphic, ListItem, ListItemText} from '@material/react-list'
+import List from 'components/mdc/List'
 import AppleIconButton from 'components/AppleIconButton'
 import EnrollIconButton from 'components/EnrollIconButton'
 import ListAppleButton from 'components/ListAppleButton'
 import ListEnrollButton from 'components/ListEnrollButton'
 import Counter from 'components/Counter'
 import Icon from 'components/Icon'
-import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
-import {get, timeDifferenceForDate} from 'utils'
+import {filterDefinedReactChildren, get, getHandleClickLink, timeDifferenceForDate} from 'utils'
 
 class ListStudyPreview extends React.Component {
   state = {
@@ -116,31 +117,37 @@ class ListStudyPreview extends React.Component {
                 anchorElement={anchorElement}
                 anchorCorner={Corner.BOTTOM_LEFT}
               >
-                <List>
-                  {study.viewerCanEnroll &&
-                  <ListEnrollButton enrollable={this.props.study} />}
-                  {study.viewerCanApple &&
-                  <ListAppleButton
-                    className="mdc-list-item"
-                    appleable={get(this.props, "study", null)}
-                  />}
-                  <Link
-                    className="mdc-list-item"
-                    to={study.resourcePath+"/lessons"}
-                  >
-                    <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="lesson" />
-                    <span className="mdc-list-item__text">
-                      Lessons
-                      <Counter>{get(study, "lessons.totalCount", 0)}</Counter>
-                    </span>
-                  </Link>
-                </List>
+                {this.renderMenuList()}
               </Menu>
             </Menu.Anchor>
           </span>
         </span>
       </li>
     )
+  }
+
+  renderMenuList() {
+    const study = get(this.props, "study", {})
+
+    const listItems = [
+      study.viewerCanEnroll &&
+      <ListEnrollButton enrollable={this.props.study} />,
+      study.viewerCanApple &&
+      <ListAppleButton appleable={get(this.props, "study", null)} />,
+      <List.Item onClick={getHandleClickLink(study.resourcePath+"/lessons")}>
+        <List.Item.Graphic graphic={
+          <Icon className="mdc-theme--text-icon-on-background" icon="lesson" />
+        } />
+        <List.Item.Text primaryText={
+          <span>
+            Lessons
+            <Counter>{get(study, "lessons.totalCount", 0)}</Counter>
+          </span>
+        }/>
+      </List.Item>,
+    ]
+
+    return <List items={filterDefinedReactChildren(listItems)} />
   }
 }
 

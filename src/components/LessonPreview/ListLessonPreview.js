@@ -6,15 +6,20 @@ import {
   graphql,
 } from 'react-relay'
 import {Link} from 'react-router-dom'
+import List from 'components/mdc/List'
 import EnrollIconButton from 'components/EnrollIconButton'
 import ListEnrollButton from 'components/ListEnrollButton'
 import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import Label from 'components/Label'
-import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
 import RemoveCourseLessonMutation from 'mutations/RemoveCourseLessonMutation'
-import {get, timeDifferenceForDate} from 'utils'
+import {
+  filterDefinedReactChildren,
+  get,
+  getHandleClickLink,
+  timeDifferenceForDate,
+} from 'utils'
 
 class ListLessonPreview extends React.Component {
   state = {
@@ -183,27 +188,33 @@ class ListLessonPreview extends React.Component {
             anchorElement={anchorElement}
             anchorCorner={Corner.BOTTOM_LEFT}
           >
-            <List>
-              {lesson.viewerCanEnroll &&
-              <ListEnrollButton
-                className="mdc-list-item"
-                enrollable={get(this.props, "lesson", null)}
-              />}
-              <Link
-                className="mdc-list-item"
-                to={lesson.resourcePath}
-              >
-                <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="comment" />
-                <span className="mdc-list-item__text">
-                  Comments
-                  <Counter>{get(lesson, "comments.totalCount", 0)}</Counter>
-                </span>
-              </Link>
-            </List>
+            {this.renderMenuList()}
           </Menu>
         </Menu.Anchor>
       </span>
     )
+  }
+
+  renderMenuList() {
+    const lesson = get(this.props, "lesson", {})
+
+    const listItems = [
+      lesson.viewerCanEnroll &&
+      <ListEnrollButton enrollable={get(this.props, "lesson", null)}/>,
+      <List.Item onClick={getHandleClickLink(lesson.resourcePath)}>
+        <List.Item.Graphic graphic={
+          <Icon className="mdc-theme--text-icon-on-background" icon="comment" />
+        } />
+        <List.Item.Text primaryText={
+          <span>
+            Comments
+            <Counter>{get(lesson, "comments.totalCount", 0)}</Counter>
+          </span>
+        }/>
+      </List.Item>,
+    ]
+
+    return <List items={filterDefinedReactChildren(listItems)} />
   }
 }
 

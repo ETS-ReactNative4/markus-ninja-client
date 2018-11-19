@@ -2,6 +2,7 @@ import * as React from 'react'
 import cls from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faApple } from '@fortawesome/free-brands-svg-icons'
+import List from 'components/mdc/List'
 import { get, isNil } from 'utils'
 import GiveAppleMutation from 'mutations/GiveAppleMutation'
 import TakeAppleMutation from 'mutations/TakeAppleMutation'
@@ -60,24 +61,24 @@ class ListAppleButton extends React.Component {
     }
 
     return (
-      <li
+      <List.Item
         className={this.classes}
         role="button"
         onClick={this.handleClick}
       >
-        <FontAwesomeIcon
-          className={cls("mdc-list-item__graphic", {
-            "mdc-theme--text-icon-on-background": !on,
-          })}
-          icon={faApple}
-          style={{
-            color: on ? "red" : null,
-          }}
+        <List.Item.Graphic
+          className={cls({"mdc-theme--text-icon-on-background": !on})}
+          graphic={
+            <FontAwesomeIcon
+              icon={faApple}
+              style={{
+                color: on ? "red" : null,
+              }}
+            />
+          }
         />
-        <span className="mdc-list-item__text">
-          {viewerHasAppled ? "Take" : "Give"}
-        </span>
-      </li>
+        <List.Item.Text primaryText={viewerHasAppled ? "Take" : "Give"} />
+      </List.Item>
     )
   }
 }

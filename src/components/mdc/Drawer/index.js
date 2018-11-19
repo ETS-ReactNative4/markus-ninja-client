@@ -24,11 +24,11 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import FocusTrap from 'focus-trap-react'
-import {MDCListFoundation} from '@material/list'
+import {MDCListFoundation} from '@material/list/dist/mdc.list'
 import {
   MDCDismissibleDrawerFoundation,
   MDCModalDrawerFoundation,
-} from '@material/drawer';
+} from '@material/drawer/dist/mdc.drawer';
 
 import DrawerAppContent from './DrawerAppContent'
 import DrawerContent from './DrawerContent'

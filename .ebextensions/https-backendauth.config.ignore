@@ -1,0 +1,31 @@
+# vi: ft=yaml 
+
+option_settings:
+  # Backend Encryption Policy
+  aws:elb:policies:backendencryption:
+    PublicKeyPolicyNames: backendkey
+    InstancePorts: 443
+  # Public Key Policy
+  aws:elb:policies:backendkey:
+    PublicKey: |
+      -----BEGIN CERTIFICATE-----
+      MIIDgjCCAmoCCQCE+ODs0qOv+jANBgkqhkiG9w0BAQsFADCBgjELMAkGA1UEBhMC
+      VVMxETAPBgNVBAgMCElsbGlub2lzMRAwDgYDVQQHDAdDaGljYWdvMRUwEwYDVQQK
+      DAxNYXJrdXMgTmluamExDzANBgNVBAsMBkNsaWVudDEmMCQGCSqGSIb3DQEJARYX
+      YWRtaW5pc3RyYXRvQHJrdXMubmluamEwHhcNMTgwMjA3MjIxMTM2WhcNMTkwMjA3
+      MjIxMTM2WjCBgjELMAkGA1UEBhMCVVMxETAPBgNVBAgMCElsbGlub2lzMRAwDgYD
+      VQQHDAdDaGljYWdvMRUwEwYDVQQKDAxNYXJrdXMgTmluamExDzANBgNVBAsMBkNs
+      aWVudDEmMCQGCSqGSIb3DQEJARYXYWRtaW5pc3RyYXRvQHJrdXMubmluamEwggEi
+      MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCenHO1W3QbycWuUzrjH5q6ted9
+      l8ns+fVcrmrYul4JBCmNpFp7jA86HZn1ASWj15pi0ReB2KJTnDCzknTK1qUonSBK
+      omSCTnE3vEJvlOmKm3F1kkcjHKX9k9IH3GgGWIjFGxD8ryJRd0cwCFui5ZYPAWIz
+      oh8c1oLFyLksuzn3Mpn8imTCY+5fZokzpouB0NaKK2XQuNqZp0xfW7Qu6wqt7LHg
+      SgG7REM9+2qFQ2fpFDISCB5k40jxY33Ylz5sChLfjQ/fsnw6LPlyrh7+MA8cxLJA
+      U9fecN9vyDWZSa6ruA0ZWf2D4LnSfp6NAjJDkoNlxCKi86Eygt+pWoM6EFy1AgMB
+      AAEwDQYJKoZIhvcNAQELBQADggEBAIy4Rz6phP9uVmFQro2A5QqzoPaips6Xg39W
+      76FCvfOJt0Qqz08g0w7A2QQREvEzpT0xZnpNhV0IX9dTAzFX0eYTTr2+8n4BMLSE
+      1HykajIFQ2mxcB0Gkxel9ybDEs1AuTx4nGOy65p1fLlkytem1aaOPM1T60jK1a69
+      R6tE+y5VNZwbqEJrdcNCLDmIy3umboACzhVS3VEjjeP1IgoVt47TQ09sO9R8qHtU
+      zQ63DaxqovPAx1MOI0fmkH4Cf0wbNco4DdTYeDbEihdVUmuqkYoLa4BgCsduzPZa
+      MOyPfeazYjb/RR/XT/+8PYIjPH8Y0Wj/qUe2h2jHdSLBDJm0zXw=
+      -----END CERTIFICATE-----

@@ -1,6 +1,8 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
+import List from 'components/mdc/List'
+import Icon from 'components/Icon'
 import { get, isNil } from 'utils'
 import UpdateEnrollmentMutation from 'mutations/UpdateEnrollmentMutation'
 
@@ -18,7 +20,7 @@ class ListEnrollButton extends React.Component {
       UpdateEnrollmentMutation(
         this.props.enrollable.id,
         "UNENROLLED",
-        (errors) => {
+        (response, errors) => {
           if (!isNil(errors)) {
             console.error(errors[0].message)
           }
@@ -31,7 +33,7 @@ class ListEnrollButton extends React.Component {
       UpdateEnrollmentMutation(
         this.props.enrollable.id,
         "ENROLLED",
-        (errors) => {
+        (response, errors) => {
           if (!isNil(errors)) {
             console.error(errors[0].message)
           }
@@ -46,11 +48,6 @@ class ListEnrollButton extends React.Component {
       return true
     }
     return false
-  }
-
-  get classes() {
-    const {className} = this.props;
-    return cls("mdc-list-item", className)
   }
 
   get text() {
@@ -73,33 +70,35 @@ class ListEnrollButton extends React.Component {
 
   render() {
     const {on} = this.state
-    const {enrollable, notification} = this.props
+    const {className, enrollable, notification} = this.props
 
     if (!enrollable) return null;
 
     return (
-      <li
-        className={this.classes}
+      <List.Item
+        className={className}
         role="button"
         onClick={this.handleClick}
       >
-        <i className={cls(
-          "material-icons mdc-list-item__graphic ",
-          {
-            "mdc-theme--text-icon-on-background": !on,
-            "mdc-theme--secondary": on,
-          },
-        )} >
-          {notification && on
-          ? "notifications"
-          : notification && !on
-            ? "notifications_off"
-          : "school"}
-        </i>
-        <span className="mdc-list-item__text">
-          {this.text}
-        </span>
-      </li>
+        <List.Item.Graphic
+          className={cls(
+            {
+              "mdc-theme--text-icon-on-background": !on,
+              "mdc-theme--secondary": on,
+            },
+          )}
+          graphic={
+            <Icon icon={
+              notification && on
+              ? "notifications"
+              : notification && !on
+                ? "notifications_off"
+                : "school"
+            }/>
+          }
+        />
+        <List.Item.Text primaryText={this.text} />
+      </List.Item>
     )
   }
 }

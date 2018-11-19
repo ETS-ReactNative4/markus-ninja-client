@@ -5,6 +5,7 @@ import {
   Modifier,
 } from 'draft-js'
 import cls from 'classnames'
+import List from 'components/mdc/List'
 import Icon from 'components/Icon'
 import {get, makeCancelable} from 'utils'
 import Context from './Context'
@@ -127,8 +128,8 @@ class AttachFile extends React.Component {
     const {className} = this.props
 
     return (
-      <li
-        className={cls("mdc-list-item", className)}
+      <List.Item
+        className={className}
         role="button"
         onClick={this.handleClick}
       >
@@ -139,9 +140,9 @@ class AttachFile extends React.Component {
           accept=".jpg,jpeg,.png,.gif"
           onChange={this.handleSubmit}
         />
-        <Icon as="span" className="mdc-list-item__graphic" icon="attach_file" />
-        <span className="mdc-list-item__text">Attach file</span>
-      </li>
+        <List.Item.Graphic graphic={<Icon icon="attach_file" />} />
+        <List.Item.Text primaryText="Attach file" />
+      </List.Item>
     )
   }
 

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import moment from 'moment'
+import getHistory from 'react-router-global-history'
 
 export function byteSizeToString(size) {
   const bytesPerKB = 1000
@@ -35,6 +36,10 @@ export function timeDifferenceForDate(date) {
 
 export function isNil(value) {
   return value === null || value === undefined
+}
+
+export function isDefined(value) {
+  return !isNil(value)
 }
 
 export function isEmpty(value) {
@@ -233,4 +238,14 @@ export function onElementHeightChange(elm, callback) {
 
     elm.onElementHeightChangeTimer = setTimeout(run, 200);
   })();
+}
+
+export function getHandleClickLink(to) {
+  return (e) => {
+    getHistory().push(to)
+  }
+}
+
+export function filterDefinedReactChildren(children) {
+  return React.Children.map(children, c => c).filter(isDefined)
 }

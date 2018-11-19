@@ -5,14 +5,14 @@ import {
   graphql,
 } from 'react-relay'
 import { withRouter } from 'react-router'
+import List from 'components/mdc/List'
 import Icon from 'components/Icon'
-import List from 'components/List'
 import Menu from 'components/mdc/Menu'
 import NotificationButton from 'components/NotificationButton'
 import ListEnrollButton from 'components/ListEnrollButton'
 import MarkNotificationAsReadMutation from 'mutations/MarkNotificationAsReadMutation'
 import UpdateEnrollmentMutation from 'mutations/UpdateEnrollmentMutation'
-import {get, timeDifferenceForDate} from 'utils'
+import {filterDefinedReactChildren, get, timeDifferenceForDate} from 'utils'
 
 class Notification extends React.Component {
   state = {
@@ -96,25 +96,28 @@ class Notification extends React.Component {
                 more_vert
               </button>
               <Menu open={menuOpen} onClose={() => this.setState({menuOpen: false})}>
-                <List>
-                  {subject.viewerCanEnroll &&
-                  <ListEnrollButton notification enrollable={subject} />}
-                  <li
-                    className="mdc-list-item"
-                    onClick={this.handleMarkAsRead}
-                  >
-                    <span className="mdc-list-item__graphic material-icons">
-                      done
-                    </span>
-                    <span className="mdc-list-item__text">Mark as read</span>
-                  </li>
-                </List>
+                {this.renderMenuList()}
               </Menu>
             </Menu.Anchor>
           </span>
         </span>
       </li>
     )
+  }
+
+  renderMenuList() {
+    const subject = get(this.props, "comment", {})
+
+    const listItems = [
+      subject.viewerCanEnroll &&
+      <ListEnrollButton notification enrollable={subject} />,
+      <List.Item onClick={this.handleMarkAsRead}>
+        <List.Item.Graphic graphic={<Icon icon="done" />} />
+        <List.Item.Text primaryText="Mark as read" />
+      </List.Item>
+    ]
+
+    return <List items={filterDefinedReactChildren(listItems)} />
   }
 }
 

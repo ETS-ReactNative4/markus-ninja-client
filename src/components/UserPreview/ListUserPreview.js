@@ -1,13 +1,13 @@
 import * as React from 'react'
 import cls from 'classnames'
 import {Link} from 'react-router-dom'
+import List from 'components/mdc/List'
 import EnrollIconButton from 'components/EnrollIconButton'
 import ListEnrollButton from 'components/ListEnrollButton'
 import Counter from 'components/Counter'
 import Icon from 'components/Icon'
-import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
-import {get, timeDifferenceForDate} from 'utils'
+import {filterDefinedReactChildren, get, getHandleClickLink, timeDifferenceForDate} from 'utils'
 
 class ListUserPreview extends React.Component {
   state = {
@@ -73,29 +73,35 @@ class ListUserPreview extends React.Component {
                 anchorElement={anchorElement}
                 anchorCorner={Corner.BOTTOM_LEFT}
               >
-                <List>
-                  {user.viewerCanEnroll &&
-                  <ListEnrollButton
-                    className="mdc-list-item"
-                    enrollable={get(this.props, "user", null)}
-                  />}
-                  <Link
-                    className="mdc-list-item"
-                    to={user.resourcePath+"?tab=studies"}
-                  >
-                    <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="study" />
-                    <span className="mdc-list-item__text">
-                      Studies
-                      <Counter>{get(user, "studies.totalCount", 0)}</Counter>
-                    </span>
-                  </Link>
-                </List>
+                {this.renderMenuList()}
               </Menu>
             </Menu.Anchor>
           </span>
         </span>
       </li>
     )
+  }
+
+  renderMenuList() {
+    const user = get(this.props, "user", {})
+
+    const listItems = [
+      user.viewerCanEnroll &&
+      <ListEnrollButton enrollable={this.props.user} />,
+      <List.Item onClick={getHandleClickLink(user.resourcePath+"?tab=studies")}>
+        <List.Item.Graphic graphic={
+          <Icon className="mdc-theme--text-icon-on-background" icon="study" />
+        } />
+        <List.Item.Text primaryText={
+          <span>
+            Studies
+            <Counter>{get(user, "studies.totalCount", 0)}</Counter>
+          </span>
+        }/>
+      </List.Item>,
+    ]
+
+    return <List items={filterDefinedReactChildren(listItems)} />
   }
 }
 

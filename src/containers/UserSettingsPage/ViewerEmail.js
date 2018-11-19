@@ -3,13 +3,13 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay'
+import List from 'components/mdc/List'
 import Dialog from 'components/Dialog'
 import Icon from 'components/Icon'
-import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
 import DeleteEmailMutation from 'mutations/DeleteEmailMutation'
 import RequestEmailVerificationMutation from 'mutations/RequestEmailVerificationMutation'
-import { get } from 'utils'
+import {filterDefinedReactChildren, get} from 'utils'
 
 class ViewerEmail extends React.Component {
   state = {
@@ -122,40 +122,7 @@ class ViewerEmail extends React.Component {
                   anchorElement={anchorElement}
                   anchorCorner={Corner.BOTTOM_LEFT}
                 >
-                  <List>
-                    <List.Item className="mdc-theme--primary" disabled>
-                      <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="email" />
-                      <span className="mdc-list-item__text">
-                        {email.type}
-                      </span>
-                    </List.Item>
-                    {email.isVerified
-                    ? <List.Item disabled className="mdc-theme--text-primary-on-light">
-                        <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="verified_user" />
-                        <span className="mdc-list-item__text">
-                          Verified
-                        </span>
-                      </List.Item>
-                    : <List.Item
-                        role="button"
-                        onClick={this.handleRequestVerification}
-                      >
-                        <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="send" />
-                        <span className="mdc-list-item__text">
-                          Request verification
-                        </span>
-                      </List.Item>}
-                    {email.viewerCanDelete &&
-                    <List.Item
-                      role="button"
-                      onClick={this.handleToggleDeleteConfirmation}
-                    >
-                      <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="delete" />
-                      <span className="mdc-list-item__text">
-                        Delete
-                      </span>
-                    </List.Item>}
-                  </List>
+                  {this.renderMenuList()}
                 </Menu>
               </Menu.Anchor>
             </span>
@@ -201,6 +168,47 @@ class ViewerEmail extends React.Component {
           </Dialog.Actions>}
         />
     )
+  }
+
+  renderMenuList() {
+    const email = get(this.props, "email", {})
+
+    const listItems = [
+      email.viewerCanDelete &&
+      <List.Item
+        role="button"
+        onClick={this.handleToggleDeleteConfirmation}
+      >
+        <List.Item.Graphic
+          graphic={<Icon className="mdc-theme--text-icon-on-background" icon="delete" />}
+        />
+        <List.Item.Text primaryText="Delete" />
+      </List.Item>,
+      <List.Item className="mdc-theme--primary">
+        <List.Item.Graphic
+          graphic={<Icon className="mdc-theme--text-icon-on-background" icon="email" />}
+        />
+        <List.Item.Text primaryText={email.type} />
+      </List.Item>,
+      email.isVerified
+      ? <List.Item className="mdc-theme--text-primary-on-light">
+          <List.Item.Graphic
+            graphic={<Icon className="mdc-theme--text-icon-on-background" icon="verified_user" />}
+          />
+          <List.Item.Text primaryText="Verified" />
+        </List.Item>
+      : <List.Item
+          role="button"
+          onClick={this.handleRequestVerification}
+        >
+          <List.Item.Graphic
+            graphic={<Icon className="mdc-theme--text-icon-on-background" icon="send" />}
+          />
+          <List.Item.Text primaryText="Request verification" />
+        </List.Item>,
+    ]
+
+    return <List items={filterDefinedReactChildren(listItems)} />
   }
 }
 

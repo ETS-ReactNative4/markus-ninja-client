@@ -1,11 +1,11 @@
 import * as React from 'react'
 import cls from 'classnames'
 import {Link} from 'react-router-dom'
+import List from 'components/mdc/List'
 import Counter from 'components/Counter'
 import Icon from 'components/Icon'
-import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
-import {get, timeDifferenceForDate} from 'utils'
+import {get, getHandleClickLink, timeDifferenceForDate} from 'utils'
 
 class ListTopicPreview extends React.Component {
   state = {
@@ -80,26 +80,28 @@ class ListTopicPreview extends React.Component {
                 anchorCorner={Corner.BOTTOM_LEFT}
               >
                 <List>
-                  <Link
-                    className="mdc-list-item"
-                    to={topic.resourcePath+"?t=course"}
-                  >
-                    <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="course" />
-                    <span className="mdc-list-item__text">
-                      Courses
-                      <Counter>{get(topic, "topicables.courseCount", 0)}</Counter>
-                    </span>
-                  </Link>
-                  <Link
-                    className="mdc-list-item"
-                    to={topic.resourcePath+"?t=study"}
-                  >
-                    <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="study" />
-                    <span className="mdc-list-item__text">
-                      Studies
-                      <Counter>{get(topic, "topicables.studyCount", 0)}</Counter>
-                    </span>
-                  </Link>
+                  <List.Item onClick={getHandleClickLink(topic.resourcePath+"?t=course")}>
+                    <List.Item.Graphic graphic={
+                      <Icon className="mdc-theme--text-icon-on-background" icon="course" />
+                    } />
+                    <List.Item.Text primaryText={
+                      <span>
+                        Courses
+                        <Counter>{get(topic, "topicables.courseCount", 0)}</Counter>
+                      </span>
+                    }/>
+                  </List.Item>
+                  <List.Item onClick={getHandleClickLink(topic.resourcePath+"?t=study")}>
+                    <List.Item.Graphic graphic={
+                      <Icon className="mdc-theme--text-icon-on-background" icon="study" />
+                    } />
+                    <List.Item.Text primaryText={
+                      <span>
+                        Studies
+                        <Counter>{get(topic, "topicables.studyCount", 0)}</Counter>
+                      </span>
+                    }/>
+                  </List.Item>
                 </List>
               </Menu>
             </Menu.Anchor>

@@ -1,9 +1,8 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
+import FocusTrap from 'focus-trap-react'
 import {MDCDialogFoundation} from '@material/dialog/dist/mdc.dialog'
-import {closest, matches} from '@material/dom/ponyfill'
-import createFocusTrap from 'focus-trap'
 import * as util from './util'
 import DialogActions from './DialogActions'
 import DialogContent from './DialogContent'
@@ -12,31 +11,19 @@ import DialogTitle from './DialogTitle'
 const strings = MDCDialogFoundation.strings
 
 class Dialog extends React.Component {
+  dialogElement_ = React.createRef()
+  containerElement_ = React.createRef()
+  contentElement_ = React.createRef()
   foundation_ = null
 
-  constructor(props) {
-    super(props)
-
-    this.root = null
-    this.container = React.createRef()
-    this.content = React.createRef()
-    this.focusTrap_ = null
-    this.focusTrapFactory_ = createFocusTrap
-    this.initialFocusEl = null
-
-    this.setRootRef = (element) => {
-      this.root = element;
-    }
-
-    this.state = {
-      classList: new Set(),
-    }
+  state = {
+    activeFocusTrap: false,
+    classList: new Set(),
   }
 
   componentDidMount() {
-    this.buttons_ = [].slice.call(this.root.querySelectorAll(strings.BUTTON_SELECTOR))
-    this.defaultButton_ = this.root.querySelector(strings.DEFAULT_BUTTON_SELECTOR)
-    this.focusTrap_ = util.createFocusTrapInstance(this.container.current, this.focusTrapFactory_, this.initialFocusEl)
+    this.buttons_ = [].slice.call(this.dialogElement_.current.querySelectorAll(strings.BUTTON_SELECTOR))
+    this.defaultButton_ = this.dialogElement_.current.querySelector(strings.DEFAULT_BUTTON_SELECTOR)
     this.foundation_ = new MDCDialogFoundation(this.adapter)
     this.foundation_.init()
 
@@ -86,11 +73,11 @@ class Dialog extends React.Component {
   }
 
   listen(evtType, handler) {
-    this.root.addEventListener(evtType, handler)
+    this.dialogElement_.current.addEventListener(evtType, handler)
   }
 
   unlisten(evtType, handler) {
-    this.root.removeEventListener(evtType, handler)
+    this.dialogElement_.current.removeEventListener(evtType, handler)
   }
 
   emit(evtType, evtData, shouldBubble = false) {
@@ -105,7 +92,7 @@ class Dialog extends React.Component {
       evt.initCustomEvent(evtType, shouldBubble, false, evtData)
     }
 
-    this.root.dispatchEvent(evt)
+    this.dialogElement_.current.dispatchEvent(evt)
   }
 
   get classes() {
@@ -129,15 +116,10 @@ class Dialog extends React.Component {
       hasClass: (className) => this.classes.split(' ').includes(className),
       addBodyClass: (className) => document.body.classList.add(className),
       removeBodyClass: (className) => document.body.classList.remove(className),
-      eventTargetMatches: (target, selector) => matches(target, selector),
-      trapFocus: () => this.focusTrap_.activate(),
-      releaseFocus: () => this.focusTrap_.deactivate(),
-      isContentScrollable: () => !!this.content.current && util.isScrollable(this.content.current),
+      trapFocus: () => this.setState({activeFocusTrap: true}),
+      releaseFocus: () => this.setState({activeFocusTrap: false}),
+      isContentScrollable: () => !!this.contentElement_.current && util.isScrollable(this.contentElement_.current),
       areButtonsStacked: () => util.areTopsMisaligned(this.buttons_),
-      getActionFromEvent: (e) => {
-        const element = closest(e.target, `[${strings.ACTION_ATTRIBUTE}]`)
-        return element && element.getAttribute(strings.ACTION_ATTRIBUTE)
-      },
       clickDefaultButton: () => {
         if (this.defaultButton_) {
           this.defaultButton_.click()
@@ -160,6 +142,33 @@ class Dialog extends React.Component {
     }
   }
 
+  handleClickAction_ = (evt) => {
+    const action = evt.target.getAttribute(strings.ACTION_ATTRIBUTE)
+    if (action) {
+      this.close(action)
+    }
+  }
+
+  handleKeyDownAction_ = (evt) => {
+    const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
+    const isSpace = evt.key === 'Space' || evt.keyCode === 32;
+
+    if (isEnter || isSpace) {
+      const action = evt.target.getAttribute(strings.ACTION_ATTRIBUTE)
+      if (action) {
+        this.close(action)
+      }
+    }
+  }
+
+  handleScrimClick_ = (evt) => {
+    this.props.onScrimClick(evt);
+    const scrimClickAction = this.foundation_.getScrimClickAction()
+    if (scrimClickAction !== "") {
+      this.close(scrimClickAction)
+    }
+  }
+
   get otherProps() {
     const {
       actions,
@@ -168,6 +177,7 @@ class Dialog extends React.Component {
       innerRef,
       onClose,
       onOpen,
+      onScrimClick,
       open,
       title,
       ...otherProps,
@@ -175,13 +185,17 @@ class Dialog extends React.Component {
     return otherProps
   }
 
+  get focusTrapOptions() {
+    return {
+      clickOutsideDeactivates: true,
+      initialFocus: false,
+      escapeDeactivates: false,
+      returnFocusOnDeactivate: false,
+    }
+  }
+
   render() {
-    const {
-      actions,
-      content,
-      innerRef,
-      title,
-    } = this.props
+    const {activeFocusTrap} = this.state
 
     return (
       <div
@@ -191,21 +205,38 @@ class Dialog extends React.Component {
         aria-modal="true"
         aria-labelledby="dialog-title"
         aria-describedby="dialog-content"
-        onClick={(e) => this.foundation_.handleInteraction(e)}
-        onKeyDown={(e) => this.foundation_.handleInteraction(e)}
-        ref={(node) => {this.setRootRef(node); innerRef(node)}}
+        ref={this.dialogElement_}
       >
+        {activeFocusTrap
+        ? <FocusTrap focusTrapOptions={this.focusTrapOptions}>
+            {this.renderChildren()}
+          </FocusTrap>
+        : this.renderChildren()}
         <div
-          className="mdc-dialog__container"
-          ref={this.container}
-        >
-          <div className="mdc-dialog__surface">
-            {title && this.renderTitle()}
-            {content && this.renderContent()}
-            {actions && this.renderActions()}
-          </div>
+          className="mdc-dialog__scrim"
+          onClick={this.handleScrimClick_}
+        ></div>
+      </div>
+    )
+  }
+
+  renderChildren() {
+    const {
+      actions,
+      content,
+      title,
+    } = this.props
+
+    return (
+      <div
+        className="mdc-dialog__container"
+        ref={this.containerElement_}
+      >
+        <div className="mdc-dialog__surface">
+          {title && this.renderTitle()}
+          {content && this.renderContent()}
+          {actions && this.renderActions()}
         </div>
-        <div className="mdc-dialog__scrim"></div>
       </div>
     )
   }
@@ -222,7 +253,7 @@ class Dialog extends React.Component {
     const {content} = this.props
     const props = Object.assign({
       id: 'dialog-content',
-      ref: this.content,
+      ref: this.contentElement_,
     }, content.props)
     return React.cloneElement(content, props)
   }
@@ -230,13 +261,11 @@ class Dialog extends React.Component {
   renderActions() {
     const {actions} = this.props
     const props = Object.assign({
+      onClick: this.handleClickAction_,
+      onKeyDown: this.handleKeyDownAction_,
     }, actions.props)
     return React.cloneElement(actions, props)
   }
-
-  static Actions = DialogActions
-  static Content = DialogContent
-  static Title = DialogTitle
 }
 
 Dialog.propTypes = {
@@ -246,6 +275,7 @@ Dialog.propTypes = {
   innerRef: PropTypes.func,
   onClose: PropTypes.func,
   onOpen: PropTypes.func,
+  onScrimClick: PropTypes.func,
   open: PropTypes.bool,
   title: PropTypes.element,
 }
@@ -257,8 +287,13 @@ Dialog.defaultProps = {
   innerRef: () => {},
   onClose: () => {},
   onOpen: () => {},
+  onScrimClick: () => {},
   open: false,
   title: null,
 }
+
+Dialog.Actions = DialogActions
+Dialog.Content = DialogContent
+Dialog.Title = DialogTitle
 
 export default Dialog

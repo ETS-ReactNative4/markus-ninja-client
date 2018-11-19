@@ -10,13 +10,19 @@ import HTML from 'components/HTML'
 import StudyBodyEditor from 'components/StudyBodyEditor'
 import UserLink from 'components/UserLink'
 import Icon from 'components/Icon'
-import List from 'components/List'
+import List from 'components/mdc/List'
 import Menu, {Corner} from 'components/mdc/Menu'
 import DeleteLessonCommentMutation from 'mutations/DeleteLessonCommentMutation'
 import PublishLessonCommentDraftMutation from 'mutations/PublishLessonCommentDraftMutation'
 import ResetLessonCommentDraftMutation from 'mutations/ResetLessonCommentDraftMutation'
 import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
-import {debounce, get, isNil, throttle, timeDifferenceForDate} from 'utils'
+import {
+  debounce,
+  filterDefinedReactChildren,
+  get,
+  throttle,
+  timeDifferenceForDate,
+} from 'utils'
 
 class LessonComment extends React.Component {
   state = {
@@ -48,7 +54,7 @@ class LessonComment extends React.Component {
       this.props.comment.id,
       draft,
       (comment, errors) => {
-        if (!isNil(errors)) {
+        if (errors) {
           this.setState({ error: errors[0].message })
         }
         this.setState({
@@ -209,6 +215,7 @@ class LessonComment extends React.Component {
               edit
             </button>}
           </div>
+          {(comment.viewerCanDelete || comment.viewerCanUpdate) &&
           <Menu.Anchor
             className="mdc-card__action-icons rn-card__actions--collapsed"
             innerRef={this.setAnchorElement}
@@ -226,32 +233,38 @@ class LessonComment extends React.Component {
               anchorElement={anchorElement}
               anchorCorner={Corner.BOTTOM_LEFT}
             >
-              <List>
-                {comment.viewerCanDelete &&
-                <li
-                  className="mdc-list-item"
-                  role="button"
-                  onClick={this.handleToggleDeleteConfirmation}
-                >
-                  <Icon as="span" className="mdc-list-item__graphic" icon="delete" />
-                  <span className="mdc-list-item__text">Delete comment</span>
-                </li>}
-                {comment.viewerCanUpdate &&
-                <li
-                  className="mdc-list-item"
-                  role="button"
-                  onClick={this.handleToggleEdit}
-                >
-                  <Icon as="span" className="mdc-list-item__graphic" icon="edit" />
-                  <span className="mdc-list-item__text">Edit comment</span>
-                </li>}
-              </List>
+              {this.renderMenuList()}
             </Menu>
-          </Menu.Anchor>
+          </Menu.Anchor>}
         </div>}
         {comment.viewerCanDelete && this.renderConfirmDeleteDialog()}
       </div>
     )
+  }
+
+  renderMenuList() {
+    const comment = get(this.props, "comment", {})
+
+    const listItems = [
+      comment.viewerCanDelete &&
+      <List.Item
+        role="button"
+        onClick={this.handleToggleDeleteConfirmation}
+      >
+        <List.Item.Graphic graphic={<Icon icon="delete" />}/>
+        <List.Item.Text primaryText="Delete comment" />
+      </List.Item>,
+      comment.viewerCanUpdate &&
+      <List.Item
+        role="button"
+        onClick={this.handleToggleEdit}
+      >
+        <List.Item.Graphic graphic={<Icon icon="edit" />}/>
+        <List.Item.Text primaryText="Edit comment" />
+      </List.Item>,
+    ]
+
+    return <List items={filterDefinedReactChildren(listItems)} />
   }
 
   renderConfirmDeleteDialog() {

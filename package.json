@@ -21,6 +21,7 @@
     "@material/list": "^0.40.1",
     "@material/menu": "^0.40.1",
     "@material/notched-outline": "^0.40.1",
+    "@material/react-list": "^0.6.2",
     "@material/react-ripple": "^0.4.2",
     "@material/react-select": "^0.5.1",
     "@material/react-tab": "^0.6.1",
@@ -59,9 +60,11 @@
     "react-relay": "^1.6.2",
     "react-responsive": "^5.0.0",
     "react-router-dom": "^4.3.1",
+    "react-router-global-history": "^1.0.2",
     "react-scripts": "1.1.4",
     "react-stickynode": "^2.1.0",
     "relay-runtime": "^1.6.2",
+    "serve": "^10.1.1",
     "shortid": "^2.2.13",
     "tinycolor2": "^1.4.1",
     "webfontloader": "^1.6.28"
@@ -81,7 +84,9 @@
     "pretest": "npm run build:relay",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "relay": "curl http://localhost:5000/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json"
+    "relay": "curl http://localhost:5000/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
+    "serve": "serve -s build",
+    "deploy": "npm run build && npm run serve"
   },
   "devDependencies": {
     "babel-plugin-relay": "^1.6.2",

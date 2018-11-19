@@ -1,0 +1,12 @@
+# vi: ft=yaml 
+
+option_settings:
+  aws:elb:listener:443:
+    ListenerProtocol: HTTPS
+    SSLCertificateId: '`{ "Ref": "sslcertificate" }`'
+
+Resources:
+  sslcertificate:
+    Type: 'AWS::CertificateManager::Certificate'
+    Properties:
+      DomainName: 'ma.rkus.ninja'

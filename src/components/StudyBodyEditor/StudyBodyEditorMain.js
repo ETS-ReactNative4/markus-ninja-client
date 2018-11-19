@@ -7,15 +7,19 @@ import {
   EditorState,
 } from 'draft-js'
 import Sticky from 'react-stickynode'
+import List from 'components/mdc/List'
 import Dialog from 'components/Dialog'
 import Icon from 'components/Icon'
-import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
 import { withUID } from 'components/UniqueId'
-import {timeDifferenceForDate} from 'utils'
+import {mediaQueryPhone} from 'styles/helpers'
+import {filterDefinedReactChildren, timeDifferenceForDate} from 'utils'
 import AttachFile from './AttachFile'
 import Context from './Context'
 import Preview from './Preview'
+
+const DRAFT_INDEX = 0,
+      PREVIEW_INDEX = 1
 
 class StudyBodyEditorMain extends React.Component {
   constructor(props) {
@@ -30,6 +34,7 @@ class StudyBodyEditorMain extends React.Component {
       initialValue: this.props.object.draft,
       loading: false,
       menuOpen: false,
+      selectedIndex: DRAFT_INDEX,
     }
   }
 
@@ -84,6 +89,19 @@ class StudyBodyEditorMain extends React.Component {
     this.props.onReset()
   }
 
+  handleSelect_ = (selectedIndex) => {
+    switch (selectedIndex) {
+      case DRAFT_INDEX:
+        this.handleChangeTab_("draft")
+        break
+      case PREVIEW_INDEX:
+        this.handleChangeTab_("preview")
+        break
+      default:
+        break
+    }
+  }
+
   handleToggleCancelConfirmation = () => {
     if (this.text !== this.props.object.draft) {
       const {confirmCancelDialogOpen} = this.state
@@ -120,6 +138,15 @@ class StudyBodyEditorMain extends React.Component {
     return this.context.editorState.getCurrentContent().getPlainText()
   }
 
+  get stickyMenuTop() {
+    const mq = mediaQueryPhone()
+    if (mq.matches) {
+      return 56
+    } else {
+      return 64
+    }
+  }
+
   render() {
     const {editorState, tab, toggleSaveDialog} = this.context
     const {anchorElement, loading, menuOpen} = this.state
@@ -128,7 +155,12 @@ class StudyBodyEditorMain extends React.Component {
     return (
       <div id={`draft-${uid}`} className={this.classes}>
         <div className="mdc-card">
-          <Sticky top={64} bottomBoundary={`#draft-${uid}`} innerZ={2} activeClass="rn-card__actions--sticky">
+          <Sticky
+            top={this.stickyMenuTop}
+            bottomBoundary={`#draft-${uid}`}
+            innerZ={2}
+            activeClass="rn-card__actions--sticky"
+          >
             <div className="rn-card__actions mdc-card__actions">
               <span className="rn-card__overline">
                 {tab === "draft"
@@ -264,26 +296,28 @@ class StudyBodyEditorMain extends React.Component {
                   anchorElement={anchorElement}
                   anchorCorner={Corner.BOTTOM_LEFT}
                 >
-                  <List>
-                    <li
-                      className="mdc-list-item"
+                  <List items={filterDefinedReactChildren([
+                    <List.Item
                       role="button"
                       onClick={this.handleToggleResetConfirmation}
                     >
-                      <Icon as="span" className="mdc-list-item__graphic" icon="restore" />
-                      <span className="mdc-list-item__text">Reset draft</span>
-                    </li>
-                    <AttachFile variant="list-item" study={this.props.study} />
-                    {study.viewerCanAdmin &&
-                    <li
-                      className="mdc-list-item"
+                      <List.Item.Graphic graphic={
+                        <Icon icon="restore" />
+                      }/>
+                      <List.Item.Text primaryText="Reset draft" />
+                    </List.Item>,
+                    <AttachFile variant="list-item" study={this.props.study} />,
+                    study.viewerCanAdmin &&
+                    <List.Item
                       role="button"
                       onClick={toggleSaveDialog}
                     >
-                      <Icon as="span" className="mdc-list-item__graphic" icon="save" />
-                      <span className="mdc-list-item__text">Save file</span>
-                    </li>}
-                  </List>
+                      <List.Item.Graphic graphic={
+                        <Icon icon="save" />
+                      }/>
+                      <List.Item.Text primaryText="Save file" />
+                    </List.Item>,
+                  ])}/>
                 </Menu>
               </Menu.Anchor>
             </div>
@@ -370,8 +404,8 @@ class StudyBodyEditorMain extends React.Component {
   }
 
   renderMenu() {
-    const {tab} = this.context
     const {uid} = this.props
+    const {selectedIndex} = this.state
 
     return (
       <div className="StudyBodyEditorMain__menu">
@@ -380,22 +414,18 @@ class StudyBodyEditorMain extends React.Component {
           bottomBoundary={`#draft-${uid}`}
         >
           <div className="StudyBodyEditorMain__menu-content mdc-card">
-            <List>
-              <List.Item
-                className="pointer"
-                onClick={() => this.handleChangeTab_("draft")}
-                selected={tab === "draft"}
-              >
-                <span className="material-icons mdc-list-item__graphic">edit</span>
-                <span className="mdc-list-item__text">Draft</span>
+            <List
+              singleSelection
+              selectedIndex={selectedIndex}
+              handleSelect={this.handleSelect_}
+            >
+              <List.Item>
+                <List.Item.Graphic graphic={<Icon icon="edit" />} />
+                <List.Item.Text primaryText="Draft" />
               </List.Item>
-              <List.Item
-                className="pointer"
-                onClick={() => this.handleChangeTab_("preview")}
-                selected={tab === "preview"}
-              >
-                <span className="material-icons mdc-list-item__graphic">visibility</span>
-                <span className="mdc-list-item__text">Preview</span>
+              <List.Item>
+                <List.Item.Graphic graphic={<Icon icon="visibility" />} />
+                <List.Item.Text primaryText="Preview" />
               </List.Item>
             </List>
           </div>

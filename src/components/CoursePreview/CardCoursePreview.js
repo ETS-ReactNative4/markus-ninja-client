@@ -1,13 +1,13 @@
 import * as React from 'react'
 import cls from 'classnames'
 import { Link } from 'react-router-dom'
+import List from 'components/mdc/List'
 import AppleIconButton from 'components/AppleIconButton'
 import ListAppleButton from 'components/ListAppleButton'
 import Counter from 'components/Counter'
 import Icon from 'components/Icon'
-import List from 'components/List'
 import Menu, {Corner} from 'components/mdc/Menu'
-import {get, timeDifferenceForDate} from 'utils'
+import {filterDefinedReactChildren, get, getHandleClickLink, timeDifferenceForDate} from 'utils'
 
 class CardCoursePreview extends React.Component {
   state = {
@@ -90,29 +90,35 @@ class CardCoursePreview extends React.Component {
                 anchorElement={anchorElement}
                 anchorCorner={Corner.BOTTOM_LEFT}
               >
-                <List>
-                  {course.viewerCanApple &&
-                  <ListAppleButton
-                    className="mdc-list-item"
-                    appleable={get(this.props, "course", null)}
-                  />}
-                  <Link
-                    className="mdc-list-item"
-                    to={course.resourcePath}
-                  >
-                    <Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="lesson" />
-                    <span className="mdc-list-item__text">
-                      Lessons
-                      <Counter>{get(course, "lessons.totalCount", 0)}</Counter>
-                    </span>
-                  </Link>
-                </List>
+                {this.renderMenuList()}
               </Menu>
             </Menu.Anchor>
           </div>
         </div>
       </div>
     )
+  }
+
+  renderMenuList() {
+    const course = get(this.props, "course", {})
+
+    const listItems = [
+      course.viewerCanApple &&
+      <ListAppleButton appleable={get(this.props, "course", null)} />,
+      <List.Item onClick={getHandleClickLink(course.resourcePath)}>
+        <List.Item.Graphic graphic={
+          <Icon className="mdc-theme--text-icon-on-background" icon="lesson" />
+        } />
+        <List.Item.Text primaryText={
+          <span>
+            Lessons
+            <Counter>{get(course, "lessons.totalCount", 0)}</Counter>
+          </span>
+        }/>
+      </List.Item>,
+    ]
+
+    return <List items={filterDefinedReactChildren(listItems)} />
   }
 }
 

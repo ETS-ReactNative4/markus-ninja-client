@@ -2,33 +2,36 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
 import queryString from 'query-string'
-import { Link, withRouter } from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
+import List from 'components/mdc/List'
 import Drawer from 'components/mdc/Drawer'
 import Icon from 'components/Icon'
-import List from 'components/List'
 import Counter from 'components/Counter'
 import { get } from 'utils'
 
+const COURSE_INDEX = 0,
+      LESSON_INDEX = 1,
+      STUDY_INDEX = 2,
+      TOPIC_INDEX = 3,
+      USER_INDEX = 4,
+      USER_ASSET_INDEX = 5
+
 class SearchNav extends React.Component {
-  getItemProps(isActive) {
-    const className = cls("mdc-list-item", {
-      "mdc-list-item--activated": isActive,
-    })
-    return {
-      className,
-      "aria-selected": isActive,
+  state = {
+    open: this.props.open,
+    selectedIndex: STUDY_INDEX,
+  }
+
+  componentDidUpdate(prevProps) {
+    const {open} = this.props
+    if (prevProps.open !== open) {
+      this.setState({open})
     }
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("SearchNav", className)
-  }
-
-  render() {
-    const {counts, location} = this.props
+  handleSelect_ = (selectedIndex) => {
+    const {location} = this.props
     const query = queryString.parse(get(this.props, "location.search", ""))
-    const type = get(query, "t", "study").toLowerCase()
     const pathname = get(location, "pathname", "")
 
     query.t = "course"
@@ -44,11 +47,48 @@ class SearchNav extends React.Component {
     query.t = "user_asset"
     const searchUserAssets = queryString.stringify(query)
 
+    let to = {pathname}
+    switch (selectedIndex) {
+      case COURSE_INDEX:
+        to.search = searchCourses
+        break
+      case LESSON_INDEX:
+        to.search = searchLessons
+        break
+      case STUDY_INDEX:
+        to.search = searchStudies
+        break
+      case TOPIC_INDEX:
+        to.search = searchTopics
+        break
+      case USER_INDEX:
+        to.search = searchUsers
+        break
+      case USER_ASSET_INDEX:
+        to.search = searchUserAssets
+        break
+      default:
+        break
+    }
+
+    this.props.history.push(to)
+    this.props.onClose()
+  }
+
+  get classes() {
+    const {className} = this.props
+    return cls("SearchNav", className)
+  }
+
+  render() {
+    const {open, selectedIndex} = this.state
+    const {counts} = this.props
+
     return (
       <Drawer
         className={this.classes}
         modal
-        open={this.props.open}
+        open={open}
         onClose={this.props.onClose}
       >
         <Drawer.Header>
@@ -57,62 +97,65 @@ class SearchNav extends React.Component {
           </Drawer.Title>
         </Drawer.Header>
         <Drawer.Content>
-          <List as="nav">
-            <div role="separator" className="mdc-list-divider"></div>
-            <Link
-              {...this.getItemProps(type === 'course')}
-              to={{pathname, search: searchCourses}}
-              onClick={this.props.onClose}
-            >
-              <Icon as="span" className="mdc-list-item__graphic" icon="course" />
-              Courses
-              <Counter>{counts.course}</Counter>
-            </Link>
-            <Link
-              {...this.getItemProps(type === 'lesson')}
-              to={{pathname, search: searchLessons}}
-              onClick={this.props.onClose}
-            >
-              <Icon as="span" className="mdc-list-item__graphic" icon="lesson" />
-              Lessons
-              <Counter>{counts.lesson}</Counter>
-            </Link>
-            <Link
-              {...this.getItemProps(type === 'study')}
-              to={{pathname, search: searchStudies}}
-              onClick={this.props.onClose}
-            >
-              <Icon as="span" className="mdc-list-item__graphic" icon="study" />
-              Studies
-              <Counter>{counts.study}</Counter>
-            </Link>
-            <Link
-              {...this.getItemProps(type === 'topic')}
-              to={{pathname, search: searchTopics}}
-              onClick={this.props.onClose}
-            >
-              <Icon as="span" className="mdc-list-item__graphic" icon="topic" />
-              Topics
-              <Counter>{counts.topic}</Counter>
-            </Link>
-            <Link
-              {...this.getItemProps(type === 'user')}
-              to={{pathname, search: searchUsers}}
-              onClick={this.props.onClose}
-            >
-              <Icon as="span" className="mdc-list-item__graphic" icon="user" />
-              Users
-              <Counter>{counts.user}</Counter>
-            </Link>
-            <Link
-              {...this.getItemProps(type === 'user_asset')}
-              to={{pathname, search: searchUserAssets}}
-              onClick={this.props.onClose}
-            >
-              <Icon as="span" className="mdc-list-item__graphic" icon="asset" />
-              Assets
-              <Counter>{counts.userAsset}</Counter>
-            </Link>
+          <List
+            singleSelection
+            selectedIndex={selectedIndex}
+            handleSelect={this.handleSelect_}
+          >
+            <List.Item className="pointer">
+              <List.Item.Graphic graphic={<Icon icon="course" />} />
+              <List.Item.Text primaryText={
+                <span>
+                  Courses
+                  <Counter>{counts.course}</Counter>
+                </span>
+              }/>
+            </List.Item>
+            <List.Item className="pointer">
+              <List.Item.Graphic graphic={<Icon icon="lesson" />} />
+              <List.Item.Text primaryText={
+                <span>
+                  Lessons
+                  <Counter>{counts.lesson}</Counter>
+                </span>
+              }/>
+            </List.Item>
+            <List.Item className="pointer">
+              <List.Item.Graphic graphic={<Icon icon="study" />} />
+              <List.Item.Text primaryText={
+                <span>
+                  Studies
+                  <Counter>{counts.study}</Counter>
+                </span>
+              }/>
+            </List.Item>
+            <List.Item className="pointer">
+              <List.Item.Graphic graphic={<Icon icon="topic" />} />
+              <List.Item.Text primaryText={
+                <span>
+                  Topics
+                  <Counter>{counts.topic}</Counter>
+                </span>
+              }/>
+            </List.Item>
+            <List.Item className="pointer">
+              <List.Item.Graphic graphic={<Icon icon="user" />} />
+              <List.Item.Text primaryText={
+                <span>
+                  Users
+                  <Counter>{counts.user}</Counter>
+                </span>
+              }/>
+            </List.Item>
+            <List.Item className="pointer">
+              <List.Item.Graphic graphic={<Icon icon="asset" />} />
+              <List.Item.Text primaryText={
+                <span>
+                  Assets
+                  <Counter>{counts.userAsset}</Counter>
+                </span>
+              }/>
+            </List.Item>
           </List>
         </Drawer.Content>
       </Drawer>

@@ -82,10 +82,10 @@ class ViewerPrimaryEmail extends React.Component {
 
     return (
       <div className={this.classes}>
-        <p>
+        <p className="mb2">
           Your primary email address, in addition to authentication, will be used for account-related notifications.
         </p>
-        <form onSubmit={this.handleSubmit} className="flex items-center">
+        <form onSubmit={this.handleSubmit}>
           <Select
             className="rn-select"
             floatingLabelClassName="mdc-floating-label--float-above"
@@ -95,7 +95,7 @@ class ViewerPrimaryEmail extends React.Component {
             options={this.options}
           />
           <button
-            className="mdc-button mdc-button--unelevated ml2"
+            className="mdc-button mdc-button--unelevated mt2"
             type="submit"
           >
             Save

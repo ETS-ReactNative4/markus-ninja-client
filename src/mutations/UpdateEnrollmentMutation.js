@@ -66,7 +66,8 @@ export default (enrollableId, status, callback) => {
           }
         }
       },
-      onCompleted: (response, error) => callback(error),
+      onCompleted: (response, error) =>
+        callback(response.updateEnrollment, error),
       onError: err => callback(null, err),
     },
   )

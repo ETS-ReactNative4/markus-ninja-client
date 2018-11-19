@@ -6,12 +6,13 @@ import {
 } from 'react-relay'
 import { Link, withRouter } from 'react-router-dom'
 import MediaQuery from 'react-responsive'
-import List from 'components/List'
+import List from 'components/mdc/List'
+import Icon from 'components/Icon'
 import Menu, {Corner} from 'components/mdc/Menu'
 import IconLink from 'components/IconLink'
 import LoginLink from 'components/LoginLink'
 import SearchBar from './SearchBar'
-import {get} from 'utils'
+import {get, getHandleClickLink} from 'utils'
 import AppContext from 'containers/App/Context'
 
 import './styles.css'
@@ -116,14 +117,14 @@ class Header extends Component {
               anchorCorner={Corner.BOTTOM_LEFT}
             >
               <List>
-                <Link className="mdc-list-item" to="/signin">
-                  <span className="material-icons mdc-list-item__graphic">exit_to_app</span>
-                  <span className="mdc-list-item__text">Sign in</span>
-                </Link>
-                <Link className="mdc-list-item" to="/signup">
-                  <span className="material-icons mdc-list-item__graphic">person_add</span>
-                  <span className="mdc-list-item__text">Sign up</span>
-                </Link>
+                <List.Item onClick={getHandleClickLink("/signin")}>
+                  <List.Item.Graphic graphic={<Icon icon="exit_to_app" />}/>
+                  <List.Item.Text primaryText="Sign in" />
+                </List.Item>
+                <List.Item onClick={getHandleClickLink("/signup")}>
+                  <List.Item.Graphic graphic={<Icon icon="person_add" />}/>
+                  <List.Item.Text primaryText="Sign up" />
+                </List.Item>
               </List>
             </Menu>
           </Menu.Anchor>
@@ -161,26 +162,26 @@ class Header extends Component {
               anchorCorner={Corner.BOTTOM_LEFT}
             >
               <List>
-                <Link className="mdc-list-item" to="/notifications">
-                  <span className="material-icons mdc-list-item__graphic">notifications</span>
-                  <span className="mdc-list-item__text">Notifications</span>
-                </Link>
-                <Link className="mdc-list-item" to="/new">
-                  <span className="material-icons mdc-list-item__graphic">add</span>
-                  <span className="mdc-list-item__text">New study</span>
-                </Link>
-                <Link className="mdc-list-item" to={get(this.props, "viewer.resourcePath", "")}>
-                  <span className="material-icons mdc-list-item__graphic">account_box</span>
-                  <span className="mdc-list-item__text">Profile</span>
-                </Link>
-                <Link className="mdc-list-item" to="/signout">
-                  <span className="material-icons mdc-list-item__graphic">power_settings_new</span>
-                  <span className="mdc-list-item__text">Sign out</span>
-                </Link>
-                <Link className="mdc-list-item" to="/settings">
-                  <span className="material-icons mdc-list-item__graphic">settings</span>
-                  <span className="mdc-list-item__text">Settings</span>
-                </Link>
+                <List.Item onClick={getHandleClickLink("/notifications")}>
+                  <List.Item.Graphic graphic={<Icon icon="notifications" />}/>
+                  <List.Item.Text primaryText="Notifications" />
+                </List.Item>
+                <List.Item onClick={getHandleClickLink("/new")}>
+                  <List.Item.Graphic graphic={<Icon icon="add" />}/>
+                  <List.Item.Text primaryText="New study" />
+                </List.Item>
+                <List.Item onClick={getHandleClickLink(get(this.props, "viewer.resourcePath", ""))}>
+                  <List.Item.Graphic graphic={<Icon icon="account_box" />}/>
+                  <List.Item.Text primaryText="Profile" />
+                </List.Item>
+                <List.Item onClick={getHandleClickLink("/signout")}>
+                  <List.Item.Graphic graphic={<Icon icon="power_settings_new" />}/>
+                  <List.Item.Text primaryText="Sign out" />
+                </List.Item>
+                <List.Item onClick={getHandleClickLink("/settings")}>
+                  <List.Item.Graphic graphic={<Icon icon="settings" />}/>
+                  <List.Item.Text primaryText="Settings" />
+                </List.Item>
               </List>
             </Menu>
           </Menu.Anchor>

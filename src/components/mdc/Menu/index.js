@@ -23,17 +23,14 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
-import {MDCMenuFoundation} from '@material/menu'
+import {MDCMenuFoundation} from '@material/menu/dist/mdc.menu'
 import MenuSurface, {Corner} from 'components/mdc/MenuSurface'
-import List from 'components/List'
 
 import MenuSelectionGroup from './MenuSelectionGroup'
 import MenuSelectionGroupIcon from './MenuSelectionGroupIcon'
 
-const {cssClasses} = MDCMenuFoundation
-
 class Menu extends React.Component {
-  list_ = React.createRef()
+  listElement_ = React.createRef()
   foundation_ = null
 
   state = {
@@ -63,11 +60,11 @@ class Menu extends React.Component {
   }
 
   handleOpen_ = () => {
-    const list = this.items;
-    if (!list) return;
+    const listElement = this.listElement_ && this.listElement_.current;
+    if (!listElement) return;
 
-    if (list.length > 0) {
-      list[0].focus();
+    if (listElement.adapter.getListItemCount > 0) {
+      listElement.adapter.focusItemAtIndex(0);
     }
     this.props.onOpen()
   }
@@ -82,20 +79,6 @@ class Menu extends React.Component {
     this.props.onClick(e)
   }
 
-  get items() {
-    return this.list_.current.listElements
-  }
-
-  getOptionByIndex(index) {
-    const items = this.items
-
-    if (index < items.length) {
-      return this.items[index]
-    } else {
-      return null
-    }
-  }
-
   get classes() {
     const {className} = this.props
     return cls("mdc-menu", className)
@@ -104,29 +87,35 @@ class Menu extends React.Component {
   get adapter() {
     return Object.assign({
       addClassToElementAtIndex: (index, className) => {
-        const list = this.items;
-        list[index].classList.add(className);
+        if (this.listElement_ && this.listElement_.current) {
+          this.listElement_.current.addClassForElementIndex(index, className)
+        }
       },
       removeClassFromElementAtIndex: (index, className) => {
-        const list = this.items;
-        list[index].classList.remove(className);
+        if (this.listElement_ && this.listElement_.current) {
+          this.listElement_.current.removeClassForElementIndex(index, className)
+        }
       },
       addAttributeToElementAtIndex: (index, attr, value) => {
-        const list = this.items;
-        list[index].setAttribute(attr, value);
+        if (this.listElement_ && this.listElement_.current) {
+          this.listElement_.current.setAttributeForElementIndex(index, attr, value)
+        }
       },
       removeAttributeFromElementAtIndex: (index, attr) => {
-        const list = this.items;
-        list[index].removeAttribute(attr);
+        if (this.listElement_ && this.listElement_.current) {
+          this.listElement_.current.removeAttributeForElementIndex(index, attr)
+        }
       },
       elementContainsClass: (element, className) => element.classList.contains(className),
       closeSurface: () => { this.open = false; this.props.onClose() },
-      getElementIndex: (element) => this.items.indexOf(element),
+      // getElementIndex: (element) => this.items.indexOf(element),
       getParentElement: (element) => element.parentElement,
       getSelectedElementIndex: (selectionGroup) => {
-        return this.items.indexOf(selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`));
+        if (this.listElement_ && this.listElement_.current) {
+          return this.listElement_.current.props.selectedIndex
+        }
       },
-      notifySelected: (evtData) => this.props.onSelected(evtData.index, this.items[evtData.index]),
+      notifySelected: (evtData) => this.props.onSelected(evtData.index),
     })
   }
 
@@ -192,7 +181,7 @@ class Menu extends React.Component {
   renderList() {
     const list = React.Children.only(this.props.children)
     const props = Object.assign({
-      ref: this.list_,
+      ref: this.listElement_,
       role: "menu",
       "aria-hidden": true,
     }, list.props)
@@ -209,7 +198,7 @@ Menu.propTypes = {
     const prop = props[propName];
     const child = React.Children.only(prop)
     let error = null;
-    if (child && child.type !== List) {
+    if (child && child.type.name !== 'List') {
       error = new Error('`' + componentName + '` only child should be of type `List`.');
     }
     return error;

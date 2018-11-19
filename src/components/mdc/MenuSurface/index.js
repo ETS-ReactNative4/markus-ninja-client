@@ -23,7 +23,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {MDCMenuSurfaceFoundation, Corner} from '@material/menu-surface';
+import {MDCMenuSurfaceFoundation, Corner} from '@material/menu-surface/dist/mdc.menuSurface';
 
 import MenuSurfaceAnchor from './MenuSurfaceAnchor'
 
