@@ -2,8 +2,8 @@ import * as React from 'react'
 import cls from 'classnames'
 import {
   createPaginationContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import UserPreview from 'components/UserPreview'
 import {get, isEmpty} from 'utils'
 

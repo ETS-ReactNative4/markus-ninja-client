@@ -58,7 +58,7 @@
     "react-beautiful-dnd": "^9.0.2",
     "react-color": "^2.14.1",
     "react-dom": "^16.6.0",
-    "react-relay": "^2.0.0-rc.1",
+    "react-relay": "^1.7.0",
     "react-responsive": "^5.0.0",
     "react-router-dom": "^4.3.1",
     "react-router-global-history": "^1.0.2",
@@ -86,7 +86,7 @@
     "lint": "eslint ./src --fix"
   },
   "devDependencies": {
-    "relay-compiler": "^2.0.0-rc.1",
+    "relay-compiler": "^1.7.0",
     "tachyons-border-colors": "^4.2.3",
     "tachyons-borders": "^3.0.4",
     "tachyons-display": "^5.0.4",

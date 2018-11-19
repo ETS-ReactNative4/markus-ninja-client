@@ -2,8 +2,8 @@ import * as React from 'react'
 import cls from 'classnames'
 import {
   createFragmentContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import TextField, {Input} from '@material/react-text-field'
 import Select from '@material/react-select'
 import UpdateViewerProfileMutation from 'mutations/UpdateViewerProfileMutation'

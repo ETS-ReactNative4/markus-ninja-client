@@ -2,8 +2,8 @@ import * as React from 'react'
 import cls from 'classnames'
 import {
   createPaginationContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import ViewerEmail from './ViewerEmail'
 import AddEmailDialog from './AddEmailDialog'
 import {get} from 'utils'

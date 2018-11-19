@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {
   createFragmentContainer,
-  graphql
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import { get } from 'utils'
 import CourseMetaDetails from './CourseMetaDetails'
 import CourseMetaTopics from './CourseMetaTopics'

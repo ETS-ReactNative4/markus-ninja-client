@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {
   createFragmentContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import {withRouter} from 'react-router-dom';
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateTopicMutation from 'mutations/UpdateTopicMutation'

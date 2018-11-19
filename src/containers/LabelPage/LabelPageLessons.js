@@ -6,7 +6,6 @@ import LessonPreview from 'components/LessonPreview'
 import Context from 'containers/StudyPage/Context'
 import {isEmpty} from 'utils'
 
-
 class LabelPageLessons extends React.Component {
   get classes() {
     const {className} = this.props

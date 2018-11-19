@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import {
   createFragmentContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import { Link } from 'react-router-dom'
 import { get } from 'utils'
 

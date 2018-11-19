@@ -3,8 +3,8 @@ import cls from 'classnames'
 import PropTypes from 'prop-types'
 import {
   createPaginationContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import { Link, withRouter } from 'react-router-dom';
 import {HelperText} from '@material/react-text-field'
 import TextField, {defaultTextFieldState} from 'components/TextField'

@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {
   createFragmentContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import {matchPath, withRouter} from 'react-router-dom'
 import Icon from 'components/Icon'
 import Counter from 'components/Counter'

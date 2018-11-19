@@ -2,8 +2,8 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import {
   createPaginationContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import {withRouter} from 'react-router-dom';
 import {StudyLabelsProp, StudyLabelsPropDefaults} from 'components/StudyLabels'
 import LabelPreview from 'components/LabelPreview'

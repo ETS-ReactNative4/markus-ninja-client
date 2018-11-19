@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {
   createFragmentContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
 import {Link, withRouter} from 'react-router-dom'

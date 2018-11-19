@@ -2,8 +2,8 @@ import * as React from 'react'
 import cls from 'classnames'
 import {
   QueryRenderer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import queryString from 'query-string'
 import environment from 'Environment'
 import UserHeader from './UserHeader'

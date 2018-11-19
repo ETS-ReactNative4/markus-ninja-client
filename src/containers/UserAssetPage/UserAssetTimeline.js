@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import {
   createPaginationContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router'
 import UserAssetTimelineEvent from './UserAssetTimelineEvent'
 import {get, isEmpty} from 'utils'

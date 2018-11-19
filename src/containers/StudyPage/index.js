@@ -2,8 +2,8 @@ import * as React from 'react'
 import cls from 'classnames'
 import {
   QueryRenderer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import { Route, Switch } from 'react-router-dom'
 import environment from 'Environment'
 import PrivateRoute from 'components/PrivateRoute'

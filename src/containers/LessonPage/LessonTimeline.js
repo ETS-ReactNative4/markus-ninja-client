@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {
   createRefetchContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import LessonTimelineEvent from './LessonTimelineEvent'
 import {debounce, get, groupInOrderByFunc} from 'utils'
 

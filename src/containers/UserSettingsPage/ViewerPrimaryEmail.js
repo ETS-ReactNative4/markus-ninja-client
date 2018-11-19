@@ -2,8 +2,8 @@ import * as React from 'react'
 import cls from 'classnames'
 import {
   createPaginationContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import Select from '@material/react-select'
 import UpdateEmailMutation from 'mutations/UpdateEmailMutation'
 import {get, isNil} from 'utils'

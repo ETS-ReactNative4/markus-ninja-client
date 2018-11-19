@@ -3,8 +3,8 @@ import cls from 'classnames'
 import PropTypes from 'prop-types'
 import {
   createPaginationContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import {withRouter} from 'react-router-dom';
 import Label from 'components/Label'
 import LabelSet from 'components/LabelSet'

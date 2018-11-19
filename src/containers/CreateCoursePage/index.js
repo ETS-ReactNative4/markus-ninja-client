@@ -3,8 +3,8 @@ import cls from 'classnames'
 import {
   createFragmentContainer,
   QueryRenderer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import {Redirect} from 'react-router-dom'
 import environment from 'Environment'
 import CreateCourseForm from './CreateCourseForm'

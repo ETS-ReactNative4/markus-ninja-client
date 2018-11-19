@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {
   createPaginationContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import StudyLink from 'components/StudyLink'
 import EnrollIconButton from 'components/EnrollIconButton'
 import Icon from 'components/Icon'

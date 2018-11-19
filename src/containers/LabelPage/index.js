@@ -2,8 +2,8 @@ import * as React from 'react'
 import cls from 'classnames'
 import {
   QueryRenderer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import environment from 'Environment'
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'

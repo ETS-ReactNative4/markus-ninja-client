@@ -48,7 +48,7 @@ const ListItemText = (props) => {
     const {className: textClassName, ...otherProps} = text.props;
     const props = Object.assign({
       className: classnames(className, textClassName),
-    }, ...otherProps);
+    }, otherProps);
     return React.cloneElement(text, props);
   };
 

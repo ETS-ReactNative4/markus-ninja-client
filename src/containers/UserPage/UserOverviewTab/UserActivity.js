@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {
   createPaginationContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router'
 import UserActivityEvent from 'components/UserActivityEvent'
 import { get, isEmpty } from 'utils'
