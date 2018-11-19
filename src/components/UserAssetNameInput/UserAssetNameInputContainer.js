@@ -2,8 +2,8 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import {
   createRefetchContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import cls from 'classnames'
 import {HelperText} from '@material/react-text-field'
 import TextField, {defaultTextFieldState} from 'components/TextField'

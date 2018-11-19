@@ -2,8 +2,8 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import {
   createRefetchContainer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import {withRouter} from 'react-router-dom'
 import isEqual from 'lodash.isequal'
 import {debounce, get, isNil} from 'utils'

@@ -2,8 +2,8 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import {
   QueryRenderer,
-  graphql,
 } from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router'
 import environment from 'Environment'
 import UserEnrolleesContainer, {UserEnrolleesProp, UserEnrolleesPropDefaults} from './UserEnrolleesContainer'

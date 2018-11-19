@@ -1,7 +1,6 @@
 import * as React from 'react'
 import cls from 'classnames'
 import {Link} from 'react-router-dom'
-// import List, {ListItemGraphic, ListItem, ListItemText} from '@material/react-list'
 import List from 'components/mdc/List'
 import AppleIconButton from 'components/AppleIconButton'
 import EnrollIconButton from 'components/EnrollIconButton'

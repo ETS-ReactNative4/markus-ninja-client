@@ -1,8 +1,7 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
-import Relay, {
-  graphql,
-} from 'react-relay'
+import Relay from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import hoistNonReactStatic from 'hoist-non-react-statics'
 import {
   CompositeDecorator,
