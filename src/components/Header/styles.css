@@ -1,0 +1,32 @@
+.Header__search-row {
+  display: none; }
+
+.Header.open .Header__search-row {
+  display: block; }
+
+@media (min-width: 840px) {
+  .Header__auth-nav--collapsed {
+    display: none; } }
+
+@media (max-width: 479px) {
+  .Header__auth-nav--spread {
+    display: none; } }
+
+@media (min-width: 480px) and (max-width: 839px) {
+  .Header__auth-nav--spread {
+    display: none; } }
+
+.SearchBar {
+  height: 100%; }
+
+.SearchBarInput {
+  position: relative;
+  height: 100%; }
+  .SearchBarInput .SearchBarInput__results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    background-color: #fff;
+    border: 1px solid #6200ee; }

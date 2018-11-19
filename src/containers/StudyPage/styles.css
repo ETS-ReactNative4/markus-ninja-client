@@ -1,0 +1,26 @@
+.StudyPage__container {
+  grid-template-rows: auto auto 1fr; }
+
+.StudyHeader__actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: end;
+  flex-wrap: wrap;
+  width: 100%; }
+  .StudyHeader__actions .StudyHeader__action {
+    display: inline-flex;
+    flex-wrap: no-wrap; }
+    .StudyHeader__actions .StudyHeader__action.StudyHeader__action--apple {
+      min-width: 125.5px;
+      margin-bottom: 1em;
+      margin-left: 1em; }
+    .StudyHeader__actions .StudyHeader__action.StudyHeader__action--enroll {
+      min-width: 179.25px;
+      margin-bottom: 1em; }
+  @media (max-width: 479px) {
+    .StudyHeader__actions {
+      flex-direction: column;
+      align-items: start; }
+      .StudyHeader__actions .StudyHeader__action.StudyHeader__action--apple {
+        margin-bottom: 0;
+        margin-left: 0; } }

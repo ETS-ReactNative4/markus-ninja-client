@@ -1,0 +1,58 @@
+.Label {
+  vertical-align: middle; }
+  .Label .mdc-chip__text {
+    text-overflow: ellipsis; }
+
+.Label--selected.Label--dark {
+  color: white;
+  /* @alternate */
+  color: var(--mdc-theme-text-primary-on-dark, white); }
+  .Label--selected.Label--dark::before, .Label--selected.Label--dark::after {
+    background-color: white; }
+    @supports not (-ms-ime-align: auto) {
+      .Label--selected.Label--dark::before, .Label--selected.Label--dark::after {
+        /* @alternate */
+        background-color: var(--mdc-theme-text-primary-on-dark, white); } }
+  .Label--selected.Label--dark:hover::before {
+    opacity: 0.08; }
+  .Label--selected.Label--dark:not(.mdc-ripple-upgraded):focus::before, .Label--selected.Label--dark.mdc-ripple-upgraded--background-focused::before {
+    transition-duration: 75ms;
+    opacity: 0.24; }
+  .Label--selected.Label--dark:not(.mdc-ripple-upgraded)::after {
+    transition: opacity 150ms linear; }
+  .Label--selected.Label--dark:not(.mdc-ripple-upgraded):active::after {
+    transition-duration: 75ms;
+    opacity: 0.32; }
+  .Label--selected.Label--dark.mdc-ripple-upgraded {
+    --mdc-ripple-fg-opacity: 0.32; }
+  .Label--selected.Label--dark:hover {
+    color: white;
+    /* @alternate */
+    color: var(--mdc-theme-text-primary-on-dark, white); }
+
+.Label--selected.Label--light {
+  color: rgba(0, 0, 0, 0.87);
+  /* @alternate */
+  color: var(--mdc-theme-text-primary-on-light, rgba(0, 0, 0, 0.87)); }
+  .Label--selected.Label--light::before, .Label--selected.Label--light::after {
+    background-color: rgba(0, 0, 0, 0.87); }
+    @supports not (-ms-ime-align: auto) {
+      .Label--selected.Label--light::before, .Label--selected.Label--light::after {
+        /* @alternate */
+        background-color: var(--mdc-theme-text-primary-on-light, rgba(0, 0, 0, 0.87)); } }
+  .Label--selected.Label--light:hover::before {
+    opacity: 0.04; }
+  .Label--selected.Label--light:not(.mdc-ripple-upgraded):focus::before, .Label--selected.Label--light.mdc-ripple-upgraded--background-focused::before {
+    transition-duration: 75ms;
+    opacity: 0.12; }
+  .Label--selected.Label--light:not(.mdc-ripple-upgraded)::after {
+    transition: opacity 150ms linear; }
+  .Label--selected.Label--light:not(.mdc-ripple-upgraded):active::after {
+    transition-duration: 75ms;
+    opacity: 0.16; }
+  .Label--selected.Label--light.mdc-ripple-upgraded {
+    --mdc-ripple-fg-opacity: 0.16; }
+  .Label--selected.Label--light:hover {
+    color: rgba(0, 0, 0, 0.87);
+    /* @alternate */
+    color: var(--mdc-theme-text-primary-on-light, rgba(0, 0, 0, 0.87)); }

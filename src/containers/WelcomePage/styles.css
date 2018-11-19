@@ -1,0 +1,52 @@
+.WelcomePage h1, .WelcomePage h2, .WelcomePage h3, .WelcomePage h4, .WelcomePage h5, .WelcomePage h6 {
+  font-family: Mali, cursive !important; }
+
+.WelcomePage__section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px; }
+
+.WelcomePage__section-content {
+  width: 64rem; }
+  @media (min-width: 840px) {
+    .WelcomePage__section-content {
+      padding: 4rem; } }
+  @media (min-width: 480px) and (max-width: 839px) {
+    .WelcomePage__section-content {
+      padding: 2rem; } }
+  @media (max-width: 479px) {
+    .WelcomePage__section-content {
+      padding: 1rem; } }
+
+.WelcomePage__welcome {
+  color: white;
+  /* @alternate */
+  color: var(--mdc-theme-text-primary-on-dark, white);
+  text-align: center;
+  background-image: url("/chalkboard.jpg"); }
+
+.WelcomePage__what {
+  color: white;
+  /* @alternate */
+  color: var(--mdc-theme-text-primary-on-dark, white);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), url("/books.jpg");
+  background-size: cover;
+  background-position: center; }
+
+.WelcomePage__who {
+  color: white;
+  /* @alternate */
+  color: var(--mdc-theme-text-primary-on-dark, white);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.48)), url("/chairs.jpg");
+  background-size: cover;
+  background-position: center; }
+
+.WelcomePage__why {
+  color: white;
+  /* @alternate */
+  color: var(--mdc-theme-text-primary-on-dark, white);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.32)), url("/school.jpg");
+  background-size: cover;
+  background-position: center; }

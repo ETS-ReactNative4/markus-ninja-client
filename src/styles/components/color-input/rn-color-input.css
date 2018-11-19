@@ -1,0 +1,13 @@
+.rn-color-input__picker {
+  margin-bottom: 4px;
+  margin-top: 4px;
+  opacity: 0;
+  transition: opacity 180ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity; }
+  .rn-color-input__picker.rn-color-input__picker--persistent {
+    transition: none;
+    opacity: 1;
+    will-change: initial; }
+
+.rn-color-input--focused .rn-color-input__picker {
+  opacity: 1; }

@@ -1,0 +1,14 @@
+.rn-page {
+  min-height: calc(100vh - 64px); }
+  .rn-page.mdc-layout-grid {
+    max-width: 64rem; }
+    .rn-page.mdc-layout-grid > .mdc-layout-grid__inner {
+      width: 100%; }
+
+.rn-page--column {
+  display: flex;
+  flex-direction: column; }
+  .rn-page--column > .mdc-layout-grid {
+    width: 100%; }
+    .rn-page--column > .mdc-layout-grid:last-child {
+      flex: 1 1 auto; }

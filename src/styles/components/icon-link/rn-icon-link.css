@@ -1,0 +1,26 @@
+.rn-icon-link {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 4px;
+  box-sizing: border-box;
+  text-decoration: none;
+  transition: color 100ms;
+  color: currentColor; }
+  .rn-icon-link:hover {
+    color: var(--mdc-theme-text-secondary-on-light); }
+
+.rn-icon-link__icon {
+  /* @noflip */
+  margin-left: right;
+  /* @noflip */
+  margin-right: 6px;
+  display: inline-block;
+  font-size: 24px;
+  vertical-align: top; }
+  [dir="rtl"] .rn-icon-link__icon, .rn-icon-link__icon[dir="rtl"] {
+    /* @noflip */
+    margin-left: 6px;
+    /* @noflip */
+    margin-right: right; }
