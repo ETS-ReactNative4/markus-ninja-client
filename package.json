@@ -78,10 +78,12 @@
     "watch:css": "run-s build:css \"build:css --watch --recursive\"",
     "start:js": "react-scripts start",
     "start": "run-p watch:css start:js",
+    "prebuild": "npm run relay:prod",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "relay": "curl http://localhost:5000/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
+    "relay:dev": "curl http://localhost:5000/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
+    "relay:prod": "curl https://api.rkus.ninja/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
     "serve": "serve -s build",
     "deploy": "npm run build && npm run serve",
     "lint": "eslint ./src --fix"
