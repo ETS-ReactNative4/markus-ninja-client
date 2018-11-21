@@ -85,7 +85,7 @@
     "relay:dev": "curl http://localhost:5000/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
     "relay:prod": "curl https://api.rkus.ninja/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
     "serve": "serve -s build",
-    "deploy": "npm run build",
+    "deploy": "npm run build && npm run serve",
     "lint": "eslint ./src --fix"
   },
   "devDependencies": {
