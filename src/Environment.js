@@ -29,6 +29,8 @@ const network = Network.create((operation, variables) => {
       setTimeout(() => window.location.replace(""), 1000)
     }
     return json
+  }).catch(error => {
+    console.error(error)
   })
 })
 

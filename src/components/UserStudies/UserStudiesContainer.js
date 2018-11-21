@@ -14,6 +14,7 @@ class UserStudiesContainer extends React.Component {
   state = {
     error: null,
     loading: !Boolean(get(this.props, "user.studies")),
+    stale: !Boolean(get(this.props, "user.studies"))
   }
 
   componentDidUpdate(prevProps, prevState) {
