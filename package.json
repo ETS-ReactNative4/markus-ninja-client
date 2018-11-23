@@ -101,7 +101,7 @@
     "eject": "react-scripts eject",
     "relay:dev": "curl http://localhost:5000/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
     "relay:prod": "curl https://api.rkus.ninja/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
-    "deploy": "npm run build && cp -a ./build/. /var/www/",
+    "deploy": "npm run build && mkdir -p /var/www/ma.rkus.ninja && cp -a ./build/. /var/www/ma.rkus.ninja",
     "lint": "eslint ./src --fix"
   },
   "devDependencies": {},
