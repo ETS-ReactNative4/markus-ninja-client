@@ -66,7 +66,6 @@
     "react-scripts": "2.1.1",
     "react-stickynode": "^2.1.0",
     "relay-compiler": "^1.7.0",
-    "serve": "^10.1.1",
     "shortid": "^2.2.13",
     "tachyons-border-colors": "^4.2.3",
     "tachyons-borders": "^3.0.4",
@@ -102,12 +101,10 @@
     "eject": "react-scripts eject",
     "relay:dev": "curl http://localhost:5000/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
     "relay:prod": "curl https://api.rkus.ninja/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
-    "serve": "serve",
-    "deploy": "npm run build && node server.js",
+    "deploy": "npm run build && cp -a ./build/. /var/www/",
     "lint": "eslint ./src --fix"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "eslintConfig": {
     "extends": "react-app"
   },
