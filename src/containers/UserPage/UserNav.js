@@ -3,77 +3,108 @@ import {
   createFragmentContainer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
-import cls from 'classnames'
 import queryString from 'query-string'
 import {withRouter} from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faApple } from '@fortawesome/free-brands-svg-icons'
+import Tab from '@material/react-tab'
+import TabBar from '@material/react-tab-bar'
 import Icon from 'components/Icon'
 import Counter from 'components/Counter'
-import Tab from 'components/mdc/Tab'
-import TabBar from 'components/mdc/TabBar'
-import { get, isEmpty } from 'utils'
+import {get} from 'utils'
+
+const OVERVIEW_TAB = 0,
+      STUDIES_TAB = 1,
+      ASSETS_TAB = 2,
+      APPLES_TAB = 3,
+      PUPILS_TAB = 4,
+      TUTORS_TAB = 5
 
 class UserNav extends React.Component {
-  handleClickTab_ = (e) => {
-    this.props.history.push(e.target.value)
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      activeIndex: this.getActiveIndex(),
+    }
+  }
+
+  getActiveIndex = () => {
+    const query = queryString.parse(get(this.props, "location.search", ""))
+    const t = get(query, "tab", "")
+    switch (t.toLowerCase()) {
+      case "apples":
+        return APPLES_TAB
+      case "assets":
+        return ASSETS_TAB
+      case "pupils":
+        return PUPILS_TAB
+      case "studies":
+        return STUDIES_TAB
+      case "tutors":
+        return TUTORS_TAB
+      default:
+        return OVERVIEW_TAB
+    }
+  }
+
+  activeIndexToPath = (activeIndex) => {
+    const resourcePath = get(this.props, "user.resourcePath", "")
+    switch (activeIndex) {
+      case OVERVIEW_TAB:
+        return resourcePath
+      case STUDIES_TAB:
+        return resourcePath+"?tab=studies"
+      case ASSETS_TAB:
+        return resourcePath+"?tab=assets"
+      case APPLES_TAB:
+        return resourcePath+"?tab=apples"
+      case PUPILS_TAB:
+        return resourcePath+"?tab=pupils"
+      case TUTORS_TAB:
+        return resourcePath+"?tab=tutors"
+      default:
+        return resourcePath
+    }
+  }
+
+  handleActiveIndexUpdate_ = (activeIndex) => {
+    this.setState({activeIndex})
+    const path = this.activeIndexToPath(activeIndex)
+    this.props.history.push(path)
   }
 
   render() {
+    const {activeIndex} = this.state
     const { className, user } = this.props
-    const tab = (() => {
-      const query = queryString.parse(get(this.props, "location.search", ""))
-      const t = get(query, "tab", "")
-      switch (t.toLowerCase()) {
-        case "apples":
-        case "assets":
-        case "pupils":
-        case "studies":
-        case "tutors":
-          return t
-        default:
-          return ""
-      }
-    })()
 
     return (
-      <TabBar className={cls("UserNav", className)} onClickTab={this.handleClickTab_}>
-        <Tab
-          minWidth
-          active={isEmpty(tab)}
-          value={user.resourcePath}
-        >
+      <TabBar
+        className={className}
+        activeIndex={activeIndex}
+        indexInView={activeIndex}
+        handleActiveIndexUpdate={this.handleActiveIndexUpdate_}
+      >
+        <Tab minWidth>
           <span className="mdc-tab__text-label">
             Overview
           </span>
         </Tab>
-        <Tab
-          minWidth
-          active={tab === "studies"}
-          value={user.resourcePath + "?tab=studies"}
-        >
+        <Tab minWidth>
           <Icon as="span" className="mdc-tab__icon" icon="study" />
           <span className="mdc-tab__text-label">
             Studies
             <Counter>{get(user, "studies.totalCount", 0)}</Counter>
           </span>
         </Tab>
-        <Tab
-          minWidth
-          active={tab === "assets"}
-          value={user.resourcePath + "?tab=assets"}
-        >
+        <Tab minWidth>
           <Icon as="span" className="mdc-tab__icon" icon="asset" />
           <span className="mdc-tab__text-label">
             Assets
             <Counter>{get(user, "assets.totalCount", 0)}</Counter>
           </span>
         </Tab>
-        <Tab
-          minWidth
-          active={tab === "apples"}
-          value={user.resourcePath + "?tab=apples"}
-        >
+        <Tab minWidth>
           <FontAwesomeIcon
             className="mdc-tab__icon"
             icon={faApple}
@@ -87,22 +118,14 @@ class UserNav extends React.Component {
             }</Counter>
           </span>
         </Tab>
-        <Tab
-          minWidth
-          active={tab === "pupils"}
-          value={user.resourcePath + "?tab=pupils"}
-        >
+        <Tab minWidth>
           <Icon as="span" className="mdc-tab__icon" icon="user" />
           <span className="mdc-tab__text-label">
             Pupils
             <Counter>{get(user, "enrollees.totalCount", 0)}</Counter>
           </span>
         </Tab>
-        <Tab
-          minWidth
-          active={tab === "tutors"}
-          value={user.resourcePath + "?tab=tutors"}
-        >
+        <Tab minWidth>
           <Icon as="span" className="mdc-tab__icon" icon="user" />
           <span className="mdc-tab__text-label">
             Tutors

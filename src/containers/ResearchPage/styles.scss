@@ -1,3 +1,4 @@
+@import "@material/layout-grid/mixins";
 @import "@material/theme/mixins";
 
 .ResearchPage__header {
@@ -11,4 +12,13 @@
     url("/books.jpg");
   background-size: cover;
   background-position: center;
+ 
+  @include mdc-layout-grid-media-query_(phone) {
+    background-image: 
+      linear-gradient(
+        rgba(mdc-theme-prop-value(on-surface), .56),
+        rgba(mdc-theme-prop-value(on-surface), .56)
+      ),
+      url("/books--m.jpg");
+  } background-position: center;
 }

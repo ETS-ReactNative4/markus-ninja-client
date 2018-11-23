@@ -1,14 +1,24 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
-import cls from 'classnames'
 import queryString from 'query-string'
 import {withRouter} from 'react-router-dom'
+import Tab from '@material/react-tab'
+import TabBar from '@material/react-tab-bar'
 import Counter from 'components/Counter'
-import Tab from 'components/mdc/Tab'
-import TabBar from 'components/mdc/TabBar'
 import { get } from 'utils'
 
+const STUDIES_TAB = 0,
+      COURSES_TAB = 1
+
 class TopicNav extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      activeIndex: this.getActiveIndex(),
+    }
+  }
+
   componentDidMount() {
     const query = queryString.parse(get(this.props, "location.search", ""))
     const t = query.t
@@ -20,43 +30,49 @@ class TopicNav extends React.Component {
     }
   }
 
-  handleClickTab_ = (e) => {
-    this.props.history.push(e.target.value)
+  getActiveIndex = () => {
+    const query = queryString.parse(get(this.props, "location.search", ""))
+    const t = get(query, "t", "")
+    switch (t.toLowerCase()) {
+      case "course":
+        return COURSES_TAB
+      case "study":
+        return STUDIES_TAB
+      default:
+        return STUDIES_TAB
+    }
   }
 
-  _tabLink = (query, type) => {
-    const pathname = get(this.props, "location.pathname", "")
-    query.t = type
-    const search = queryString.stringify(query)
-    return pathname + "?" + search
+  activeIndexToPath = (activeIndex) => {
+    const resourcePath = get(this.props, "topic.resourcePath", "")
+    switch (activeIndex) {
+      case COURSES_TAB:
+        return resourcePath+"?t=course"
+      case STUDIES_TAB:
+        return resourcePath+"?t=study"
+      default:
+        return resourcePath+"?t=study"
+    }
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("TopicNav mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+  handleActiveIndexUpdate_ = (activeIndex) => {
+    this.setState({activeIndex})
+    const path = this.activeIndexToPath(activeIndex)
+    this.props.history.push(path)
   }
 
   render() {
-    const {counts} = this.props
-    const query = queryString.parse(get(this.props, "location.search", ""))
-    const type = ((t) => {
-      switch (t) {
-        case "course":
-          return t
-        case "study":
-          return t
-        default:
-          return "study"
-      }
-    })(query.t)
+    const {activeIndex} = this.state
+    const {className, counts} = this.props
 
     return (
-      <TabBar className={this.classes} onClickTab={this.handleClickTab_}>
-        <Tab
-          minWidth
-          active={type === "study"}
-          value={this._tabLink(query, "study")}
-        >
+      <TabBar
+        className={className}
+        activeIndex={activeIndex}
+        indexInView={activeIndex}
+        handleActiveIndexUpdate={this.handleActiveIndexUpdate_}
+      >
+        <Tab minWidth>
           <span className="mdc-tab__content">
             <span className="mdc-tab__text-label">
               Studies
@@ -64,11 +80,7 @@ class TopicNav extends React.Component {
             </span>
           </span>
         </Tab>
-        <Tab
-          minWidth
-          active={type === "course"}
-          value={this._tabLink(query, "course")}
-        >
+        <Tab minWidth>
           <span className="mdc-tab__content">
             <span className="mdc-tab__text-label">
               Courses
@@ -82,6 +94,7 @@ class TopicNav extends React.Component {
 }
 
 TopicNav.propTypes = {
+  className: PropTypes.string,
   counts: PropTypes.shape({
     course: PropTypes.number,
     study: PropTypes.number,
@@ -89,6 +102,7 @@ TopicNav.propTypes = {
 }
 
 TopicNav.defaultProps = {
+  className: "",
   counts: {
     course: 0,
     study: 0,

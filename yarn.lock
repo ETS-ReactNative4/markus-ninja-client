@@ -1202,6 +1202,17 @@
     prop-types "^15.6.1"
     react "^16.4.2"
 
+"@material/react-tab-bar@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@material/react-tab-bar/-/react-tab-bar-0.7.0.tgz#89874c1452128632d52d790a434f75a1a232dc58"
+  integrity sha512-1oabWkzZfYN2nBshiyD6xl3VLSUtyB4ypqGO70PrAmYd3HWpuL2k22RUkVwNa7cY1Gd4aiElK3OZIcGGitFUOA==
+  dependencies:
+    "@material/react-tab-scroller" "^0.7.0"
+    "@material/tab-bar" "^0.41.0"
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+    react "^16.3.2"
+
 "@material/react-tab-indicator@^0.6.0":
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/@material/react-tab-indicator/-/react-tab-indicator-0.6.0.tgz#c9f235e3dc66780277fbfa5bcf8abfeaff561d18"
@@ -1216,6 +1227,16 @@
   resolved "https://registry.yarnpkg.com/@material/react-tab-scroller/-/react-tab-scroller-0.6.1.tgz#67b25e49f2ca85082dba95d708e42b9131e7a023"
   dependencies:
     "@material/tab-scroller" "^0.40.1"
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+    react "^16.4.2"
+
+"@material/react-tab-scroller@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@material/react-tab-scroller/-/react-tab-scroller-0.7.0.tgz#55e10f44ed48e7b7762ceb2b93cd96a84a7232cc"
+  integrity sha512-lEwPOz8aT7B5ncgKf9cjSLiYAyudGyo/Ag1B0EB/dE+WoH8EPD9vLaMKLVfDUAORmnei134kBITC/6Jmli6uJA==
+  dependencies:
+    "@material/tab-scroller" "^0.41.0"
     classnames "^2.2.5"
     prop-types "^15.6.1"
     react "^16.4.2"

@@ -62,7 +62,9 @@ class CoursePage extends React.Component {
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner">
                   <CourseHeader course={course} />
-                  <CourseNav course={course} />
+                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                    <CourseNav course={course} />
+                  </div>
                   <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <Switch>
                       <Route

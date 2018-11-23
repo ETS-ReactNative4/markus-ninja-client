@@ -47,6 +47,15 @@
     url("/books.jpg");
   background-size: cover;
   background-position: center;
+
+  @include mdc-layout-grid-media-query_(phone) {
+    background-image: 
+      linear-gradient(
+        rgba(mdc-theme-prop-value(on-surface), .56),
+        rgba(mdc-theme-prop-value(on-surface), .56)
+      ),
+      url("/books--m.jpg");
+  }
 }
 
 .WelcomePage__who {
@@ -59,7 +68,15 @@
     ),
     url("/chairs.jpg");
   background-size: cover;
-  background-position: center;
+ 
+  @include mdc-layout-grid-media-query_(phone) {
+    background-image: 
+      linear-gradient(
+        rgba(mdc-theme-prop-value(on-surface), .56),
+        rgba(mdc-theme-prop-value(on-surface), .56)
+      ),
+      url("/chairs--m.jpg");
+  } background-position: center;
 }
 
 .WelcomePage__why {
@@ -73,4 +90,13 @@
     url("/school.jpg");
   background-size: cover;
   background-position: center;
+ 
+  @include mdc-layout-grid-media-query_(phone) {
+    background-image: 
+      linear-gradient(
+        rgba(mdc-theme-prop-value(on-surface), .56),
+        rgba(mdc-theme-prop-value(on-surface), .56)
+      ),
+      url("/school--m.jpg");
+  } background-position: center;
 }

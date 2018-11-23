@@ -6,7 +6,9 @@ import environment from 'Environment'
 
 const mutation = graphql`
   mutation DeleteViewerAccountMutation($input: DeleteViewerAccountInput!) {
-    deleteViewerAccount(input: $input)
+    deleteViewerAccount(input: $input) {
+      deletedViewerId
+    }
   }
 `
 
@@ -24,8 +26,9 @@ export default (login, password, callback) => {
       mutation,
       variables,
       updater: proxyStore => {
-        const userId = proxyStore.getRootField('deleteViewerAccount')
-        proxyStore.delete(userId)
+        const deleteViewerAccount = proxyStore.getRootField('deleteViewerAccount')
+        const deletedViewerId = deleteViewerAccount.getValue('deletedViewerId')
+        proxyStore.delete(deletedViewerId)
       },
       onCompleted: callback,
       onError: err => callback(null, err),

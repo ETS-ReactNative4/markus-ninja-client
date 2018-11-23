@@ -42,7 +42,9 @@ class TopicPageTopicables extends React.Component {
 
     return (
       <React.Fragment>
-        <TopicNav counts={topicables.counts} />
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <TopicNav counts={topicables.counts} />
+        </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           {this.renderInput()}
         </div>

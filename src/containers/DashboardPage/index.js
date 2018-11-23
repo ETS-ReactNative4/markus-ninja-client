@@ -6,6 +6,7 @@ import graphql from 'babel-plugin-relay/macro'
 import {Link} from 'react-router-dom'
 import environment from 'Environment'
 import LessonPreview from 'components/LessonPreview'
+import StudyPreview from 'components/StudyPreview'
 import IconLink from 'components/IconLink'
 import Drawer from 'components/mdc/Drawer'
 import SearchViewerStudies from './SearchViewerStudies'
@@ -17,6 +18,10 @@ import "./styles.css"
 
 const DashboardPageQuery = graphql`
   query DashboardPageQuery($count: Int!, $after: String) {
+    gettingStartedStudy: study(owner: "markus", name: "Getting_Started") {
+      id
+      ...StudyPreview_study
+    }
     viewer {
       ...ViewerReceivedActivity_viewer @arguments(
         count: $count,
@@ -30,6 +35,9 @@ const DashboardPageQuery = graphql`
       }
       login
       resourcePath
+      studies(first: 0) {
+        totalCount
+      }
     }
   }
 `
@@ -52,6 +60,8 @@ class DashboardPage extends React.Component {
             return <div>{error.message}</div>
           } else if (props) {
             const {drawerOpen} = this.state
+            const lessons = get(props, "viewer.lessons.nodes", [])
+            const studyCount = get(props, "viewer.studies.totalCount", 0)
 
             return (
               <React.Fragment>
@@ -93,25 +103,40 @@ class DashboardPage extends React.Component {
                         {` @${props.viewer.login}`}
                       </Link>
                     </h3>
-                    <button
-                      type="button"
-                      className="mdc-button mdc-button--unelevated"
-                      onClick={() => this.setState({drawerOpen: !drawerOpen})}
-                    >
-                      Search your studies
-                    </button>
+                    {studyCount > 0
+                    ? <button
+                        type="button"
+                        className="mdc-button mdc-button--unelevated"
+                        onClick={() => this.setState({drawerOpen: !drawerOpen})}
+                      >
+                        Search your studies
+                      </button>
+                    : <Link className="mdc-button mdc-button--unelevated" to="/new">
+                        Create your first study
+                      </Link>}
                   </div>
                 </header>
                 <div className="mdc-layout-grid rn-page">
                   <div className="mdc-layout-grid__inner">
-                    <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                      Continue your lessons
-                    </h5>
-                    {get(props, "viewer.lessons.nodes", []).map((node) =>
-                      node &&
-                      <div key={node.id} className="mdc-layout-grid__cell">
-                        <LessonPreview.Card className="h-100" lesson={node} />
-                      </div>)}
+                    {lessons.length > 0
+                    ? <React.Fragment>
+                        <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                          Continue your lessons
+                        </h5>
+                        {get(props, "viewer.lessons.nodes", []).map((node) =>
+                          node &&
+                          <div key={node.id} className="mdc-layout-grid__cell">
+                            <LessonPreview.Card className="h-100" lesson={node} />
+                          </div>)}
+                        </React.Fragment>
+                    : <React.Fragment>
+                        <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                          Getting started
+                        </h5>
+                        <div className="mdc-layout-grid__cell">
+                          <StudyPreview.Card study={get(props, "gettingStartedStudy", null)} />
+                        </div>
+                      </React.Fragment>}
                     <ViewerReceivedActivity viewer={props.viewer} />
                   </div>
                 </div>

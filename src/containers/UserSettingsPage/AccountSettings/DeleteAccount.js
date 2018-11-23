@@ -33,7 +33,7 @@ class DeleteAccount extends React.Component {
           if (!isNil(error)) {
             this.setState({ error: error.message })
           }
-          this.history.replace('/')
+          this.props.history.replace('/')
         },
       )
     }
@@ -91,7 +91,7 @@ class DeleteAccount extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <h6>This is extremely important.</h6>
-        <p>
+        <p className="mb2">
           We will immediately delete all your studies, and anything associated with your account.
           You will no longer receive any communication from us about your account.
           Please be sure before you proceed.
@@ -121,7 +121,7 @@ class DeleteAccount extends React.Component {
             />
           </TextField>
         </div>
-        <p>
+        <p className="mv2">
           To verify, type <em>delete my account</em> below:
         </p>
         <TextField

@@ -3,83 +3,116 @@ import {
   createFragmentContainer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
-import {matchPath, withRouter} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
+import Tab from '@material/react-tab'
+import TabBar from '@material/react-tab-bar'
 import Icon from 'components/Icon'
 import Counter from 'components/Counter'
-import Tab from 'components/mdc/Tab'
-import TabBar from 'components/mdc/TabBar'
-import { get } from 'utils'
+import {filterDefinedReactChildren, get} from 'utils'
+
+const OVERVIEW_TAB = 0,
+      LESSONS_TAB = 1,
+      COURSES_TAB = 2,
+      ASSETS_TAB = 3,
+      SETTINGS_TAB = 4
 
 class StudyNav extends React.Component {
-  isPathActive = (path) => {
-    const pathname = get(this.props, "location.pathname", "")
-    const match = matchPath(pathname, { path, exact: true })
-    return Boolean(match && match.isExact)
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      activeIndex: this.getActiveIndex(),
+    }
   }
 
-  handleClickTab_ = (e) => {
-    this.props.history.push(e.target.value)
+  getActiveIndex = () => {
+    const pathname = get(this.props, "location.pathname", "")
+    const resourcePath = get(this.props, "study.resourcePath", "")
+    switch (pathname) {
+      case resourcePath:
+        return OVERVIEW_TAB
+      case resourcePath+"/lessons":
+        return LESSONS_TAB
+      case resourcePath+"/courses":
+        return COURSES_TAB
+      case resourcePath+"/assets":
+        return ASSETS_TAB
+      case resourcePath+"/settings":
+        return SETTINGS_TAB
+      default:
+        return OVERVIEW_TAB
+    }
+  }
+
+  activeIndexToPath = (activeIndex) => {
+    const resourcePath = get(this.props, "study.resourcePath", "")
+    switch (activeIndex) {
+      case OVERVIEW_TAB:
+        return resourcePath
+      case LESSONS_TAB:
+        return resourcePath+"/lessons"
+      case COURSES_TAB:
+        return resourcePath+"/courses"
+      case ASSETS_TAB:
+        return resourcePath+"/assets"
+      case SETTINGS_TAB:
+        return resourcePath+"/settings"
+      default:
+        return resourcePath
+    }
+  }
+
+  handleActiveIndexUpdate_ = (activeIndex) => {
+    this.setState({activeIndex})
+    const path = this.activeIndexToPath(activeIndex)
+    this.props.history.push(path)
   }
 
   render() {
+    const {activeIndex} = this.state
     const {className, study} = this.props
-    const studyPath = "/:owner/:name"
 
     return (
-      <TabBar className={className} onClickTab={this.handleClickTab_}>
-        <Tab
-          minWidth
-          active={this.isPathActive(studyPath)}
-          value={study.resourcePath}
-        >
+      <TabBar
+        className={className}
+        activeIndex={activeIndex}
+        indexInView={activeIndex}
+        handleActiveIndexUpdate={this.handleActiveIndexUpdate_}
+      >
+        {filterDefinedReactChildren([
+        <Tab minWidth>
           <span className="mdc-tab__text-label">
             Overview
           </span>
-        </Tab>
-        <Tab
-          minWidth
-          active={this.isPathActive(studyPath+"/lessons")}
-          value={study.resourcePath+"/lessons"}
-        >
+        </Tab>,
+        <Tab minWidth>
           <Icon as="span" className="mdc-tab__icon" icon="lesson" />
           <span className="mdc-tab__text-label">
             Lessons
             <Counter>{get(study, "lessons.totalCount", 0)}</Counter>
           </span>
-        </Tab>
-        <Tab
-          minWidth
-          active={this.isPathActive(studyPath+"/courses")}
-          value={study.resourcePath+"/courses"}
-        >
+        </Tab>,
+        <Tab minWidth>
           <Icon as="span" className="mdc-tab__icon" icon="course" />
           <span className="mdc-tab__text-label">
             Courses
             <Counter>{get(study, "courses.totalCount", 0)}</Counter>
           </span>
-        </Tab>
-        <Tab
-          minWidth
-          active={this.isPathActive(studyPath+"/assets")}
-          value={study.resourcePath+"/assets"}
-        >
+        </Tab>,
+        <Tab minWidth>
           <Icon as="span" className="mdc-tab__icon" icon="asset" />
           <span className="mdc-tab__text-label">
             Assets
             <Counter>{get(study, "assets.totalCount", 0)}</Counter>
           </span>
-        </Tab>
-        {study.viewerCanAdmin &&
-        <Tab
-          minWidth
-          active={this.isPathActive(studyPath+"/settings")}
-          value={study.resourcePath+"/settings"}
-        >
+        </Tab>,
+        study.viewerCanAdmin &&
+        <Tab minWidth>
           <Icon as="span" className="mdc-tab__icon">settings</Icon>
           <span className="mdc-tab__text-label">
             Settings
           </span>
-        </Tab>}
+        </Tab>])}
       </TabBar>
     )
   }

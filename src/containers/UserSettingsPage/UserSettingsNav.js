@@ -1,53 +1,78 @@
 import * as React from 'react'
-import {matchPath, withRouter} from 'react-router-dom'
-import Tab from 'components/mdc/Tab'
-import TabBar from 'components/mdc/TabBar'
+import {withRouter} from 'react-router-dom'
+import Tab from '@material/react-tab'
+import TabBar from '@material/react-tab-bar'
 import { get } from 'utils'
 
 import './styles.css'
 
 const SETTINGS_PATH = "/settings"
+const PROFILE_TAB = 0,
+      ACCOUNT_TAB = 1,
+      EMAILS_TAB = 2
 
 class UserSettingsNav extends React.Component {
-  isPathActive = (path) => {
-    const pathname = get(this.props, "location.pathname", "")
-    const match = matchPath(pathname, { path, exact: true })
-    return Boolean(match && match.isExact)
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      activeIndex: this.getActiveIndex(),
+    }
   }
 
-  handleClickTab_ = (e) => {
-    this.props.history.push(e.target.value)
+  getActiveIndex = () => {
+    const pathname = get(this.props, "location.pathname", "")
+    switch (pathname) {
+      case SETTINGS_PATH+"/profile":
+        return PROFILE_TAB
+      case SETTINGS_PATH+"/account":
+        return ACCOUNT_TAB
+      case SETTINGS_PATH+"/emails":
+        return EMAILS_TAB
+      default:
+        return PROFILE_TAB
+    }
+  }
+
+  activeIndexToPath = (activeIndex) => {
+    switch (activeIndex) {
+      case PROFILE_TAB:
+        return SETTINGS_PATH+"/profile"
+      case ACCOUNT_TAB:
+        return SETTINGS_PATH+"/account"
+      case EMAILS_TAB:
+        return SETTINGS_PATH+"/emails"
+      default:
+        return SETTINGS_PATH+"/profile"
+    }
+  }
+
+  handleActiveIndexUpdate_ = (activeIndex) => {
+    this.setState({activeIndex})
+    const path = this.activeIndexToPath(activeIndex)
+    this.props.history.push(path)
   }
 
   render() {
+    const {activeIndex} = this.state
     const {className} = this.props
-    const profilePath = SETTINGS_PATH+"/profile"
-    const accountPath = SETTINGS_PATH+"/account"
-    const emailsPath = SETTINGS_PATH+"/emails"
 
     return (
-      <TabBar className={className} onClickTab={this.handleClickTab_}>
-        <Tab
-          active={this.isPathActive(profilePath)}
-          minWidth
-          value={profilePath}
-        >
+      <TabBar
+        className={className}
+        activeIndex={activeIndex}
+        indexInView={activeIndex}
+        handleActiveIndexUpdate={this.handleActiveIndexUpdate_}
+      >
+        <Tab minWidth>
           <span className="mdc-tab__icon material-icons">person</span>
           <span className="mdc-tab__text-label">Profile</span>
         </Tab>
-        <Tab
-          active={this.isPathActive(accountPath)}
-          minWidth
-          value={accountPath}
-        >
+        <Tab minWidth>
           <span className="mdc-tab__icon material-icons">account_box</span>
           <span className="mdc-tab__text-label">Account</span>
         </Tab>
-        <Tab
-          active={this.isPathActive(emailsPath)}
-          minWidth
-          value={emailsPath}
-        >
+        <Tab minWidth>
           <span className="mdc-tab__icon material-icons">email</span>
           <span className="mdc-tab__text-label">Emails</span>
         </Tab>

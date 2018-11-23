@@ -3,50 +3,70 @@ import {
   createFragmentContainer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
-import cls from 'classnames'
-import {matchPath, withRouter} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
+import Tab from '@material/react-tab'
+import TabBar from '@material/react-tab-bar'
 import Icon from 'components/Icon'
 import Counter from 'components/Counter'
-import Tab from 'components/mdc/Tab'
-import TabBar from 'components/mdc/TabBar'
 import { get } from 'utils'
 
+const LESSONS_TAB = 0
+
 class CourseNav extends React.Component {
-  isPathActive = (path) => {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      activeIndex: this.getActiveIndex(),
+    }
+  }
+
+  getActiveIndex = () => {
     const pathname = get(this.props, "location.pathname", "")
-    const match = matchPath(pathname, { path, exact: true })
-    return Boolean(match && match.isExact)
+    const resourcePath = get(this.props, "course.resourcePath", "")
+    switch (pathname) {
+      case resourcePath:
+        return LESSONS_TAB
+      default:
+        return LESSONS_TAB
+    }
   }
 
-  handleClickTab_ = (e) => {
-    this.props.history.push(e.target.value)
+  activeIndexToPath = (activeIndex) => {
+    const resourcePath = get(this.props, "course.resourcePath", "")
+    switch (activeIndex) {
+      case LESSONS_TAB:
+        return resourcePath
+      default:
+        return resourcePath
+    }
   }
 
-  get classes() {
-    const {className} = this.props
-    return cls("mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+  handleActiveIndexUpdate_ = (activeIndex) => {
+    this.setState({activeIndex})
+    const path = this.activeIndexToPath(activeIndex)
+    this.props.history.push(path)
   }
 
   render() {
-    const course = get(this.props, "course", {})
-    const coursePath = "/:owner/:name/course/:number"
+    const {activeIndex} = this.state
+    const {className, course} = this.props
 
     return (
-      <div className={this.classes}>
-        <TabBar onClickTab={this.handleClickTab_}>
-          <Tab
-            minWidth
-            active={this.isPathActive(coursePath)}
-            value={course.resourcePath}
-          >
-            <Icon as="span" className="mdc-tab__icon" icon="lesson" />
-            <span className="mdc-tab__text-label">
-              Lessons
-              <Counter>{get(course, "lessons.totalCount", 0)}</Counter>
-            </span>
-          </Tab>
-        </TabBar>
-      </div>
+      <TabBar
+        className={className}
+        activeIndex={activeIndex}
+        indexInView={activeIndex}
+        handleActiveIndexUpdate={this.handleActiveIndexUpdate_}
+      >
+        <Tab minWidth>
+          <Icon as="span" className="mdc-tab__icon" icon="lesson" />
+          <span className="mdc-tab__text-label">
+            Lessons
+            <Counter>{get(course, "lessons.totalCount", 0)}</Counter>
+          </span>
+        </Tab>
+      </TabBar>
     )
   }
 }
