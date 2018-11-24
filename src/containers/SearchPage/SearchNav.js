@@ -93,7 +93,7 @@ class SearchNav extends React.Component {
         onClose={this.props.onClose}
       >
         <Drawer.Header>
-          <Drawer.Title>
+          <Drawer.Title tabIndex={-1}>
             Search
           </Drawer.Title>
         </Drawer.Header>
