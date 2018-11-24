@@ -227,8 +227,10 @@ class MenuSurface extends React.Component {
       this.lastFocusableElement_ = focusableElements.length > 0 ?
         focusableElements[focusableElements.length - 1] : null;
       this.foundation_.open();
+      document.body.classList.add("pointer");
     } else {
       this.foundation_.close();
+      document.body.classList.remove("pointer");
     }
   }
 
