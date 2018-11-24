@@ -31,6 +31,8 @@ class SearchNav extends React.Component {
   }
 
   handleSelect_ = (selectedIndex) => {
+    this.setState({selectedIndex})
+
     const {location} = this.props
     const query = queryString.parse(get(this.props, "location.search", ""))
     const pathname = get(location, "pathname", "")

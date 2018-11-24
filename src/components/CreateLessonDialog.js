@@ -63,7 +63,6 @@ class CreateLessonDialog extends React.Component {
 
     return (
       <Dialog
-        innerRef={this.setRoot}
         className={this.classes}
         open={open}
         onClose={this.handleClose}
