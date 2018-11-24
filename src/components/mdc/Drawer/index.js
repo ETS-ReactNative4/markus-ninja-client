@@ -172,26 +172,25 @@ class Drawer extends React.Component {
   render() {
     const {activeFocusTrap} = this.state
     const {
-      as: Component,
       children,
       modal,
     } = this.props;
 
     return (
       <React.Fragment>
-        <Component
+        <aside
           className={this.classes}
           onKeyDown={this.handleKeyDown_}
           onTransitionEnd={this.handleTransitionEnd_}
           ref={this.drawer_}
           {...this.otherProps}
         >
-          {activeFocusTrap
+          {activeFocusTrap && Boolean(children)
           ? <FocusTrap focusTrapOptions={this.focusTrapOptions}>
               {children}
             </FocusTrap>
           : children}
-        </Component>
+        </aside>
         {modal && this.renderScrim()}
       </React.Fragment>
     );
@@ -208,7 +207,6 @@ class Drawer extends React.Component {
 }
 
 Drawer.propTypes = {
-  as: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   children: PropTypes.node,
   className: PropTypes.string,
   dismissible: PropTypes.bool,
@@ -223,7 +221,6 @@ Drawer.propTypes = {
 };
 
 Drawer.defaultProps = {
-  as: 'aside',
   className: '',
   children: null,
   dismissible: false,
