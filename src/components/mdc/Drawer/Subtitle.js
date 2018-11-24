@@ -24,32 +24,32 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-const DrawerAppContent = (props) => {
+const DrawerSubTitle = (props) => {
   const {
-    as: Component,
+    tag: Tag,
     children,
     className,
     ...otherProps
   } = props;
   return (
-    <Component
-      className={classnames('mdc-drawer-app-content', className)}
+    <Tag
+      className={classnames('mdc-drawer__subtitle', className)}
       {...otherProps}
     >
       {children}
-    </Component>
+    </Tag>
   );
 };
 
-DrawerAppContent.propTypes = {
-  as: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+DrawerSubTitle.propTypes = {
+  tag: PropTypes.string,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
 };
 
-DrawerAppContent.defaultProps = {
-  as: 'div',
+DrawerSubTitle.defaultProps = {
+  tag: 'h6',
   className: '',
 };
 
-export default DrawerAppContent;
+export default DrawerSubTitle;

@@ -24,32 +24,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-const DrawerHeader = (props) => {
+const DrawerTitle = (props) => {
   const {
-    as: Component,
-    children,
+    tag: Tag,
     className,
     ...otherProps
   } = props;
   return (
-    <Component
-      className={classnames('mdc-drawer__header', className)}
+    <Tag
+      className={classnames('mdc-drawer__title', className)}
       {...otherProps}
     >
-      {children}
-    </Component>
+      {props.children}
+    </Tag>
   );
 };
 
-DrawerHeader.propTypes = {
-  as: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+DrawerTitle.propTypes = {
+  tag: PropTypes.string,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
 };
 
-DrawerHeader.defaultProps = {
-  as: 'header',
+DrawerTitle.defaultProps = {
+  tag: 'h3',
   className: '',
 };
 
-export default DrawerHeader;
+export default DrawerTitle;
