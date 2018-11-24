@@ -77,49 +77,48 @@ class CardTopicPreview extends React.Component {
               {get(topic, "topicables.studyCount", 0)}
             </Link>
           </div>
-          <Menu.Anchor
-            className="mdc-card__action-icons rn-card__actions--collapsed"
-            innerRef={this.setAnchorElement}
-          >
-            <button
-              type="button"
-              className="mdc-icon-button material-icons"
-              onClick={() => this.setState({menuOpen: !menuOpen})}
-            >
-              more_vert
-            </button>
-            <Menu
-              open={menuOpen}
-              onClose={() => this.setState({menuOpen: false})}
-              anchorElement={anchorElement}
-              anchorCorner={Corner.BOTTOM_LEFT}
-            >
-              <List>
-                <List.Item onClick={getHandleClickLink(topic.resourcePath+"?t=course")}>
-                  <List.Item.Graphic
-                    graphic={<Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="course" />}
-                  />
-                  <List.Item.Text primaryText={
-                    <span>
-                      Courses
-                      <Counter>{get(topic, "topicables.courseCount", 0)}</Counter>
-                    </span>
-                  }/>
-                </List.Item>
-                <List.Item onClick={getHandleClickLink(topic.resourcePath+"?t=study")}>
-                  <List.Item.Graphic
-                    graphic={<Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="study" />}
-                  />
-                  <List.Item.Text primaryText={
-                    <span>
-                      Studies
-                      <Counter>{get(topic, "topicables.studyCount", 0)}</Counter>
-                    </span>
-                  }/>
-                </List.Item>
-              </List>
-            </Menu>
-          </Menu.Anchor>
+          <div className="mdc-card__action-icons rn-card__actions--collapsed">
+            <Menu.Anchor innerRef={this.setAnchorElement}>
+              <button
+                type="button"
+                className="mdc-icon-button material-icons"
+                onClick={() => this.setState({menuOpen: !menuOpen})}
+              >
+                more_vert
+              </button>
+              <Menu
+                open={menuOpen}
+                onClose={() => this.setState({menuOpen: false})}
+                anchorElement={anchorElement}
+                anchorCorner={Corner.BOTTOM_LEFT}
+              >
+                <List>
+                  <List.Item onClick={getHandleClickLink(topic.resourcePath+"?t=course")}>
+                    <List.Item.Graphic
+                      graphic={<Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="course" />}
+                    />
+                    <List.Item.Text primaryText={
+                      <span>
+                        Courses
+                        <Counter>{get(topic, "topicables.courseCount", 0)}</Counter>
+                      </span>
+                    }/>
+                  </List.Item>
+                  <List.Item onClick={getHandleClickLink(topic.resourcePath+"?t=study")}>
+                    <List.Item.Graphic
+                      graphic={<Icon className="mdc-list-item__graphic mdc-theme--text-icon-on-background" icon="study" />}
+                    />
+                    <List.Item.Text primaryText={
+                      <span>
+                        Studies
+                        <Counter>{get(topic, "topicables.studyCount", 0)}</Counter>
+                      </span>
+                    }/>
+                  </List.Item>
+                </List>
+              </Menu>
+            </Menu.Anchor>
+          </div>
         </div>
       </div>
     )

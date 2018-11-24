@@ -402,37 +402,6 @@ class StudyBodyEditorMain extends React.Component {
         />
     )
   }
-
-  renderMenu() {
-    const {uid} = this.props
-    const {selectedIndex} = this.state
-
-    return (
-      <div className="StudyBodyEditorMain__menu">
-        <Sticky
-          top={400}
-          bottomBoundary={`#draft-${uid}`}
-        >
-          <div className="StudyBodyEditorMain__menu-content mdc-card">
-            <List
-              singleSelection
-              selectedIndex={selectedIndex}
-              handleSelect={this.handleSelect_}
-            >
-              <List.Item>
-                <List.Item.Graphic graphic={<Icon icon="edit" />} />
-                <List.Item.Text primaryText="Draft" />
-              </List.Item>
-              <List.Item>
-                <List.Item.Graphic graphic={<Icon icon="visibility" />} />
-                <List.Item.Text primaryText="Preview" />
-              </List.Item>
-            </List>
-          </div>
-        </Sticky>
-      </div>
-    )
-  }
 }
 
 StudyBodyEditorMain.propTypes = {

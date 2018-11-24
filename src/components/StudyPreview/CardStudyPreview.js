@@ -76,23 +76,25 @@ class CardStudyPreview extends React.Component {
               {get(study, "lessons.totalCount", 0)}
             </Link>
           </div>
-          <Menu.Anchor className="mdc-card__action-icons rn-card__actions--collapsed" innerRef={this.setAnchorElement}>
-            <button
-              type="button"
-              className="mdc-icon-button material-icons"
-              onClick={() => this.setState({menuOpen: !menuOpen})}
-            >
-              more_vert
-            </button>
-            <Menu
-              open={menuOpen}
-              onClose={() => this.setState({menuOpen: false})}
-              anchorElement={anchorElement}
-              anchorCorner={Corner.BOTTOM_LEFT}
-            >
-              {this.renderMenuList()}
-            </Menu>
-          </Menu.Anchor>
+          <div className="mdc-card__action-icons rn-card__actions--collapsed">
+            <Menu.Anchor innerRef={this.setAnchorElement}>
+              <button
+                type="button"
+                className="mdc-icon-button material-icons"
+                onClick={() => this.setState({menuOpen: !menuOpen})}
+              >
+                more_vert
+              </button>
+              <Menu
+                open={menuOpen}
+                onClose={() => this.setState({menuOpen: false})}
+                anchorElement={anchorElement}
+                anchorCorner={Corner.BOTTOM_LEFT}
+              >
+                {this.renderMenuList()}
+              </Menu>
+            </Menu.Anchor>
+          </div>
         </div>
       </div>
     )

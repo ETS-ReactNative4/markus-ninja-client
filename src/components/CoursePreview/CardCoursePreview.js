@@ -76,7 +76,7 @@ class CardCoursePreview extends React.Component {
             </Link>
           </div>
           <div className="mdc-card__action-icons rn-card__actions--collapsed">
-            <Menu.Anchor className="rn-list-preview__actions--collapsed" innerRef={this.setAnchorElement}>
+            <Menu.Anchor innerRef={this.setAnchorElement}>
               <button
                 type="button"
                 className="mdc-icon-button material-icons"
