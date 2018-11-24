@@ -2,7 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
 import queryString from 'query-string'
-import {withRouter} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 import getHistory from 'react-router-global-history'
 import List from 'components/mdc/List'
 import Drawer from 'components/mdc/Drawer'
@@ -83,18 +83,20 @@ class SearchNav extends React.Component {
 
   render() {
     const {open, selectedIndex} = this.state
-    const {counts} = this.props
+    const {counts, onClose} = this.props
 
     return (
       <Drawer
         className={this.classes}
         modal
         open={open}
-        onClose={this.props.onClose}
+        onClose={onClose}
       >
         <Drawer.Header>
-          <Drawer.Title tabIndex={-1}>
-            Search
+          <Drawer.Title>
+            <Link className="rn-link" to="/search" onClick={onClose}>
+              Search
+            </Link>
           </Drawer.Title>
         </Drawer.Header>
         <Drawer.Content>
