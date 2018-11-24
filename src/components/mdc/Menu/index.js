@@ -25,6 +25,7 @@ import PropTypes from 'prop-types'
 import cls from 'classnames'
 import {MDCMenuFoundation} from '@material/menu/dist/mdc.menu'
 import MenuSurface, {Corner} from 'components/mdc/MenuSurface'
+import List from 'components/mdc/List'
 
 import MenuSelectionGroup from './MenuSelectionGroup'
 import MenuSelectionGroupIcon from './MenuSelectionGroupIcon'
@@ -198,7 +199,7 @@ Menu.propTypes = {
     const prop = props[propName];
     const child = React.Children.only(prop)
     let error = null;
-    if (child && child.type.name !== 'List') {
+    if (child && child.type !== List.type) {
       error = new Error('`' + componentName + '` only child should be of type `List`.');
     }
     return error;

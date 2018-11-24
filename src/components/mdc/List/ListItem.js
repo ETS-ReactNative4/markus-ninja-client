@@ -142,3 +142,6 @@ ListItem.defaultProps = {
 ListItem.Graphic = ListItemGraphic;
 ListItem.Meta = ListItemMeta;
 ListItem.Text = ListItemText;
+
+// Needed for comparing type during runtime
+ListItem.type = (<ListItem />).type

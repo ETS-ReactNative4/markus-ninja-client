@@ -201,7 +201,7 @@ export default class List extends Component {
   }
 
   renderChild = (child) => {
-    if (child.type === ListItem) {
+    if (child.type === ListItem.type) {
       return this.renderListItem(child, this.listItemCount++);
     } else {
       return child;
@@ -321,6 +321,9 @@ List.defaultProps = {
 
 List.Item = ListItem;
 List.Group = ListGroup;
+
+// Needed for comparing type during runtime
+List.type = (<List />).type
 
 /* eslint-enable quote-props */
 
