@@ -6,6 +6,7 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import {withRouter} from 'react-router-dom'
+import getHistory from 'react-router-global-history'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import Dialog from 'components/Dialog'
 import StudyContext from 'containers/StudyPage/Context'
@@ -42,7 +43,7 @@ class CreateLessonDialog extends React.Component {
           this.setState({ error: errors[0].message })
           return
         }
-        this.props.history.push(lesson.resourcePath)
+        getHistory().push(lesson.resourcePath)
       }
     )
   }

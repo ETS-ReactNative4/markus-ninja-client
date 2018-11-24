@@ -6,12 +6,13 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import {withRouter} from 'react-router-dom'
+import getHistory from 'react-router-global-history'
 import { get } from 'utils'
 
 class UserAssetPreview extends React.Component {
   handleClickImage = (e) => {
     const {asset} = this.props
-    this.props.history.push(asset.resourcePath)
+    getHistory().push(asset.resourcePath)
   }
 
   get classes() {

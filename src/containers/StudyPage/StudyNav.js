@@ -4,6 +4,7 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import {withRouter} from 'react-router-dom'
+import getHistory from 'react-router-global-history'
 import Tab from '@material/react-tab'
 import TabBar from '@material/react-tab-bar'
 import Icon from 'components/Icon'
@@ -65,7 +66,7 @@ class StudyNav extends React.Component {
   handleActiveIndexUpdate_ = (activeIndex) => {
     this.setState({activeIndex})
     const path = this.activeIndexToPath(activeIndex)
-    this.props.history.push(path)
+    getHistory().push(path)
   }
 
   render() {

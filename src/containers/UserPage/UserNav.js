@@ -5,6 +5,7 @@ import {
 import graphql from 'babel-plugin-relay/macro'
 import queryString from 'query-string'
 import {withRouter} from 'react-router-dom'
+import getHistory from 'react-router-global-history'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faApple } from '@fortawesome/free-brands-svg-icons'
 import Tab from '@material/react-tab'
@@ -71,7 +72,7 @@ class UserNav extends React.Component {
   handleActiveIndexUpdate_ = (activeIndex) => {
     this.setState({activeIndex})
     const path = this.activeIndexToPath(activeIndex)
-    this.props.history.push(path)
+    getHistory().push(path)
   }
 
   render() {

@@ -2,6 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
 import {withRouter} from 'react-router-dom'
+import getHistory from 'react-router-global-history'
 import Tab from '@material/react-tab'
 import TabBar from '@material/react-tab-bar'
 import Counter from 'components/Counter'
@@ -26,7 +27,7 @@ class TopicNav extends React.Component {
       query.t = "study"
       const pathname = get(this.props, "location.pathname", "")
       const search = queryString.stringify(query)
-      this.props.history.push({pathname, search})
+      getHistory().push({pathname, search})
     }
   }
 
@@ -58,7 +59,7 @@ class TopicNav extends React.Component {
   handleActiveIndexUpdate_ = (activeIndex) => {
     this.setState({activeIndex})
     const path = this.activeIndexToPath(activeIndex)
-    this.props.history.push(path)
+    getHistory().push(path)
   }
 
   render() {

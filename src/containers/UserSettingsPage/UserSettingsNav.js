@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {withRouter} from 'react-router-dom'
+import getHistory from 'react-router-global-history'
 import Tab from '@material/react-tab'
 import TabBar from '@material/react-tab-bar'
 import { get } from 'utils'
@@ -50,7 +51,7 @@ class UserSettingsNav extends React.Component {
   handleActiveIndexUpdate_ = (activeIndex) => {
     this.setState({activeIndex})
     const path = this.activeIndexToPath(activeIndex)
-    this.props.history.push(path)
+    getHistory().push(path)
   }
 
   render() {

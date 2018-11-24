@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import {Link, withRouter} from 'react-router-dom'
+import getHistory from 'react-router-global-history'
 import Dialog from 'components/Dialog'
 import DeleteUserAssetMutation from 'mutations/DeleteUserAssetMutation'
 import UserAssetDescription from './UserAssetDescription'
@@ -22,7 +23,7 @@ class UserAsset extends React.Component {
         if (!isNil(errors)) {
           this.setState({ error: errors[0].message })
         } else {
-          this.props.history.push(
+          getHistory().push(
             get(this.props, "asset.study.resourcePath", "") + "/assets"
           )
         }

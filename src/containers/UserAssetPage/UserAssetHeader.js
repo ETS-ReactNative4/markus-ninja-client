@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router-dom';
+import getHistory from 'react-router-global-history'
 import TextField, {Input} from '@material/react-text-field'
 import Icon from 'components/Icon'
 import StudyLink from 'components/StudyLink'
@@ -40,7 +41,7 @@ class UserAssetHeader extends React.Component {
         this.setState({
           name: get(updatedUserAsset, "name", ""),
         })
-        this.props.history.push(updatedUserAsset.resourcePath)
+        getHistory().push(updatedUserAsset.resourcePath)
       },
     )
   }

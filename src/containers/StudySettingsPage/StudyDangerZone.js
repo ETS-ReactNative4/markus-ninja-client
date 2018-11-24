@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router'
+import getHistory from 'react-router-global-history'
 import TextField, {Input} from '@material/react-text-field'
 import ErrorText from 'components/ErrorText'
 import DeleteStudyMutation from 'mutations/DeleteStudyMutation'
@@ -25,7 +26,7 @@ class StudyDangerZone extends React.Component {
           if (errors) {
             this.setState({ error: errors[0].message })
           } else {
-            this.props.history.push("/")
+            getHistory().push("/")
           }
         },
       )

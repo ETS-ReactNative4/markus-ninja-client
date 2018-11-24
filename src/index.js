@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
+import createBrowserHistory from 'history/createBrowserHistory';
 import {ReactRouterGlobalHistory} from 'react-router-global-history';
 import {UIDProvider} from 'components/UniqueId';
 import 'styles/index.css';
@@ -8,6 +9,8 @@ import App from 'containers/App';
 import registerServiceWorker from './serviceWorker';
 
 import WebFontLoader from 'webfontloader';
+
+const history = createBrowserHistory()
 
 WebFontLoader.load({
   google: {
@@ -20,7 +23,7 @@ WebFontLoader.load({
 })
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter history={history}>
     <UIDProvider>
       <ReactRouterGlobalHistory />
       <App />

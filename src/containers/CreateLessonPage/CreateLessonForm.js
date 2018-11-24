@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router'
+import getHistory from 'react-router-global-history'
 import CreateLessonMutation from 'mutations/CreateLessonMutation'
 import ErrorText from 'components/ErrorText'
 import TextField, {defaultTextFieldState} from 'components/TextField'
@@ -38,7 +39,7 @@ class CreateLessonForm extends React.Component {
           this.setState({ error: errors[0].message })
           return
         }
-        this.props.history.push(lesson.resourcePath)
+        getHistory().push(lesson.resourcePath)
       }
     )
   }

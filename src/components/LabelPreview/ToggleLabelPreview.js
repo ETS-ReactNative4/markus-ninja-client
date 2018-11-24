@@ -6,6 +6,7 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import {withRouter} from 'react-router-dom'
+import getHistory from 'react-router-global-history'
 import Label from 'components/Label'
 import AddLabelMutation from 'mutations/AddLabelMutation'
 import RemoveLabelMutation from 'mutations/RemoveLabelMutation'
@@ -56,7 +57,7 @@ class ToggleLabelPreview extends React.Component {
     const {disabled, label, selected} = this.props
 
     if (disabled) {
-      this.props.history.push(label.resourcePath)
+      getHistory().push(label.resourcePath)
     } else {
       this.handleLabelChecked_(label.id, !selected)
     }

@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import {withRouter} from 'react-router-dom'
+import getHistory from 'react-router-global-history'
 import {HelperText} from '@material/react-text-field'
 import ErrorText from 'components/ErrorText'
 import TextField, {defaultTextFieldState} from 'components/TextField'
@@ -62,7 +63,7 @@ class UpdateStudyNameForm extends React.Component {
             valid: true,
           }
         })
-        this.props.history.push(updateStudy.resourcePath+"/settings")
+        getHistory().push(updateStudy.resourcePath+"/settings")
       },
     )
   }

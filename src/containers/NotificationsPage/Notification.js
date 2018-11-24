@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router'
+import getHistory from 'react-router-global-history'
 import List from 'components/mdc/List'
 import Icon from 'components/Icon'
 import Menu from 'components/mdc/Menu'
@@ -28,7 +29,7 @@ class Notification extends React.Component {
         if (error) {
           console.error(error)
         }
-        this.props.history.push(get(this.props, "notification.subject.resourcePath", "."))
+        getHistory().push(get(this.props, "notification.subject.resourcePath", "."))
       },
     )
   }

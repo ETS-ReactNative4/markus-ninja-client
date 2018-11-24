@@ -5,6 +5,7 @@ import {
 import graphql from 'babel-plugin-relay/macro'
 import cls from 'classnames'
 import { Link, withRouter } from 'react-router-dom'
+import getHistory from 'react-router-global-history'
 import queryString from 'query-string'
 import TextField, {Input} from '@material/react-text-field'
 import { debounce, get, isNil, isEmpty } from 'utils'
@@ -174,7 +175,7 @@ class SearchBarInput extends React.Component {
 
     const {q} = this.state
 
-    this.props.history.push({
+    getHistory().push({
       pathname: "/search",
       search: queryString.stringify({ q }),
     })

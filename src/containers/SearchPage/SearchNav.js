@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import cls from 'classnames'
 import queryString from 'query-string'
 import {withRouter} from 'react-router-dom'
+import getHistory from 'react-router-global-history'
 import List from 'components/mdc/List'
 import Drawer from 'components/mdc/Drawer'
 import Icon from 'components/Icon'
@@ -71,7 +72,7 @@ class SearchNav extends React.Component {
         break
     }
 
-    this.props.history.push(to)
+    getHistory().push(to)
     this.props.onClose()
   }
 
