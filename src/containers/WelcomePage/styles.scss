@@ -33,7 +33,8 @@
   @include mdc-theme-prop(color, text-primary-on-dark);
 
   text-align: center;
-  background-image: url("/chalkboard.jpg");
+  background-image:
+  url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chalkboard.jpg");
 }
 
 .WelcomePage__what {
@@ -44,7 +45,7 @@
       rgba(mdc-theme-prop-value(on-surface), .56),
       rgba(mdc-theme-prop-value(on-surface), .56)
     ),
-    url("/books.jpg");
+    url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/books.jpg");
   background-size: cover;
   background-position: center;
 
@@ -54,7 +55,7 @@
         rgba(mdc-theme-prop-value(on-surface), .56),
         rgba(mdc-theme-prop-value(on-surface), .56)
       ),
-      url("/books--m.jpg");
+      url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/books--m.jpg");
   }
 }
 
@@ -66,7 +67,7 @@
       rgba(mdc-theme-prop-value(on-surface), .48),
       rgba(mdc-theme-prop-value(on-surface), .48)
     ),
-    url("/chairs.jpg");
+    url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chairs.jpg");
   background-size: cover;
  
   @include mdc-layout-grid-media-query_(phone) {
@@ -75,7 +76,7 @@
         rgba(mdc-theme-prop-value(on-surface), .56),
         rgba(mdc-theme-prop-value(on-surface), .56)
       ),
-      url("/chairs--m.jpg");
+      url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chairs--m.jpg");
   } background-position: center;
 }
 
@@ -87,7 +88,7 @@
       rgba(mdc-theme-prop-value(on-surface), .32),
       rgba(mdc-theme-prop-value(on-surface), .32)
     ),
-    url("/school.jpg");
+    url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/school.jpg");
   background-size: cover;
   background-position: center;
  
@@ -97,6 +98,6 @@
         rgba(mdc-theme-prop-value(on-surface), .56),
         rgba(mdc-theme-prop-value(on-surface), .56)
       ),
-      url("/school--m.jpg");
+      url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/school--m.jpg");
   } background-position: center;
 }

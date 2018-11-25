@@ -13,6 +13,7 @@
 @import url(~tachyons-position/css/tachyons-position.css);
 @import url(~tachyons-spacing/css/tachyons-spacing.css);
 @import url(~tachyons-text-align/css/tachyons-text-align.css);
+@import url(~tachyons-text-transform/css/tachyons-text-transform.css);
 @import url(~tachyons-typography/css/tachyons-typography.css);
 @import url(~tachyons-utilities/css/tachyons-utilities.css);
 @import url(~tachyons-vertical-align/css/tachyons-vertical-align.css);
@@ -273,6 +274,15 @@ p {
   background-color: #fff;
   /* @alternate */
   background-color: var(--mdc-theme-background, #fff); }
+
+.min-vh-25 {
+  min-height: 25vh; }
+
+.min-vh-50 {
+  min-height: 50vh; }
+
+.min-vh-75 {
+  min-height: 75vh; }
 
 @keyframes mdc-ripple-fg-radius-in {
   from {

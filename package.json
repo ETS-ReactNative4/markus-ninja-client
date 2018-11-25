@@ -83,6 +83,7 @@
     "tachyons-position": "^6.0.6",
     "tachyons-spacing": "^6.0.4",
     "tachyons-text-align": "^3.1.0",
+    "tachyons-text-transform": "^4.0.6",
     "tachyons-typography": "^3.0.5",
     "tachyons-utilities": "^2.1.0",
     "tachyons-vertical-align": "^4.0.5",
@@ -104,7 +105,9 @@
     "eject": "react-scripts eject",
     "relay:dev": "curl http://localhost:5000/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
     "relay:prod": "curl https://api.rkus.ninja/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
-    "deploy": "npm run build && aws s3 sync ./build s3://ma.rkus.ninja",
+    "deploy:static": "aws s3 sync --delete ./static s3://markus-ninja-production-static-asset-us-east-1",
+    "deploy:build": "aws s3 sync ./build s3://ma.rkus.ninja",
+    "deploy": "run-s build deploy:build deploy:static",
     "lint": "eslint ./src --fix"
   },
   "devDependencies": {},

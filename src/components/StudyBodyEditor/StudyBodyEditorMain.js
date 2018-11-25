@@ -150,7 +150,14 @@ class StudyBodyEditorMain extends React.Component {
   render() {
     const {editorState, tab, toggleSaveDialog} = this.context
     const {anchorElement, loading, menuOpen} = this.state
-    const {object, placeholder, showFormButtonsFor, study, uid} = this.props
+    const {
+      bodyClassName,
+      object,
+      placeholder,
+      showFormButtonsFor,
+      study,
+      uid,
+    } = this.props
 
     return (
       <div id={`draft-${uid}`} className={this.classes}>
@@ -200,7 +207,7 @@ class StudyBodyEditorMain extends React.Component {
             </div>
           </Sticky>
           <div className="StudyBodyEditorMain__preview">
-            <div className="rn-card__body">
+            <div className={cls("rn-card__body", bodyClassName)}>
               <Preview
                 open={tab === "preview"}
                 studyId={study.id}
@@ -221,7 +228,10 @@ class StudyBodyEditorMain extends React.Component {
             </div>
           </div>
           <div className="StudyBodyEditorMain__draft">
-            <div className="StudyBodyEditorMain__draft-text rn-card__body" onClick={() => this.focus()}>
+            <div
+              className={cls("StudyBodyEditorMain__draft-text rn-card__body", bodyClassName)}
+              onClick={() => this.focus()}
+            >
               <input
                 className="StudyBodyEditorMain__hidden-input"
                 type="text"
@@ -405,6 +415,7 @@ class StudyBodyEditorMain extends React.Component {
 }
 
 StudyBodyEditorMain.propTypes = {
+  bodyClassName: PropTypes.string,
   object: PropTypes.shape({
     bodyHTML: PropTypes.string.isRequired,
     draft: PropTypes.string.isRequired,
@@ -423,6 +434,7 @@ StudyBodyEditorMain.propTypes = {
 }
 
 StudyBodyEditorMain.defaultProps = {
+  bodyClassName: "",
   object: {
     bodyHTML: "",
     draft: "",

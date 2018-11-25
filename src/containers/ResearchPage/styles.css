@@ -1,9 +1,9 @@
 .ResearchPage__header {
   text-align: center;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), url("/books.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/books.jpg");
   background-size: cover;
   background-position: center;
   background-position: center; }
   @media (max-width: 479px) {
     .ResearchPage__header {
-      background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), url("/books--m.jpg"); } }
+      background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/books--m.jpg"); } }

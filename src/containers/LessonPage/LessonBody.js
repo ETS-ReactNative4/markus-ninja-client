@@ -134,7 +134,7 @@ class LessonBody extends React.Component {
     const lesson = get(this.props, "lesson", {})
 
     return (
-      <div className="mdc-card h-100">
+      <div className="mdc-card">
         <div className="rn-card__actions mdc-card__actions">
           <span className="rn-card__overline">
             Updated {timeDifferenceForDate(lesson.publishedAt)}
@@ -152,7 +152,7 @@ class LessonBody extends React.Component {
             </button>
           </div>}
         </div>
-        <div className="rn-card__body">
+        <div className="rn-card__body min-vh-25">
           <HTML className="mdc-typography--body1" html={lesson.bodyHTML} />
         </div>
         {lesson.viewerCanUpdate &&
@@ -181,6 +181,7 @@ class LessonBody extends React.Component {
       <StudyBodyEditor study={study}>
         <form id="lesson-draft-form" onSubmit={this.handleSubmit}>
           <StudyBodyEditor.Main
+            bodyClassName="min-vh-25"
             placeholder="Begin your lesson"
             object={lesson}
             showFormButtonsFor="lesson-draft-form"

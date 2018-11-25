@@ -10531,6 +10531,11 @@ tachyons-text-align@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/tachyons-text-align/-/tachyons-text-align-3.1.0.tgz#e3592637afb68498ba846a619e374423e83f0727"
 
+tachyons-text-transform@^4.0.6:
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/tachyons-text-transform/-/tachyons-text-transform-4.0.6.tgz#e4ba082060a3b54f75a56ec5053108e0dbd8e4e9"
+  integrity sha512-+UWTZLWg11wTxsUerEKnQFlEHIZYdAhzGA0dYxv+CbJDMNi1UuFS7o76rB6II0fLnjWzCaxrHJkNpsytdXenpA==
+
 tachyons-typography@^3.0.5:
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/tachyons-typography/-/tachyons-typography-3.0.5.tgz#220a0285b3f04cf8502c552a1bc4109cf68de558"

@@ -31,3 +31,15 @@
 .bg-background {
   @include mdc-theme-prop(background-color, background);
 }
+
+.min-vh-25 {
+  min-height: 25vh;
+}
+
+.min-vh-50 {
+  min-height: 50vh;
+}
+
+.min-vh-75 {
+  min-height: 75vh;
+}
