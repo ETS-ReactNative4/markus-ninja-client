@@ -25,38 +25,38 @@
   /* @alternate */
   color: var(--mdc-theme-text-primary-on-dark, white);
   text-align: center;
-  background-image: url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chalkboard.jpg"); }
+  background-image: url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chalkboard.jpg"); }
 
 .WelcomePage__what {
   color: white;
   /* @alternate */
   color: var(--mdc-theme-text-primary-on-dark, white);
-  background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/books.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/books.jpg");
   background-size: cover;
   background-position: center; }
   @media (max-width: 479px) {
     .WelcomePage__what {
-      background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/books--m.jpg"); } }
+      background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/books--m.jpg"); } }
 
 .WelcomePage__who {
   color: white;
   /* @alternate */
   color: var(--mdc-theme-text-primary-on-dark, white);
-  background-image: linear-gradient(rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.48)), url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chairs.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.48)), url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chairs.jpg");
   background-size: cover;
   background-position: center; }
   @media (max-width: 479px) {
     .WelcomePage__who {
-      background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chairs--m.jpg"); } }
+      background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chairs--m.jpg"); } }
 
 .WelcomePage__why {
   color: white;
   /* @alternate */
   color: var(--mdc-theme-text-primary-on-dark, white);
-  background-image: linear-gradient(rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.32)), url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/school.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.32)), url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/school.jpg");
   background-size: cover;
   background-position: center;
   background-position: center; }
   @media (max-width: 479px) {
     .WelcomePage__why {
-      background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/school--m.jpg"); } }
+      background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/school--m.jpg"); } }

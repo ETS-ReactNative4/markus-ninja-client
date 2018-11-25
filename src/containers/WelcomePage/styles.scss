@@ -34,7 +34,7 @@
 
   text-align: center;
   background-image:
-  url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chalkboard.jpg");
+  url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chalkboard.jpg");
 }
 
 .WelcomePage__what {
@@ -45,7 +45,7 @@
       rgba(mdc-theme-prop-value(on-surface), .56),
       rgba(mdc-theme-prop-value(on-surface), .56)
     ),
-    url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/books.jpg");
+    url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/books.jpg");
   background-size: cover;
   background-position: center;
 
@@ -55,7 +55,7 @@
         rgba(mdc-theme-prop-value(on-surface), .56),
         rgba(mdc-theme-prop-value(on-surface), .56)
       ),
-      url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/books--m.jpg");
+      url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/books--m.jpg");
   }
 }
 
@@ -67,7 +67,7 @@
       rgba(mdc-theme-prop-value(on-surface), .48),
       rgba(mdc-theme-prop-value(on-surface), .48)
     ),
-    url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chairs.jpg");
+    url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chairs.jpg");
   background-size: cover;
  
   @include mdc-layout-grid-media-query_(phone) {
@@ -76,7 +76,7 @@
         rgba(mdc-theme-prop-value(on-surface), .56),
         rgba(mdc-theme-prop-value(on-surface), .56)
       ),
-      url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chairs--m.jpg");
+      url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/chairs--m.jpg");
   } background-position: center;
 }
 
@@ -88,7 +88,7 @@
       rgba(mdc-theme-prop-value(on-surface), .32),
       rgba(mdc-theme-prop-value(on-surface), .32)
     ),
-    url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/school.jpg");
+    url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/school.jpg");
   background-size: cover;
   background-position: center;
  
@@ -98,6 +98,6 @@
         rgba(mdc-theme-prop-value(on-surface), .56),
         rgba(mdc-theme-prop-value(on-surface), .56)
       ),
-      url("http://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/school--m.jpg");
+      url("https://s3.amazonaws.com/markus-ninja-production-static-asset-us-east-1/school--m.jpg");
   } background-position: center;
 }
