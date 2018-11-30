@@ -8,7 +8,7 @@ import Select from '@material/react-select'
 import Snackbar from 'components/mdc/Snackbar'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateViewerProfileMutation from 'mutations/UpdateViewerProfileMutation'
-import { get, isEmpty, isNil } from 'utils'
+import {get, isEmpty} from 'utils'
 
 class UserProfileForm extends React.Component {
   constructor(props) {
@@ -33,13 +33,20 @@ class UserProfileForm extends React.Component {
       },
       error: null,
       showSnackbar: false,
+      snackbarMessage: "",
     }
   }
 
-  handleChange = (field) => {
+  handleChangeTextField = (field) => {
     this.setState({
       error: null,
       [field.name]: field,
+    })
+  }
+
+  handleChangeSelect = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
     })
   }
 
@@ -47,15 +54,22 @@ class UserProfileForm extends React.Component {
     e.preventDefault()
     const { bio, emailId, name } = this.state
     UpdateViewerProfileMutation(
-      bio.value,
+      bio.dirty ? bio.value : null,
       emailId,
-      name.value,
-      (viewer, error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
+      name.dirty ? name.value : null,
+      (viewer, errors) => {
+        if (errors) {
+          this.setState({
+            error: errors[0].message,
+            showSnackbar: true,
+            snackbarMessage: "Something went wrong",
+          })
           return
         }
-        this.setState({showSnackbar: true})
+        this.setState({
+          showSnackbar: true,
+          snackbarMessage: "Profile updated",
+        })
       },
     )
   }
@@ -80,7 +94,7 @@ class UserProfileForm extends React.Component {
   }
 
   render() {
-    const {bio, emailId, name, showSnackbar} = this.state
+    const {bio, emailId, name, showSnackbar, snackbarMessage} = this.state
     const emailEdges = get(this.props, "user.emails.edges", [])
     return (
       <React.Fragment>
@@ -93,7 +107,7 @@ class UserProfileForm extends React.Component {
               inputProps={{
                 name: "name",
                 value: name.value,
-                onChange: this.handleChange,
+                onChange: this.handleChangeTextField,
               }}
             />
           </div>
@@ -104,7 +118,7 @@ class UserProfileForm extends React.Component {
               label="Public email"
               name="emailId"
               value={emailId}
-              onChange={this.handleChange}
+              onChange={this.handleChangeSelect}
               disabled={isEmpty(emailEdges)}
               options={this.options}
             />
@@ -118,7 +132,7 @@ class UserProfileForm extends React.Component {
               inputProps={{
                 name: "bio",
                 value: bio.value,
-                onChange: this.handleChange,
+                onChange: this.handleChangeTextField,
               }}
             />
           </div>
@@ -133,7 +147,7 @@ class UserProfileForm extends React.Component {
         </form>
         <Snackbar
           show={showSnackbar}
-          message="Profile updated"
+          message={snackbarMessage}
           actionHandler={() => {this.setState({showSnackbar: false})}}
           actionText="ok"
           handleHide={() => {this.setState({showSnackbar: false})}}
