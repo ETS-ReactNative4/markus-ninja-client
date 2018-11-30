@@ -27,12 +27,21 @@ class Header extends React.Component {
     searchBarOpen: false,
   }
 
-  componentWillMount() {
-    document.addEventListener('click', this.handleClick_, false);
+  componentDidUpdate(prevProps, prevState) {
+    const {searchBarOpen} = this.state
+    if (!prevState.searchBarOpen && searchBarOpen) {
+      document.addEventListener('click', this.handleClick_, false);
+      document.body.classList.add("pointer")
+    } else if (prevState.searchBarOpen && !searchBarOpen) {
+      document.removeEventListener('click', this.handleClick_, false);
+      document.body.classList.remove("pointer")
+    }
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.handleClick_, false);
+    if (this.state.searchBarOpen) {
+      document.removeEventListener('click', this.handleClick_, false);
+    }
   }
 
   setAnchorElement = (el) => {
