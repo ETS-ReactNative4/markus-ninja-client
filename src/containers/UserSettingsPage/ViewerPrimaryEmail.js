@@ -86,14 +86,16 @@ class ViewerPrimaryEmail extends React.Component {
           Your primary email address, in addition to authentication, will be used for account-related notifications.
         </p>
         <form onSubmit={this.handleSubmit}>
-          <Select
-            className="rn-select"
-            floatingLabelClassName="mdc-floating-label--float-above"
-            label="Primary email address"
-            value={value}
-            onChange={(e) => this.setState({value: e.target.value})}
-            options={this.options}
-          />
+          <div>
+            <Select
+              className="rn-select"
+              floatingLabelClassName="mdc-floating-label--float-above"
+              label="Primary email address"
+              value={value}
+              onChange={(e) => this.setState({value: e.target.value})}
+              options={this.options}
+            />
+          </div>
           <button
             className="mdc-button mdc-button--unelevated mt2"
             type="submit"

@@ -4,22 +4,40 @@ import {
   createFragmentContainer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
-import TextField, {Input} from '@material/react-text-field'
 import Select from '@material/react-select'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateViewerProfileMutation from 'mutations/UpdateViewerProfileMutation'
 import { get, isEmpty, isNil } from 'utils'
 
 class UserProfileForm extends React.Component {
-  state = {
-    bio: this.props.user.bio,
-    emailId: get(this.props, "user.email.id", ""),
-    name: this.props.user.name,
-    error: null,
+  constructor(props) {
+    super(props)
+
+    const bio = get(this.props, "user.bio", "")
+    const name = get(this.props, "user.name", "")
+
+    this.state = {
+      bio: {
+        ...defaultTextFieldState,
+        initialValue: bio,
+        valid: true,
+        value: bio,
+      },
+      emailId: get(this.props, "user.email.id", ""),
+      name: {
+        ...defaultTextFieldState,
+        initialValue: name,
+        valid: true,
+        value: name,
+      },
+      error: null,
+    }
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      error: null,
+      [field.name]: field,
     })
   }
 
@@ -27,9 +45,9 @@ class UserProfileForm extends React.Component {
     e.preventDefault()
     const { bio, emailId, name } = this.state
     UpdateViewerProfileMutation(
-      bio,
+      bio.value,
       emailId,
-      name,
+      name.value,
       (error) => {
         if (!isNil(error)) {
           this.setState({ error: error.message })
@@ -67,13 +85,12 @@ class UserProfileForm extends React.Component {
             className="rn-form__input"
             label="Name"
             floatingLabelClassName={!isEmpty(name) ? "mdc-floating-label--float-above" : ""}
-          >
-            <Input
-              name="name"
-              value={name}
-              onChange={this.handleChange}
-            />
-          </TextField>
+            inputProps={{
+              name: "name",
+              value: name.value,
+              onChange: this.handleChange,
+            }}
+          />
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <Select
@@ -93,13 +110,12 @@ class UserProfileForm extends React.Component {
             label="Bio"
             textarea
             floatingLabelClassName={!isEmpty(bio) ? "mdc-floating-label--float-above" : ""}
-          >
-            <Input
-              name="bio"
-              value={bio}
-              onChange={this.handleChange}
-            />
-          </TextField>
+            inputProps={{
+              name: "bio",
+              value: bio.value,
+              onChange: this.handleChange,
+            }}
+          />
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <button

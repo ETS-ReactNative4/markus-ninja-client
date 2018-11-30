@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import * as React from 'react'
 import cls from 'classnames'
 import {
   createFragmentContainer,
@@ -8,6 +8,7 @@ import { Link, withRouter } from 'react-router-dom'
 import MediaQuery from 'react-responsive'
 import List from 'components/mdc/List'
 import Icon from 'components/Icon'
+import Logo from 'components/Logo'
 import Menu, {Corner} from 'components/mdc/Menu'
 import IconLink from 'components/IconLink'
 import LoginLink from 'components/LoginLink'
@@ -17,11 +18,21 @@ import AppContext from 'containers/App/Context'
 
 import './styles.css'
 
-class Header extends Component {
+class Header extends React.Component {
+  headerElement_ = React.createRef()
+
   state = {
     anchorElement: null,
     menuOpen: false,
     searchBarOpen: false,
+  }
+
+  componentWillMount() {
+    document.addEventListener('click', this.handleClick_, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClick_, false);
   }
 
   setAnchorElement = (el) => {
@@ -29,6 +40,16 @@ class Header extends Component {
       return
     }
     this.setState({anchorElement: el})
+  }
+
+  handleClick_ = (e) => {
+    const {searchBarOpen} = this.state
+    if (searchBarOpen) {
+      const headerElement = this.headerElement_ && this.headerElement_.current
+      if (headerElement && !headerElement.contains(e.target)) {
+        this.setState({searchBarOpen: false})
+      }
+    }
   }
 
   get classes() {
@@ -45,17 +66,17 @@ class Header extends Component {
 
     return (
       <React.Fragment>
-        <header className={this.classes}>
+        <header className={this.classes} ref={this.headerElement_}>
           <div className="mdc-top-app-bar__row">
             <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-              <IconLink
-                className="mdc-top-app-bar__navigation-icon"
+              <Link
+                className="mdc-icon-button mdc-top-app-bar__navigation-icon"
                 to="/"
                 aria-label="Home"
                 title="Home"
               >
-                home
-              </IconLink>
+                <Logo className="mdc-icon-button__icon" />
+              </Link>
               <MediaQuery query="(max-width: 674px)">
                 <div
                   className="material-icons mdc-top-app-bar__action-item"
@@ -90,7 +111,9 @@ class Header extends Component {
           </MediaQuery>
         </header>
         {searchBarOpen &&
-        <div className="mdc-top-app-bar--fixed-adjust" />}
+        <MediaQuery query="(max-width: 674px)">
+          <div className="mdc-top-app-bar--fixed-adjust" />
+        </MediaQuery>}
       </React.Fragment>
     )
   }

@@ -33,12 +33,12 @@ class SearchBarInput extends React.Component {
   }
 
   componentWillMount() {
-    document.addEventListener('mousedown', this.handleClick, false);
+    document.addEventListener('click', this.handleClick, false);
     document.addEventListener('keydown', this.handleKeyDown, false);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClick, false);
+    document.removeEventListener('click', this.handleClick, false);
     document.removeEventListener('keydown', this.handleKeyDown, false);
   }
 

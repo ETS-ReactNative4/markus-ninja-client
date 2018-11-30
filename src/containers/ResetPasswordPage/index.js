@@ -1,8 +1,7 @@
 import * as React from 'react'
 import cls from 'classnames'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome } from '@fortawesome/free-solid-svg-icons'
+import Logo from 'components/Logo'
 import ResetPasswordForm from './ResetPasswordForm'
 
 import "./styles.css"
@@ -19,11 +18,8 @@ class ResetPasswordPage extends React.Component {
         <div className="mdc-layout-grid__inner">
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             <header className="pt3 pb2 tc">
-              <Link className="rn-link" to="/">
-                <FontAwesomeIcon
-                  icon={faHome}
-                  size="3x"
-                />
+              <Link className="mdc-icon-button mdc-icon-button--large" to="/">
+                <Logo className="mdc-icon-button__icon" />
               </Link>
               <h5>Reset password</h5>
             </header>

@@ -61,7 +61,7 @@ class LessonComment extends React.Component {
           draft: {
             ...this.state.draft,
             dirty: false,
-            value: comment.draft
+            value: get(comment, "draft", ""),
           }
         })
       },

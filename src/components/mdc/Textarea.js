@@ -23,13 +23,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import TextareaAutosize from 'react-autosize-textarea'
 
 import {VALIDATION_ATTR_WHITELIST} from '@material/textfield/constants';
 
 export default class Textarea extends React.Component {
   constructor(props) {
     super(props);
-    this.inputElement = React.createRef();
+    this.inputElement = null;
   }
 
   componentDidMount() {
@@ -117,8 +118,8 @@ export default class Textarea extends React.Component {
     });
   }
 
-  isBadInput = () => this.inputElement.current.validity.badInput;
-  isValid = () => this.inputElement.current.validity.valid;
+  isBadInput = () => this.inputElement.validity.badInput;
+  isValid = () => this.inputElement.validity.valid;
 
   render() {
     const {
@@ -140,7 +141,7 @@ export default class Textarea extends React.Component {
       ...otherProps
     } = this.props;
     return (
-      <textarea
+      <TextareaAutosize
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         onMouseDown={this.handleMouseDown}
@@ -148,7 +149,7 @@ export default class Textarea extends React.Component {
         onChange={this.handleChange}
         disabled={disabled}
         value={value}
-        ref={this.inputElement}
+        innerRef={node => this.inputElement = node}
         className={this.classes}
         style={{resize: "none"}}
         {...otherProps}

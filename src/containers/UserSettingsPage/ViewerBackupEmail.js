@@ -14,7 +14,7 @@ class ViewerBackupEmail extends React.Component {
   constructor(props) {
     super(props)
 
-    const emailEdges = get(props, "user.backupEmailOptions.edges", [])
+    const emailEdges = get(props, "viewer.backupEmailOptions.edges", [])
 
     let backupEmailId = ""
     for (let edge of emailEdges) {
@@ -91,14 +91,16 @@ class ViewerBackupEmail extends React.Component {
           Your backup email address, in addition to authentication, can be used to reset your password.
         </p>
         <form onSubmit={this.handleSubmit}>
-          <Select
-            className="rn-select"
-            floatingLabelClassName="mdc-floating-label--float-above"
-            label="Backup email address"
-            value={value}
-            onChange={(e) => this.setState({value: e.target.value})}
-            options={this.options}
-          />
+          <div>
+            <Select
+              className="rn-select"
+              floatingLabelClassName="mdc-floating-label--float-above"
+              label="Backup email address"
+              value={value}
+              onChange={(e) => this.setState({value: e.target.value})}
+              options={this.options}
+            />
+          </div>
           <button
             className="mdc-button mdc-button--unelevated mt2"
             type="submit"
@@ -123,6 +125,7 @@ export default createPaginationContainer(ViewerBackupEmail,
           edges {
             node {
               id
+              type
               value
             }
           }

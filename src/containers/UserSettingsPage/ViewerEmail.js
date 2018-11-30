@@ -78,7 +78,7 @@ class ViewerEmail extends React.Component {
             </div>
             <span className="mdc-list-item__meta rn-list-preview__actions">
               <span className="rn-list-preview__actions--spread">
-                <span className="mdc-button mdc-button--outlined">
+                <span className="mdc-button mdc-button--unelevated mdc-theme--secondary-bg">
                   {email.type}
                 </span>
                 {email.isVerified
@@ -90,7 +90,7 @@ class ViewerEmail extends React.Component {
                     verified_user
                   </i>
                 : <button
-                    className="material-icons rn-list-preview__action rn-list-preview__action--icon"
+                    className="material-icons mdc-icon-button rn-list-preview__action rn-list-preview__action--icon"
                     onClick={this.handleRequestVerification}
                     aria-label="Request verification"
                     title="Request verification"
@@ -184,7 +184,7 @@ class ViewerEmail extends React.Component {
         />
         <List.Item.Text primaryText="Delete" />
       </List.Item>,
-      <List.Item className="mdc-theme--primary">
+      <List.Item className="mdc-theme--secondary">
         <List.Item.Graphic
           graphic={<Icon className="mdc-theme--text-icon-on-background" icon="email" />}
         />

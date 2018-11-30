@@ -3,6 +3,7 @@ import {
   createRefetchContainer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
+import {Helmet} from 'react-helmet'
 import {Redirect, Route, Switch, withRouter} from 'react-router-dom'
 
 import PrivateRoute from 'components/PrivateRoute'
@@ -100,6 +101,9 @@ class AppContainer extends React.Component {
     return (
       <Context.Provider value={this.state}>
         <div className="AppContainer mdc-typography">
+          <Helmet>
+            <title>Markus the ninja!</title>
+          </Helmet>
           <Switch>
             <Route
               exact
