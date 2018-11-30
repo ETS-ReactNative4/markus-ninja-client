@@ -11,6 +11,7 @@ const mutation = graphql`
       id
       body
       bodyHTML
+      isPublished
       publishedAt
       updatedAt
     }
@@ -34,6 +35,7 @@ export default (lessonCommentId, callback) => {
         if (publishLessonCommentDraftField) {
           const newBody = publishLessonCommentDraftField.getValue('body')
           const newBodyHTML = publishLessonCommentDraftField.getValue('bodyHTML')
+          const newIsPublished = publishLessonCommentDraftField.getValue('isPublished')
           const newPublishedAt = publishLessonCommentDraftField.getValue('publishedAt')
           const newUpdatedAt = publishLessonCommentDraftField.getValue('updatedAt')
 
@@ -41,6 +43,7 @@ export default (lessonCommentId, callback) => {
           if (comment) {
             comment.setValue(newBody, 'body')
             comment.setValue(newBodyHTML, 'bodyHTML')
+            comment.setValue(newIsPublished, 'isPublished')
             comment.setValue(newPublishedAt, 'publishedAt')
             comment.setValue(newUpdatedAt, 'updatedAt')
           }

@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import Select from '@material/react-select'
+import Snackbar from 'components/mdc/Snackbar'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateViewerProfileMutation from 'mutations/UpdateViewerProfileMutation'
 import { get, isEmpty, isNil } from 'utils'
@@ -31,6 +32,7 @@ class UserProfileForm extends React.Component {
         value: name,
       },
       error: null,
+      showSnackbar: false,
     }
   }
 
@@ -48,10 +50,12 @@ class UserProfileForm extends React.Component {
       bio.value,
       emailId,
       name.value,
-      (error) => {
+      (viewer, error) => {
         if (!isNil(error)) {
           this.setState({ error: error.message })
+          return
         }
+        this.setState({showSnackbar: true})
       },
     )
   }
@@ -76,56 +80,65 @@ class UserProfileForm extends React.Component {
   }
 
   render() {
-    const {bio, emailId, name} = this.state
+    const {bio, emailId, name, showSnackbar} = this.state
     const emailEdges = get(this.props, "user.emails.edges", [])
     return (
-      <form className={this.classes} onSubmit={this.handleSubmit}>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <TextField
-            className="rn-form__input"
-            label="Name"
-            floatingLabelClassName={!isEmpty(name) ? "mdc-floating-label--float-above" : ""}
-            inputProps={{
-              name: "name",
-              value: name.value,
-              onChange: this.handleChange,
-            }}
-          />
-        </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <Select
-            className="rn-select"
-            floatingLabelClassName={!isEmpty(emailId) ? "mdc-floating-label--float-above" : ""}
-            label="Public email"
-            name="emailId"
-            value={emailId}
-            onChange={this.handleChange}
-            disabled={isEmpty(emailEdges)}
-            options={this.options}
-          />
-        </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <TextField
-            className="rn-form__input"
-            label="Bio"
-            textarea
-            floatingLabelClassName={!isEmpty(bio) ? "mdc-floating-label--float-above" : ""}
-            inputProps={{
-              name: "bio",
-              value: bio.value,
-              onChange: this.handleChange,
-            }}
-          />
-        </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <button
-            className="mdc-button mdc-button--unelevated"
-            type="submit"
-          >
-            Update profile
-          </button>
-        </div>
-      </form>
+      <React.Fragment>
+        <form className={this.classes} onSubmit={this.handleSubmit}>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <TextField
+              className="rn-form__input"
+              label="Name"
+              floatingLabelClassName={!isEmpty(name) ? "mdc-floating-label--float-above" : ""}
+              inputProps={{
+                name: "name",
+                value: name.value,
+                onChange: this.handleChange,
+              }}
+            />
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <Select
+              className="rn-select"
+              floatingLabelClassName={!isEmpty(emailId) ? "mdc-floating-label--float-above" : ""}
+              label="Public email"
+              name="emailId"
+              value={emailId}
+              onChange={this.handleChange}
+              disabled={isEmpty(emailEdges)}
+              options={this.options}
+            />
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <TextField
+              className="rn-form__input"
+              label="Bio"
+              textarea
+              floatingLabelClassName={!isEmpty(bio) ? "mdc-floating-label--float-above" : ""}
+              inputProps={{
+                name: "bio",
+                value: bio.value,
+                onChange: this.handleChange,
+              }}
+            />
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <button
+              className="mdc-button mdc-button--unelevated"
+              type="submit"
+            >
+              Update profile
+            </button>
+          </div>
+        </form>
+        <Snackbar
+          show={showSnackbar}
+          message="Profile updated"
+          actionHandler={() => {this.setState({showSnackbar: false})}}
+          actionText="ok"
+          handleHide={() => {this.setState({showSnackbar: false})}}
+        />
+      </React.Fragment>
     )
   }
 }

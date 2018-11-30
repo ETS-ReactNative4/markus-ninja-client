@@ -95,49 +95,51 @@ class DashboardPage extends React.Component {
                     <SearchViewerStudies />
                   </Drawer.Content>
                 </Drawer>
-                <header className="DashboardPage__header rn-header rn-header--hero">
-                  <div className="rn-header--hero__content">
-                    <h3>
-                      Welcome back
-                      <Link className="rn-link rn-link--on-primary" to={props.viewer.resourcePath}>
-                        {` @${props.viewer.login}`}
-                      </Link>
-                    </h3>
-                    {studyCount > 0
-                    ? <button
-                        type="button"
-                        className="mdc-button mdc-button--unelevated"
-                        onClick={() => this.setState({drawerOpen: !drawerOpen})}
-                      >
-                        Search your studies
-                      </button>
-                    : <Link className="mdc-button mdc-button--unelevated" to="/new">
-                        Create your first study
-                      </Link>}
-                  </div>
-                </header>
-                <div className="mdc-layout-grid rn-page">
-                  <div className="mdc-layout-grid__inner">
-                    {lessons.length > 0
-                    ? <React.Fragment>
-                        <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                          Continue your lessons
-                        </h5>
-                        {get(props, "viewer.lessons.nodes", []).map((node) =>
-                          node &&
-                          <div key={node.id} className="mdc-layout-grid__cell">
-                            <LessonPreview.Card className="h-100" lesson={node} />
-                          </div>)}
-                        </React.Fragment>
-                    : <React.Fragment>
-                        <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                          Getting started
-                        </h5>
-                        <div className="mdc-layout-grid__cell">
-                          <StudyPreview.Card study={get(props, "gettingStartedStudy", null)} />
-                        </div>
-                      </React.Fragment>}
-                    <ViewerReceivedActivity viewer={props.viewer} />
+                <div className="rn-page">
+                  <header className="DashboardPage__header rn-header rn-header--hero">
+                    <div className="rn-header--hero__content">
+                      <h3>
+                        Welcome back
+                        <Link className="rn-link rn-link--on-primary" to={props.viewer.resourcePath}>
+                          {` @${props.viewer.login}`}
+                        </Link>
+                      </h3>
+                      {studyCount > 0
+                      ? <button
+                          type="button"
+                          className="mdc-button mdc-button--unelevated"
+                          onClick={() => this.setState({drawerOpen: !drawerOpen})}
+                        >
+                          Search your studies
+                        </button>
+                      : <Link className="mdc-button mdc-button--unelevated" to="/new">
+                          Create your first study
+                        </Link>}
+                    </div>
+                  </header>
+                  <div className="mdc-layout-grid rn-page__grid">
+                    <div className="mdc-layout-grid__inner">
+                      {lessons.length > 0
+                      ? <React.Fragment>
+                          <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                            Continue your lessons
+                          </h5>
+                          {get(props, "viewer.lessons.nodes", []).map((node) =>
+                            node &&
+                            <div key={node.id} className="mdc-layout-grid__cell">
+                              <LessonPreview.Card className="h-100" lesson={node} />
+                            </div>)}
+                          </React.Fragment>
+                      : <React.Fragment>
+                          <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                            Getting started
+                          </h5>
+                          <div className="mdc-layout-grid__cell">
+                            <StudyPreview.Card study={get(props, "gettingStartedStudy", null)} />
+                          </div>
+                        </React.Fragment>}
+                      <ViewerReceivedActivity viewer={props.viewer} />
+                    </div>
                   </div>
                 </div>
               </React.Fragment>

@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import HTML from 'components/HTML'
+import Snackbar from 'components/mdc/Snackbar'
 import StudyBodyEditor from 'components/StudyBodyEditor'
 import PublishLessonDraftMutation from 'mutations/PublishLessonDraftMutation'
 import ResetLessonDraftMutation from 'mutations/ResetLessonDraftMutation'
@@ -19,7 +20,9 @@ class LessonBody extends React.Component {
       dirty: false,
       initialValue: get(this.props, "lesson.draft", ""),
       value: get(this.props, "lesson.draft", ""),
-    }
+    },
+    showSnackbar: false,
+    snackbarMessage: "",
   }
 
   autoSaveOnChange = throttle(
@@ -34,15 +37,26 @@ class LessonBody extends React.Component {
         draft,
         (lesson, errors) => {
           if (!isNil(errors)) {
-            this.setState({ error: errors[0].message })
-          }
-          if (lesson) {
+            this.setState({
+              error: errors[0].message,
+              draft: {
+                ...this.state.draft,
+                dirty: false,
+                value: this.state.draft.initialValue,
+              },
+              showSnackbar: true,
+              snackbarMessage: "Something went wrong",
+            })
+            return
+          } else if (lesson) {
             this.setState({
               draft: {
                 ...this.state.draft,
                 dirty: false,
                 value: lesson.draft
-              }
+              },
+              showSnackbar: true,
+              snackbarMessage: "Draft saved",
             })
           }
         },
@@ -51,8 +65,8 @@ class LessonBody extends React.Component {
   }, 2000)
 
   handleCancel = () => {
-    const {initialValue} = this.state
-    this.updateDraft(initialValue)
+    const {draft} = this.state
+    this.updateDraft(draft.initialValue)
     this.handleToggleEdit()
   }
 
@@ -80,9 +94,17 @@ class LessonBody extends React.Component {
       this.props.lesson.id,
       (lesson, errors) => {
         if (errors) {
-          this.setState({ error: errors[0].message })
+          this.setState({
+            error: errors[0].message,
+            showSnackbar: true,
+            snackbarMessage: "Something went wrong",
+          })
           return
         }
+        this.setState({
+          showSnackbar: true,
+          snackbarMessage: "Draft published",
+        })
         this.handleToggleEdit()
       },
     )
@@ -104,7 +126,6 @@ class LessonBody extends React.Component {
     e.preventDefault()
     const {draft} = this.state
     this.updateDraft(draft.value)
-    this.handleToggleEdit()
   }
 
   handleToggleEdit = () => {
@@ -117,7 +138,7 @@ class LessonBody extends React.Component {
   }
 
   render() {
-    const {edit} = this.state
+    const {edit, showSnackbar, snackbarMessage} = this.state
 
     return (
       <div className={this.classes}>
@@ -126,6 +147,13 @@ class LessonBody extends React.Component {
           ? this.renderForm()
           : this.renderBody()}
         </div>
+        <Snackbar
+          show={showSnackbar}
+          message={snackbarMessage}
+          actionHandler={() => this.setState({showSnackbar: false})}
+          actionText="ok"
+          handleHide={() => this.setState({showSnackbar: false})}
+        />
       </div>
     )
   }

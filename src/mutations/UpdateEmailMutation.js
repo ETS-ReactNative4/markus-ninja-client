@@ -3,7 +3,7 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import environment from 'Environment'
-import { isNil } from 'utils'
+import {get} from 'utils'
 
 const mutation = graphql`
   mutation UpdateEmailMutation($input: UpdateEmailInput!) {
@@ -29,7 +29,7 @@ export default (emailId, type, callback) => {
       variables,
       optimisticUpdater: proxyStore => {
         const email = proxyStore.get(emailId)
-        if (!isNil(type)) {
+        if (type && email) {
           email.setValue(type, 'type')
         }
       },
@@ -42,7 +42,7 @@ export default (emailId, type, callback) => {
           email && email.setValue(newType, 'type')
         }
       },
-      onCompleted: callback,
+      onCompleted: (response, error) => callback(get(response, "updateEmail"), error),
       onError: err => callback(null, err),
     },
   )

@@ -11,6 +11,7 @@ const mutation = graphql`
       id
       body
       bodyHTML
+      isPublished
       publishedAt
       updatedAt
     }
@@ -34,6 +35,7 @@ export default (lessonId, callback) => {
         if (publishLessonDraftField) {
           const newBody = publishLessonDraftField.getValue('body')
           const newBodyHTML = publishLessonDraftField.getValue('bodyHTML')
+          const newIsPublished = publishLessonDraftField.getValue('isPublished')
           const newPublishedAt = publishLessonDraftField.getValue('publishedAt')
           const newUpdatedAt = publishLessonDraftField.getValue('updatedAt')
 
@@ -41,6 +43,7 @@ export default (lessonId, callback) => {
           if (lesson) {
             lesson.setValue(newBody, 'body')
             lesson.setValue(newBodyHTML, 'bodyHTML')
+            lesson.setValue(newIsPublished, 'isPublished')
             lesson.setValue(newPublishedAt, 'publishedAt')
             lesson.setValue(newUpdatedAt, 'updatedAt')
           }

@@ -7,6 +7,7 @@ import graphql from 'babel-plugin-relay/macro'
 import moment from 'moment'
 import Dialog from 'components/Dialog'
 import HTML from 'components/HTML'
+import Snackbar from 'components/mdc/Snackbar'
 import StudyBodyEditor from 'components/StudyBodyEditor'
 import UserLink from 'components/UserLink'
 import Icon from 'components/Icon'
@@ -36,6 +37,8 @@ class LessonComment extends React.Component {
       value: get(this.props, "comment.draft", ""),
     },
     menuOpen: false,
+    showSnackbar: false,
+    snackbarMessage: "",
   }
 
   setAnchorElement = (el) => {
@@ -50,22 +53,37 @@ class LessonComment extends React.Component {
   , 30000)
 
   updateDraft = throttle((draft) => {
-    UpdateLessonCommentMutation(
-      this.props.comment.id,
-      draft,
-      (comment, errors) => {
-        if (errors) {
-          this.setState({ error: errors[0].message })
-        }
-        this.setState({
-          draft: {
-            ...this.state.draft,
-            dirty: false,
-            value: get(comment, "draft", ""),
+    if (this.state.draft.dirty) {
+      UpdateLessonCommentMutation(
+        this.props.comment.id,
+        draft,
+        (comment, errors) => {
+          if (errors) {
+            this.setState({
+              error: errors[0].message,
+              draft: {
+                ...this.state.draft,
+                dirty: false,
+                value: this.state.draft.initialValue,
+              },
+              showSnackbar: true,
+              snackbarMessage: "Something went wrong",
+            })
+            return
+          } else if (comment) {
+            this.setState({
+              draft: {
+                ...this.state.draft,
+                dirty: false,
+                value: comment.draft
+              },
+              showSnackbar: true,
+              snackbarMessage: "Draft saved",
+            })
           }
-        })
-      },
-    )
+        },
+      )
+    }
   }, 2000)
 
   handleCancel = () => {
@@ -104,9 +122,17 @@ class LessonComment extends React.Component {
       this.props.comment.id,
       (comment, errors) => {
         if (errors) {
-          this.setState({ error: errors[0].message })
+          this.setState({
+            error: errors[0].message,
+            showSnackbar: true,
+            snackbarMessage: "Something went wrong",
+          })
           return
         }
+        this.setState({
+          showSnackbar: true,
+          snackbarMessage: "Draft published",
+        })
         this.handleToggleEdit()
       },
     )
@@ -128,7 +154,6 @@ class LessonComment extends React.Component {
     e.preventDefault()
     const {draft} = this.state
     this.updateDraft(draft.value)
-    this.handleToggleEdit()
   }
 
   handleToggleDeleteConfirmation = () => {
@@ -153,13 +178,20 @@ class LessonComment extends React.Component {
 
   render() {
     const comment = get(this.props, "comment", {})
-    const {edit} = this.state
+    const {edit, showSnackbar, snackbarMessage} = this.state
 
     return (
       <div className={this.classes}>
         {edit && comment.viewerCanUpdate
         ? this.renderForm()
         : this.renderComment()}
+        <Snackbar
+          show={showSnackbar}
+          message={snackbarMessage}
+          actionHandler={() => this.setState({showSnackbar: false})}
+          actionText="ok"
+          handleHide={() => this.setState({showSnackbar: false})}
+        />
       </div>
     )
   }
@@ -337,6 +369,7 @@ export default createFragmentContainer(LessonComment, graphql`
     createdAt
     draft
     id
+    isPublished
     lastEditedAt
     publishedAt
     study {

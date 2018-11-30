@@ -46,6 +46,7 @@ class EnrollmentSelect extends React.Component {
 
     return (
       <div className={this.classes}>
+        <i className="rn-select-button__dropdown-icon"></i>
         <select
           className="rn-select-button__native-control"
           value={status}

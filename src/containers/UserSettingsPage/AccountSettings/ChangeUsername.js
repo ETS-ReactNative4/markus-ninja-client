@@ -6,6 +6,7 @@ import {
 import graphql from 'babel-plugin-relay/macro'
 import {HelperText} from '@material/react-text-field'
 import ErrorText from 'components/ErrorText'
+import Snackbar from 'components/mdc/Snackbar'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateViewerAccountMutation from 'mutations/UpdateViewerAccountMutation'
 import {get} from 'utils'
@@ -16,6 +17,7 @@ const FORM_STAGE = 'form'
 
 const defaultState = {
   error: null,
+  showSnackbar: false,
   stage: INFO_STAGE,
   username: defaultTextFieldState,
 }
@@ -59,6 +61,7 @@ class ChangeUsername extends React.Component {
         const value = get(viewer, "login", "")
         this.setState({
           ...defaultState,
+          showSnackbar: true,
           username: {
             ...defaultState.username,
             initialValue: value,
@@ -83,23 +86,32 @@ class ChangeUsername extends React.Component {
   }
 
   render() {
-    const {stage} = this.state
+    const {showSnackbar, stage} = this.state
 
     return (
-      <div className={this.classes}>
-        {(() => {
-          switch (stage) {
-            case INFO_STAGE:
-              return this.renderInfo()
-            case AGREEMENT_STAGE:
-              return this.renderAgreement()
-            case FORM_STAGE:
-              return this.renderForm()
-            default:
-              return null
-          }
-        })()}
-      </div>
+      <React.Fragment>
+        <div className={this.classes}>
+          {(() => {
+            switch (stage) {
+              case INFO_STAGE:
+                return this.renderInfo()
+              case AGREEMENT_STAGE:
+                return this.renderAgreement()
+              case FORM_STAGE:
+                return this.renderForm()
+              default:
+                return null
+            }
+          })()}
+        </div>
+        <Snackbar
+          show={showSnackbar}
+          message="Username changed"
+          actionHandler={() => {this.setState({showSnackbar: false})}}
+          actionText="ok"
+          handleHide={() => {this.setState({showSnackbar: false})}}
+        />
+      </React.Fragment>
     )
   }
 

@@ -10,7 +10,7 @@ import {
 } from 'draft-js'
 import Context from './Context'
 import SaveFileDialog from './SaveFileDialog'
-import StudyBodyEditorMain from './StudyBodyEditorMain'
+import StudyBodyEditorMain from './Main'
 import './styles.css'
 
 const FRAGMENT = graphql`

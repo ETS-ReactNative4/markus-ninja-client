@@ -2,6 +2,7 @@ import * as React from 'react'
 import cls from 'classnames'
 import {HelperText} from '@material/react-text-field'
 import ErrorText from 'components/ErrorText'
+import Snackbar from 'components/mdc/Snackbar'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateViewerAccountMutation from 'mutations/UpdateViewerAccountMutation'
 
@@ -13,6 +14,7 @@ const defaultState = {
   confirmNewPassword: defaultTextFieldState,
   newPassword: defaultTextFieldState,
   oldPassword: defaultTextFieldState,
+  showSnackbar: false,
   stage: INFO_STAGE,
 }
 
@@ -29,19 +31,22 @@ class ChangePassword extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { confirmNewPassword, newPassword, oldPassword } = this.state
-    if (newPassword !== confirmNewPassword) {
+    if (newPassword.value !== confirmNewPassword.value) {
       this.setState({ error: "passwords do not match" })
     } else {
       UpdateViewerAccountMutation(
         null,
-        newPassword,
-        oldPassword,
+        newPassword.value,
+        oldPassword.value,
         (viewer, errors) => {
           if (errors) {
             this.setState({ error: errors[0].message })
             return
           }
-          this.setState(defaultState)
+          this.setState({
+            ...defaultState,
+            showSnackbar: true,
+          })
         },
       )
     }
@@ -57,21 +62,30 @@ class ChangePassword extends React.Component {
   }
 
   render() {
-    const {stage} = this.state
+    const {showSnackbar, stage} = this.state
 
     return (
-      <div className={this.classes}>
-        {(() => {
-          switch (stage) {
-            case INFO_STAGE:
-              return this.renderInfo()
-            case FORM_STAGE:
-              return this.renderForm()
-            default:
-              return null
-          }
-        })()}
-      </div>
+      <React.Fragment>
+        <div className={this.classes}>
+          {(() => {
+            switch (stage) {
+              case INFO_STAGE:
+                return this.renderInfo()
+              case FORM_STAGE:
+                return this.renderForm()
+              default:
+                return null
+            }
+          })()}
+        </div>
+        <Snackbar
+          show={showSnackbar}
+          message="Password changed"
+          actionHandler={() => {this.setState({showSnackbar: false})}}
+          actionText="ok"
+          handleHide={() => {this.setState({showSnackbar: false})}}
+        />
+      </React.Fragment>
     )
   }
 

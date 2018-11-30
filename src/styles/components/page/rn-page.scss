@@ -3,12 +3,13 @@
 .rn-page {
   min-height: calc(100vh - #{$mdc-top-app-bar-row-height});
   
-  &.mdc-layout-grid {
-    max-width: 64rem;
+}
 
-    >.mdc-layout-grid__inner {
-      width: 100%;
-    }
+.rn-page.mdc-layout-grid, .rn-page__grid {
+  max-width: 64rem;
+
+  >.mdc-layout-grid__inner {
+    width: 100%;
   }
 }
 

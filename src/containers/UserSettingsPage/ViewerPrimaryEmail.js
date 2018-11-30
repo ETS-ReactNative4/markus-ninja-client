@@ -5,8 +5,9 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import Select from '@material/react-select'
+import Snackbar from 'components/mdc/Snackbar'
 import UpdateEmailMutation from 'mutations/UpdateEmailMutation'
-import {get, isNil} from 'utils'
+import {get} from 'utils'
 
 import { EMAILS_PER_PAGE } from 'consts'
 
@@ -23,8 +24,11 @@ class ViewerPrimaryEmail extends React.Component {
     }
 
     this.state = {
+      initialValue: value,
       value,
       error: null,
+      showSnackbar: false,
+      snackbarMessage: "",
     }
   }
 
@@ -49,14 +53,24 @@ class ViewerPrimaryEmail extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { value } = this.state
+    const {initialValue, value} = this.state
     UpdateEmailMutation(
       value,
       'PRIMARY',
-      (error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
+      (email, errors) => {
+        if (errors) {
+          this.setState({
+            errors: errors[0].message,
+            value: initialValue,
+            showSnackbar: true,
+            snackbarMessage: "Something went wrong",
+          })
+          return
         }
+        this.setState({
+          showSnackbar: true,
+          snackbarMessage: "Primay email updated",
+        })
       },
     )
   }
@@ -78,7 +92,7 @@ class ViewerPrimaryEmail extends React.Component {
   }
 
   render() {
-    const {value} = this.state
+    const {showSnackbar, snackbarMessage, value} = this.state
 
     return (
       <div className={this.classes}>
@@ -103,6 +117,13 @@ class ViewerPrimaryEmail extends React.Component {
             Save
           </button>
         </form>
+        <Snackbar
+          show={showSnackbar}
+          message={snackbarMessage}
+          actionHandler={() => {this.setState({showSnackbar: false})}}
+          actionText="ok"
+          handleHide={() => {this.setState({showSnackbar: false})}}
+        />
       </div>
     )
   }

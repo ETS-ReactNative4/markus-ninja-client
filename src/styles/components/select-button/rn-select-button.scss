@@ -1,3 +1,4 @@
+@import "@material/animation/variables";
 @import "@material/button/mixins";
 @import "@material/layout-grid/mixins";
 @import "@material/rtl/mixins";
@@ -21,8 +22,6 @@
 
   @include rn-select-button-outline-color(primary);
 
-  @include mdc-select-dd-arrow-svg-bg_($rn-select-button-arrow-color, $rn-select-button-dropdown-opacity);
-
   // Focused state colors
   @include mdc-select-focused-bottom-line-color(primary);
   @include mdc-select-focused-label-color($mdc-select-focused-label-color);
@@ -32,10 +31,6 @@
   @include mdc-floating-label-float-position($mdc-select-label-position-y);
   @include mdc-select-floating-label_;
 
-  @include mdc-layout-grid-media-query_(phone) {
-    @include mdc-button--dense_;
-  }
-
   display: inline-flex;
   padding: 0;
   position: relative;
@@ -43,6 +38,25 @@
   background-repeat: no-repeat;
   background-position: right 8px bottom 12px;
   will-change: opacity;
+
+  &__dropdown-icon {
+    @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-dropdown-opacity);
+    @include mdc-rtl-reflexive(left, auto, right, 8px);
+
+    position: absolute;
+    bottom: 5px;
+    width: 24px;
+    height: 24px;
+    transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
+    pointer-events: none;
+
+    .mdc-select--focused & {
+      @include mdc-select-dd-arrow-svg-bg_(mdc-theme-prop-value(primary), 1);
+
+      transform: rotate(180deg) translateY(-5px);
+      transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
+    }
+  }
 
   @include mdc-rtl {
     background-position: left 8px bottom 12px;
@@ -74,14 +88,24 @@
     white-space: nowrap;
     cursor: pointer;
     appearance: none;
+    text-transform: inherit;
   }
 
+  @include mdc-layout-grid-media-query_(phone) {
+    @include mdc-button--dense_;
+
+    &__dropdown-icon {
+      bottom: 2px;
+    }
+  }
 }
 
 .rn-select-button--disabled {
-  @include mdc-select-dd-arrow-svg-bg_($rn-select-button-disabled-arrow-color,
-    $rn-select-button-disabled-dropdown-opacity);
-  @include mdc-theme-prop(background-color, transparent);
+  @include mdc-select-container-fill-color_($mdc-select-disabled-fill-color);
+
+  .mdc-select__dropdown-icon {
+    @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-disabled-dropdown-opacity);
+  }
 
   color: $mdc-button-disabled-ink-color;
   cursor: default;

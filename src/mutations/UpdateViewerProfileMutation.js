@@ -3,6 +3,7 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import environment from 'Environment'
+import {get} from 'utils'
 
 const mutation = graphql`
   mutation UpdateViewerProfileMutation($input: UpdateViewerProfileInput!) {
@@ -48,7 +49,7 @@ export default (bio, emailId, name, callback) => {
         user.setValue(newName, 'name')
         user.setValue(newProfileUpdatedAt, 'profileUpdatedAt')
       },
-      onCompleted: callback,
+      onCompleted: (response, error) => callback(get(response, "updateViewerProfile"), error),
       onError: err => callback(null, err),
     },
   )

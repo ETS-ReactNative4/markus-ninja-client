@@ -8,6 +8,7 @@ import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router'
 import AddLessonCommentMutation from 'mutations/AddLessonCommentMutation'
 import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
+import Snackbar from 'components/mdc/Snackbar'
 import StudyBodyEditor from 'components/StudyBodyEditor'
 import {debounce, get, isNil, throttle} from 'utils'
 
@@ -23,7 +24,9 @@ class AddLessonCommentForm extends React.Component {
         dirty: false,
         initialValue: comment.draft,
         value: comment.draft,
-      }
+      },
+      showSnackbar: false,
+      snackbarMessage: "",
     }
   }
 
@@ -40,7 +43,17 @@ class AddLessonCommentForm extends React.Component {
         draft,
         (comment, errors) => {
           if (!isNil(errors)) {
-            this.setState({ error: errors[0].message })
+            this.setState({
+              error: errors[0].message,
+              draft: {
+                ...this.state.draft,
+                dirty: false,
+                value: this.state.draft.initialValue,
+              },
+              showSnackbar: true,
+              snackbarMessage: "Something went wrong",
+            })
+            return
           }
           if (comment) {
             this.setState({
@@ -48,7 +61,9 @@ class AddLessonCommentForm extends React.Component {
                 ...this.state.draft,
                 dirty: false,
                 value: comment.draft
-              }
+              },
+              showSnackbar: true,
+              snackbarMessage: "Draft saved",
             })
           }
         },
@@ -85,7 +100,11 @@ class AddLessonCommentForm extends React.Component {
       get(this.props, "lesson.viewerNewComment.id", ""),
       (comment, errors) => {
         if (errors) {
-          this.setState({ error: errors[0].message })
+          this.setState({
+            error: errors[0].message,
+            showSnackbar: true,
+            snackbarMessage: "Something went wrong",
+          })
           return
         }
         this.setState({
@@ -93,7 +112,9 @@ class AddLessonCommentForm extends React.Component {
             dirty: false,
             initialValue: comment.draft,
             value: comment.draft,
-          }
+          },
+          showSnackbar: true,
+          snackbarMessage: "Comment published",
         })
       }
     )
@@ -137,29 +158,39 @@ class AddLessonCommentForm extends React.Component {
   }
 
   render() {
+    const {showSnackbar, snackbarMessage} = this.state
     const study = get(this.props, "lesson.study", null)
     const comment = get(this.props, "lesson.viewerNewComment", {})
 
     return (
-      <StudyBodyEditor study={study}>
-        <form
-          id="add-lesson-comment-form"
-          className={this.classes}
-          onSubmit={this.handleSubmit}
-        >
-          <StudyBodyEditor.Main
-            placeholder="Leave a comment"
-            object={comment}
-            showFormButtonsFor="add-lesson-comment-form"
-            onCancel={this.handleCancel}
-            onChange={this.handleChange}
-            onPreview={this.handlePreview}
-            onPublish={this.handlePublish}
-            onReset={this.handleReset}
-            study={study}
-          />
-        </form>
-      </StudyBodyEditor>
+      <React.Fragment>
+        <StudyBodyEditor study={study}>
+          <form
+            id="add-lesson-comment-form"
+            className={this.classes}
+            onSubmit={this.handleSubmit}
+          >
+            <StudyBodyEditor.Main
+              placeholder="Leave a comment"
+              object={comment}
+              showFormButtonsFor="add-lesson-comment-form"
+              onCancel={this.handleCancel}
+              onChange={this.handleChange}
+              onPreview={this.handlePreview}
+              onPublish={this.handlePublish}
+              onReset={this.handleReset}
+              study={study}
+            />
+          </form>
+        </StudyBodyEditor>
+        <Snackbar
+          show={showSnackbar}
+          message={snackbarMessage}
+          actionHandler={() => this.setState({showSnackbar: false})}
+          actionText="ok"
+          handleHide={() => this.setState({showSnackbar: false})}
+        />
+      </React.Fragment>
     )
   }
 }
@@ -186,6 +217,7 @@ export default withRouter(createFragmentContainer(AddLessonCommentForm, graphql`
       bodyHTML
       draft
       id
+      isPublished
       lastEditedAt
     }
   }

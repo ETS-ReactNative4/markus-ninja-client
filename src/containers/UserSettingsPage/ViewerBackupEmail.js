@@ -5,8 +5,9 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import Select from '@material/react-select'
+import Snackbar from 'components/mdc/Snackbar'
 import UpdateEmailMutation from 'mutations/UpdateEmailMutation'
-import { get, isNil } from 'utils'
+import {get} from 'utils'
 
 import { EMAILS_PER_PAGE } from 'consts'
 
@@ -25,8 +26,11 @@ class ViewerBackupEmail extends React.Component {
     }
 
     this.state = {
+      initialValue: backupEmailId,
       value: backupEmailId,
       error: null,
+      showSnackbar: false,
+      snackbarMessage: "",
     }
   }
 
@@ -51,14 +55,30 @@ class ViewerBackupEmail extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const {value} = this.state
+    const {initialValue, value} = this.state
+    let emailId = value
+    let type = 'BACKUP'
+    if (value === "Only allow primary email") {
+      emailId = initialValue
+      type = 'EXTRA'
+    }
     UpdateEmailMutation(
-      value,
-      'BACKUP',
-      (error) => {
-        if (!isNil(error)) {
-          this.setState({ error: error.message })
+      emailId,
+      type,
+      (email, errors) => {
+        if (errors) {
+          this.setState({
+            error: errors[0].message,
+            value: initialValue,
+            showSnackbar: true,
+            snackbarMessage: "Something went wrong",
+          })
+          return
         }
+        this.setState({
+          showSnackbar: true,
+          snackbarMessage: "Backup email updated",
+        })
       },
     )
   }
@@ -72,7 +92,7 @@ class ViewerBackupEmail extends React.Component {
     const emailEdges = get(this.props, "viewer.backupEmailOptions.edges", [])
     const options = [{
       label: "Only allow primary email",
-      value: "",
+      value: "Only allow primary email",
     }]
     emailEdges.map(({node}) => node && options.push({
       label: node.value,
@@ -83,7 +103,7 @@ class ViewerBackupEmail extends React.Component {
   }
 
   render() {
-    const {value} = this.state
+    const {showSnackbar, snackbarMessage, value} = this.state
 
     return (
       <div className={this.classes}>
@@ -108,6 +128,13 @@ class ViewerBackupEmail extends React.Component {
             Save
           </button>
         </form>
+        <Snackbar
+          show={showSnackbar}
+          message={snackbarMessage}
+          actionHandler={() => this.setState({showSnackbar: false})}
+          actionText="ok"
+          handleHide={() => this.setState({showSnackbar: false})}
+        />
       </div>
     )
   }

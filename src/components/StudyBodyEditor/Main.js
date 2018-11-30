@@ -194,6 +194,7 @@ class StudyBodyEditorMain extends React.Component {
                   >
                     edit
                   </button>}
+                {object.isPublished &&
                 <button
                   className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
                   type="button"
@@ -202,7 +203,7 @@ class StudyBodyEditorMain extends React.Component {
                   title="Cancel"
                 >
                   cancel
-                </button>
+                </button>}
               </div>
             </div>
           </Sticky>
@@ -259,13 +260,14 @@ class StudyBodyEditorMain extends React.Component {
                 >
                   {this.props.submitText || "Save draft"}
                 </button>
+                {object.isPublished &&
                 <button
                   className="mdc-button mdc-card__action mdc-card__action--button"
                   type="button"
                   onClick={this.handleToggleCancelConfirmation}
                 >
                   Cancel
-                </button>
+                </button>}
               </div>}
               <div className="mdc-card__action-icons rn-card__actions--spread">
                 <button
@@ -419,6 +421,7 @@ StudyBodyEditorMain.propTypes = {
   object: PropTypes.shape({
     bodyHTML: PropTypes.string.isRequired,
     draft: PropTypes.string.isRequired,
+    isPublished: PropTypes.bool.isRequired,
     lastEditedAt: PropTypes.string.isRequired,
   }),
   onCancel: PropTypes.func,
@@ -438,6 +441,7 @@ StudyBodyEditorMain.defaultProps = {
   object: {
     bodyHTML: "",
     draft: "",
+    isPublished: false,
     lastEditedAt: "",
   },
   onCancel: () => {},
