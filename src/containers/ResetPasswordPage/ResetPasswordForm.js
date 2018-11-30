@@ -1,25 +1,29 @@
 import * as React from 'react'
 import cls from 'classnames'
 import { withRouter } from 'react-router'
-import TextField, {Input, HelperText} from '@material/react-text-field'
+import Snackbar from 'components/mdc/Snackbar'
+import {HelperText} from '@material/react-text-field'
+import TextField, {defaultTextFieldState} from 'components/TextField'
 import ResetPasswordMutation from 'mutations/ResetPasswordMutation'
 import RequestPasswordResetMutation from 'mutations/RequestPasswordResetMutation'
-import {isEmpty, isNil} from 'utils'
+import {isEmpty} from 'utils'
 
 import './styles.css'
 
 class ResetPasswordForm extends React.Component {
   state = {
     error: null,
-    confirmNewPassword: "",
-    email: "",
-    newPassword: "",
-    resetToken: "",
+    confirmNewPassword: defaultTextFieldState,
+    email: defaultTextFieldState,
+    newPassword: defaultTextFieldState,
+    resetToken: defaultTextFieldState,
+    showSnackbar: false,
+    snackbarMessage: "",
   }
 
-  handleChange = (e) => {
+  handleChange = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
     })
   }
 
@@ -27,12 +31,20 @@ class ResetPasswordForm extends React.Component {
     e.preventDefault()
     const {email} = this.state
     RequestPasswordResetMutation(
-      email,
+      email.value,
       (errors) => {
-        if (!isNil(errors)) {
-          this.setState({ error: errors[0].message })
+        if (errors) {
+          this.setState({
+            error: errors[0].message,
+            showSnackbar: true,
+            snackbarMessage: "Something went wrong",
+          })
           return
         }
+        this.setState({
+          showSnackbar: true,
+          snackbarMessage: "Request sent",
+        })
       },
     )
   }
@@ -40,26 +52,26 @@ class ResetPasswordForm extends React.Component {
   handleResetPassword = (e) => {
     e.preventDefault()
     const {confirmNewPassword, email, newPassword, resetToken} = this.state
-    if (newPassword !== confirmNewPassword) {
+    if (newPassword.value !== confirmNewPassword.value) {
       this.setState({ error: "passwords do not match" })
     } else {
       ResetPasswordMutation(
-        email,
-        newPassword,
-        resetToken,
+        email.value,
+        newPassword.value,
+        resetToken.value,
         (errors) => {
-          if (!isNil(errors)) {
-            this.setState({ error: errors[0].message })
+          if (errors) {
+            this.setState({
+              error: errors[0].message,
+              showSnackbar: true,
+              snackbarMessage: "Something went wrong",
+            })
             return
           }
           this.props.history.replace("/signin")
         },
       )
     }
-  }
-
-  isValidEmail(email) {
-    return !isEmpty(email)
   }
 
   isValidPassword(password) {
@@ -73,98 +85,95 @@ class ResetPasswordForm extends React.Component {
 
   get formValidForRequestPasswordReset() {
     const {email} = this.state
-    return this.isValidEmail(email)
-  }
-
-  get formValidForResetPassword() {
-    const {confirmNewPassword, newPassword, resetToken, email} = this.state
-    return this.isValidPassword(confirmNewPassword) &&
-      this.isValidPassword(newPassword) &&
-      !isEmpty(resetToken) &&
-      this.isValidEmail(email)
+    return !isEmpty(email.value) && email.valid
   }
 
   render() {
-    const {confirmNewPassword, newPassword, resetToken, email} = this.state
+    const {showSnackbar, snackbarMessage} = this.state
+
     return (
-      <form className={this.classes}>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <TextField
-            className="w-100"
-            outlined
-            label="Email"
-            helperText={<HelperText persistent>The email to which we send the token.</HelperText>}
-          >
-            <Input
-              name="email"
-              value={email}
-              onChange={this.handleChange}
+      <React.Fragment>
+        <form className={this.classes} onSubmit={this.handlePasswordReset}>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <TextField
+              className="w-100"
+              outlined
+              label="Email"
+              helperText={<HelperText persistent>The email to which we send the token.</HelperText>}
+              inputProps={{
+                type: "email",
+                name: "email",
+                required: true,
+                onChange: this.handleChange,
+              }}
             />
-          </TextField>
-        </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <TextField
-            className="rn-form__input"
-            outlined
-            label="Reset token"
-            helperText={<HelperText persistent>The token contained within the email.</HelperText>}
-          >
-            <Input
-              name="resetToken"
-              value={resetToken}
-              onChange={this.handleChange}
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <TextField
+              className="rn-form__input"
+              outlined
+              label="Reset token"
+              helperText={<HelperText persistent>The token contained within the email.</HelperText>}
+              inputProps={{
+                name: "resetToken",
+                required: true,
+                onChange: this.handleChange,
+              }}
             />
-          </TextField>
-        </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <TextField
-            className="rn-form__input"
-            outlined
-            label="New password"
-          >
-            <Input
-              type="password"
-              name="newPassword"
-              value={newPassword}
-              onChange={this.handleChange}
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <TextField
+              className="rn-form__input"
+              outlined
+              label="New password"
+              inputProps={{
+                type: "password",
+                name: "newPassword",
+                required: true,
+                onChange: this.handleChange,
+              }}
             />
-          </TextField>
-        </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <TextField
-            className="rn-form__input"
-            outlined
-            label="Confirm new password"
-          >
-            <Input
-              type="password"
-              name="confirmNewPassword"
-              value={confirmNewPassword}
-              onChange={this.handleChange}
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <TextField
+              className="rn-form__input"
+              outlined
+              label="Confirm new password"
+              inputProps={{
+                type: "password",
+                name: "confirmNewPassword",
+                required: true,
+                onChange: this.handleChange,
+              }}
             />
-          </TextField>
-        </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <button
-            className="mdc-button mdc-button--outlined w-100"
-            type="button"
-            disabled={!this.formValidForRequestPasswordReset}
-            onClick={this.handleRequestPasswordReset}
-          >
-            Request password reset token
-          </button>
-        </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <button
-            className="mdc-button mdc-button--unelevated w-100"
-            type="button"
-            disabled={!this.formValidForResetPassword}
-            onClick={this.handleResetPassword}
-          >
-            Reset password
-          </button>
-        </div>
-      </form>
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <button
+              className="mdc-button mdc-button--outlined w-100"
+              type="button"
+              disabled={!this.formValidForRequestPasswordReset}
+              onClick={this.handleRequestPasswordReset}
+            >
+              Request password reset token
+            </button>
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <button
+              type="submit"
+              className="mdc-button mdc-button--unelevated w-100"
+            >
+              Reset password
+            </button>
+          </div>
+        </form>
+        <Snackbar
+          show={showSnackbar}
+          message={snackbarMessage}
+          actionHandler={() => this.setState({showSnackbar: false})}
+          actionText="ok"
+          handleHide={() => this.setState({showSnackbar: false})}
+        />
+      </React.Fragment>
     )
   }
 }
