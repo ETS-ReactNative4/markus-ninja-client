@@ -55,7 +55,7 @@ class UserProfileForm extends React.Component {
     const { bio, emailId, name } = this.state
     UpdateViewerProfileMutation(
       bio.dirty ? bio.value : null,
-      emailId,
+      emailId !== "None" ? emailId : null,
       name.dirty ? name.value : null,
       (viewer, errors) => {
         if (errors) {
@@ -82,8 +82,8 @@ class UserProfileForm extends React.Component {
   get options() {
     const emailEdges = get(this.props, "user.emails.edges", [])
     const options = [{
-      label: "",
-      value: "",
+      label: "None",
+      value: "None",
     }]
     emailEdges.map(({node}) => node && options.push({
       label: node.value,

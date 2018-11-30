@@ -24,6 +24,7 @@ yarn-error.log*
 
 # build artifacts
 **/__generated__/**
+**/*.css
 
 TODO.md
 

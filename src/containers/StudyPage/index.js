@@ -34,7 +34,6 @@ const StudyPageQuery = graphql`
   query StudyPageQuery($owner: String!, $name: String!) {
     study(owner: $owner, name: $name) {
       ...CreateCoursePage_study
-      ...CreateLessonPage_study
       ...CreateLabelDialog_study
       ...CreateLessonDialog_study
       ...CreateUserAssetDialog_study

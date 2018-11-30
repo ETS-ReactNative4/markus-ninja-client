@@ -57,15 +57,6 @@ export default (courseId, lessonId, callback) => {
                 "CourseLessons_lessons",
               )
               courseLessons && ConnectionHandler.deleteNode(courseLessons, removedLessonId)
-
-              const studyId = course.getLinkedRecord('study').getValue('id')
-              const study = proxyStore.get(studyId)
-              const studyLessonsSelect = ConnectionHandler.getConnection(
-                study,
-                "StudyLessonSelect_lessons",
-              )
-              const edge = removeCourseLessonField.getLinkedRecord("removedLessonEdge")
-              studyLessonsSelect && ConnectionHandler.insertEdgeBefore(studyLessonsSelect, edge)
             }
           }
         }
