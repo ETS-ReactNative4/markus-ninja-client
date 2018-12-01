@@ -126,6 +126,7 @@ export default class Snackbar extends Component {
       },
       visibilityIsHidden: () => document.hidden,
       registerCapturedBlurHandler: (handler) => this.setState({onBlurAction: handler}),
+      deregisterCapturedBlurHandler: (handler) => this.setState({onBlurAction: () => {}}),
       registerVisibilityChangeHandler: (handler) => document.addEventListener('visibilitychange', handler),
       deregisterVisibilityChangeHandler: (handler) => document.removeEventListener('visibilitychange', handler),
       registerCapturedInteractionHandler: (evt, handler) =>
@@ -133,6 +134,7 @@ export default class Snackbar extends Component {
       deregisterCapturedInteractionHandler: (evt, handler) =>
         document.body.removeEventListener(evt, handler, true),
       registerActionClickHandler: (handler) => this.setState({onClickAction: handler}),
+      deregisterActionClickHandler: (handler) => this.setState({onClickAction: () => {}}),
       registerTransitionEndHandler: (handler) => {
         const snackbarElement = this.snackbarElement_ && this.snackbarElement_.current
         snackbarElement.addEventListener(getCorrectEventName(window, 'transitionend'), handler)
@@ -160,6 +162,7 @@ export default class Snackbar extends Component {
       message,
       multiline,
       show,
+      timeout,
       ...otherProps
     } = this.props;
     return otherProps
