@@ -18,7 +18,6 @@ import PublishLessonCommentDraftMutation from 'mutations/PublishLessonCommentDra
 import ResetLessonCommentDraftMutation from 'mutations/ResetLessonCommentDraftMutation'
 import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
 import {
-  debounce,
   filterDefinedReactChildren,
   get,
   throttle,
@@ -28,6 +27,7 @@ import {
 class LessonComment extends React.Component {
   state = {
     anchorElement: null,
+    autoSaving: false,
     confirmDeleteDialogOpen: false,
     edit: false,
     error: null,
@@ -48,9 +48,20 @@ class LessonComment extends React.Component {
     this.setState({anchorElement: el})
   }
 
-  autoSaveOnChange = throttle(
-    debounce(() => this.updateDraft(this.state.draft.value), 30000)
-  , 30000)
+  setAutoSave = () => {
+    if (!this.state.autoSaving) {
+      this.setState({autoSaving: true})
+      this.autoSaveTimeoutId_ = setTimeout(() =>
+        this.updateDraft(this.state.draft.value),
+        30000,
+      )
+    }
+  }
+
+  clearAutoSave = () => {
+    this.setState({autoSaving: false})
+    clearTimeout(this.autoSaveTimeoutId_)
+  }
 
   updateDraft = throttle((draft) => {
     if (this.state.draft.dirty) {
@@ -58,6 +69,7 @@ class LessonComment extends React.Component {
         this.props.comment.id,
         draft,
         (comment, errors) => {
+          this.clearAutoSave()
           if (errors) {
             this.setState({
               error: errors[0].message,
@@ -102,7 +114,7 @@ class LessonComment extends React.Component {
       },
     })
     if (dirty) {
-      this.autoSaveOnChange()
+      this.setAutoSave()
     }
   }
 

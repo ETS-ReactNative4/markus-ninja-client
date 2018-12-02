@@ -23,9 +23,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {getCorrectEventName} from '@material/animation';
 
-import {MDCSnackbarFoundation} from '@material/snackbar';
+// import {MDCSnackbarFoundation} from '@material/snackbar';
+import MDCSnackbarFoundation from './foundation';
 
 export default class Snackbar extends Component {
   foundation_ = null;
@@ -35,9 +35,9 @@ export default class Snackbar extends Component {
   state = {
     actionHidden: false,
     classList: new Set(),
-    onBlurAction: () => {},
-    onClickAction: () => {},
-    onTransitionEnd: () => {},
+    handleBlurAction: () => {},
+    handleClickAction: () => {},
+    handleTransitionEnd: () => {},
     snackbarHidden: false,
   };
 
@@ -57,18 +57,6 @@ export default class Snackbar extends Component {
 
   componentWillUnmount() {
     this.foundation_.destroy();
-  }
-
-  handleBlurAction_ = (e) => {
-    this.state.onBlurAction(e)
-  }
-
-  handleClickAction_ = (e) => {
-    this.state.onClickAction(e)
-  }
-
-  handleTransitionEnd_ = (e) => {
-    this.state.onTransitionEnd(e)
   }
 
   get classes() {
@@ -125,24 +113,18 @@ export default class Snackbar extends Component {
         return document.activeElement === actionElement
       },
       visibilityIsHidden: () => document.hidden,
-      registerCapturedBlurHandler: (handler) => this.setState({onBlurAction: handler}),
-      deregisterCapturedBlurHandler: (handler) => this.setState({onBlurAction: () => {}}),
+      registerCapturedBlurHandler: (handler) => this.setState({handleBlurAction: handler}),
+      deregisterCapturedBlurHandler: (handler) => this.setState({handleBlurAction: null}),
       registerVisibilityChangeHandler: (handler) => document.addEventListener('visibilitychange', handler),
       deregisterVisibilityChangeHandler: (handler) => document.removeEventListener('visibilitychange', handler),
       registerCapturedInteractionHandler: (evt, handler) =>
         document.body.addEventListener(evt, handler, true),
       deregisterCapturedInteractionHandler: (evt, handler) =>
         document.body.removeEventListener(evt, handler, true),
-      registerActionClickHandler: (handler) => this.setState({onClickAction: handler}),
-      deregisterActionClickHandler: (handler) => this.setState({onClickAction: () => {}}),
-      registerTransitionEndHandler: (handler) => {
-        const snackbarElement = this.snackbarElement_ && this.snackbarElement_.current
-        snackbarElement.addEventListener(getCorrectEventName(window, 'transitionend'), handler)
-      },
-      deregisterTransitionEndHandler: (handler) => {
-        const snackbarElement = this.snackbarElement_ && this.snackbarElement_.current
-        snackbarElement.removeEventListener(getCorrectEventName(window, 'transitionend'), handler)
-      },
+      registerActionClickHandler: (handler) => this.setState({handleClickAction: handler}),
+      deregisterActionClickHandler: (handler) => this.setState({handleClickAction: null}),
+      registerTransitionEndHandler: (handler) => this.setState({handleTransitionEnd: handler}),
+      deregisterTransitionEndHandler: (handler) => this.setState({handleTransitionEnd: null}),
       notifyShow: this.props.handleShow,
       notifyHide: this.props.handleHide,
     };
@@ -176,6 +158,9 @@ export default class Snackbar extends Component {
     } = this.props
     const {
       actionHidden,
+      handleBlurAction,
+      handleClickAction,
+      handleTransitionEnd,
       snackbarHidden,
     } = this.state
 
@@ -185,6 +170,7 @@ export default class Snackbar extends Component {
         aria-live="assertive"
         aria-atomic="true"
         aria-hidden={snackbarHidden ? "true" : null}
+        onTransitionEnd={handleTransitionEnd}
         ref={this.snackbarElement_}
         {...this.otherProps}
       >
@@ -194,8 +180,8 @@ export default class Snackbar extends Component {
             type="button"
             className={classnames(actionClassName, "mdc-snackbar__action-button")}
             aria-hidden={actionHidden ? "true" : null}
-            onBlur={this.handleBlurAction_}
-            onClick={this.handleClickAction_}
+            onBlur={handleBlurAction}
+            onClick={handleClickAction}
             ref={this.actionElement_}
           >
             {actionText}

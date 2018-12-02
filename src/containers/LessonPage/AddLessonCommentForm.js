@@ -10,7 +10,7 @@ import AddLessonCommentMutation from 'mutations/AddLessonCommentMutation'
 import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
 import Snackbar from 'components/mdc/Snackbar'
 import StudyBodyEditor from 'components/StudyBodyEditor'
-import {debounce, get, isNil, throttle} from 'utils'
+import {get, isNil, throttle} from 'utils'
 
 class AddLessonCommentForm extends React.Component {
   constructor(props) {
@@ -19,6 +19,7 @@ class AddLessonCommentForm extends React.Component {
     const comment = get(this.props, "lesson.viewerNewComment", {})
 
     this.state = {
+      autoSaving: false,
       error: null,
       draft: {
         dirty: false,
@@ -30,9 +31,20 @@ class AddLessonCommentForm extends React.Component {
     }
   }
 
-  autoSaveOnChange = throttle(
-    debounce(() => this.updateDraft(this.state.draft.value), 30000)
-  , 30000)
+  setAutoSave = () => {
+    if (!this.state.autoSaving) {
+      this.setState({autoSaving: true})
+      this.autoSaveTimeoutId_ = setTimeout(() =>
+        this.updateDraft(this.state.draft.value),
+        30000,
+      )
+    }
+  }
+
+  clearAutoSave = () => {
+    this.setState({autoSaving: false})
+    clearTimeout(this.autoSaveTimeoutId_)
+  }
 
   updateDraft = throttle((draft) => {
     const comment = get(this.props, "lesson.viewerNewComment", {})
@@ -42,6 +54,7 @@ class AddLessonCommentForm extends React.Component {
         comment.id,
         draft,
         (comment, errors) => {
+          this.clearAutoSave()
           if (!isNil(errors)) {
             this.setState({
               error: errors[0].message,
@@ -86,7 +99,7 @@ class AddLessonCommentForm extends React.Component {
       },
     })
     if (dirty) {
-      this.autoSaveOnChange()
+      this.setAutoSave()
     }
   }
 

@@ -10,10 +10,11 @@ import StudyBodyEditor from 'components/StudyBodyEditor'
 import PublishLessonDraftMutation from 'mutations/PublishLessonDraftMutation'
 import ResetLessonDraftMutation from 'mutations/ResetLessonDraftMutation'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
-import {debounce, get, isNil, throttle, timeDifferenceForDate} from 'utils'
+import {get, isNil, throttle, timeDifferenceForDate} from 'utils'
 
 class LessonBody extends React.Component {
   state = {
+    autoSaving: false,
     edit: !get(this.props, "lesson.isPublished", false),
     error: null,
     draft: {
@@ -25,9 +26,20 @@ class LessonBody extends React.Component {
     snackbarMessage: "",
   }
 
-  autoSaveOnChange = throttle(
-    debounce(() => this.updateDraft(this.state.draft.value), 30000)
-  , 30000)
+  setAutoSave = () => {
+    if (!this.state.autoSaving) {
+      this.setState({autoSaving: true})
+      this.autoSaveTimeoutId_ = setTimeout(() =>
+        this.updateDraft(this.state.draft.value),
+        30000,
+      )
+    }
+  }
+
+  clearAutoSave = () => {
+    this.setState({autoSaving: false})
+    clearTimeout(this.autoSaveTimeoutId_)
+  }
 
   updateDraft = throttle((draft) => {
     if (this.state.draft.dirty) {
@@ -36,6 +48,7 @@ class LessonBody extends React.Component {
         null,
         draft,
         (lesson, errors) => {
+          this.clearAutoSave()
           if (!isNil(errors)) {
             this.setState({
               error: errors[0].message,
@@ -80,7 +93,7 @@ class LessonBody extends React.Component {
       },
     })
     if (dirty) {
-      this.autoSaveOnChange()
+      this.setAutoSave()
     }
   }
 
@@ -122,7 +135,7 @@ class LessonBody extends React.Component {
     )
   }
 
-  handleSubmit = (e) => {
+  handleSaveDraft = (e) => {
     e.preventDefault()
     const {draft} = this.state
     this.updateDraft(draft.value)
@@ -207,7 +220,7 @@ class LessonBody extends React.Component {
 
     return (
       <StudyBodyEditor study={study}>
-        <form id="lesson-draft-form" onSubmit={this.handleSubmit}>
+        <form id="lesson-draft-form" onSubmit={this.handleSaveDraft}>
           <StudyBodyEditor.Main
             bodyClassName="min-vh-25"
             placeholder="Begin your lesson"
