@@ -62,7 +62,7 @@ class ResearchPage extends React.Component {
             const popularTopicEdges = get(props, "popularTopics.edges", [])
 
             return (
-              <React.Fragment>
+              <div className="rn-page">
                 <header className="ResearchPage__header rn-header rn-header--hero">
                   <div className="rn-header--hero__content">
                     <h3>
@@ -70,7 +70,7 @@ class ResearchPage extends React.Component {
                     </h3>
                   </div>
                 </header>
-                <div className="mdc-layout-grid rn-page">
+                <div className="mdc-layout-grid rn-page__grid">
                   <div className="mdc-layout-grid__inner">
                     <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                       <div className="mdc-layout-grid__inner">
@@ -110,7 +110,7 @@ class ResearchPage extends React.Component {
                     </div>
                   </div>
                 </div>
-              </React.Fragment>
+              </div>
             )
           }
           return <div>Loading</div>

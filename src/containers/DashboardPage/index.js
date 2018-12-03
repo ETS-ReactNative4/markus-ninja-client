@@ -3,7 +3,7 @@ import {
   QueryRenderer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import environment from 'Environment'
 import LessonPreview from 'components/LessonPreview'
 import StudyPreview from 'components/StudyPreview'
@@ -59,6 +59,10 @@ class DashboardPage extends React.Component {
           if (error) {
             return <div>{error.message}</div>
           } else if (props) {
+            if (!props.viewer) {
+              return <Redirect to="/signin" />
+            }
+
             const {drawerOpen} = this.state
             const lessons = get(props, "viewer.lessons.nodes", [])
             const studyCount = get(props, "viewer.studies.totalCount", 0)

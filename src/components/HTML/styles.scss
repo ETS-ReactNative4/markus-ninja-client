@@ -119,6 +119,8 @@
     @include mdc-layout-grid-media-query_(desktop) {
       @include mdc-typography(headline3);
 
+      font-weight: 500;
+
       + h5, + h6 {
         margin-top: 16px;
       }
@@ -126,12 +128,16 @@
     @include mdc-layout-grid-media-query_(tablet) {
       @include mdc-typography(headline4);
 
+      font-weight: 500;
+
       + h5, + h6 {
         margin-top: 8px;
       }
     }
     @include mdc-layout-grid-media-query_(phone) {
       @include mdc-typography(headline4);
+
+      font-weight: 500;
 
       + h5, + h6 {
         margin-top: 8px;
@@ -156,6 +162,8 @@
     @include mdc-layout-grid-media-query_(desktop) {
       @include mdc-typography(headline4);
 
+      font-weight: 500;
+
       + h5, + h6 {
         margin-top: 16px;
       }
@@ -163,12 +171,16 @@
     @include mdc-layout-grid-media-query_(tablet) {
       @include mdc-typography(headline5);
 
+      font-weight: 500;
+
       + h5, + h6 {
         margin-top: 8px;
       }
     }
     @include mdc-layout-grid-media-query_(phone) {
       @include mdc-typography(headline5);
+
+      font-weight: 500;
 
       + h5, + h6 {
         margin-top: 8px;
@@ -193,6 +205,8 @@
     @include mdc-layout-grid-media-query_(desktop) {
       @include mdc-typography(headline5);
 
+      font-weight: 400;
+
       + h5, + h6 {
         margin-top: 16px;
       }
@@ -200,12 +214,16 @@
     @include mdc-layout-grid-media-query_(tablet) {
       @include mdc-typography(headline6);
 
+      font-weight: 400;
+
       + h5, + h6 {
         margin-top: 8px;
       }
     }
     @include mdc-layout-grid-media-query_(phone) {
       @include mdc-typography(headline6);
+
+      font-weight: 400;
 
       + h5, + h6 {
         margin-top: 8px;

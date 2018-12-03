@@ -1,8 +1,9 @@
 @import "@material/top-app-bar/variables";
+@import "@material/layout-grid/mixins";
+@import "@material/layout-grid/variables";
 
 .rn-page {
   min-height: calc(100vh - #{$mdc-top-app-bar-row-height});
-  
 }
 
 .rn-page.mdc-layout-grid, .rn-page__grid {
@@ -10,6 +11,20 @@
 
   >.mdc-layout-grid__inner {
     width: 100%;
+  }
+  
+  &.rn-page__grid--fill {
+    >.mdc-layout-grid__inner {
+      @include mdc-layout-grid-media-query_(desktop) {
+        min-height: calc(100vh - #{$mdc-top-app-bar-row-height} - #{map-get($mdc-layout-grid-default-gutter, desktop)} * 2);
+      }
+      @include mdc-layout-grid-media-query_(tablet) {
+        min-height: calc(100vh - #{$mdc-top-app-bar-row-height} - #{map-get($mdc-layout-grid-default-gutter, tablet)} * 2);
+      }
+      @include mdc-layout-grid-media-query_(phone) {
+        min-height: calc(100vh - #{$mdc-top-app-bar-row-height} - #{map-get($mdc-layout-grid-default-gutter, phone)} * 2);
+      }
+    }
   }
 }
 
