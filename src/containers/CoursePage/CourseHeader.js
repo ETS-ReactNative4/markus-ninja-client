@@ -8,10 +8,13 @@ import { Link, withRouter } from 'react-router-dom'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import Icon from 'components/Icon'
 import AppleButton from 'components/AppleButton'
+import Dialog from 'components/Dialog'
+import Snackbar from 'components/mdc/Snackbar'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
+import PublishCourseMutation from 'mutations/PublishCourseMutation'
 import UpdateCourseMutation from 'mutations/UpdateCourseMutation'
-import {get, isEmpty} from 'utils'
+import {get, isEmpty, throttle} from 'utils'
 
 class CourseHeader extends React.Component {
   state = {
@@ -21,7 +24,10 @@ class CourseHeader extends React.Component {
       ...defaultTextFieldState,
       value: get(this.props, "course.name", ""),
       valid: true,
-    }
+    },
+    confirmPublishDialogOpen: false,
+    showSnackbar: false,
+    snackbarMessage: "",
   }
 
   handleChange = (field) => {
@@ -30,7 +36,27 @@ class CourseHeader extends React.Component {
     })
   }
 
-  handleSubmit = (e) => {
+  handlePublish = () => {
+    PublishCourseMutation(
+      this.props.course.id,
+      (course, errors) => {
+        if (errors) {
+          this.setState({
+            error: errors[0].message,
+            showSnackbar: true,
+            snackbarMessage: "Something went wrong",
+          })
+          return
+        }
+        this.setState({
+          showSnackbar: true,
+          snackbarMessage: "Course published",
+        })
+      },
+    )
+  }
+
+  handleSubmit = throttle((e) => {
     e.preventDefault()
     const { name } = this.state
     UpdateCourseMutation(
@@ -39,19 +65,45 @@ class CourseHeader extends React.Component {
       name.value,
       (updatedCourse, errors) => {
         if (errors) {
-          this.setState({ error: errors[0].message })
+          this.setState({
+            error: errors[0].message,
+            showSnackbar: true,
+            snackbarMessage: "Something went wrong",
+          })
+          return
         }
-        this.handleToggleOpen()
         this.setState({
           name: get(updatedCourse, "name", ""),
+          showSnackbar: true,
+          snackbarMessage: "Name updated",
         })
+        this.handleToggleEditName()
       },
     )
+  }, 2000)
+
+  handleCancelEditName = () => {
+    this.handleToggleEditName()
+    this.reset_()
   }
 
-  handleToggleOpen = () => {
+  handleToggleEditName = () => {
     this.setState({ open: !this.state.open })
-    this.reset_()
+  }
+
+  handleTogglePublishConfirmation = () => {
+    const isPublishable = get(this.props, "course.isPublishable", false)
+    if (!isPublishable) {
+      this.setState({
+        showSnackbar: true,
+        snackbarMessage: "All lessons must be published",
+      })
+      return
+    }
+    const {confirmPublishDialogOpen} = this.state
+    this.setState({
+      confirmPublishDialogOpen: !confirmPublishDialogOpen,
+    })
   }
 
   reset_ = () => {
@@ -73,13 +125,21 @@ class CourseHeader extends React.Component {
 
   render() {
     const course = get(this.props, "course", {})
-    const {open} = this.state
+    const {open, showSnackbar, snackbarMessage} = this.state
 
     return (
       <div className={this.classes}>
         {open && course.viewerCanAdmin
         ? this.renderForm()
         : this.renderHeader()}
+        <Snackbar
+          show={showSnackbar}
+          message={snackbarMessage}
+          actionHandler={() => this.setState({showSnackbar: false})}
+          actionText="ok"
+          handleHide={() => this.setState({showSnackbar: false})}
+        />
+        {course.viewerCanAdmin && this.renderConfirmPublishDialog()}
       </div>
     )
   }
@@ -110,7 +170,7 @@ class CourseHeader extends React.Component {
             <button
               className="mdc-button rn-text-field__action rn-text-field__action--button"
               type="button"
-              onClick={this.handleToggleOpen}
+              onClick={this.handleOpen}
             >
               Cancel
             </button>
@@ -121,6 +181,7 @@ class CourseHeader extends React.Component {
   }
 
   renderHeader() {
+    const {open} = this.state
     const course = get(this.props, "course", null)
 
     return (
@@ -136,19 +197,36 @@ class CourseHeader extends React.Component {
               <span className="fw5">{get(course, "name", "")}</span>
               <span className="mdc-theme--text-hint-on-light ml2">#{get(course, "number", 0)}</span>
             </span>
-            {course.viewerCanAdmin &&
-            <button
-              className="material-icons mdc-icon-button rn-file-path__file__icon"
-              type="button"
-              onClick={this.handleToggleOpen}
-              aria-label="Edit name"
-              title="Edit name"
-            >
-              edit
-            </button>}
+            {course.viewerCanAdmin && !open
+            ? <button
+                className="material-icons mdc-icon-button rn-file-path__file__icon"
+                type="button"
+                onClick={this.handleToggleEditName}
+                aria-label="Edit name"
+                title="Edit name"
+              >
+                edit
+              </button>
+            : <button
+                className="material-icons mdc-icon-button rn-file-path__file__icon"
+                type="button"
+                onClick={this.handleCancelEditName}
+                aria-label="Edit name"
+                title="Edit name"
+              >
+                cancel
+              </button>}
           </span>
         </h4>
         <div className="rn-header__actions">
+          {!course.isPublished &&
+          <button
+            type="button"
+            className="mdc-button mdc-button--unelevated mdc-theme--secondary-bg rn-header__action rn-header__action--button"
+            onClick={this.handleTogglePublishConfirmation}
+          >
+            Publish
+          </button>}
           <div className="rn-combo-button rn-header__action rn-header__action--button">
             <AppleButton appleable={course} />
             <Link
@@ -163,17 +241,55 @@ class CourseHeader extends React.Component {
     )
   }
 
+  renderConfirmPublishDialog() {
+    const {confirmPublishDialogOpen} = this.state
+
+    return (
+      <Dialog
+        open={confirmPublishDialogOpen}
+        onClose={() => this.setState({confirmPublishDialogOpen: false})}
+        title={<Dialog.Title>Publish course</Dialog.Title>}
+        content={
+          <Dialog.Content>
+            <div className="flex flex-column mw5">
+              <p>Are you sure?</p>
+            </div>
+          </Dialog.Content>
+        }
+        actions={
+          <Dialog.Actions>
+            <button
+              type="button"
+              className="mdc-button"
+              data-mdc-dialog-action="no"
+            >
+              No
+            </button>
+            <button
+              type="button"
+              className="mdc-button"
+              onClick={this.handlePublish}
+              data-mdc-dialog-action="yes"
+            >
+              Yes
+            </button>
+          </Dialog.Actions>}
+        />
+    )
+  }
 }
 
 export default withRouter(createFragmentContainer(CourseHeader, graphql`
   fragment CourseHeader_course on Course {
     ...AppleButton_appleable
-    id
     advancedAt
     appleGivers(first: 0) {
       totalCount
     }
     createdAt
+    id
+    isPublished
+    isPublishable
     name
     number
     resourcePath

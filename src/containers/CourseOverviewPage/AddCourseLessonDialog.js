@@ -118,24 +118,28 @@ class AddCourseLessonDialog extends React.Component {
   }
 
   get _filterBy() {
+    const {course} = this.props
     const {query} = this.state
     return {
       isCourseLesson: false,
-      isPublished: true,
+      isPublished: course.isPublished ? true : null,
       search: query,
     }
   }
 
   render() {
     const {lessonsFetched} = this.state
-    const {open} = this.props
+    const {course, open} = this.props
 
     return (
       <Dialog
         className={this.classes}
         open={open}
         onClose={this.handleCancel}
-        title={<Dialog.Title>Add published lesson to course</Dialog.Title>}
+        title={
+          <Dialog.Title>
+            Add {course.isPublished ? <em>published</em> : ""} lesson to course
+          </Dialog.Title>}
         content={
           <Dialog.Content>
             {this.renderInput()}
@@ -199,6 +203,7 @@ AddCourseLessonDialog.defaultProps = {
 export default createFragmentContainer(AddCourseLessonDialog, graphql`
   fragment AddCourseLessonDialog_course on Course {
     id
+    isPublished
     viewerCanAdmin
   }
 `)

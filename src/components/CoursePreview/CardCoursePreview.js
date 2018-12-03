@@ -41,7 +41,7 @@ class CardCoursePreview extends React.Component {
                 {course.name}
               </h6>
               <div className="rn-card__subtitle">
-                #{course.number} created on {timeDifferenceForDate(course.createdAt)} by
+                #{course.number} created {timeDifferenceForDate(course.createdAt)} by
                 <span className="ml1">{get(course, "owner.login", "")}</span>
               </div>
             </div>
