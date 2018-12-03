@@ -19,6 +19,7 @@ const FRAGMENT =  graphql`
     description
     descriptionHTML
     id
+    isPublished
     lessons(first: 0) {
       totalCount
     }
@@ -40,6 +41,7 @@ const FRAGMENT =  graphql`
         resourcePath
       }
     }
+    viewerCanAdmin
     viewerCanApple
     viewerHasAppled
   }

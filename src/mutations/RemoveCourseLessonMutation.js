@@ -10,6 +10,7 @@ const mutation = graphql`
     removeCourseLesson(input: $input) {
       course {
         id
+        isPublishable
         lessons(first: 0) {
           totalCount
         }
@@ -46,9 +47,11 @@ export default (courseId, lessonId, callback) => {
           const lessonCourse = removeCourseLessonField.getLinkedRecord('course')
           if (lessonCourse) {
             const lessonCourseId = lessonCourse.getValue('id')
+            const courseIsPublishable = lessonCourse.getValue('isPublishable')
             const courseLessonCount = lessonCourse.getLinkedRecord('lessons', {first: 0})
             const course = proxyStore.get(lessonCourseId)
             if (course) {
+              course.setValue(courseIsPublishable, 'isPublishable')
               course.setLinkedRecord(courseLessonCount, 'lessons', {first: 0})
 
               const removedLessonId = removeCourseLessonField.getValue('removedLessonId')

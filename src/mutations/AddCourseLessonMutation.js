@@ -18,6 +18,8 @@ const mutation = graphql`
         }
       }
       course {
+        id
+        isPublishable
         lessons(first: 0) {
           totalCount
         }
@@ -43,10 +45,12 @@ export default (courseId, lessonId, callback) => {
         const addCourseLessonField = proxyStore.getRootField("addCourseLesson")
         if (addCourseLessonField) {
           const lessonCourse = addCourseLessonField.getLinkedRecord('course')
+          const courseIsPublishable = lessonCourse && lessonCourse.getValue('isPublishable')
           const courseLessonCount = lessonCourse &&
             lessonCourse.getLinkedRecord('lessons', {first: 0})
           const course = proxyStore.get(courseId)
           if (course) {
+            course.setValue(courseIsPublishable, 'isPublishable')
             course.setLinkedRecord(courseLessonCount, 'lessons', {first: 0})
             const courseLessons = ConnectionHandler.getConnection(
               course,

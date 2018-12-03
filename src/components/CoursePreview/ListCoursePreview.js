@@ -82,6 +82,13 @@ class ListCoursePreview extends React.Component {
           </span>
           <span className="mdc-list-item__meta rn-list-preview__actions">
             <span className="rn-list-preview__actions--spread">
+              {course.viewerCanAdmin && course.isPublished &&
+              <Icon
+                as="span"
+                className="mdc-theme--secondary rn-list-preview__action rn-list-preview__action--icon"
+                icon="publish"
+                label="Published"
+              />}
               {course.viewerCanApple &&
               <AppleIconButton appleable={get(this.props, "course", null)} />}
               <Link
