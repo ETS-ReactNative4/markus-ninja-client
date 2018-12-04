@@ -69,12 +69,12 @@ class CoursePage extends React.Component {
                     <Switch>
                       <Route
                         exact
-                        path="/:owner/:name/course/:number"
+                        path="/u/:owner/:name/course/:number"
                         render={(routeProps) => <CourseOverviewPage {...routeProps} course={course} />}
                       />
                       <Route
                         exact
-                        path="/:owner/:name/course/:number/applegivers"
+                        path="/u/:owner/:name/course/:number/applegivers"
                         component={CourseAppleGiversPage}
                       />
                     </Switch>

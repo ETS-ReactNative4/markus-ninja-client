@@ -122,53 +122,53 @@ class StudyPage extends React.Component {
                       <Switch>
                         <Route
                           exact
-                          path="/:owner/:name"
+                          path="/u/:owner/:name"
                           render={(routeProps) => <StudyOverviewPage {...routeProps} study={props.study} />}
                         />
                         <Route
                           exact
-                          path="/:owner/:name/courses"
+                          path="/u/:owner/:name/courses"
                           render={(routeProps) => <StudyCoursesPage {...routeProps} study={props.study} />}
                         />
                         <PrivateRoute
                           exact
-                          path="/:owner/:name/courses/new"
+                          path="/u/:owner/:name/courses/new"
                           authenticated={authenticated}
                           render={(routeProps) => <CreateCoursePage {...routeProps} study={props.study} />}
                         />
                         <Route
                           exact
-                          path="/:owner/:name/applegivers"
+                          path="/u/:owner/:name/applegivers"
                           component={StudyAppleGiversPage}
                         />
                         <Route
                           exact
-                          path="/:owner/:name/enrollees"
+                          path="/u/:owner/:name/enrollees"
                           component={StudyEnrolleesPage}
                         />
                         <Route
                           exact
-                          path="/:owner/:name/labels"
+                          path="/u/:owner/:name/labels"
                           render={(routeProps) => <StudyLabelsPage {...routeProps} study={props.study} />}
                         />
                         <Route
                           exact
-                          path="/:owner/:name/labels/:label"
+                          path="/u/:owner/:name/labels/:label"
                           render={(routeProps) => <LabelPage {...routeProps} study={props.study} />}
                         />
                         <Route
                           exact
-                          path="/:owner/:name/lessons"
+                          path="/u/:owner/:name/lessons"
                           render={(routeProps) => <StudyLessonsPage {...routeProps} study={props.study} />}
                         />
                         <Route
                           exact
-                          path="/:owner/:name/assets"
+                          path="/u/:owner/:name/assets"
                           render={(routeProps) => <StudyAssetsPage {...routeProps} study={props.study} />}
                         />
                         <PrivateRoute
                           exact
-                          path="/:owner/:name/settings"
+                          path="/u/:owner/:name/settings"
                           authenticated={authenticated}
                           render={(routeProps) => <StudySettingsPage {...routeProps} study={props.study} />}
                         />

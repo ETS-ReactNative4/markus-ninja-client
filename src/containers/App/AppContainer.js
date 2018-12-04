@@ -154,20 +154,20 @@ class AppContainer extends React.Component {
                       />
                       <Route exact path="/topics" component={TopicsPage} />
                       <Route exact path="/topics/:name" component={TopicPage} />
-                      <Route exact path="/:login" component={UserPage} />
+                      <Route exact path="/u/:login" component={UserPage} />
                       <Route
-                        path="/:owner/:name/asset/:filename"
+                        path="/u/:owner/:name/asset/:filename"
                         component={UserAssetPage}
                       />
                       <Route
-                        path="/:owner/:name/course/:number"
+                        path="/u/:owner/:name/course/:number"
                         component={CoursePage}
                       />
                       <Route
-                        path="/:owner/:name/lesson/:number"
+                        path="/u/:owner/:name/lesson/:number"
                         component={LessonPage}
                       />
-                      <Route path="/:owner/:name" component={StudyPage} />
+                      <Route path="/u/:owner/:name" component={StudyPage} />
                       <Route component={NotFound} />
                     </Switch>
                   </div>
