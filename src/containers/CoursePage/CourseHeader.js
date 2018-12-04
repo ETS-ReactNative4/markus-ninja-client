@@ -197,25 +197,28 @@ class CourseHeader extends React.Component {
               <span className="fw5">{get(course, "name", "")}</span>
               <span className="mdc-theme--text-hint-on-light ml2">#{get(course, "number", 0)}</span>
             </span>
-            {course.viewerCanAdmin && !open
-            ? <button
-                className="material-icons mdc-icon-button rn-file-path__file__icon"
-                type="button"
-                onClick={this.handleToggleEditName}
-                aria-label="Edit name"
-                title="Edit name"
-              >
-                edit
-              </button>
-            : <button
-                className="material-icons mdc-icon-button rn-file-path__file__icon"
-                type="button"
-                onClick={this.handleCancelEditName}
-                aria-label="Edit name"
-                title="Edit name"
-              >
-                cancel
-              </button>}
+            {course.viewerCanAdmin &&
+              (!open
+              ? <button
+                  className="material-icons mdc-icon-button rn-file-path__file__icon"
+                  type="button"
+                  onClick={this.handleToggleEditName}
+                  aria-label="Edit name"
+                  title="Edit name"
+                >
+                  edit
+                </button>
+              : <button
+                  className="material-icons mdc-icon-button rn-file-path__file__icon"
+                  type="button"
+                  onClick={this.handleCancelEditName}
+                  aria-label="Edit name"
+                  title="Edit name"
+                >
+                  cancel
+                </button>
+              : null)
+            }
           </span>
         </h4>
         <div className="rn-header__actions">
