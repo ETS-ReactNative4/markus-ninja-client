@@ -109,7 +109,7 @@
     "relay:dev": "curl http://localhost:5000/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
     "relay:prod": "curl https://api.rkus.ninja/graphql/schema -o ./src/graphql.json && relay-compiler --src ./src --schema ./src/graphql.json",
     "deploy:static": "aws s3 sync --delete ./static s3://markus-ninja-production-static-asset-us-east-1",
-    "deploy:build": "aws s3 sync ./build s3://ma.rkus.ninja",
+    "deploy:build": "aws s3 sync --delete ./build s3://ma.rkus.ninja",
     "deploy": "run-s build deploy:build deploy:static",
     "lint": "eslint ./src --fix"
   },
