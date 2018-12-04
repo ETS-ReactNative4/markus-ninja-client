@@ -170,7 +170,7 @@ class CourseHeader extends React.Component {
             <button
               className="mdc-button rn-text-field__action rn-text-field__action--button"
               type="button"
-              onClick={this.handleOpen}
+              onClick={this.handleCancelEditName}
             >
               Cancel
             </button>
