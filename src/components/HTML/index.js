@@ -2,7 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import cls from 'classnames'
 import hljs from 'highlightjs'
-import convert from 'htmr'
+import ReactHtmlParser from 'react-html-parser'
 
 import './styles.css'
 
@@ -57,10 +57,10 @@ class HTML extends React.Component {
     return (
       <div
         ref={this.node}
-        {...this.otherProps}
         className={this.classes}
+        {...this.otherProps}
       >
-        {convert(html)}
+        {ReactHtmlParser(html)}
       </div>
     )
   }
