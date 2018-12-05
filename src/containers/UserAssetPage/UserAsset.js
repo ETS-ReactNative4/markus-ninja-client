@@ -56,6 +56,7 @@ class UserAsset extends React.Component {
         <div className="pa3">
           <h6>{asset.name}</h6>
           <div className="mdc-typography--subtitle2 mdc-theme--text-secondary-on-light">
+            Reference: $${asset.name}
             <div>
               Added {timeDifferenceForDate(asset.createdAt)} by
               <Link

@@ -101,7 +101,7 @@ class UserAssetNameInputContainer extends React.Component {
 
   get label() {
     const {label} = this.props
-    return label ? label : 'Enter name'
+    return label ? label : 'Name'
   }
 
   get isValid() {
@@ -117,6 +117,7 @@ class UserAssetNameInputContainer extends React.Component {
       <div className={this.classes}>
         <TextField
           className={!this.isValid ? "mdc-text-field--invalid" : ""}
+          floatingLabelClassName={!isEmpty(name.value) ? "mdc-floating-label--float-above" : null}
           label={this.label}
           helperText={this.renderHelperText()}
           inputProps={{

@@ -6,10 +6,11 @@ import {
 import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router-dom';
 import getHistory from 'react-router-global-history'
-import TextField, {Input} from '@material/react-text-field'
 import Icon from 'components/Icon'
+import Snackbar from 'components/mdc/Snackbar'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
+import UserAssetNameInput, {defaultUserAssetNameState} from 'components/UserAssetNameInput'
 import UpdateUserAssetMutation from 'mutations/UpdateUserAssetMutation'
 import {get, isNil} from 'utils'
 
@@ -17,37 +18,70 @@ class UserAssetHeader extends React.Component {
   state = {
     error: null,
     open: false,
-    name: this.props.asset.name,
+    name: {
+      ...defaultUserAssetNameState,
+      value: get(this.props, "asset.name", ""),
+      valid: true,
+    },
+    showSnackbar: false,
+    snackbarMessage: "",
   }
 
-  handleChange = (e) => {
+  handleChangeField = (field) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [field.name]: field,
     })
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { name } = this.state
+    const {name} = this.state
     UpdateUserAssetMutation(
       this.props.asset.id,
       null,
-      name,
+      name.value,
       (updatedUserAsset, errors) => {
         if (!isNil(errors)) {
-          this.setState({ error: errors[0].message })
+          this.setState({
+            error: errors[0].message,
+            showSnackbar: true,
+            snackbarMessage: "Something went wrong",
+          })
+          return
         }
-        this.handleToggleOpen()
         this.setState({
-          name: get(updatedUserAsset, "name", ""),
+          name: {
+            value: get(updatedUserAsset, "name", ""),
+            valid: true,
+          },
+          showSnackbar: true,
+          snackbarMessage: "Name updated",
         })
+        this.handleToggleEditName()
         getHistory().push(updatedUserAsset.resourcePath)
       },
     )
   }
 
-  handleToggleOpen = () => {
+  handleCancelEditName = () => {
+    this.handleToggleEditName()
+    this.reset_()
+  }
+
+  handleToggleEditName = () => {
     this.setState({ open: !this.state.open })
+  }
+
+  reset_ = () => {
+    const asset = get(this.props, "asset", {})
+    this.setState({
+      error: null,
+      name: {
+        ...defaultUserAssetNameState,
+        value: asset.name,
+        valid: true,
+      },
+    })
   }
 
   get classes() {
@@ -57,13 +91,20 @@ class UserAssetHeader extends React.Component {
 
   render() {
     const asset = get(this.props, "asset", {})
-    const {open} = this.state
+    const {open, showSnackbar, snackbarMessage} = this.state
 
     return (
       <div className={this.classes}>
-        {open
-        ? asset.viewerCanUpdate && this.renderForm()
-        : this.renderDetails()}
+        {open && asset.viewerCanUpdate
+        ? this.renderForm()
+        : this.renderHeader()}
+        <Snackbar
+          show={showSnackbar}
+          message={snackbarMessage}
+          actionHandler={() => this.setState({showSnackbar: false})}
+          actionText="ok"
+          handleHide={() => this.setState({showSnackbar: false})}
+        />
       </div>
     )
   }
@@ -74,17 +115,12 @@ class UserAssetHeader extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="rn-text-field">
-          <TextField
-            label="Name"
-            floatingLabelClassName={"mdc-floating-label--float-above"}
-          >
-            <Input
-              name="name"
-              value={name}
-              required
-              onChange={this.handleChange}
+          <div className="rn-text-field__input">
+            <UserAssetNameInput
+              initialValue={name.value}
+              onChange={this.handleChangeField}
             />
-          </TextField>
+          </div>
           <div className="rn-text-field__actions">
             <button
               className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
@@ -96,7 +132,7 @@ class UserAssetHeader extends React.Component {
             <button
               className="mdc-button rn-text-field__action rn-text-field__action--button"
               type="button"
-              onClick={this.handleToggleOpen}
+              onClick={this.handleCancelEditName}
             >
               Cancel
             </button>
@@ -106,7 +142,7 @@ class UserAssetHeader extends React.Component {
       )
     }
 
-  renderDetails() {
+  renderHeader() {
     const asset = get(this.props, "asset", {})
 
     return (
@@ -125,7 +161,7 @@ class UserAssetHeader extends React.Component {
             <button
               className="material-icons mdc-icon-button rn-file-path__file__icon"
               type="button"
-              onClick={this.handleToggleOpen}
+              onClick={this.handleToggleEditName}
             >
               edit
             </button>}

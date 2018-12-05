@@ -87,7 +87,9 @@ class StudyAssetsPage extends React.Component {
       <div className={this.classes}>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="rn-text-field">
-            {this.renderInput()}
+            <div className="rn-text-field__input">
+              {this.renderInput()}
+            </div>
             <div className="rn-text-field__actions">
               {study.viewerCanAdmin &&
                 <button

@@ -12,8 +12,16 @@ class StudyAssetsPageAssets extends React.Component {
     const {hasMore, loadMore} = assets
 
     return (
-      <div className="mdc-card mdc-card--outlined ph2">
-        {this.renderAssets()}
+      <div className="mdc-card mdc-card--outlined">
+        <div className="rn-card__header">
+          <p>
+            To include an asset in your markdown
+            add <strong>$$<em>AssetName</em></strong> padded with spaces.
+          </p>
+        </div>
+        <div className="rn-card__body">
+          {this.renderAssets()}
+        </div>
         {(hasMore || study.viewerCanAdmin) &&
         <div className="mdc-card__actions">
           <div className="mdc-card__action-buttons">

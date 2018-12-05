@@ -119,7 +119,9 @@ class LabelPage extends React.Component {
                 </div>
                 <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                   <div className="rn-text-field">
-                    {this.renderInput()}
+                    <div className="rn-text-field__input">
+                      {this.renderInput()}
+                    </div>
                     <div className="rn-text-field__actions">
                       <StudyLabelsLink
                         className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"

@@ -6,10 +6,13 @@ import {
 import graphql from 'babel-plugin-relay/macro'
 import {withRouter} from 'react-router-dom';
 import TextField, {defaultTextFieldState} from 'components/TextField'
+import Dialog from 'components/Dialog'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import Icon from 'components/Icon'
+import Snackbar from 'components/mdc/Snackbar'
 import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
+import PublishLessonDraftMutation from 'mutations/PublishLessonDraftMutation'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
 import {get, isEmpty, isNil} from 'utils'
 
@@ -21,13 +24,36 @@ class LessonHeader extends React.Component {
       ...defaultTextFieldState,
       value: get(this.props, "lesson.title", ""),
       valid: true,
-    }
+    },
+    confirmPublishDialogOpen: false,
+    showSnackbar: false,
+    snackbarMessage: "",
   }
 
   handleChange = (field) => {
     this.setState({
       [field.name]: field,
     })
+  }
+
+  handlePublish = () => {
+    PublishLessonDraftMutation(
+      this.props.lesson.id,
+      (lesson, errors) => {
+        if (errors) {
+          this.setState({
+            error: errors[0].message,
+            showSnackbar: true,
+            snackbarMessage: "Something went wrong",
+          })
+          return
+        }
+        this.setState({
+          showSnackbar: true,
+          snackbarMessage: "Lesson published",
+        })
+      },
+    )
   }
 
   handleSubmit = (e) => {
@@ -39,18 +65,40 @@ class LessonHeader extends React.Component {
       null,
       (updatedLesson, errors) => {
         if (!isNil(errors)) {
-          this.setState({ error: errors[0].message })
+          this.setState({
+            error: errors[0].message,
+            showSnackbar: true,
+            snackbarMessage: "Something went wrong",
+          })
+          return
         }
-        this.handleToggleOpen()
         this.setState({
-          title: get(updatedLesson, "title", ""),
+          title: {
+            value: get(updatedLesson, "title", ""),
+            valid: true,
+          },
+          showSnackbar: true,
+          snackbarMessage: "Title updated",
         })
+        this.handleToggleEditTitle()
       },
     )
   }
 
-  handleToggleOpen = () => {
+  handleCancelEditTitle = () => {
+    this.handleToggleEditTitle()
+    this.reset_()
+  }
+
+  handleToggleEditTitle = () => {
     this.setState({ open: !this.state.open })
+  }
+
+  handleTogglePublishConfirmation = () => {
+    const {confirmPublishDialogOpen} = this.state
+    this.setState({
+      confirmPublishDialogOpen: !confirmPublishDialogOpen,
+    })
   }
 
   reset_ = () => {
@@ -72,13 +120,21 @@ class LessonHeader extends React.Component {
 
   render() {
     const lesson = get(this.props, "lesson", {})
-    const {open} = this.state
+    const {open, showSnackbar, snackbarMessage} = this.state
 
     return (
       <div className={this.classes}>
         {open && lesson.viewerCanUpdate
         ? this.renderForm()
         : this.renderHeader()}
+        <Snackbar
+          show={showSnackbar}
+          message={snackbarMessage}
+          actionHandler={() => this.setState({showSnackbar: false})}
+          actionText="ok"
+          handleHide={() => this.setState({showSnackbar: false})}
+        />
+        {lesson.viewerCanUpdate && !lesson.isPublished && this.renderConfirmPublishDialog()}
       </div>
     )
   }
@@ -89,16 +145,18 @@ class LessonHeader extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="rn-text-field">
-          <TextField
-            label="Title"
-            floatingLabelClassName={!isEmpty(title) ? "mdc-floating-label--float-above" : ""}
-            inputProps={{
-              name: "title",
-              value: title.value,
-              required: true,
-              onChange: this.handleChange,
-            }}
-          />
+          <div className="rn-text-field__input">
+            <TextField
+              label="Title"
+              floatingLabelClassName={!isEmpty(title) ? "mdc-floating-label--float-above" : ""}
+              inputProps={{
+                name: "title",
+                value: title.value,
+                required: true,
+                onChange: this.handleChange,
+              }}
+            />
+          </div>
           <div className="rn-text-field__actions">
             <button
               type="submit"
@@ -109,7 +167,7 @@ class LessonHeader extends React.Component {
             <button
               className="mdc-button rn-text-field__action rn-text-field__action--button"
               type="button"
-              onClick={this.handleToggleOpen}
+              onClick={this.handleCancelEditTitle}
             >
               Cancel
             </button>
@@ -139,7 +197,7 @@ class LessonHeader extends React.Component {
             <button
               className="material-icons mdc-icon-button rn-file-path__file__icon"
               type="button"
-              onClick={this.handleToggleOpen}
+              onClick={this.handleToggleEditTitle}
               aria-label="Edit title"
               title="Edit title"
             >
@@ -149,9 +207,13 @@ class LessonHeader extends React.Component {
         </h4>
         <div className="rn-header__actions">
           {!lesson.isPublished &&
-          <span className="mdc-button mdc-button--unelevated mdc-theme--secondary-bg rn-header__action rn-header__action--button">
-            Unpublished
-          </span>}
+          <button
+            type="button"
+            className="mdc-button mdc-button--unelevated mdc-theme--secondary-bg rn-header__action rn-header__action--button"
+            onClick={this.handleTogglePublishConfirmation}
+          >
+            Publish
+          </button>}
           {lesson.viewerCanEnroll &&
           <EnrollmentSelect
             className="rn-header__action rn-header__action--button"
@@ -159,6 +221,43 @@ class LessonHeader extends React.Component {
           />}
         </div>
       </header>
+    )
+  }
+
+  renderConfirmPublishDialog() {
+    const {confirmPublishDialogOpen} = this.state
+
+    return (
+      <Dialog
+        open={confirmPublishDialogOpen}
+        onClose={() => this.setState({confirmPublishDialogOpen: false})}
+        title={<Dialog.Title>Publish lesson</Dialog.Title>}
+        content={
+          <Dialog.Content>
+            <div className="flex flex-column mw5">
+              <p>Are you sure?</p>
+            </div>
+          </Dialog.Content>
+        }
+        actions={
+          <Dialog.Actions>
+            <button
+              type="button"
+              className="mdc-button"
+              data-mdc-dialog-action="no"
+            >
+              No
+            </button>
+            <button
+              type="button"
+              className="mdc-button"
+              onClick={this.handlePublish}
+              data-mdc-dialog-action="yes"
+            >
+              Yes
+            </button>
+          </Dialog.Actions>}
+        />
     )
   }
 }

@@ -81,7 +81,9 @@ class UserStudiesTab extends React.Component {
       <React.Fragment>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="rn-text-field">
-            {this.renderInput()}
+            <div className="rn-text-field__input">
+              {this.renderInput()}
+            </div>
             {user.isViewer &&
             <div className="rn-text-field__actions">
               <Link className="mdc-button mdc-button--unelevated" to="/new">New study</Link>
