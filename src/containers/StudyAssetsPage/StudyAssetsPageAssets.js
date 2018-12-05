@@ -9,19 +9,18 @@ class StudyAssetsPageAssets extends React.Component {
   render() {
     const {toggleCreateUserAssetDialog} = this.context
     const {assets, study} = this.props
-    const {hasMore, loadMore} = assets
+    const {edges, hasMore, loadMore} = assets
 
     return (
       <div className="mdc-card mdc-card--outlined">
+        {!isEmpty(edges) &&
         <div className="rn-card__header">
           <p>
             To include an asset in your markdown
             add <strong>$$<em>AssetName</em></strong> padded with spaces.
           </p>
-        </div>
-        <div className="rn-card__body">
-          {this.renderAssets()}
-        </div>
+        </div>}
+        {this.renderAssets()}
         {(hasMore || study.viewerCanAdmin) &&
         <div className="mdc-card__actions">
           <div className="mdc-card__action-buttons">
@@ -68,7 +67,7 @@ class StudyAssetsPageAssets extends React.Component {
     }
 
     return (
-      <div className="w-100 pv2">
+      <div className="rn-card__body">
         <ul className="rn-image-list mdc-image-list mdc-image-list--with-text-protection">
           {edges.map(({node}) => (
             node && <UserAssetPreview key={node.id} asset={node} />
