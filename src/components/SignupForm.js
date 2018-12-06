@@ -1,6 +1,6 @@
 import * as React from 'react'
 import cls from 'classnames'
-import {withRouter} from 'react-router-dom'
+import getHistory from 'react-router-global-history'
 import {HelperText} from '@material/react-text-field'
 import ErrorText from 'components/ErrorText'
 import TextField, {defaultTextFieldState} from 'components/TextField'
@@ -48,9 +48,13 @@ class SignupForm extends React.Component {
             console.error("failed to login")
             return
           }
-          this.context.refetchViewer().then(() => {
-            this.props.history.replace("/")
-          })
+          this.context.refetchViewer()
+            .then(() => {
+              getHistory().replace("/verify_email")
+            })
+            .catch((error) => {
+              console.error(error)
+            })
         })
       }
     )
@@ -156,4 +160,4 @@ class SignupForm extends React.Component {
 
 SignupForm.contextType = AppContext
 
-export default withRouter(SignupForm)
+export default SignupForm

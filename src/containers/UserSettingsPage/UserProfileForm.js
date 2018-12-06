@@ -55,8 +55,8 @@ class UserProfileForm extends React.Component {
     const { bio, emailId, name } = this.state
     UpdateViewerProfileMutation(
       bio.dirty ? bio.value : null,
-      emailId !== "None" ? emailId : null,
-      name.dirty ? name.value : null,
+      emailId === "None" ? "" : emailId,
+      name.dirty ? name.value: null,
       (viewer, errors) => {
         if (errors) {
           this.setState({
@@ -114,7 +114,7 @@ class UserProfileForm extends React.Component {
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             <Select
               className="rn-select"
-              floatingLabelClassName={!isEmpty(emailId) ? "mdc-floating-label--float-above" : ""}
+              floatingLabelClassName="mdc-floating-label--float-above"
               label="Public email"
               name="emailId"
               value={emailId}

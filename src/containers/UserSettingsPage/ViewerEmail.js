@@ -30,7 +30,7 @@ class ViewerEmail extends React.Component {
     e.preventDefault()
     DeleteEmailMutation(
       get(this.props,  "email.id", ""),
-      (errors) => {
+      (response, errors) => {
         if (errors) {
           this.setState({ error: errors[0].message })
           return
@@ -43,7 +43,7 @@ class ViewerEmail extends React.Component {
     e.preventDefault()
     RequestEmailVerificationMutation(
       get(this.props,  "email.value", ""),
-      (errors) => {
+      (response, errors) => {
         if (errors) {
           this.setState({ error: errors[0].message })
           return

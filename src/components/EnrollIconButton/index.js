@@ -51,7 +51,7 @@ export class EnrollIconButton extends React.Component {
       UpdateEnrollmentMutation(
         this.props.enrollable.id,
         "UNENROLLED",
-        (errors) => {
+        (response, errors) => {
           if (!isNil(errors)) {
             console.error(errors[0].message)
           }
@@ -64,7 +64,7 @@ export class EnrollIconButton extends React.Component {
       UpdateEnrollmentMutation(
         this.props.enrollable.id,
         "ENROLLED",
-        (errors) => {
+        (response, errors) => {
           if (!isNil(errors)) {
             console.error(errors[0].message)
           }

@@ -52,7 +52,8 @@ export default (emailId, callback) => {
           }
         }
       },
-      onCompleted: callback,
+      onCompleted: (response, error) =>
+        callback(response.deleteEmail, error),
       onError: err => callback(null, err),
     },
   )

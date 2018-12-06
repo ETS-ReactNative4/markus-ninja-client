@@ -5,6 +5,7 @@ import {
 import graphql from 'babel-plugin-relay/macro'
 import {Helmet} from 'react-helmet'
 import {Redirect, Route, Switch, withRouter} from 'react-router-dom'
+import isEqual from 'lodash.isequal'
 
 import PrivateRoute from 'components/PrivateRoute'
 import Header from 'components/Header'
@@ -55,7 +56,7 @@ class AppContainer extends React.Component {
       viewer: oldViewer,
     } = prevState
     const {viewer} = this.props
-    if (wasLoadingViewer && !oldViewer && viewer) {
+    if (wasLoadingViewer && !isEqual(oldViewer, viewer)) {
       this.setState({
         isLoadingViewer: false,
         viewer,
@@ -68,22 +69,34 @@ class AppContainer extends React.Component {
       isLoadingViewer: true,
       viewer: null,
     })
-    this.props.relay.refetch(
-      null,
-      null,
-      (error) => {
-        if (error) {
-          console.log(error)
-          return
-        }
-        this.setState({
-          isLoadingViewer: false,
-          viewer: this.props.viewer,
-        })
-      },
-      {force: true},
-    )
-    return Promise.resolve()
+    return new Promise((resolve, reject) => {
+      this.props.relay.refetch(
+        null,
+        null,
+        (error) => {
+          if (error) {
+            console.log(error)
+            reject(error)
+          }
+          this.setState({
+            isLoadingViewer: false,
+            viewer: this.props.viewer,
+          })
+          resolve()
+        },
+        {force: true},
+      )
+      // NOTE: this is needed, because relay's refetch doesn't call callback
+      // sometimes
+      setTimeout(() => {
+        let timerId = setInterval(() => {
+          if (!this.state.isLoadingViewer) {
+            clearInterval(timerId)
+            resolve()
+          }
+        }, 10)
+      }, 10)
+    })
   }
 
   get viewerNeedsVerification() {
@@ -121,7 +134,11 @@ class AppContainer extends React.Component {
               path="/signup"
               component={SignupPage}
             />
-            <Route exact path="/verify_email" component={VerifyEmailPage} />
+            <PrivateRoute
+              exact
+              path="/verify_email"
+              render={(routeProps) => <VerifyEmailPage viewer={viewer} {...routeProps} />}
+            />
             <Route render={() => {
               if (this.viewerNeedsVerification) {
                 return <Redirect to="/verify_email" />

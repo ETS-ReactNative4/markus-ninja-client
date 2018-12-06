@@ -32,7 +32,7 @@ class ResetPasswordForm extends React.Component {
     const {email} = this.state
     RequestPasswordResetMutation(
       email.value,
-      (errors) => {
+      (response, errors) => {
         if (errors) {
           this.setState({
             error: errors[0].message,
@@ -59,7 +59,7 @@ class ResetPasswordForm extends React.Component {
         email.value,
         newPassword.value,
         resetToken.value,
-        (errors) => {
+        (response, errors) => {
           if (errors) {
             this.setState({
               error: errors[0].message,
@@ -93,7 +93,7 @@ class ResetPasswordForm extends React.Component {
 
     return (
       <React.Fragment>
-        <form className={this.classes} onSubmit={this.handlePasswordReset}>
+        <form className={this.classes} onSubmit={this.handleResetPassword}>
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             <TextField
               className="w-100"

@@ -25,7 +25,7 @@ export default (email, password, token, callback) => {
       mutation,
       variables,
       onCompleted: (response, error) => {
-        callback(error)
+        callback(response.resetPassword, error)
       },
       onError: err => callback(null, err),
     },

@@ -23,7 +23,7 @@ export default (email, callback) => {
       mutation,
       variables,
       onCompleted: (response, error) => {
-        callback(error)
+        callback(response.requestEmailVerification, error)
       },
       onError: err => callback(null, err),
     },

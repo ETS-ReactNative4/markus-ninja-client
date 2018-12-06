@@ -26,7 +26,7 @@ class VerifyEmailForm extends React.Component {
     const {email} = this.state
     RequestEmailVerificationMutation(
       email.value,
-      (errors) => {
+      (response, errors) => {
         if (errors) {
           this.setState({
             error: errors[0].message,

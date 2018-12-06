@@ -38,7 +38,7 @@ class Notification extends React.Component {
     UpdateEnrollmentMutation(
       get(this.props, "notification.subject.id", ""),
       'UNENROLLED',
-      (errors) => {
+      (response, errors) => {
         if (errors) {
           console.error(errors[0].message)
         }
