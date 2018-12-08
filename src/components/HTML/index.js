@@ -6,6 +6,8 @@ import ReactHtmlParser from 'react-html-parser'
 
 import './styles.css'
 
+hljs.configure({languages: []})
+
 class HTML extends React.Component {
   constructor(props) {
     super(props)

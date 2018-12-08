@@ -48,6 +48,10 @@ class AppContainer extends React.Component {
     }
   }
 
+  componentDidMount() {
+    window.addEventListener('click', this.offsetAnchor)
+  }
+
   // NOTE: this is needed, because relay's refetch doesn't call callback
   // sometimes
   componentDidUpdate(prevProps, prevState) {
@@ -61,6 +65,26 @@ class AppContainer extends React.Component {
         isLoadingViewer: false,
         viewer,
       })
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('click', this.offsetAnchor)
+  }
+
+  // Offset anchor hash links scroll position to be slightly above the element.
+  // This is needed so the element is hidden under the top app bar.
+  offsetAnchor = (e) => {
+    e = e || window.event
+    const t = e.target || e.srcElement
+    if (t.href && t.hash.length !== 0) {
+      e.preventDefault()
+      const el = document.getElementById(t.hash.slice(1))
+      if (el) {
+        const rect = el.getBoundingClientRect()
+        window.scrollTo(rect.left + window.pageXOffset, rect.top + window.pageYOffset - 200)
+      }
+      return false
     }
   }
 
