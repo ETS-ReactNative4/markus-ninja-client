@@ -47,6 +47,26 @@
     }
   }
 
+  figure { 
+    figcaption {
+      @include mdc-typography(caption);
+      @include mdc-theme-prop(color, text-secondary-on-light);
+    }
+
+    + * {
+      margin-top: 32px;
+    }
+    + h1, + h2 {
+      margin-top: 48px;
+    }
+    + h3 {
+      margin-top: 40px;
+    }
+    + h4 {
+      margin-top: 32px;
+    }
+  }
+
   code {
     border-radius: 4px;
     font-size: 0.85em;

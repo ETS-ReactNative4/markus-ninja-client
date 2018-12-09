@@ -78,6 +78,10 @@ class LessonPage extends React.Component {
                 <div className="mdc-layout-grid mw8">
                   <div className="mdc-layout-grid__inner">
                     <LessonHeader className="LessonPage__header" lesson={lesson}/>
+                    {lesson.isCourseLesson &&
+                    <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      <LessonCourse lesson={lesson} />
+                    </div>}
                     <LessonBody className="LessonPage__body" lesson={lesson}/>
                     <div className="LessonPage__meta mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                       <div className="center mw8">
