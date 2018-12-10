@@ -10,7 +10,7 @@ import AddLessonCommentMutation from 'mutations/AddLessonCommentMutation'
 import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
 import Snackbar from 'components/mdc/Snackbar'
 import StudyBodyEditor from 'components/StudyBodyEditor'
-import {get, isNil, throttle} from 'utils'
+import {debounce, get, isNil} from 'utils'
 
 class AddLessonCommentForm extends React.Component {
   constructor(props) {
@@ -19,7 +19,6 @@ class AddLessonCommentForm extends React.Component {
     const comment = get(this.props, "lesson.viewerNewComment", {})
 
     this.state = {
-      autoSaving: false,
       error: null,
       draft: {
         dirty: false,
@@ -31,62 +30,44 @@ class AddLessonCommentForm extends React.Component {
     }
   }
 
-  setAutoSave = () => {
-    if (!this.state.autoSaving) {
-      this.setState({autoSaving: true})
-      this.autoSaveTimeoutId_ = setTimeout(() =>
-        this.updateDraft(this.state.draft.value),
-        30000,
-      )
-    }
-  }
-
-  clearAutoSave = () => {
-    this.setState({autoSaving: false})
-    clearTimeout(this.autoSaveTimeoutId_)
-  }
-
-  updateDraft = throttle((draft) => {
+  updateDraft = debounce((draft) => {
     const comment = get(this.props, "lesson.viewerNewComment", {})
 
-    if (this.state.draft.dirty) {
-      UpdateLessonCommentMutation(
-        comment.id,
-        draft,
-        (comment, errors) => {
-          this.clearAutoSave()
-          if (!isNil(errors)) {
-            this.setState({
-              error: errors[0].message,
-              draft: {
-                ...this.state.draft,
-                dirty: false,
-                value: this.state.draft.initialValue,
-              },
-              showSnackbar: true,
-              snackbarMessage: "Something went wrong",
-            })
-            return
-          }
-          if (comment) {
-            this.setState({
-              draft: {
-                ...this.state.draft,
-                dirty: false,
-                value: comment.draft
-              },
-              showSnackbar: true,
-              snackbarMessage: "Draft saved",
-            })
-          }
-        },
-      )
-    }
-  }, 2000)
+    UpdateLessonCommentMutation(
+      comment.id,
+      draft,
+      (comment, errors) => {
+        if (!isNil(errors)) {
+          this.setState({
+            error: errors[0].message,
+            draft: {
+              ...this.state.draft,
+              dirty: false,
+              value: this.state.draft.initialValue,
+            },
+            showSnackbar: true,
+            snackbarMessage: "Failed to save draft",
+          })
+          return
+        }
+        if (comment) {
+          this.setState({
+            draft: {
+              ...this.state.draft,
+              dirty: false,
+              value: comment.draft
+            },
+          })
+        }
+      },
+    )
+  }, 1000)
 
   handleCancel = () => {
     const {draft} = this.state
-    this.updateDraft(draft.initialValue)
+    if (draft.dirty) {
+      this.updateDraft(draft.initialValue)
+    }
   }
 
   handleChange = (value) => {
@@ -99,13 +80,15 @@ class AddLessonCommentForm extends React.Component {
       },
     })
     if (dirty) {
-      this.setAutoSave()
+      this.updateDraft(value)
     }
   }
 
   handlePreview = () => {
     const {draft} = this.state
-    this.updateDraft(draft.value)
+    if (draft.dirty) {
+      this.updateDraft(draft.value)
+    }
   }
 
   handlePublish = () => {
@@ -116,7 +99,7 @@ class AddLessonCommentForm extends React.Component {
           this.setState({
             error: errors[0].message,
             showSnackbar: true,
-            snackbarMessage: "Something went wrong",
+            snackbarMessage: "Failed to publish comment",
           })
           return
         }
@@ -159,15 +142,15 @@ class AddLessonCommentForm extends React.Component {
     }
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const {draft} = this.state
-    this.updateDraft(draft.value)
-  }
-
   get classes() {
     const {className} = this.props
     return cls("AddLessonCommentForm mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+  }
+
+  get isPublishable() {
+    const {draft} = this.state
+
+    return !draft.dirty && draft.value.trim() !== ""
   }
 
   render() {
@@ -178,23 +161,34 @@ class AddLessonCommentForm extends React.Component {
     return (
       <React.Fragment>
         <StudyBodyEditor study={study}>
-          <form
-            id="add-lesson-comment-form"
-            className={this.classes}
-            onSubmit={this.handleSubmit}
-          >
+          <div className={this.classes}>
             <StudyBodyEditor.Main
               placeholder="Leave a comment"
+              bottomActions={
+                <div className="mdc-card__actions rn-card__actions">
+                  <div className="mdc-card__action-buttons">
+                    <button
+                      type="button"
+                      className="mdc-button mdc-card__action mdc-card__action--button"
+                      onClick={this.handlePublish}
+                      disabled={!this.isPublishable}
+                    >
+                      Comment
+                    </button>
+                  </div>
+                </div>
+              }
+              edit={true}
+              isPublishable={this.isPublishable}
+              handleCancel={this.handleCancel}
+              handleChange={this.handleChange}
+              handlePreview={this.handlePreview}
+              handlePublish={this.handlePublish}
+              handleReset={this.handleReset}
               object={comment}
-              showFormButtonsFor="add-lesson-comment-form"
-              onCancel={this.handleCancel}
-              onChange={this.handleChange}
-              onPreview={this.handlePreview}
-              onPublish={this.handlePublish}
-              onReset={this.handleReset}
               study={study}
             />
-          </form>
+          </div>
         </StudyBodyEditor>
         <Snackbar
           show={showSnackbar}
@@ -232,6 +226,7 @@ export default withRouter(createFragmentContainer(AddLessonCommentForm, graphql`
       id
       isPublished
       lastEditedAt
+      viewerCanUpdate
     }
   }
 `))

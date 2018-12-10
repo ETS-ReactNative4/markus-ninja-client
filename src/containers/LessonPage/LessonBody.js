@@ -3,18 +3,19 @@ import cls from 'classnames'
 import {
   createFragmentContainer,
 } from 'react-relay'
+import moment from 'moment'
 import graphql from 'babel-plugin-relay/macro'
-import HTML from 'components/HTML'
+import Dialog from 'components/Dialog'
 import Snackbar from 'components/mdc/Snackbar'
 import StudyBodyEditor from 'components/StudyBodyEditor'
 import PublishLessonDraftMutation from 'mutations/PublishLessonDraftMutation'
 import ResetLessonDraftMutation from 'mutations/ResetLessonDraftMutation'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
-import {get, isNil, throttle, timeDifferenceForDate} from 'utils'
+import {debounce, get, isNil, timeDifferenceForDate} from 'utils'
 
 class LessonBody extends React.Component {
   state = {
-    autoSaving: false,
+    confirmPublishDialogOpen: false,
     edit: !get(this.props, "lesson.isPublished", false),
     error: null,
     draft: {
@@ -26,60 +27,42 @@ class LessonBody extends React.Component {
     snackbarMessage: "",
   }
 
-  setAutoSave = () => {
-    if (!this.state.autoSaving) {
-      this.setState({autoSaving: true})
-      this.autoSaveTimeoutId_ = setTimeout(() =>
-        this.updateDraft(this.state.draft.value),
-        30000,
-      )
-    }
-  }
-
-  clearAutoSave = () => {
-    this.setState({autoSaving: false})
-    clearTimeout(this.autoSaveTimeoutId_)
-  }
-
-  updateDraft = throttle((draft) => {
-    if (this.state.draft.dirty) {
-      UpdateLessonMutation(
-        this.props.lesson.id,
-        null,
-        draft,
-        (lesson, errors) => {
-          this.clearAutoSave()
-          if (!isNil(errors)) {
-            this.setState({
-              error: errors[0].message,
-              draft: {
-                ...this.state.draft,
-                dirty: false,
-                value: this.state.draft.initialValue,
-              },
-              showSnackbar: true,
-              snackbarMessage: "Something went wrong",
-            })
-            return
-          } else if (lesson) {
-            this.setState({
-              draft: {
-                ...this.state.draft,
-                dirty: false,
-                value: lesson.draft
-              },
-              showSnackbar: true,
-              snackbarMessage: "Draft saved",
-            })
-          }
-        },
-      )
-    }
-  }, 2000)
+  updateDraft = debounce((draft) => {
+    UpdateLessonMutation(
+      this.props.lesson.id,
+      null,
+      draft,
+      (lesson, errors) => {
+        if (!isNil(errors)) {
+          this.setState({
+            error: errors[0].message,
+            draft: {
+              ...this.state.draft,
+              dirty: false,
+              value: this.state.draft.initialValue,
+            },
+            showSnackbar: true,
+            snackbarMessage: "Failed to save draft",
+          })
+          return
+        } else if (lesson) {
+          this.setState({
+            draft: {
+              ...this.state.draft,
+              dirty: false,
+              value: lesson.draft
+            },
+          })
+        }
+      },
+    )
+  }, 1000)
 
   handleCancel = () => {
     const {draft} = this.state
-    this.updateDraft(draft.initialValue)
+    if (draft.dirty) {
+      this.updateDraft(draft.initialValue)
+    }
     this.handleToggleEdit()
   }
 
@@ -93,13 +76,15 @@ class LessonBody extends React.Component {
       },
     })
     if (dirty) {
-      this.setAutoSave()
+      this.updateDraft(value)
     }
   }
 
   handlePreview = () => {
     const {draft} = this.state
-    this.updateDraft(draft.value)
+    if (draft.dirty) {
+      this.updateDraft(draft.value)
+    }
   }
 
   handlePublish = () => {
@@ -110,13 +95,13 @@ class LessonBody extends React.Component {
           this.setState({
             error: errors[0].message,
             showSnackbar: true,
-            snackbarMessage: "Something went wrong",
+            snackbarMessage: "Failed to publish lesson",
           })
           return
         }
         this.setState({
           showSnackbar: true,
-          snackbarMessage: "Draft published",
+          snackbarMessage: "Lesson published",
         })
         this.handleToggleEdit()
       },
@@ -135,14 +120,15 @@ class LessonBody extends React.Component {
     )
   }
 
-  handleSaveDraft = (e) => {
-    e.preventDefault()
-    const {draft} = this.state
-    this.updateDraft(draft.value)
-  }
-
   handleToggleEdit = () => {
     this.setState({ edit: !this.state.edit })
+  }
+
+  handleTogglePublishConfirmation = () => {
+    const {confirmPublishDialogOpen} = this.state
+    this.setState({
+      confirmPublishDialogOpen: !confirmPublishDialogOpen,
+    })
   }
 
   get classes() {
@@ -150,16 +136,54 @@ class LessonBody extends React.Component {
     return cls("LessonBody mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
+  get isPublishable() {
+    const lesson = get(this.props, "lesson", {})
+    const {draft} = this.state
+
+    return !draft.dirty && moment(lesson.lastEditedAt).isAfter(lesson.publishedAt)
+  }
+
   render() {
+    const {lesson} = this.props
     const {edit, showSnackbar, snackbarMessage} = this.state
+    const study = get(this.props, "lesson.study", null)
 
     return (
       <div className={this.classes}>
         <div className="center mw7">
-          {edit
-          ? this.renderForm()
-          : this.renderBody()}
+          <StudyBodyEditor study={study}>
+            <StudyBodyEditor.Main
+              bodyClassName="min-vh-25"
+              bodyHeaderText={`Updated ${timeDifferenceForDate(get(lesson, "publishedAt"))}`}
+              bottomActions={lesson.viewerCanUpdate && edit &&
+                <div className="mdc-card__actions rn-card__actions">
+                  <div className="mdc-card__action-buttons">
+                    <button
+                      type="button"
+                      className="mdc-button mdc-card__action mdc-card__action--button"
+                      onClick={this.handleTogglePublishConfirmation}
+                      disabled={!this.isPublishable}
+                    >
+                      Publish
+                    </button>
+                  </div>
+                </div>
+              }
+              edit={edit}
+              isPublishable={this.isPublishable}
+              handleCancel={this.handleCancel}
+              handleChange={this.handleChange}
+              handlePreview={this.handlePreview}
+              handlePublish={this.handleTogglePublishConfirmation}
+              handleReset={this.handleReset}
+              handleToggleEdit={this.handleToggleEdit}
+              object={lesson}
+              placeholder="Begin your lesson"
+              study={study}
+            />
+          </StudyBodyEditor>
         </div>
+        {lesson.viewerCanUpdate && this.renderConfirmPublishDialog()}
         <Snackbar
           show={showSnackbar}
           message={snackbarMessage}
@@ -171,70 +195,40 @@ class LessonBody extends React.Component {
     )
   }
 
-  renderBody() {
-    const lesson = get(this.props, "lesson", {})
+  renderConfirmPublishDialog() {
+    const {confirmPublishDialogOpen} = this.state
 
     return (
-      <div className="mdc-card">
-        <div className="rn-card__actions mdc-card__actions">
-          <span className="rn-card__overline">
-            Updated {timeDifferenceForDate(lesson.publishedAt)}
-          </span>
-          {lesson.viewerCanUpdate &&
-          <div className="mdc-card__action-icons">
+      <Dialog
+        open={confirmPublishDialogOpen}
+        onClose={() => this.setState({confirmPublishDialogOpen: false})}
+        title={<Dialog.Title>Publish lesson</Dialog.Title>}
+        content={
+          <Dialog.Content>
+            <div className="flex flex-column mw5">
+              <p>Are you sure?</p>
+            </div>
+          </Dialog.Content>
+        }
+        actions={
+          <Dialog.Actions>
             <button
-              className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
               type="button"
-              onClick={this.handleToggleEdit}
-              aria-label="Edit lesson"
-              title="Edit lesson"
+              className="mdc-button"
+              data-mdc-dialog-action="no"
             >
-              edit
+              No
             </button>
-          </div>}
-        </div>
-        <div className="rn-card__body min-vh-25">
-          <HTML className="mdc-typography--body1" html={lesson.bodyHTML} />
-        </div>
-        {lesson.viewerCanUpdate &&
-        <div className="mdc-card__actions bottom">
-          <div className="mdc-card__action-icons">
             <button
-              className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
               type="button"
-              onClick={this.handleToggleEdit}
-              aria-label="Edit lesson"
-              title="Edit lesson"
+              className="mdc-button"
+              onClick={this.handlePublish}
+              data-mdc-dialog-action="yes"
             >
-              edit
+              Yes
             </button>
-          </div>
-        </div>}
-      </div>
-    )
-  }
-
-  renderForm() {
-    const study = get(this.props, "lesson.study", null)
-    const lesson = get(this.props, "lesson", {})
-
-    return (
-      <StudyBodyEditor study={study}>
-        <form id="lesson-draft-form" onSubmit={this.handleSaveDraft}>
-          <StudyBodyEditor.Main
-            bodyClassName="min-vh-25"
-            placeholder="Begin your lesson"
-            object={lesson}
-            showFormButtonsFor="lesson-draft-form"
-            onCancel={this.handleCancel}
-            onChange={this.handleChange}
-            onPreview={this.handlePreview}
-            onPublish={this.handlePublish}
-            onReset={this.handleReset}
-            study={study}
-          />
-        </form>
-      </StudyBodyEditor>
+          </Dialog.Actions>}
+        />
     )
   }
 }

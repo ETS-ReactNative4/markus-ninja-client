@@ -6,7 +6,6 @@ import {
 import graphql from 'babel-plugin-relay/macro'
 import moment from 'moment'
 import Dialog from 'components/Dialog'
-import HTML from 'components/HTML'
 import Snackbar from 'components/mdc/Snackbar'
 import StudyBodyEditor from 'components/StudyBodyEditor'
 import UserLink from 'components/UserLink'
@@ -18,16 +17,15 @@ import PublishLessonCommentDraftMutation from 'mutations/PublishLessonCommentDra
 import ResetLessonCommentDraftMutation from 'mutations/ResetLessonCommentDraftMutation'
 import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
 import {
+  debounce,
   filterDefinedReactChildren,
   get,
-  throttle,
   timeDifferenceForDate,
 } from 'utils'
 
 class LessonComment extends React.Component {
   state = {
     anchorElement: null,
-    autoSaving: false,
     confirmDeleteDialogOpen: false,
     edit: false,
     error: null,
@@ -48,59 +46,41 @@ class LessonComment extends React.Component {
     this.setState({anchorElement: el})
   }
 
-  setAutoSave = () => {
-    if (!this.state.autoSaving) {
-      this.setState({autoSaving: true})
-      this.autoSaveTimeoutId_ = setTimeout(() =>
-        this.updateDraft(this.state.draft.value),
-        30000,
-      )
-    }
-  }
-
-  clearAutoSave = () => {
-    this.setState({autoSaving: false})
-    clearTimeout(this.autoSaveTimeoutId_)
-  }
-
-  updateDraft = throttle((draft) => {
-    if (this.state.draft.dirty) {
-      UpdateLessonCommentMutation(
-        this.props.comment.id,
-        draft,
-        (comment, errors) => {
-          this.clearAutoSave()
-          if (errors) {
-            this.setState({
-              error: errors[0].message,
-              draft: {
-                ...this.state.draft,
-                dirty: false,
-                value: this.state.draft.initialValue,
-              },
-              showSnackbar: true,
-              snackbarMessage: "Something went wrong",
-            })
-            return
-          } else if (comment) {
-            this.setState({
-              draft: {
-                ...this.state.draft,
-                dirty: false,
-                value: comment.draft
-              },
-              showSnackbar: true,
-              snackbarMessage: "Draft saved",
-            })
-          }
-        },
-      )
-    }
-  }, 2000)
+  updateDraft = debounce((draft) => {
+    UpdateLessonCommentMutation(
+      this.props.comment.id,
+      draft,
+      (comment, errors) => {
+        if (errors) {
+          this.setState({
+            error: errors[0].message,
+            draft: {
+              ...this.state.draft,
+              dirty: false,
+              value: this.state.draft.initialValue,
+            },
+            showSnackbar: true,
+            snackbarMessage: "Failed to save draft",
+          })
+          return
+        } else if (comment) {
+          this.setState({
+            draft: {
+              ...this.state.draft,
+              dirty: false,
+              value: comment.draft
+            },
+          })
+        }
+      },
+    )
+  }, 1000)
 
   handleCancel = () => {
     const {draft} = this.state
-    this.updateDraft(draft.initialValue)
+    if (draft.dirty) {
+      this.updateDraft(draft.initialValue)
+    }
     this.handleToggleEdit()
   }
 
@@ -114,7 +94,7 @@ class LessonComment extends React.Component {
       },
     })
     if (dirty) {
-      this.setAutoSave()
+      this.updateDraft(value)
     }
   }
 
@@ -126,7 +106,9 @@ class LessonComment extends React.Component {
 
   handlePreview = () => {
     const {draft} = this.state
-    this.updateDraft(draft.value)
+    if (draft.dirty) {
+      this.updateDraft(draft.value)
+    }
   }
 
   handlePublish = () => {
@@ -137,13 +119,13 @@ class LessonComment extends React.Component {
           this.setState({
             error: errors[0].message,
             showSnackbar: true,
-            snackbarMessage: "Something went wrong",
+            snackbarMessage: "Failed to publish comment",
           })
           return
         }
         this.setState({
           showSnackbar: true,
-          snackbarMessage: "Draft published",
+          snackbarMessage: "Comment published",
         })
         this.handleToggleEdit()
       },
@@ -160,12 +142,6 @@ class LessonComment extends React.Component {
         }
       },
     )
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const {draft} = this.state
-    this.updateDraft(draft.value)
   }
 
   handleToggleDeleteConfirmation = () => {
@@ -188,15 +164,101 @@ class LessonComment extends React.Component {
     return cls("LessonComment", className)
   }
 
+  get isPublishable() {
+    const comment = get(this.props, "comment", {})
+    const {draft} = this.state
+
+    return !draft.dirty &&
+      moment(comment.lastEditedAt).isAfter(comment.publishedAt) &&
+      draft.value.trim() !== ""
+  }
+
   render() {
     const comment = get(this.props, "comment", {})
-    const {edit, showSnackbar, snackbarMessage} = this.state
+    const study = get(comment, "study", null)
+    const {anchorElement, edit, menuOpen, showSnackbar, snackbarMessage} = this.state
 
     return (
       <div className={this.classes}>
-        {edit && comment.viewerCanUpdate
-        ? this.renderForm()
-        : this.renderComment()}
+        <StudyBodyEditor study={study}>
+          <StudyBodyEditor.Main
+            placeholder="Leave a comment"
+            bodyHeaderText={
+              <React.Fragment>
+                <UserLink className="rn-link rn-link--secondary" user={get(comment, "author", null)} />
+                <span className="ml1">commented {timeDifferenceForDate(comment.createdAt)}</span>
+              </React.Fragment>
+            }
+            bottomActions={(comment.viewerDidAuthor || comment.viewerCanUpdate || comment.viewerCanDelete) &&
+              <div className="mdc-card__actions rn-card__actions">
+                {comment.viewerDidAuthor &&
+                <div className="mdc-card__action-buttons">
+                  <button
+                    className="mdc-button mdc-card__action mdc-card__action--button"
+                    disabled
+                  >
+                    Author
+                  </button>
+                </div>}
+                {comment.viewerCanUpdate && edit &&
+                <div className="mdc-card__action-buttons">
+                  <button
+                    type="button"
+                    className="mdc-button mdc-card__action mdc-card__action--button"
+                    onClick={this.handlePublish}
+                    disabled={!this.isPublishable}
+                  >
+                    Publish
+                  </button>
+                </div>}
+                {comment.viewerCanDelete &&
+                <div className="mdc-card__action-icons rn-card__actions--spread">
+                  <button
+                    className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                    type="button"
+                    onClick={this.handleToggleDeleteConfirmation}
+                    aria-label="Delete comment"
+                    title="Delete comment"
+                  >
+                    delete
+                  </button>
+                </div>}
+                {comment.viewerCanDelete &&
+                <Menu.Anchor
+                  className="mdc-card__action-icons rn-card__actions--collapsed"
+                  innerRef={this.setAnchorElement}
+                >
+                  <button
+                    type="button"
+                    className="mdc-icon-button material-icons"
+                    onClick={() => this.setState({menuOpen: !menuOpen})}
+                  >
+                    more_vert
+                  </button>
+                  <Menu
+                    open={menuOpen}
+                    onClose={() => this.setState({menuOpen: false})}
+                    anchorElement={anchorElement}
+                    anchorCorner={Corner.BOTTOM_LEFT}
+                  >
+                    {this.renderMenuList()}
+                  </Menu>
+                </Menu.Anchor>}
+              </div>
+            }
+            edit={edit}
+            isPublishable={this.isPublishable}
+            handleCancel={this.handleCancel}
+            handleChange={this.handleChange}
+            handlePreview={this.handlePreview}
+            handlePublish={this.handlePublish}
+            handleReset={this.handleReset}
+            handleToggleEdit={this.handleToggleEdit}
+            object={comment}
+            study={study}
+          />
+        </StudyBodyEditor>
+        {comment.viewerCanDelete && this.renderConfirmDeleteDialog()}
         <Snackbar
           show={showSnackbar}
           message={snackbarMessage}
@@ -204,84 +266,6 @@ class LessonComment extends React.Component {
           actionText="ok"
           handleHide={() => this.setState({showSnackbar: false})}
         />
-      </div>
-    )
-  }
-
-  renderComment() {
-    const {anchorElement, menuOpen} = this.state
-    const comment = get(this.props, "comment", {})
-
-    return (
-      <div
-        id={`lesson_comment${moment(comment.createdAt).unix()}`}
-        className="mdc-card"
-      >
-        <div className="rn-card__header">
-          <span className="rn-card__overline">
-            <UserLink className="rn-link rn-link--secondary" user={get(comment, "author", null)} />
-            <span className="ml1">commented {timeDifferenceForDate(comment.createdAt)}</span>
-          </span>
-        </div>
-        <div className="rn-card__body">
-          <HTML html={comment.bodyHTML} />
-        </div>
-        {comment.viewerCanUpdate &&
-        <div className="mdc-card__actions rn-card__actions">
-          <div className="mdc-card__action-buttons">
-            {comment.viewerDidAuthor &&
-            <button
-              className="mdc-button mdc-button--outlined mdc-card__action mdc-card__action--button"
-              disabled
-            >
-              Author
-            </button>}
-          </div>
-          <div className="mdc-card__action-icons rn-card__actions--spread">
-            {comment.viewerCanDelete &&
-            <button
-              className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
-              type="button"
-              onClick={this.handleToggleDeleteConfirmation}
-              aria-label="Delete comment"
-              title="Delete comment"
-            >
-              delete
-            </button>}
-            {comment.viewerCanUpdate &&
-            <button
-              className="material-icons mdc-icon-button mdc-card__action--icon"
-              type="button"
-              onClick={this.handleToggleEdit}
-              aria-label="Edit comment"
-              title="Edit comment"
-            >
-              edit
-            </button>}
-          </div>
-          {(comment.viewerCanDelete || comment.viewerCanUpdate) &&
-          <Menu.Anchor
-            className="mdc-card__action-icons rn-card__actions--collapsed"
-            innerRef={this.setAnchorElement}
-          >
-            <button
-              type="button"
-              className="mdc-icon-button material-icons"
-              onClick={() => this.setState({menuOpen: !menuOpen})}
-            >
-              more_vert
-            </button>
-            <Menu
-              open={menuOpen}
-              onClose={() => this.setState({menuOpen: false})}
-              anchorElement={anchorElement}
-              anchorCorner={Corner.BOTTOM_LEFT}
-            >
-              {this.renderMenuList()}
-            </Menu>
-          </Menu.Anchor>}
-        </div>}
-        {comment.viewerCanDelete && this.renderConfirmDeleteDialog()}
       </div>
     )
   }
@@ -297,14 +281,6 @@ class LessonComment extends React.Component {
       >
         <List.Item.Graphic graphic={<Icon icon="delete" />}/>
         <List.Item.Text primaryText="Delete comment" />
-      </List.Item>,
-      comment.viewerCanUpdate &&
-      <List.Item
-        role="button"
-        onClick={this.handleToggleEdit}
-      >
-        <List.Item.Graphic graphic={<Icon icon="edit" />}/>
-        <List.Item.Text primaryText="Edit comment" />
       </List.Item>,
     ]
 
@@ -345,29 +321,6 @@ class LessonComment extends React.Component {
             </button>
           </Dialog.Actions>}
         />
-    )
-  }
-
-  renderForm() {
-    const study = get(this.props, "comment.study", null)
-    const comment = get(this.props, "comment", {})
-
-    return (
-      <StudyBodyEditor study={study}>
-        <form id="lesson-comment-form" onSubmit={this.handleSubmit}>
-          <StudyBodyEditor.Main
-            placeholder="Leave a comment"
-            object={comment}
-            showFormButtonsFor="lesson-comment-form"
-            onCancel={this.handleCancel}
-            onChange={this.handleChange}
-            onPreview={this.handlePreview}
-            onPublish={this.handlePublish}
-            onReset={this.handleReset}
-            study={study}
-          />
-        </form>
-      </StudyBodyEditor>
     )
   }
 }

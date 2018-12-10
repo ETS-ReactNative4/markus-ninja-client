@@ -90,9 +90,11 @@
     padding: 0;
     padding-left: 8px;
   }
+
 }
 
-.rn-card__actions--sticky .rn-card__actions {
+.sticky-outer-wrapper.active .rn-card__actions,
+.sticky-outer-wrapper.released .rn-card__actions {
   @include mdc-theme-prop(background-color, surface);
   @include mdc-elevation(3);
 }

@@ -7,6 +7,7 @@ import {
   EditorState,
 } from 'draft-js'
 import Sticky from 'react-stickynode'
+import HTML from 'components/HTML'
 import List from 'components/mdc/List'
 import Dialog from 'components/Dialog'
 import Icon from 'components/Icon'
@@ -18,9 +19,6 @@ import AttachFile from './AttachFile'
 import Context from './Context'
 import Preview from './Preview'
 
-const DRAFT_INDEX = 0,
-      PREVIEW_INDEX = 1
-
 class StudyBodyEditorMain extends React.Component {
   constructor(props) {
     super(props)
@@ -31,10 +29,8 @@ class StudyBodyEditorMain extends React.Component {
       anchorElement: null,
       confirmCancelDialogOpen: false,
       confirmResetDialogOpen: false,
-      initialValue: this.props.object.draft,
       loading: false,
       menuOpen: false,
-      selectedIndex: DRAFT_INDEX,
     }
   }
 
@@ -48,68 +44,47 @@ class StudyBodyEditorMain extends React.Component {
   componentDidMount() {
     const {editorState, onChange} = this.context
     const {draft} = this.props.object
-    if (editorState) {
+    if (editorState && draft) {
       onChange(EditorState.push(editorState, ContentState.createFromText(draft)))
     }
   }
 
   componentDidUpdate(prevProps) {
-    const {editorState, onChange} = this.context
+    const {changeTab, editorState, onChange} = this.context
+    const {edit} = this.props
     const {draft} = this.props.object
     const {draft: prevDraft} = prevProps.object
     if (draft !== prevDraft && draft !== this.text) {
       onChange(EditorState.push(editorState, ContentState.createFromText(draft)))
     }
-  }
-
-  handleCancel = () => {
-    this.props.onCancel()
+    if (!edit && prevProps.edit) {
+      changeTab("draft")
+      this.setState({anchorElement: null})
+    }
   }
 
   handleChange = (editorState) => {
     this.context.onChange(editorState)
-    this.props.onChange(editorState.getCurrentContent().getPlainText())
+    this.props.handleChange(editorState.getCurrentContent().getPlainText())
   }
 
   handleChangeTab_ = (tab) => {
     const {changeTab} = this.context
     changeTab(tab)
     if (tab === "preview") {
-      this.props.onPreview()
-    }
-  }
-
-  handlePublish = () => {
-    const {changeTab} = this.context
-    changeTab("draft")
-    this.props.onPublish()
-  }
-
-  handleReset = () => {
-    this.props.onReset()
-  }
-
-  handleSelect_ = (selectedIndex) => {
-    switch (selectedIndex) {
-      case DRAFT_INDEX:
-        this.handleChangeTab_("draft")
-        break
-      case PREVIEW_INDEX:
-        this.handleChangeTab_("preview")
-        break
-      default:
-        break
+      this.props.handlePreview()
     }
   }
 
   handleToggleCancelConfirmation = () => {
+    const {handleCancel} = this.props
     if (this.text !== this.props.object.draft) {
       const {confirmCancelDialogOpen} = this.state
       this.setState({
         confirmCancelDialogOpen: !confirmCancelDialogOpen,
       })
     } else {
-      this.props.onCancel()
+      handleCancel()
     }
   }
 
@@ -152,9 +127,14 @@ class StudyBodyEditorMain extends React.Component {
     const {anchorElement, loading, menuOpen} = this.state
     const {
       bodyClassName,
+      bodyHeaderText,
+      bottomActions,
+      edit,
+      handlePublish,
+      handleToggleEdit,
+      isPublishable,
       object,
       placeholder,
-      showFormButtonsFor,
       study,
       uid,
     } = this.props
@@ -163,177 +143,228 @@ class StudyBodyEditorMain extends React.Component {
       <div id={`draft-${uid}`} className={this.classes}>
         <div className="mdc-card">
           <Sticky
+            enabled={object.viewerCanUpdate}
             top={this.stickyMenuTop}
             bottomBoundary={`#draft-${uid}`}
             innerZ={2}
-            activeClass="rn-card__actions--sticky"
           >
-            <div className="rn-card__actions mdc-card__actions">
-              <span className="rn-card__overline">
-                {tab === "draft"
-                ? `Last edited ${timeDifferenceForDate(object.lastEditedAt)}`
-                : "Preview"}
-              </span>
-              <div className="mdc-card__action-icons">
-                {tab === "draft"
-                ? <button
+            {edit
+            ? <div className="mdc-card__actions rn-card__actions">
+                <span className="rn-card__overline">
+                  {tab === "draft"
+                  ? `Last edited ${timeDifferenceForDate(object.lastEditedAt)}`
+                  : "Preview"}
+                </span>
+                <div className="mdc-card__action-icons rn-card__actions--spread">
+                  {tab === "preview" &&
+                  <React.Fragment>
+                    <button
+                      type="button"
+                      className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                      onClick={() => this.handleChangeTab_("draft")}
+                      aria-label="Draft"
+                      title="Draft"
+                    >
+                      edit
+                    </button>
+                    <button
+                      type="button"
+                      className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                      onClick={handlePublish}
+                      disabled={!isPublishable}
+                      aria-label="Publish draft"
+                      title="Publish draft"
+                    >
+                      publish
+                    </button>
+                  </React.Fragment>
+                  }
+                  {tab === "draft" &&
+                  <React.Fragment>
+                    <button
+                      type="button"
+                      className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                      onClick={() => this.handleChangeTab_("preview")}
+                      aria-label="Preview"
+                      title="Preview"
+                    >
+                      visibility
+                    </button>
+                    <button
+                      className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                      type="button"
+                      onClick={this.handleToggleResetConfirmation}
+                      aria-label="Reset draft"
+                      title="Reset draft"
+                    >
+                      restore
+                    </button>
+                    <AttachFile study={this.props.study} />
+                    {study.viewerCanAdmin &&
+                    <button
+                      className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                      type="button"
+                      onClick={toggleSaveDialog}
+                      aria-label="Attach & Save file"
+                      title="Attach & Save file"
+                    >
+                      cloud_upload
+                    </button>}
+                  </React.Fragment>}
+                  {object.isPublished &&
+                  <button
                     className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
                     type="button"
-                    onClick={() => this.handleChangeTab_("preview")}
-                    aria-label="Preview"
-                    title="Preview"
+                    onClick={this.handleToggleCancelConfirmation}
+                    aria-label="Cancel edit"
+                    title="Cancel edit"
                   >
-                    visibility
-                  </button>
-                : <button
-                    className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                    cancel
+                  </button>}
+                </div>
+                <Menu.Anchor
+                  className="mdc-card__action-icons rn-card__actions--collapsed"
+                  innerRef={this.setAnchorElement}
+                >
+                  {tab === "preview" &&
+                  <button
                     type="button"
+                    className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
                     onClick={() => this.handleChangeTab_("draft")}
                     aria-label="Draft"
                     title="Draft"
                   >
                     edit
                   </button>}
-                {object.isPublished &&
-                <button
-                  className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
-                  type="button"
-                  onClick={this.handleToggleCancelConfirmation}
-                  aria-label="Cancel"
-                  title="Cancel"
-                >
-                  cancel
-                </button>}
+                  {tab === "draft" &&
+                  <button
+                    type="button"
+                    className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                    onClick={() => this.handleChangeTab_("preview")}
+                    aria-label="Preview"
+                    title="Preview"
+                  >
+                    visibility
+                  </button>}
+                  <button
+                    type="button"
+                    className="mdc-icon-button material-icons"
+                    onClick={() => this.setState({menuOpen: !menuOpen})}
+                  >
+                    more_vert
+                  </button>
+                  <Menu
+                    open={menuOpen}
+                    onClose={() => this.setState({menuOpen: false})}
+                    anchorElement={anchorElement}
+                    anchorCorner={Corner.BOTTOM_LEFT}
+                  >
+                    <List items={filterDefinedReactChildren(
+                      (tab === "draft"
+                      ? [<List.Item
+                          role="button"
+                          onClick={this.handleToggleResetConfirmation}
+                        >
+                          <List.Item.Graphic graphic={
+                            <Icon icon="restore" />
+                          }/>
+                          <List.Item.Text primaryText="Reset draft" />
+                        </List.Item>,
+                        <AttachFile variant="list-item" study={this.props.study} />,
+                        study.viewerCanAdmin &&
+                        <List.Item
+                          role="button"
+                          onClick={toggleSaveDialog}
+                        >
+                          <List.Item.Graphic graphic={
+                            <Icon icon="cloud_upload" />
+                          }/>
+                          <List.Item.Text primaryText="Attach & Save file" />
+                        </List.Item>]
+                      : []).concat(
+                        tab === "preview"
+                        ? [<List.Item
+                            role="button"
+                            onClick={handlePublish}
+                          >
+                            <List.Item.Graphic graphic={
+                              <Icon icon="publish" />
+                            }/>
+                            <List.Item.Text primaryText="Publish draft" />
+                          </List.Item>]
+                        : []).concat([
+                          object.isPublished &&
+                          <List.Item
+                            role="button"
+                            onClick={this.handleToggleCancelConfirmation}
+                          >
+                            <List.Item.Graphic graphic={
+                              <Icon icon="cancel" />
+                            }/>
+                            <List.Item.Text primaryText="Cancel edit" />
+                          </List.Item>])
+                    )}/>
+                  </Menu>
+                </Menu.Anchor>
               </div>
-            </div>
-          </Sticky>
-          <div className="StudyBodyEditorMain__preview">
-            <div className={cls("rn-card__body", bodyClassName)}>
-              <Preview
-                open={tab === "preview"}
-                studyId={study.id}
-                text={this.text}
-                initialPreview={object.bodyHTML}
-              />
-            </div>
-            <div className="mdc-card__actions bottom">
-              <div className="mdc-card__action-buttons">
-                <button
-                  type="button"
-                  className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
-                  onClick={this.handlePublish}
-                >
-                  Publish
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="StudyBodyEditorMain__draft">
-            <div
-              className={cls("StudyBodyEditorMain__draft-text rn-card__body", bodyClassName)}
-              onClick={() => this.focus()}
-            >
-              <input
-                className="StudyBodyEditorMain__hidden-input"
-                type="text"
-                value={this.text}
-                required
-                onChange={() => {}}
-                onInvalid={this.focus}
-                onFocus={this.focus}
-              />
-              <Editor
-                editorState={editorState}
-                readOnly={loading}
-                onChange={this.handleChange}
-                placeholder={placeholder || "Enter text"}
-                ref={this.editorElement}
-              />
-            </div>
-            <div className="mdc-card__actions rn-card__actions">
-              {showFormButtonsFor &&
-              <div className="mdc-card__action-buttons">
-                <button
-                  type="submit"
-                  form={showFormButtonsFor}
-                  className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
-                >
-                  {this.props.submitText || "Save draft"}
-                </button>
-                {object.isPublished &&
-                <button
-                  className="mdc-button mdc-card__action mdc-card__action--button"
-                  type="button"
-                  onClick={this.handleToggleCancelConfirmation}
-                >
-                  Cancel
-                </button>}
+            : <div className="rn-card__actions mdc-card__actions">
+                <span className="rn-card__overline">
+                  {bodyHeaderText}
+                </span>
+                {object.viewerCanUpdate &&
+                <div className="mdc-card__action-icons">
+                  <button
+                    className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                    type="button"
+                    onClick={handleToggleEdit}
+                    aria-label="Edit body"
+                    title="Edit body"
+                  >
+                    edit
+                  </button>
+                </div>}
               </div>}
-              <div className="mdc-card__action-icons rn-card__actions--spread">
-                <button
-                  className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
-                  type="button"
-                  onClick={this.handleToggleResetConfirmation}
-                  aria-label="Reset draft"
-                  title="Reset draft"
-                >
-                  restore
-                </button>
-                <AttachFile study={this.props.study} />
-                {study.viewerCanAdmin &&
-                <button
-                  className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
-                  type="button"
-                  onClick={toggleSaveDialog}
-                  aria-label="Save file"
-                  title="Save file"
-                >
-                  save
-                </button>}
+          </Sticky>
+          {edit
+          ? <React.Fragment>
+              <div className="StudyBodyEditorMain__preview">
+                <div className={cls("rn-card__body", bodyClassName)}>
+                  <Preview
+                    open={tab === "preview"}
+                    studyId={study.id}
+                    text={this.text}
+                    initialPreview={object.bodyHTML}
+                  />
+                </div>
               </div>
-              <Menu.Anchor
-                className="mdc-card__action-icons rn-card__actions--collapsed"
-                innerRef={this.setAnchorElement}
-              >
-                <button
-                  type="button"
-                  className="mdc-icon-button material-icons"
-                  onClick={() => this.setState({menuOpen: !menuOpen})}
+              <div className="StudyBodyEditorMain__draft">
+                <div
+                  className={cls("StudyBodyEditorMain__draft-text rn-card__body", bodyClassName)}
+                  onClick={() => this.focus()}
                 >
-                  more_vert
-                </button>
-                <Menu
-                  open={menuOpen}
-                  onClose={() => this.setState({menuOpen: false})}
-                  anchorElement={anchorElement}
-                  anchorCorner={Corner.BOTTOM_LEFT}
-                >
-                  <List items={filterDefinedReactChildren([
-                    <List.Item
-                      role="button"
-                      onClick={this.handleToggleResetConfirmation}
-                    >
-                      <List.Item.Graphic graphic={
-                        <Icon icon="restore" />
-                      }/>
-                      <List.Item.Text primaryText="Reset draft" />
-                    </List.Item>,
-                    <AttachFile variant="list-item" study={this.props.study} />,
-                    study.viewerCanAdmin &&
-                    <List.Item
-                      role="button"
-                      onClick={toggleSaveDialog}
-                    >
-                      <List.Item.Graphic graphic={
-                        <Icon icon="save" />
-                      }/>
-                      <List.Item.Text primaryText="Save file" />
-                    </List.Item>,
-                  ])}/>
-                </Menu>
-              </Menu.Anchor>
-            </div>
-          </div>
+                  <input
+                    className="StudyBodyEditorMain__hidden-input"
+                    type="text"
+                    value={this.text}
+                    required
+                    onChange={() => {}}
+                    onInvalid={this.focus}
+                    onFocus={this.focus}
+                  />
+                  <Editor
+                    editorState={editorState}
+                    readOnly={loading}
+                    onChange={this.handleChange}
+                    placeholder={placeholder || "Enter text"}
+                    ref={this.editorElement}
+                  />
+                </div>
+              </div>
+            </React.Fragment>
+          : <div className={cls("rn-card__body", bodyClassName)}>
+              <HTML className="mdc-typography--body1" html={object.bodyHTML} />
+            </div>}
+          {bottomActions}
         </div>
         {this.renderConfirmCancelDialog()}
         {this.renderConfirmResetDialog()}
@@ -342,6 +373,7 @@ class StudyBodyEditorMain extends React.Component {
   }
 
   renderConfirmCancelDialog() {
+    const {handleCancel} = this.props
     const {confirmCancelDialogOpen} = this.state
 
     return (
@@ -368,7 +400,7 @@ class StudyBodyEditorMain extends React.Component {
             <button
               type="button"
               className="mdc-button"
-              onClick={this.handleCancel}
+              onClick={handleCancel}
               data-mdc-dialog-action="yes"
             >
               Yes
@@ -379,6 +411,7 @@ class StudyBodyEditorMain extends React.Component {
   }
 
   renderConfirmResetDialog() {
+    const {handleReset} = this.props
     const {confirmResetDialogOpen} = this.state
 
     return (
@@ -405,7 +438,7 @@ class StudyBodyEditorMain extends React.Component {
             <button
               type="button"
               className="mdc-button"
-              onClick={this.handleReset}
+              onClick={handleReset}
               data-mdc-dialog-action="yes"
             >
               Yes
@@ -418,18 +451,23 @@ class StudyBodyEditorMain extends React.Component {
 
 StudyBodyEditorMain.propTypes = {
   bodyClassName: PropTypes.string,
+  bodyHeaderText: PropTypes.node,
+  bottomActions: PropTypes.node,
+  edit: PropTypes.bool,
+  handleCancel: PropTypes.func,
+  handleChange: PropTypes.func,
+  handlePreview: PropTypes.func,
+  handlePublish: PropTypes.func,
+  handleReset: PropTypes.func,
+  handleToggleEdit: PropTypes.func.isRequired,
+  isPublishable: PropTypes.bool.isRequired,
   object: PropTypes.shape({
     bodyHTML: PropTypes.string.isRequired,
     draft: PropTypes.string.isRequired,
     isPublished: PropTypes.bool.isRequired,
     lastEditedAt: PropTypes.string.isRequired,
+    viewerCanUpdate: PropTypes.bool.isRequired,
   }),
-  onCancel: PropTypes.func,
-  onChange: PropTypes.func,
-  onPreview: PropTypes.func,
-  onPublish: PropTypes.func,
-  onReset: PropTypes.func,
-  showFormButtonsFor: PropTypes.string,
   study: PropTypes.shape({
     id: PropTypes.string.isRequired,
     viewerCanAdmin: PropTypes.bool.isRequired,
@@ -438,17 +476,23 @@ StudyBodyEditorMain.propTypes = {
 
 StudyBodyEditorMain.defaultProps = {
   bodyClassName: "",
+  bodyHeaderText: null,
+  bottomActions: null,
+  edit: false,
+  handleCancel: () => {},
+  handleChange: () => {},
+  handlePreview: () => {},
+  handlePublish: () => {},
+  handleReset: () => {},
+  handleToggleEdit: () => {},
+  isPublishable: false,
   object: {
     bodyHTML: "",
     draft: "",
     isPublished: false,
     lastEditedAt: "",
+    viewerCanUpdate: false,
   },
-  onCancel: () => {},
-  onChange: () => {},
-  onPreview: () => {},
-  onPublish: () => {},
-  onReset: () => {},
   study: {
     id: "",
     viewerCanAdmin: false,
