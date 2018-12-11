@@ -49,10 +49,46 @@
     }
   }
 
+  div {
+    clear: both;
+  }
+
   figure { 
+    display: table;
+    margin: 0;
+
+    img {
+      display: block;
+    }
+
     figcaption {
       @include mdc-typography(caption);
       @include mdc-theme-prop(color, text-secondary-on-light);
+
+      margin-top: 16px;
+      display: table-caption;
+      caption-side: bottom;
+    }
+
+    &.right {
+      float: right;
+      margin-left: 32px;
+      margin-bottom: 16px;
+
+      @include mdc-layout-grid-media-query_(phone) {
+        float: none;
+        margin-left: 0;
+      }
+    }
+    &.left {
+      float: left;
+      margin-right: 32px;
+      margin-bottom: 16px;
+
+      @include mdc-layout-grid-media-query_(phone) {
+        float: none;
+        margin-right: 0;
+      }
     }
 
     + * {
@@ -422,6 +458,8 @@
   }
   
   p {
+    hyphens: auto;
+
     &.caption {
       @include mdc-typography(caption);
       @include mdc-theme-prop(color, text-secondary-on-light);

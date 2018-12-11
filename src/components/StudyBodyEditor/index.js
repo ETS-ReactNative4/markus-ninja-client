@@ -114,7 +114,7 @@ StudyBodyEditor.Main = Relay.createFragmentContainer(StudyBodyEditorMain, FRAGME
 
 const AT_REGEX = /(?:(?:^|\s)@)(\w+)(?=\s|$)/g
 const HASHTAG_REGEX = /(?:(?:^|\s)#)(\d+)(?=\s|$)/g
-const DOLLAR_SIGN_REGEX = /(?:(?:^|\s|\[)\${2})([\w-.]+)(?:(?=\]|\s|$))/g
+const DOLLAR_SIGN_REGEX = /(?:(?:^|\s|\[)\${2})([\w-.]+)(?:\?{2}(.*)\?{2})?(?:(?=\]|\s|$))/g
 const CROSS_REF_REGEX = /(?:^|\s)(\w+)\/([\w-]+)#(\d+)(?=\s|$)/g
 
 function atStrategy(contentBlock, callback, contentState) {
