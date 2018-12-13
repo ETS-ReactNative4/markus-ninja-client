@@ -8,12 +8,15 @@ import graphql from 'babel-plugin-relay/macro'
 import Dialog from 'components/Dialog'
 import Snackbar from 'components/mdc/Snackbar'
 import StudyBodyEditor from 'components/StudyBodyEditor'
+import LessonDraftBackup from 'components/LessonDraftBackup'
+import LessonDraftBackups from 'components/LessonDraftBackups'
 import PublishLessonDraftMutation from 'mutations/PublishLessonDraftMutation'
 import ResetLessonDraftMutation from 'mutations/ResetLessonDraftMutation'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
 import {debounce, get, isNil, timeDifferenceForDate} from 'utils'
 
 class LessonBody extends React.Component {
+  studyBodyEditorElement_ = React.createRef()
   state = {
     confirmPublishDialogOpen: false,
     edit: !get(this.props, "lesson.isPublished", false),
@@ -23,6 +26,9 @@ class LessonBody extends React.Component {
       initialValue: get(this.props, "lesson.draft", ""),
       value: get(this.props, "lesson.draft", ""),
     },
+    draftBackup: "",
+    draftBackupId: "",
+    restoreDraftFromBackupDialogOpen: false,
     showSnackbar: false,
     snackbarMessage: "",
   }
@@ -39,7 +45,6 @@ class LessonBody extends React.Component {
             draft: {
               ...this.state.draft,
               dirty: false,
-              value: this.state.draft.initialValue,
             },
             showSnackbar: true,
             snackbarMessage: "Failed to save draft",
@@ -50,7 +55,6 @@ class LessonBody extends React.Component {
             draft: {
               ...this.state.draft,
               dirty: false,
-              value: lesson.draft
             },
           })
         }
@@ -60,7 +64,7 @@ class LessonBody extends React.Component {
 
   handleCancel = () => {
     const {draft} = this.state
-    if (draft.dirty) {
+    if (draft.value !== draft.initialValue) {
       this.updateDraft(draft.initialValue)
     }
     this.handleToggleEdit()
@@ -116,8 +120,20 @@ class LessonBody extends React.Component {
           this.setState({ error: errors[0].message })
           return
         }
+        const studyBodyEditor = this.studyBodyEditorElement_ && this.studyBodyEditorElement_.current
+        studyBodyEditor.pushStateWithText(lesson.draft)
       },
     )
+  }
+
+  handleRestore = (e) => {
+    e.preventDefault()
+    const studyBodyEditor = this.studyBodyEditorElement_ && this.studyBodyEditorElement_.current
+    studyBodyEditor && studyBodyEditor.pushStateWithText(this.state.draftBackup)
+    this.setState({
+      draftBackup: "",
+      draftBackupId: "",
+    })
   }
 
   handleToggleEdit = () => {
@@ -128,6 +144,13 @@ class LessonBody extends React.Component {
     const {confirmPublishDialogOpen} = this.state
     this.setState({
       confirmPublishDialogOpen: !confirmPublishDialogOpen,
+    })
+  }
+
+  handleToggleRestoreDraftFromBackup = () => {
+    const {restoreDraftFromBackupDialogOpen} = this.state
+    this.setState({
+      restoreDraftFromBackupDialogOpen: !restoreDraftFromBackupDialogOpen,
     })
   }
 
@@ -151,7 +174,7 @@ class LessonBody extends React.Component {
     return (
       <div className={this.classes}>
         <div className="center mw7">
-          <StudyBodyEditor study={study}>
+          <StudyBodyEditor study={study} ref={this.studyBodyEditorElement_}>
             <StudyBodyEditor.Main
               bodyClassName="min-vh-25"
               bodyHeaderText={`Updated ${timeDifferenceForDate(get(lesson, "publishedAt"))}`}
@@ -176,6 +199,7 @@ class LessonBody extends React.Component {
               handlePreview={this.handlePreview}
               handlePublish={this.handleTogglePublishConfirmation}
               handleReset={this.handleReset}
+              handleRestore={this.handleToggleRestoreDraftFromBackup}
               handleToggleEdit={this.handleToggleEdit}
               object={lesson}
               placeholder="Begin your lesson"
@@ -184,6 +208,7 @@ class LessonBody extends React.Component {
           </StudyBodyEditor>
         </div>
         {lesson.viewerCanUpdate && this.renderConfirmPublishDialog()}
+        {lesson.viewerCanUpdate && this.renderRestoreDraftFromBackupDialog()}
         <Snackbar
           show={showSnackbar}
           message={snackbarMessage}
@@ -226,6 +251,61 @@ class LessonBody extends React.Component {
               data-mdc-dialog-action="yes"
             >
               Yes
+            </button>
+          </Dialog.Actions>}
+        />
+    )
+  }
+
+  renderRestoreDraftFromBackupDialog() {
+    const lessonId = get(this.props, "lesson.id")
+    const {draftBackupId, restoreDraftFromBackupDialogOpen} = this.state
+
+    return (
+      <Dialog
+        open={restoreDraftFromBackupDialogOpen}
+        onClose={() => this.setState({restoreDraftFromBackupDialogOpen: false})}
+        title={
+          <Dialog.Title>
+            <div>
+              Restore draft from backup
+            </div>
+            {restoreDraftFromBackupDialogOpen &&
+            <LessonDraftBackups
+              className="mt2"
+              lessonId={lessonId}
+              value={draftBackupId}
+              onChange={(draftBackupId) => this.setState({draftBackupId})}
+            />}
+          </Dialog.Title>
+        }
+        content={
+          <Dialog.Content>
+            <form id="restore-lesson-draft-from-backup" onSubmit={this.handleRestore}>
+              <LessonDraftBackup
+                lessonId={lessonId}
+                backupId={draftBackupId}
+                onChange={(draftBackup) => this.setState({draftBackup})}
+              />
+            </form>
+          </Dialog.Content>
+        }
+        actions={
+          <Dialog.Actions>
+            <button
+              type="button"
+              className="mdc-button"
+              data-mdc-dialog-action="cancel"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              form="restore-lesson-draft-from-backup"
+              className="mdc-button"
+              data-mdc-dialog-action="restore"
+            >
+              Restore
             </button>
           </Dialog.Actions>}
         />

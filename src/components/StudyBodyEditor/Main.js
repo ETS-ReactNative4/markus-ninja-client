@@ -29,6 +29,7 @@ class StudyBodyEditorMain extends React.Component {
       anchorElement: null,
       confirmCancelDialogOpen: false,
       confirmResetDialogOpen: false,
+      draftBackupId: 0,
       loading: false,
       menuOpen: false,
     }
@@ -50,13 +51,8 @@ class StudyBodyEditorMain extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {changeTab, editorState, onChange} = this.context
+    const {changeTab} = this.context
     const {edit} = this.props
-    const {draft} = this.props.object
-    const {draft: prevDraft} = prevProps.object
-    if (draft !== prevDraft && draft !== this.text) {
-      onChange(EditorState.push(editorState, ContentState.createFromText(draft)))
-    }
     if (!edit && prevProps.edit) {
       changeTab("draft")
       this.setState({anchorElement: null})
@@ -95,7 +91,7 @@ class StudyBodyEditorMain extends React.Component {
     })
   }
 
-  focus = () => {
+  focusEditor = () => {
     if (this.editorElement && this.editorElement.current) {
       this.editorElement.current.focus()
     }
@@ -131,6 +127,7 @@ class StudyBodyEditorMain extends React.Component {
       bottomActions,
       edit,
       handlePublish,
+      handleRestore,
       handleToggleEdit,
       isPublishable,
       object,
@@ -198,6 +195,15 @@ class StudyBodyEditorMain extends React.Component {
                       title="Reset draft"
                     >
                       restore
+                    </button>
+                    <button
+                      className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                      type="button"
+                      onClick={handleRestore}
+                      aria-label="Restore draft from backup"
+                      title="Restore draft from backup"
+                    >
+                      restore_page
                     </button>
                     <AttachFile study={this.props.study} />
                     {study.viewerCanAdmin &&
@@ -270,6 +276,15 @@ class StudyBodyEditorMain extends React.Component {
                           }/>
                           <List.Item.Text primaryText="Reset draft" />
                         </List.Item>,
+                        <List.Item
+                          role="button"
+                          onClick={handleRestore}
+                        >
+                          <List.Item.Graphic graphic={
+                            <Icon icon="restore_page" />
+                          }/>
+                          <List.Item.Text primaryText="Restore draft from backup" />
+                        </List.Item>,
                         <AttachFile variant="list-item" study={this.props.study} />,
                         study.viewerCanAdmin &&
                         <List.Item
@@ -340,7 +355,7 @@ class StudyBodyEditorMain extends React.Component {
               <div className="StudyBodyEditorMain__draft">
                 <div
                   className={cls("StudyBodyEditorMain__draft-text rn-card__body", bodyClassName)}
-                  onClick={() => this.focus()}
+                  onClick={() => this.focusEditor()}
                 >
                   <input
                     className="StudyBodyEditorMain__hidden-input"
@@ -348,8 +363,8 @@ class StudyBodyEditorMain extends React.Component {
                     value={this.text}
                     required
                     onChange={() => {}}
-                    onInvalid={this.focus}
-                    onFocus={this.focus}
+                    onInvalid={this.focusEditor}
+                    onFocus={this.focusEditor}
                   />
                   <Editor
                     editorState={editorState}
@@ -366,8 +381,8 @@ class StudyBodyEditorMain extends React.Component {
             </div>}
           {bottomActions}
         </div>
-        {this.renderConfirmCancelDialog()}
-        {this.renderConfirmResetDialog()}
+        {object.ViewerCanUpdate && this.renderConfirmCancelDialog()}
+        {object.ViewerCanUpdate && this.renderConfirmResetDialog()}
       </div>
     )
   }
@@ -459,6 +474,7 @@ StudyBodyEditorMain.propTypes = {
   handlePreview: PropTypes.func,
   handlePublish: PropTypes.func,
   handleReset: PropTypes.func,
+  handleRestore: PropTypes.func,
   handleToggleEdit: PropTypes.func.isRequired,
   isPublishable: PropTypes.bool.isRequired,
   object: PropTypes.shape({
@@ -484,6 +500,7 @@ StudyBodyEditorMain.defaultProps = {
   handlePreview: () => {},
   handlePublish: () => {},
   handleReset: () => {},
+  handleRestore: () => {},
   handleToggleEdit: () => {},
   isPublishable: false,
   object: {

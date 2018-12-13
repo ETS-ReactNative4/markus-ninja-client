@@ -80,6 +80,11 @@ class StudyBodyEditor extends React.Component {
     this.setState({saveFileDialogOpen: !saveFileDialogOpen})
   }
 
+  pushStateWithText = (text) => {
+    const {editorState} = this.state
+    this.handleChange(EditorState.push(editorState, ContentState.createFromText(text)))
+  }
+
   render() {
     const child = React.Children.only(this.props.children)
     const study = this.props.study
