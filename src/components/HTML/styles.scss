@@ -55,7 +55,7 @@
 
   figure { 
     display: table;
-    margin: 0;
+    margin: 0 auto;
 
     img {
       display: block;
@@ -73,6 +73,7 @@
     &.right {
       float: right;
       margin-left: 32px;
+      margin-right: 0;
       margin-bottom: 16px;
 
       @include mdc-layout-grid-media-query_(phone) {
@@ -82,6 +83,7 @@
     }
     &.left {
       float: left;
+      margin-left: 0;
       margin-right: 32px;
       margin-bottom: 16px;
 
