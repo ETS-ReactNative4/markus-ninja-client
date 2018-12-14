@@ -61,6 +61,7 @@ class SaveFileDialog extends React.Component {
     this.setState({
       loading: true,
     })
+    this.props.handleSaveFileRequest(file)
   }
 
   handleSaveFileComplete = (asset, error) => {
@@ -81,7 +82,7 @@ class SaveFileDialog extends React.Component {
     )
     this.setState({loading: false})
     onChange(EditorState.push(editorState, fileLink, 'insert-fragment'))
-    return
+    this.props.handleSaveFileComplete()
   }
 
   handleSubmit = (e) => {
@@ -226,6 +227,8 @@ class SaveFileDialog extends React.Component {
 }
 
 SaveFileDialog.propTypes = {
+  handleSaveFileRequest: PropTypes.func,
+  handleSaveFileComplete: PropTypes.func,
   open: PropTypes.bool.isRequired,
   study: PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -233,6 +236,8 @@ SaveFileDialog.propTypes = {
 }
 
 SaveFileDialog.defaultProps = {
+  handleSaveFileRequest: () => {},
+  handleSaveFileComplete: () => {},
   open: false,
   study: {
     id: "",

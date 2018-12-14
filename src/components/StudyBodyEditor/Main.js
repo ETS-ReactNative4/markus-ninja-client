@@ -6,15 +6,15 @@ import {
   Editor,
   EditorState,
 } from 'draft-js'
+import shortid from 'shortid'
 import Sticky from 'react-stickynode'
 import HTML from 'components/HTML'
 import List from 'components/mdc/List'
 import Dialog from 'components/Dialog'
 import Icon from 'components/Icon'
 import Menu, {Corner} from 'components/mdc/Menu'
-import { withUID } from 'components/UniqueId'
 import {mediaQueryPhone} from 'styles/helpers'
-import {filterDefinedReactChildren, timeDifferenceForDate} from 'utils'
+import {filterDefinedReactChildren, isEmpty, timeDifferenceForDate} from 'utils'
 import AttachFile from './AttachFile'
 import Context from './Context'
 import Preview from './Preview'
@@ -27,10 +27,9 @@ class StudyBodyEditorMain extends React.Component {
 
     this.state = {
       anchorElement: null,
-      confirmCancelDialogOpen: false,
       confirmResetDialogOpen: false,
       draftBackupId: 0,
-      loading: false,
+      draftId: "",
       menuOpen: false,
     }
   }
@@ -48,6 +47,9 @@ class StudyBodyEditorMain extends React.Component {
     if (editorState && draft) {
       onChange(EditorState.push(editorState, ContentState.createFromText(draft)))
     }
+    this.setState({
+      draftId: `draft${shortid.generate()}`,
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -59,9 +61,13 @@ class StudyBodyEditorMain extends React.Component {
     }
   }
 
-  handleChange = (editorState) => {
-    this.context.onChange(editorState)
-    this.props.handleChange(editorState.getCurrentContent().getPlainText())
+  handleChange = (newState) => {
+    this.context.onChange(newState)
+    const currentContentState = this.context.editorState.getCurrentContent()
+    const newContentState = newState.getCurrentContent()
+    if (currentContentState !== newContentState) {
+      this.props.handleChange(newContentState.getPlainText())
+    }
   }
 
   handleChangeTab_ = (tab) => {
@@ -69,18 +75,6 @@ class StudyBodyEditorMain extends React.Component {
     changeTab(tab)
     if (tab === "preview") {
       this.props.handlePreview()
-    }
-  }
-
-  handleToggleCancelConfirmation = () => {
-    const {handleCancel} = this.props
-    if (this.text !== this.props.object.draft) {
-      const {confirmCancelDialogOpen} = this.state
-      this.setState({
-        confirmCancelDialogOpen: !confirmCancelDialogOpen,
-      })
-    } else {
-      handleCancel()
     }
   }
 
@@ -95,6 +89,16 @@ class StudyBodyEditorMain extends React.Component {
     if (this.editorElement && this.editorElement.current) {
       this.editorElement.current.focus()
     }
+  }
+
+  changeText = (text) => {
+    const {editorState} = this.context
+    this.handleChange(EditorState.push(editorState, ContentState.createFromText(text)))
+  }
+
+  setText = (text) => {
+    const {editorState, onChange} = this.context
+    onChange(EditorState.push(editorState, ContentState.createFromText(text)))
   }
 
   get classes() {
@@ -119,13 +123,14 @@ class StudyBodyEditorMain extends React.Component {
   }
 
   render() {
-    const {editorState, tab, toggleSaveDialog} = this.context
-    const {anchorElement, loading, menuOpen} = this.state
+    const {editorState, readOnly, tab, toggleSaveDialog} = this.context
+    const {anchorElement, menuOpen} = this.state
     const {
       bodyClassName,
       bodyHeaderText,
       bottomActions,
       edit,
+      handleCancel,
       handlePublish,
       handleRestore,
       handleToggleEdit,
@@ -133,16 +138,18 @@ class StudyBodyEditorMain extends React.Component {
       object,
       placeholder,
       study,
-      uid,
     } = this.props
+    const {draftId} = this.state
+
+    if (isEmpty(draftId)) { return null }
 
     return (
-      <div id={`draft-${uid}`} className={this.classes}>
+      <div id={draftId} className={this.classes}>
         <div className="mdc-card">
           <Sticky
             enabled={object.viewerCanUpdate}
             top={this.stickyMenuTop}
-            bottomBoundary={`#draft-${uid}`}
+            bottomBoundary={`#${draftId}`}
             innerZ={2}
           >
             {edit
@@ -221,7 +228,7 @@ class StudyBodyEditorMain extends React.Component {
                   <button
                     className="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
                     type="button"
-                    onClick={this.handleToggleCancelConfirmation}
+                    onClick={handleCancel || handleToggleEdit}
                     aria-label="Cancel edit"
                     title="Cancel edit"
                   >
@@ -311,7 +318,7 @@ class StudyBodyEditorMain extends React.Component {
                           object.isPublished &&
                           <List.Item
                             role="button"
-                            onClick={this.handleToggleCancelConfirmation}
+                            onClick={handleCancel || handleToggleEdit}
                           >
                             <List.Item.Graphic graphic={
                               <Icon icon="cancel" />
@@ -368,7 +375,7 @@ class StudyBodyEditorMain extends React.Component {
                   />
                   <Editor
                     editorState={editorState}
-                    readOnly={loading}
+                    readOnly={readOnly}
                     onChange={this.handleChange}
                     placeholder={placeholder || "Enter text"}
                     ref={this.editorElement}
@@ -381,47 +388,8 @@ class StudyBodyEditorMain extends React.Component {
             </div>}
           {bottomActions}
         </div>
-        {object.ViewerCanUpdate && this.renderConfirmCancelDialog()}
-        {object.ViewerCanUpdate && this.renderConfirmResetDialog()}
+        {object.viewerCanUpdate && this.renderConfirmResetDialog()}
       </div>
-    )
-  }
-
-  renderConfirmCancelDialog() {
-    const {handleCancel} = this.props
-    const {confirmCancelDialogOpen} = this.state
-
-    return (
-      <Dialog
-        open={confirmCancelDialogOpen}
-        onClose={() => this.setState({confirmCancelDialogOpen: false})}
-        title={<Dialog.Title>Cancel changes made to the draft</Dialog.Title>}
-        content={
-          <Dialog.Content>
-            <div className="flex flex-column mw5">
-              <p>Are you sure?</p>
-            </div>
-          </Dialog.Content>
-        }
-        actions={
-          <Dialog.Actions>
-            <button
-              type="button"
-              className="mdc-button"
-              data-mdc-dialog-action="no"
-            >
-              No
-            </button>
-            <button
-              type="button"
-              className="mdc-button"
-              onClick={handleCancel}
-              data-mdc-dialog-action="yes"
-            >
-              Yes
-            </button>
-          </Dialog.Actions>}
-        />
     )
   }
 
@@ -495,7 +463,6 @@ StudyBodyEditorMain.defaultProps = {
   bodyHeaderText: null,
   bottomActions: null,
   edit: false,
-  handleCancel: () => {},
   handleChange: () => {},
   handlePreview: () => {},
   handlePublish: () => {},
@@ -518,4 +485,4 @@ StudyBodyEditorMain.defaultProps = {
 
 StudyBodyEditorMain.contextType = Context
 
-export default withUID((getUID) => ({ uid: getUID() }))(StudyBodyEditorMain)
+export default StudyBodyEditorMain

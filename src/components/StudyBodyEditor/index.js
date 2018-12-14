@@ -52,6 +52,7 @@ class StudyBodyEditor extends React.Component {
       onChange: this.handleChange,
       tab: "draft",
       changeTab: this.handleChangeTab,
+      readOnly: false,
       saveFileDialogOpen: false,
       toggleSaveDialog: this.handleToggleSaveDialog,
     }
@@ -80,7 +81,7 @@ class StudyBodyEditor extends React.Component {
     this.setState({saveFileDialogOpen: !saveFileDialogOpen})
   }
 
-  pushStateWithText = (text) => {
+  setText = (text) => {
     const {editorState} = this.state
     this.handleChange(EditorState.push(editorState, ContentState.createFromText(text)))
   }
@@ -94,7 +95,12 @@ class StudyBodyEditor extends React.Component {
       <Context.Provider value={this.state}>
         {child}
         {study.viewerCanAdmin &&
-        <SaveFileDialog open={saveFileDialogOpen} study={study} />}
+        <SaveFileDialog
+          handleSaveFileRequest={() => this.setState({readOnly: true})}
+          handleSaveFileComplete={() => this.setState({readOnly: false})}
+          open={saveFileDialogOpen}
+          study={study}
+        />}
       </Context.Provider>
     )
   }

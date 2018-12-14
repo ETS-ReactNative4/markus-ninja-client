@@ -5,6 +5,7 @@ import {
 } from 'react-relay'
 import moment from 'moment'
 import graphql from 'babel-plugin-relay/macro'
+import shortid from 'shortid'
 import Dialog from 'components/Dialog'
 import Snackbar from 'components/mdc/Snackbar'
 import StudyBodyEditor from 'components/StudyBodyEditor'
@@ -16,7 +17,7 @@ import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
 import {debounce, get, isNil, timeDifferenceForDate} from 'utils'
 
 class LessonBody extends React.Component {
-  studyBodyEditorElement_ = React.createRef()
+  editorElement_ = React.createRef()
   state = {
     confirmPublishDialogOpen: false,
     edit: !get(this.props, "lesson.isPublished", false),
@@ -28,9 +29,16 @@ class LessonBody extends React.Component {
     },
     draftBackup: "",
     draftBackupId: "",
+    formId: "",
     restoreDraftFromBackupDialogOpen: false,
     showSnackbar: false,
     snackbarMessage: "",
+  }
+
+  componentDidMount() {
+    this.setState({
+      formId: `restore-lesson-draft-from-backup${shortid.generate()}`,
+    })
   }
 
   updateDraft = debounce((draft) => {
@@ -42,10 +50,6 @@ class LessonBody extends React.Component {
         if (!isNil(errors)) {
           this.setState({
             error: errors[0].message,
-            draft: {
-              ...this.state.draft,
-              dirty: false,
-            },
             showSnackbar: true,
             snackbarMessage: "Failed to save draft",
           })
@@ -55,6 +59,7 @@ class LessonBody extends React.Component {
             draft: {
               ...this.state.draft,
               dirty: false,
+              value: lesson.draft,
             },
           })
         }
@@ -62,26 +67,14 @@ class LessonBody extends React.Component {
     )
   }, 1000)
 
-  handleCancel = () => {
-    const {draft} = this.state
-    if (draft.value !== draft.initialValue) {
-      this.updateDraft(draft.initialValue)
-    }
-    this.handleToggleEdit()
-  }
-
   handleChange = (value) => {
-    const {draft} = this.state
-    const dirty = draft.dirty || value !== draft.value
     this.setState({
       draft: {
-        dirty,
+        dirty: true,
         value,
       },
     })
-    if (dirty) {
-      this.updateDraft(value)
-    }
+    this.updateDraft(value)
   }
 
   handlePreview = () => {
@@ -120,16 +113,25 @@ class LessonBody extends React.Component {
           this.setState({ error: errors[0].message })
           return
         }
-        const studyBodyEditor = this.studyBodyEditorElement_ && this.studyBodyEditorElement_.current
-        studyBodyEditor.pushStateWithText(lesson.draft)
+        if (lesson) {
+          this.setState({
+            draft: {
+              ...this.state.draft,
+              dirty: false,
+              value: lesson.draft
+            },
+          })
+          const editor = this.editorElement_ && this.editorElement_.current
+          editor.setText(lesson.draft)
+        }
       },
     )
   }
 
   handleRestore = (e) => {
     e.preventDefault()
-    const studyBodyEditor = this.studyBodyEditorElement_ && this.studyBodyEditorElement_.current
-    studyBodyEditor && studyBodyEditor.pushStateWithText(this.state.draftBackup)
+    const editor = this.editorElement_ && this.editorElement_.current
+    editor && editor.changeText(this.state.draftBackup)
     this.setState({
       draftBackup: "",
       draftBackupId: "",
@@ -174,8 +176,9 @@ class LessonBody extends React.Component {
     return (
       <div className={this.classes}>
         <div className="center mw7">
-          <StudyBodyEditor study={study} ref={this.studyBodyEditorElement_}>
+          <StudyBodyEditor study={study}>
             <StudyBodyEditor.Main
+              ref={this.editorElement_}
               bodyClassName="min-vh-25"
               bodyHeaderText={`Updated ${timeDifferenceForDate(get(lesson, "publishedAt"))}`}
               bottomActions={lesson.viewerCanUpdate && edit &&
@@ -194,7 +197,6 @@ class LessonBody extends React.Component {
               }
               edit={edit}
               isPublishable={this.isPublishable}
-              handleCancel={this.handleCancel}
               handleChange={this.handleChange}
               handlePreview={this.handlePreview}
               handlePublish={this.handleTogglePublishConfirmation}
@@ -259,7 +261,7 @@ class LessonBody extends React.Component {
 
   renderRestoreDraftFromBackupDialog() {
     const lessonId = get(this.props, "lesson.id")
-    const {draftBackupId, restoreDraftFromBackupDialogOpen} = this.state
+    const {draftBackupId, formId, restoreDraftFromBackupDialogOpen} = this.state
 
     return (
       <Dialog
@@ -281,7 +283,7 @@ class LessonBody extends React.Component {
         }
         content={
           <Dialog.Content>
-            <form id="restore-lesson-draft-from-backup" onSubmit={this.handleRestore}>
+            <form id={formId} onSubmit={this.handleRestore}>
               <LessonDraftBackup
                 lessonId={lessonId}
                 backupId={draftBackupId}
@@ -301,7 +303,7 @@ class LessonBody extends React.Component {
             </button>
             <button
               type="submit"
-              form="restore-lesson-draft-from-backup"
+              form={formId}
               className="mdc-button"
               data-mdc-dialog-action="restore"
             >

@@ -6,10 +6,13 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router'
+import Dialog from 'components/Dialog'
 import AddLessonCommentMutation from 'mutations/AddLessonCommentMutation'
 import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
 import Snackbar from 'components/mdc/Snackbar'
 import StudyBodyEditor from 'components/StudyBodyEditor'
+import LessonCommentDraftBackup from 'components/LessonCommentDraftBackup'
+import LessonCommentDraftBackups from 'components/LessonCommentDraftBackups'
 import {debounce, get, isNil} from 'utils'
 
 class AddLessonCommentForm extends React.Component {
@@ -18,6 +21,7 @@ class AddLessonCommentForm extends React.Component {
 
     const comment = get(this.props, "lesson.viewerNewComment", {})
 
+    this.editorElement_ = React.createRef()
     this.state = {
       error: null,
       draft: {
@@ -25,6 +29,9 @@ class AddLessonCommentForm extends React.Component {
         initialValue: comment.draft,
         value: comment.draft,
       },
+      draftBackup: "",
+      draftBackupId: "",
+      restoreDraftFromBackupDialogOpen: false,
       showSnackbar: false,
       snackbarMessage: "",
     }
@@ -40,11 +47,6 @@ class AddLessonCommentForm extends React.Component {
         if (!isNil(errors)) {
           this.setState({
             error: errors[0].message,
-            draft: {
-              ...this.state.draft,
-              dirty: false,
-              value: this.state.draft.initialValue,
-            },
             showSnackbar: true,
             snackbarMessage: "Failed to save draft",
           })
@@ -63,25 +65,14 @@ class AddLessonCommentForm extends React.Component {
     )
   }, 1000)
 
-  handleCancel = () => {
-    const {draft} = this.state
-    if (draft.dirty) {
-      this.updateDraft(draft.initialValue)
-    }
-  }
-
   handleChange = (value) => {
-    const {draft} = this.state
-    const dirty = draft.dirty || value !== draft.value
     this.setState({
       draft: {
-        dirty,
+        dirty: true,
         value,
       },
     })
-    if (dirty) {
-      this.updateDraft(value)
-    }
+    this.updateDraft(value)
   }
 
   handlePreview = () => {
@@ -127,6 +118,7 @@ class AddLessonCommentForm extends React.Component {
         (comment, errors) => {
           if (!isNil(errors)) {
             this.setState({ error: errors[0].message })
+            return
           }
           if (comment) {
             this.setState({
@@ -136,10 +128,29 @@ class AddLessonCommentForm extends React.Component {
                 value: comment.draft
               }
             })
+            const editor = this.editorElement_ && this.editorElement_.current
+            editor.setText(comment.draft)
           }
         },
       )
     }
+  }
+
+  handleRestore = (e) => {
+    e.preventDefault()
+    const editor = this.editorElement_ && this.editorElement_.current
+    editor && editor.changeText(this.state.draftBackup)
+    this.setState({
+      draftBackup: "",
+      draftBackupId: "",
+    })
+  }
+
+  handleToggleRestoreDraftFromBackup = () => {
+    const {restoreDraftFromBackupDialogOpen} = this.state
+    this.setState({
+      restoreDraftFromBackupDialogOpen: !restoreDraftFromBackupDialogOpen,
+    })
   }
 
   get classes() {
@@ -163,6 +174,7 @@ class AddLessonCommentForm extends React.Component {
         <StudyBodyEditor study={study}>
           <div className={this.classes}>
             <StudyBodyEditor.Main
+              ref={this.editorElement_}
               placeholder="Leave a comment"
               bottomActions={
                 <div className="mdc-card__actions rn-card__actions">
@@ -180,16 +192,17 @@ class AddLessonCommentForm extends React.Component {
               }
               edit={true}
               isPublishable={this.isPublishable}
-              handleCancel={this.handleCancel}
               handleChange={this.handleChange}
               handlePreview={this.handlePreview}
               handlePublish={this.handlePublish}
               handleReset={this.handleReset}
+              handleRestore={this.handleToggleRestoreDraftFromBackup}
               object={comment}
               study={study}
             />
           </div>
         </StudyBodyEditor>
+        {comment.viewerCanUpdate && this.renderRestoreDraftFromBackupDialog()}
         <Snackbar
           show={showSnackbar}
           message={snackbarMessage}
@@ -198,6 +211,61 @@ class AddLessonCommentForm extends React.Component {
           handleHide={() => this.setState({showSnackbar: false})}
         />
       </React.Fragment>
+    )
+  }
+
+  renderRestoreDraftFromBackupDialog() {
+    const comment = get(this.props, "lesson.viewerNewComment", {})
+    const {draftBackupId, restoreDraftFromBackupDialogOpen} = this.state
+
+    return (
+      <Dialog
+        open={restoreDraftFromBackupDialogOpen}
+        onClose={() => this.setState({restoreDraftFromBackupDialogOpen: false})}
+        title={
+          <Dialog.Title>
+            <div>
+              Restore draft from backup
+            </div>
+            {restoreDraftFromBackupDialogOpen &&
+            <LessonCommentDraftBackups
+              className="mt2"
+              lessonCommentId={comment.id}
+              value={draftBackupId}
+              onChange={(draftBackupId) => this.setState({draftBackupId})}
+            />}
+          </Dialog.Title>
+        }
+        content={
+          <Dialog.Content>
+            <form id="restore-add-lesson-comment-draft-from-backup" onSubmit={this.handleRestore}>
+              <LessonCommentDraftBackup
+                lessonCommentId={comment.id}
+                backupId={draftBackupId}
+                onChange={(draftBackup) => this.setState({draftBackup})}
+              />
+            </form>
+          </Dialog.Content>
+        }
+        actions={
+          <Dialog.Actions>
+            <button
+              type="button"
+              className="mdc-button"
+              data-mdc-dialog-action="cancel"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              form="restore-add-lesson-comment-draft-from-backup"
+              className="mdc-button"
+              data-mdc-dialog-action="restore"
+            >
+              Restore
+            </button>
+          </Dialog.Actions>}
+        />
     )
   }
 }

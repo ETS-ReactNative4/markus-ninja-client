@@ -4,10 +4,13 @@ import {
   createFragmentContainer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
+import shortid from 'shortid'
 import moment from 'moment'
 import Dialog from 'components/Dialog'
 import Snackbar from 'components/mdc/Snackbar'
 import StudyBodyEditor from 'components/StudyBodyEditor'
+import LessonCommentDraftBackup from 'components/LessonCommentDraftBackup'
+import LessonCommentDraftBackups from 'components/LessonCommentDraftBackups'
 import UserLink from 'components/UserLink'
 import Icon from 'components/Icon'
 import List from 'components/mdc/List'
@@ -24,6 +27,7 @@ import {
 } from 'utils'
 
 class LessonComment extends React.Component {
+  editorElement_ = React.createRef()
   state = {
     anchorElement: null,
     confirmDeleteDialogOpen: false,
@@ -34,9 +38,19 @@ class LessonComment extends React.Component {
       initialValue: get(this.props, "comment.draft", ""),
       value: get(this.props, "comment.draft", ""),
     },
+    draftBackup: "",
+    draftBackupId: "",
+    formId: "",
     menuOpen: false,
+    restoreDraftFromBackupDialogOpen: false,
     showSnackbar: false,
     snackbarMessage: "",
+  }
+
+  componentDidMount() {
+    this.setState({
+      formId: `restore-lesson-comment-draft-from-backup${shortid.generate()}`,
+    })
   }
 
   setAnchorElement = (el) => {
@@ -54,11 +68,6 @@ class LessonComment extends React.Component {
         if (errors) {
           this.setState({
             error: errors[0].message,
-            draft: {
-              ...this.state.draft,
-              dirty: false,
-              value: this.state.draft.initialValue,
-            },
             showSnackbar: true,
             snackbarMessage: "Failed to save draft",
           })
@@ -76,26 +85,14 @@ class LessonComment extends React.Component {
     )
   }, 1000)
 
-  handleCancel = () => {
-    const {draft} = this.state
-    if (draft.dirty) {
-      this.updateDraft(draft.initialValue)
-    }
-    this.handleToggleEdit()
-  }
-
   handleChange = (value) => {
-    const {draft} = this.state
-    const dirty = draft.dirty || value !== draft.value
     this.setState({
       draft: {
-        dirty,
+        dirty: true,
         value,
       },
     })
-    if (dirty) {
-      this.updateDraft(value)
-    }
+    this.updateDraft(value)
   }
 
   handleDelete = () => {
@@ -140,14 +137,42 @@ class LessonComment extends React.Component {
           this.setState({ error: errors[0].message })
           return
         }
+        if (comment) {
+          this.setState({
+            draft: {
+              ...this.state.draft,
+              dirty: false,
+              value: comment.draft
+            },
+          })
+          const editor = this.editorElement_ && this.editorElement_.current
+          editor.setText(comment.draft)
+        }
       },
     )
+  }
+
+  handleRestore = (e) => {
+    e.preventDefault()
+    const editor = this.editorElement_ && this.editorElement_.current
+    editor && editor.changeText(this.state.draftBackup)
+    this.setState({
+      draftBackup: "",
+      draftBackupId: "",
+    })
   }
 
   handleToggleDeleteConfirmation = () => {
     const {confirmDeleteDialogOpen} = this.state
     this.setState({
       confirmDeleteDialogOpen: !confirmDeleteDialogOpen,
+    })
+  }
+
+  handleToggleRestoreDraftFromBackup = () => {
+    const {restoreDraftFromBackupDialogOpen} = this.state
+    this.setState({
+      restoreDraftFromBackupDialogOpen: !restoreDraftFromBackupDialogOpen,
     })
   }
 
@@ -182,6 +207,7 @@ class LessonComment extends React.Component {
       <div className={this.classes}>
         <StudyBodyEditor study={study}>
           <StudyBodyEditor.Main
+            ref={this.editorElement_}
             placeholder="Leave a comment"
             bodyHeaderText={
               <React.Fragment>
@@ -248,17 +274,18 @@ class LessonComment extends React.Component {
             }
             edit={edit}
             isPublishable={this.isPublishable}
-            handleCancel={this.handleCancel}
             handleChange={this.handleChange}
             handlePreview={this.handlePreview}
             handlePublish={this.handlePublish}
             handleReset={this.handleReset}
+            handleRestore={this.handleToggleRestoreDraftFromBackup}
             handleToggleEdit={this.handleToggleEdit}
             object={comment}
             study={study}
           />
         </StudyBodyEditor>
         {comment.viewerCanDelete && this.renderConfirmDeleteDialog()}
+        {comment.viewerCanUpdate && this.renderRestoreDraftFromBackupDialog()}
         <Snackbar
           show={showSnackbar}
           message={snackbarMessage}
@@ -318,6 +345,61 @@ class LessonComment extends React.Component {
               data-mdc-dialog-action="yes"
             >
               Yes
+            </button>
+          </Dialog.Actions>}
+        />
+    )
+  }
+
+  renderRestoreDraftFromBackupDialog() {
+    const lessonCommentId = get(this.props, "comment.id")
+    const {draftBackupId, formId, restoreDraftFromBackupDialogOpen} = this.state
+
+    return (
+      <Dialog
+        open={restoreDraftFromBackupDialogOpen}
+        onClose={() => this.setState({restoreDraftFromBackupDialogOpen: false})}
+        title={
+          <Dialog.Title>
+            <div>
+              Restore draft from backup
+            </div>
+            {restoreDraftFromBackupDialogOpen &&
+            <LessonCommentDraftBackups
+              className="mt2"
+              lessonCommentId={lessonCommentId}
+              value={draftBackupId}
+              onChange={(draftBackupId) => this.setState({draftBackupId})}
+            />}
+          </Dialog.Title>
+        }
+        content={
+          <Dialog.Content>
+            <form id={formId} onSubmit={this.handleRestore}>
+              <LessonCommentDraftBackup
+                lessonCommentId={lessonCommentId}
+                backupId={draftBackupId}
+                onChange={(draftBackup) => this.setState({draftBackup})}
+              />
+            </form>
+          </Dialog.Content>
+        }
+        actions={
+          <Dialog.Actions>
+            <button
+              type="button"
+              className="mdc-button"
+              data-mdc-dialog-action="cancel"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              form={formId}
+              className="mdc-button"
+              data-mdc-dialog-action="restore"
+            >
+              Restore
             </button>
           </Dialog.Actions>}
         />
