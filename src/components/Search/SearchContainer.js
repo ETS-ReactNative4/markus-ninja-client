@@ -8,9 +8,9 @@ import { debounce, get, isNil, isEmpty } from 'utils'
 
 class SearchContainer extends React.Component {
   state = {
-    dataIsStale: false,
     error: null,
     loading: false,
+    stale: false,
     type: this.props.type,
   }
 
@@ -18,6 +18,7 @@ class SearchContainer extends React.Component {
     if (prevProps.query !== this.props.query ||
         prevProps.type !== this.props.type ||
         prevProps.orderBy !== this.props.orderBy) {
+      this.setState({stale: true})
       this._refetch(this.props.query)
     }
   }
@@ -38,11 +39,9 @@ class SearchContainer extends React.Component {
   }
 
   _refetch = debounce((query, after) => {
-    const {type: prevType} = this.state
     const {orderBy, relay, type} = this.props
 
     this.setState({
-      dataIsStale: prevType !== type,
       loading: true,
       type,
     })
@@ -61,7 +60,7 @@ class SearchContainer extends React.Component {
           console.log(error)
         }
         this.setState({
-          dataIsStale: false,
+          stale: false,
           loading: false,
         })
       },
@@ -88,7 +87,7 @@ class SearchContainer extends React.Component {
   }
 
   get _edges() {
-    if (this.state.dataIsStale) {
+    if (this.state.stale) {
       return []
     }
     return get(this.props, "results.search.edges", [])
@@ -96,11 +95,12 @@ class SearchContainer extends React.Component {
 
   render() {
     const child = React.Children.only(this.props.children)
-    const {loading, type} = this.state
+    const {loading, stale, type} = this.state
 
     return React.cloneElement(child, {
       search: {
         counts: this._counts,
+        dataIsStale: stale,
         edges: this._edges,
         hasMore: this._hasMore,
         isLoading: loading,

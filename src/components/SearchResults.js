@@ -92,12 +92,12 @@ class ListSearchResults extends React.Component {
 
   renderListResults() {
     const {search} = this.props
-    const {edges, isLoading} = search
+    const {dataIsStale, edges, isLoading} = search
     const noResults = isEmpty(edges)
 
     return (
       <ul className="mdc-list mdc-list--two-line">
-        {isLoading
+        {isLoading && (dataIsStale || noResults)
         ? <li className="mdc-list-item">Loading...</li>
         : noResults
           ? <li className="mdc-list-item">No {pluralize(this.type)} were found</li>
