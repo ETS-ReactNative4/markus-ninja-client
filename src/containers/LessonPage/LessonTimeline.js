@@ -80,13 +80,13 @@ class LessonTimeline extends React.Component {
   renderTimelineEdges() {
     const timelineEdges = groupInOrderByFunc(
       get(this.props, "lesson.timeline.edges", []),
-      ({node}) => node && node.__typename !== "LessonComment",
+      ({node}) => node && node.__typename !== "Comment",
     )
 
     return (
       <React.Fragment>
         {timelineEdges.map((group) => {
-          if (group[0].node.__typename === "LessonComment") {
+          if (group[0].node.__typename === "Comment") {
             return group.map(({node}) =>
               node &&
               <LessonTimelineEvent
@@ -129,11 +129,11 @@ export default createRefetchContainer(LessonTimeline,
               ...on AddedToCourseEvent {
                 ...AddedToCourseEvent_event
               }
+              ...on Comment {
+                ...Comment_comment
+              }
               ...on LabeledEvent {
                 ...LabeledEvent_event
-              }
-              ...on LessonComment {
-                ...LessonComment_comment
               }
               ...on PublishedEvent {
                 ...PublishedEvent_event

@@ -9,16 +9,16 @@ import moment from 'moment'
 import Dialog from 'components/Dialog'
 import Snackbar from 'components/mdc/Snackbar'
 import StudyBodyEditor from 'components/StudyBodyEditor'
-import LessonCommentDraftBackup from 'components/LessonCommentDraftBackup'
-import LessonCommentDraftBackups from 'components/LessonCommentDraftBackups'
+import CommentDraftBackup from 'components/CommentDraftBackup'
+import CommentDraftBackups from 'components/CommentDraftBackups'
 import UserLink from 'components/UserLink'
 import Icon from 'components/Icon'
 import List from 'components/mdc/List'
 import Menu, {Corner} from 'components/mdc/Menu'
-import DeleteLessonCommentMutation from 'mutations/DeleteLessonCommentMutation'
-import PublishLessonCommentDraftMutation from 'mutations/PublishLessonCommentDraftMutation'
-import ResetLessonCommentDraftMutation from 'mutations/ResetLessonCommentDraftMutation'
-import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
+import DeleteCommentMutation from 'mutations/DeleteCommentMutation'
+import PublishCommentDraftMutation from 'mutations/PublishCommentDraftMutation'
+import ResetCommentDraftMutation from 'mutations/ResetCommentDraftMutation'
+import UpdateCommentMutation from 'mutations/UpdateCommentMutation'
 import {
   debounce,
   filterDefinedReactChildren,
@@ -26,7 +26,7 @@ import {
   timeDifferenceForDate,
 } from 'utils'
 
-class LessonComment extends React.Component {
+class Comment extends React.Component {
   editorElement_ = React.createRef()
   state = {
     anchorElement: null,
@@ -49,7 +49,7 @@ class LessonComment extends React.Component {
 
   componentDidMount() {
     this.setState({
-      formId: `restore-lesson-comment-draft-from-backup${shortid.generate()}`,
+      formId: `restore-comment-draft-from-backup${shortid.generate()}`,
     })
   }
 
@@ -61,7 +61,7 @@ class LessonComment extends React.Component {
   }
 
   updateDraft = debounce((draft) => {
-    UpdateLessonCommentMutation(
+    UpdateCommentMutation(
       this.props.comment.id,
       draft,
       (comment, errors) => {
@@ -96,8 +96,13 @@ class LessonComment extends React.Component {
   }
 
   handleDelete = () => {
-    DeleteLessonCommentMutation(
+    DeleteCommentMutation(
       this.props.comment.id,
+      (deletedCommentId, errors) => {
+        if (errors) {
+          console.error(errors[0].message)
+        }
+      },
     )
   }
 
@@ -109,7 +114,7 @@ class LessonComment extends React.Component {
   }
 
   handlePublish = () => {
-    PublishLessonCommentDraftMutation(
+    PublishCommentDraftMutation(
       this.props.comment.id,
       (comment, errors) => {
         if (errors) {
@@ -130,7 +135,7 @@ class LessonComment extends React.Component {
   }
 
   handleReset = () => {
-    ResetLessonCommentDraftMutation(
+    ResetCommentDraftMutation(
       this.props.comment.id,
       (comment, errors) => {
         if (errors) {
@@ -186,7 +191,7 @@ class LessonComment extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("LessonComment", className)
+    return cls("Comment", className)
   }
 
   get isPublishable() {
@@ -352,7 +357,7 @@ class LessonComment extends React.Component {
   }
 
   renderRestoreDraftFromBackupDialog() {
-    const lessonCommentId = get(this.props, "comment.id")
+    const commentId = get(this.props, "comment.id")
     const {draftBackupId, formId, restoreDraftFromBackupDialogOpen} = this.state
 
     return (
@@ -365,9 +370,9 @@ class LessonComment extends React.Component {
               Restore draft from backup
             </div>
             {restoreDraftFromBackupDialogOpen &&
-            <LessonCommentDraftBackups
+            <CommentDraftBackups
               className="mt2"
-              lessonCommentId={lessonCommentId}
+              commentId={commentId}
               value={draftBackupId}
               onChange={(draftBackupId) => this.setState({draftBackupId})}
             />}
@@ -376,8 +381,8 @@ class LessonComment extends React.Component {
         content={
           <Dialog.Content>
             <form id={formId} onSubmit={this.handleRestore}>
-              <LessonCommentDraftBackup
-                lessonCommentId={lessonCommentId}
+              <CommentDraftBackup
+                commentId={commentId}
                 backupId={draftBackupId}
                 onChange={(draftBackup) => this.setState({draftBackup})}
               />
@@ -407,8 +412,8 @@ class LessonComment extends React.Component {
   }
 }
 
-export default createFragmentContainer(LessonComment, graphql`
-  fragment LessonComment_comment on LessonComment {
+export default createFragmentContainer(Comment, graphql`
+  fragment Comment_comment on Comment {
     author {
       ...UserLink_user
     }

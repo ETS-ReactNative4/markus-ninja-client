@@ -5,14 +5,14 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import environment from 'Environment'
+import {Link} from 'react-router-dom'
 import NotFound from 'components/NotFound'
 import StudyLabels from 'components/StudyLabels'
-import {Link} from 'react-router-dom'
+import AddCommentForm from 'components/AddCommentForm'
 import LessonCourse from './LessonCourse'
 import LessonHeader from './LessonHeader'
 import LessonLabels from './LessonLabels'
 import LessonBody from './LessonBody'
-import AddLessonCommentForm from './AddLessonCommentForm'
 import LessonTimeline from './LessonTimeline'
 import AppContext from 'containers/App/Context'
 import {get} from 'utils'
@@ -32,7 +32,7 @@ const LessonPageQuery = graphql`
         ...LessonLabels_lesson
         ...LessonBody_lesson
         ...LessonTimeline_lesson
-        ...AddLessonCommentForm_lesson
+        ...AddCommentForm_commentable
       }
     }
   }
@@ -45,7 +45,6 @@ class LessonPage extends React.Component {
     this.lessonTimelineElement_ && this.lessonTimelineElement_.current &&
       this.lessonTimelineElement_.current.refetch()
   }
-
 
   get classes() {
     const {className} = this.props
@@ -106,7 +105,7 @@ class LessonPage extends React.Component {
                           </div>
                         </div>
                       </div>
-                    : <AddLessonCommentForm lesson={lesson} />}
+                    : <AddCommentForm commentable={lesson} />}
                     <LessonTimeline ref={this.lessonTimelineElement_} lesson={lesson} />
                   </div>
                 </div>

@@ -12,7 +12,6 @@ import Menu from 'components/mdc/Menu'
 import NotificationButton from 'components/NotificationButton'
 import ListEnrollButton from 'components/ListEnrollButton'
 import MarkNotificationAsReadMutation from 'mutations/MarkNotificationAsReadMutation'
-import UpdateEnrollmentMutation from 'mutations/UpdateEnrollmentMutation'
 import {filterDefinedReactChildren, get, timeDifferenceForDate} from 'utils'
 
 class Notification extends React.Component {
@@ -34,21 +33,21 @@ class Notification extends React.Component {
     )
   }
 
-  handleUnenroll = (e) => {
-    UpdateEnrollmentMutation(
-      get(this.props, "notification.subject.id", ""),
-      'UNENROLLED',
-      (response, errors) => {
-        if (errors) {
-          console.error(errors[0].message)
-        }
-      }
-    )
-  }
-
   get classes() {
     const {className} = this.props
     return cls("Notification rn-list-preview", className)
+  }
+
+  get primaryText() {
+    const subject = get(this.props, "notification.subject", {})
+    switch (subject.__typename) {
+      case "Lesson":
+        return subject.title
+      case "UserAsset":
+        return subject.name
+      default:
+        return ""
+    }
   }
 
   render() {
@@ -63,7 +62,7 @@ class Notification extends React.Component {
             <Icon className="mdc-icon-button" icon="lesson" onClick={this.handleMarkAsRead} />
           </span>
           <span className="mdc-list-item__text pointer" onClick={this.handleMarkAsRead}>
-            <span className="mdc-list-item__primary-text">{subject.title}</span>
+            <span className="mdc-list-item__primary-text">{this.primaryText}</span>
             <span className="mdc-list-item__secondary-text">
               {timeDifferenceForDate(notification.createdAt)}
             </span>
@@ -110,7 +109,7 @@ class Notification extends React.Component {
     const subject = get(this.props, "comment", {})
 
     const listItems = [
-      subject.viewerCanEnroll &&
+      subject.__typename === "Lesson" && subject.viewerCanEnroll &&
       <ListEnrollButton notification enrollable={subject} />,
       <List.Item onClick={this.handleMarkAsRead}>
         <List.Item.Graphic graphic={<Icon icon="done" />} />
@@ -128,12 +127,17 @@ export default withRouter(createFragmentContainer(Notification, graphql`
     createdAt
     reason
     subject {
-      ...NotificationButton_enrollable
-      enrollmentStatus
+      __typename
       id
-      title
       resourcePath
-      viewerCanEnroll
+      ...on Lesson {
+        enrollmentStatus
+        title
+        viewerCanEnroll
+      }
+      ...on UserAsset {
+        name
+      }
     }
   }
 `))

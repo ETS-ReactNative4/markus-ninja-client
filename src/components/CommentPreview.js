@@ -7,22 +7,22 @@ import { Link } from 'react-router-dom'
 import HTML from 'components/HTML'
 import { get } from 'utils'
 
-class LessonCommentPreview extends Component {
+class CommentPreview extends Component {
   render() {
     const comment = get(this.props, "comment", {})
     return (
       <Link
-        className="LessonCommentPreview"
+        className="CommentPreview"
         to={comment.resourcePath}
       >
-        <HTML className="LessonCommentPreview__bodyHTML" html={comment.bodyHTML} />
+        <HTML className="CommentPreview__bodyHTML" html={comment.bodyHTML} />
       </Link>
     )
   }
 }
 
-export default createFragmentContainer(LessonCommentPreview, graphql`
-  fragment LessonCommentPreview_comment on LessonComment {
+export default createFragmentContainer(CommentPreview, graphql`
+  fragment CommentPreview_comment on Comment {
     id
     bodyHTML
     resourcePath

@@ -7,10 +7,10 @@ import graphql from 'babel-plugin-relay/macro'
 import environment from 'Environment'
 import {get, isEmpty, timeDifferenceForDate} from 'utils'
 
-const LessonCommentDraftBackupQuery = graphql`
-  query LessonCommentDraftBackupQuery($lessonCommentId: ID!, $backupId: ID!) {
-    node(id: $lessonCommentId) {
-      ...on LessonComment {
+const CommentDraftBackupQuery = graphql`
+  query CommentDraftBackupQuery($commentId: ID!, $backupId: ID!) {
+    node(id: $commentId) {
+      ...on Comment {
         draftBackup(id: $backupId) {
           draft
           id
@@ -40,9 +40,9 @@ class Input extends React.Component {
   }
 }
 
-class LessonCommentDraftBackup extends React.Component {
+class CommentDraftBackup extends React.Component {
   render() {
-    const {backupId, lessonCommentId, onChange} = this.props
+    const {backupId, commentId, onChange} = this.props
 
     if (isEmpty(backupId)) {
       return (
@@ -57,10 +57,10 @@ class LessonCommentDraftBackup extends React.Component {
     return (
       <QueryRenderer
         environment={environment}
-        query={LessonCommentDraftBackupQuery}
+        query={CommentDraftBackupQuery}
         variables={{
           backupId,
-          lessonCommentId,
+          commentId,
         }}
         render={({error, props}) => {
           if (error) {
@@ -96,16 +96,16 @@ class LessonCommentDraftBackup extends React.Component {
   }
 }
 
-LessonCommentDraftBackup.propTypes = {
+CommentDraftBackup.propTypes = {
   backupId: PropTypes.oneOf(["", "1", "2", "3", "4", "5"]).isRequired,
-  lessonCommentId: PropTypes.string.isRequired,
+  commentId: PropTypes.string.isRequired,
   onChange: PropTypes.func,
 }
 
-LessonCommentDraftBackup.defaultProps = {
+CommentDraftBackup.defaultProps = {
   backupId: "",
-  lessonCommentId: "",
+  commentId: "",
   onChange: () => {},
 }
 
-export default LessonCommentDraftBackup
+export default CommentDraftBackup

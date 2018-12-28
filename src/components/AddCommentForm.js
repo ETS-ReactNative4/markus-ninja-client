@@ -7,19 +7,19 @@ import {
 import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router'
 import Dialog from 'components/Dialog'
-import AddLessonCommentMutation from 'mutations/AddLessonCommentMutation'
-import UpdateLessonCommentMutation from 'mutations/UpdateLessonCommentMutation'
+import AddCommentMutation from 'mutations/AddCommentMutation'
+import UpdateCommentMutation from 'mutations/UpdateCommentMutation'
 import Snackbar from 'components/mdc/Snackbar'
 import StudyBodyEditor from 'components/StudyBodyEditor'
-import LessonCommentDraftBackup from 'components/LessonCommentDraftBackup'
-import LessonCommentDraftBackups from 'components/LessonCommentDraftBackups'
+import CommentDraftBackup from 'components/CommentDraftBackup'
+import CommentDraftBackups from 'components/CommentDraftBackups'
 import {debounce, get, isNil} from 'utils'
 
-class AddLessonCommentForm extends React.Component {
+class AddCommentForm extends React.Component {
   constructor(props) {
     super(props)
 
-    const comment = get(this.props, "lesson.viewerNewComment", {})
+    const comment = get(this.props, "commentable.viewerNewComment", {})
 
     this.editorElement_ = React.createRef()
     this.state = {
@@ -38,9 +38,9 @@ class AddLessonCommentForm extends React.Component {
   }
 
   updateDraft = debounce((draft) => {
-    const comment = get(this.props, "lesson.viewerNewComment", {})
+    const comment = get(this.props, "commentable.viewerNewComment", {})
 
-    UpdateLessonCommentMutation(
+    UpdateCommentMutation(
       comment.id,
       draft,
       (comment, errors) => {
@@ -83,9 +83,9 @@ class AddLessonCommentForm extends React.Component {
   }
 
   handlePublish = () => {
-    AddLessonCommentMutation(
-      get(this.props, "lesson.viewerNewComment.id", ""),
-      (comment, errors) => {
+    AddCommentMutation(
+      get(this.props, "commentable.viewerNewComment.id", ""),
+      (newComment, errors) => {
         if (errors) {
           this.setState({
             error: errors[0].message,
@@ -94,25 +94,29 @@ class AddLessonCommentForm extends React.Component {
           })
           return
         }
-        this.setState({
-          draft: {
-            dirty: false,
-            initialValue: comment.draft,
-            value: comment.draft,
-          },
-          showSnackbar: true,
-          snackbarMessage: "Comment published",
-        })
+        if (newComment) {
+          this.setState({
+            draft: {
+              dirty: false,
+              initialValue: newComment.draft,
+              value: newComment.draft,
+            },
+            showSnackbar: true,
+            snackbarMessage: "Comment published",
+          })
+          const editor = this.editorElement_ && this.editorElement_.current
+          editor.setText(newComment.draft)
+        }
       }
     )
   }
 
   handleReset = () => {
-    const comment = get(this.props, "lesson.viewerNewComment", {})
+    const comment = get(this.props, "commentable.viewerNewComment", {})
     const {draft} = this.state
 
     if (draft.value !== "") {
-      UpdateLessonCommentMutation(
+      UpdateCommentMutation(
         comment.id,
         "",
         (comment, errors) => {
@@ -155,7 +159,7 @@ class AddLessonCommentForm extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("AddLessonCommentForm mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
+    return cls("AddCommentForm mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   get isPublishable() {
@@ -166,8 +170,8 @@ class AddLessonCommentForm extends React.Component {
 
   render() {
     const {showSnackbar, snackbarMessage} = this.state
-    const study = get(this.props, "lesson.study", null)
-    const comment = get(this.props, "lesson.viewerNewComment", {})
+    const study = get(this.props, "commentable.study", null)
+    const comment = get(this.props, "commentable.viewerNewComment", {})
 
     return (
       <React.Fragment>
@@ -215,7 +219,7 @@ class AddLessonCommentForm extends React.Component {
   }
 
   renderRestoreDraftFromBackupDialog() {
-    const comment = get(this.props, "lesson.viewerNewComment", {})
+    const comment = get(this.props, "commentable.viewerNewComment", {})
     const {draftBackupId, restoreDraftFromBackupDialogOpen} = this.state
 
     return (
@@ -228,9 +232,9 @@ class AddLessonCommentForm extends React.Component {
               Restore draft from backup
             </div>
             {restoreDraftFromBackupDialogOpen &&
-            <LessonCommentDraftBackups
+            <CommentDraftBackups
               className="mt2"
-              lessonCommentId={comment.id}
+              commentId={comment.id}
               value={draftBackupId}
               onChange={(draftBackupId) => this.setState({draftBackupId})}
             />}
@@ -238,9 +242,9 @@ class AddLessonCommentForm extends React.Component {
         }
         content={
           <Dialog.Content>
-            <form id="restore-add-lesson-comment-draft-from-backup" onSubmit={this.handleRestore}>
-              <LessonCommentDraftBackup
-                lessonCommentId={comment.id}
+            <form id="restore-add-comment-draft-from-backup" onSubmit={this.handleRestore}>
+              <CommentDraftBackup
+                commentId={comment.id}
                 backupId={draftBackupId}
                 onChange={(draftBackup) => this.setState({draftBackup})}
               />
@@ -258,7 +262,7 @@ class AddLessonCommentForm extends React.Component {
             </button>
             <button
               type="submit"
-              form="restore-add-lesson-comment-draft-from-backup"
+              form="restore-add-comment-draft-from-backup"
               className="mdc-button"
               data-mdc-dialog-action="restore"
             >
@@ -270,20 +274,20 @@ class AddLessonCommentForm extends React.Component {
   }
 }
 
-AddLessonCommentForm.propTypes = {
-  lesson: PropTypes.shape({
+AddCommentForm.propTypes = {
+  commentable: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }).isRequired,
 }
 
-AddLessonCommentForm.defaultProps = {
-  lesson: {
+AddCommentForm.defaultProps = {
+  commentable: {
     id: "",
   },
 }
 
-export default withRouter(createFragmentContainer(AddLessonCommentForm, graphql`
-  fragment AddLessonCommentForm_lesson on Lesson {
+export default withRouter(createFragmentContainer(AddCommentForm, graphql`
+  fragment AddCommentForm_commentable on Commentable {
     id
     study {
       ...StudyBodyEditor_study

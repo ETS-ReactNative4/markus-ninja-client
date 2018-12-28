@@ -28,8 +28,6 @@ class Icon extends React.PureComponent {
         return "label"
       case "lesson":
         return "subject"
-      case "lesson_comment":
-        return "comment"
       case "reference":
         return "attach_money"
       case "study":

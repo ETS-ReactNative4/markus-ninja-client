@@ -1,8 +1,5 @@
 import * as React from 'react'
-import {
-  createFragmentContainer,
-} from 'react-relay'
-import graphql from 'babel-plugin-relay/macro'
+import PropTypes from 'prop-types'
 import cls from 'classnames'
 import { get, isNil } from 'utils'
 import UpdateEnrollmentMutation from 'mutations/UpdateEnrollmentMutation'
@@ -125,10 +122,20 @@ export class NotificationButton extends React.Component {
   }
 }
 
-export default createFragmentContainer(NotificationButton, graphql`
-  fragment NotificationButton_enrollable on Enrollable {
-    enrollmentStatus
-    id
-    viewerCanEnroll
+NotificationButton.propTypes = {
+  enrollable: PropTypes.shape({
+    enrollmentStatus: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    viewerCanEnroll: PropTypes.bool.isRequired,
+  }).isRequired,
+}
+
+NotificationButton.defaultProps = {
+  enrollable: {
+    enrollmentStatus: "",
+    id: "",
+    viewerCanEnroll: false,
   }
-`)
+}
+
+export default NotificationButton

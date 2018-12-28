@@ -22,8 +22,8 @@ class PublishedEvent extends React.Component {
         return "course"
       case "Lesson":
         return "lesson"
-      case "LessonComment":
-        return "lesson comment"
+      case "Comment":
+        return "comment"
       default:
         return ""
     }
@@ -32,12 +32,12 @@ class PublishedEvent extends React.Component {
   get publishableLink() {
     const publishable = get(this.props, "event.publishable", {})
     switch (publishable.__typename) {
+      case "Comment":
+        return "comment"
       case "Course":
         return publishable.name
       case "Lesson":
         return publishable.title
-      case "LessonComment":
-        return "comment"
       default:
         return ""
     }
@@ -114,6 +114,9 @@ export default createFragmentContainer(PublishedEvent, graphql`
     id
     publishable {
       __typename
+      ...on Comment {
+        resourcePath
+      }
       ...on Course {
         name
         resourcePath
@@ -121,9 +124,6 @@ export default createFragmentContainer(PublishedEvent, graphql`
       ...on Lesson {
         resourcePath
         title
-      }
-      ...on LessonComment {
-        resourcePath
       }
     }
     user {

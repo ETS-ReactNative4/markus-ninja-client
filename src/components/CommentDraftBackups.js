@@ -9,10 +9,10 @@ import Select from '@material/react-select'
 import environment from 'Environment'
 import {get, timeDifferenceForDate} from 'utils'
 
-const LessonCommentDraftBackupsQuery = graphql`
-  query LessonCommentDraftBackupsQuery($lessonCommentId: ID!) {
-    node(id: $lessonCommentId) {
-      ...on LessonComment {
+const CommentDraftBackupsQuery = graphql`
+  query CommentDraftBackupsQuery($commentId: ID!) {
+    node(id: $commentId) {
+      ...on Comment {
         draftBackups {
           id
           updatedAt
@@ -22,7 +22,7 @@ const LessonCommentDraftBackupsQuery = graphql`
   }
 `
 
-class LessonCommentDraftBackups extends React.Component {
+class CommentDraftBackups extends React.Component {
   state = {
     value: this.props.value,
   }
@@ -36,15 +36,15 @@ class LessonCommentDraftBackups extends React.Component {
   }
 
   render() {
-    const {className, lessonCommentId} = this.props
+    const {className, commentId} = this.props
     const {value} = this.state
 
     return (
       <QueryRenderer
         environment={environment}
-        query={LessonCommentDraftBackupsQuery}
+        query={CommentDraftBackupsQuery}
         variables={{
-          lessonCommentId,
+          commentId,
         }}
         render={({error, props}) => {
           if (error) {
@@ -79,14 +79,14 @@ class LessonCommentDraftBackups extends React.Component {
   }
 }
 
-LessonCommentDraftBackups.propTypes = {
-  lessonCommentId: PropTypes.string.isRequired,
+CommentDraftBackups.propTypes = {
+  commentId: PropTypes.string.isRequired,
   onChange: PropTypes.func,
 }
 
-LessonCommentDraftBackups.defaultProps = {
-  lessonCommentId: "",
+CommentDraftBackups.defaultProps = {
+  commentId: "",
   onChange: () => {},
 }
 
-export default LessonCommentDraftBackups
+export default CommentDraftBackups

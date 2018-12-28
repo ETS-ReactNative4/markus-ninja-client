@@ -1,60 +1,119 @@
 import React, { Component } from 'react'
 import {
-  createPaginationContainer,
+  createRefetchContainer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
-import { withRouter } from 'react-router'
 import UserAssetTimelineEvent from './UserAssetTimelineEvent'
-import {get, isEmpty} from 'utils'
+import {debounce, get, groupInOrderByFunc} from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
 
 class UserAssetTimeline extends Component {
-  render() {
-    const timelineEdges = get(this.props, "asset.timeline.edges", [])
+  state = {
+    error: null,
+    loading: false,
+  }
 
-    if (isEmpty(timelineEdges)) {
-      return null
+  _loadMore = () => {
+    const {loading} = this.state
+    const after = get(this.props, "asset.timeline.pageInfo.endCursor")
+
+    if (!this._hasMore) {
+      console.log("Nothing more to load")
+      return
+    } else if (loading){
+      console.log("Request is already pending")
+      return
     }
 
+    this.refetch(after)
+  }
+
+  refetch = debounce((after) => {
+    const {relay} = this.props
+
+    this.setState({
+      loading: true,
+    })
+
+    relay.refetch(
+      {
+        after,
+        count: EVENTS_PER_PAGE,
+      },
+      null,
+      (error) => {
+        if (error) {
+          console.log(error)
+        }
+        this.setState({
+          loading: false,
+        })
+      },
+      {force: true},
+    )
+  }, 200)
+
+  get _hasMore() {
+    return get(this.props, "asset.timeline.pageInfo.hasNextPage", false)
+  }
+
+  render() {
     return (
-      <div className="mdc-card mdc-card--outlined ph2">
-        <ul className="mdc-list">
-          {timelineEdges.map(({node}) => (
-            node &&
-            <UserAssetTimelineEvent key={node.id} item={node} />
-          ))}
-        </ul>
-        {this.props.relay.hasMore() &&
-        <div className="mdc-card__actions">
-          <div className="mdc-card__action-buttons">
+      <React.Fragment>
+        {this.renderTimelineEdges()}
+        {this._hasMore &&
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <div className="flex justify-center">
             <button
-              className="UserAssetTimeline__more"
+              className="mdc-button mdc-button--unelevated"
               onClick={this._loadMore}
             >
               Load More
             </button>
           </div>
         </div>}
-      </div>
+      </React.Fragment>
     )
   }
 
-  _loadMore = () => {
-    const relay = get(this.props, "relay")
-    if (!relay.hasMore()) {
-      console.log("Nothing more to load")
-      return
-    } else if (relay.isLoading()){
-      console.log("Request is already pending")
-      return
-    }
+  renderTimelineEdges() {
+    const timelineEdges = groupInOrderByFunc(
+      get(this.props, "asset.timeline.edges", []),
+      ({node}) => node && node.__typename !== "Comment",
+    )
 
-    relay.loadMore(EVENTS_PER_PAGE)
+    return (
+      <React.Fragment>
+        {timelineEdges.map((group) => {
+          if (group[0].node.__typename === "Comment") {
+            return group.map(({node}) =>
+              node &&
+              <UserAssetTimelineEvent
+                key={node.id}
+                className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+                item={node}
+              />
+            )
+          } else {
+            return (
+              <div key={group[0].node.id} className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                <div className="mdc-card mdc-card--outlined ph2">
+                  <ul className="mdc-list">
+                    {group.map(({node}) =>
+                      node && <UserAssetTimelineEvent key={node.id} item={node} />)}
+                  </ul>
+                </div>
+              </div>
+            )
+          }
+        })}
+      </React.Fragment>
+    )
   }
 }
 
-export default withRouter(createPaginationContainer(UserAssetTimeline,
+export default createRefetchContainer(UserAssetTimeline,
   {
     asset: graphql`
       fragment UserAssetTimeline_asset on UserAsset {
@@ -67,11 +126,20 @@ export default withRouter(createPaginationContainer(UserAssetTimeline,
             node {
               __typename
               id
+              ...on Comment {
+                ...Comment_comment
+              }
+              ...on LabeledEvent {
+                ...LabeledEvent_event
+              }
               ...on ReferencedEvent {
                 ...ReferencedEvent_event
               }
               ...on RenamedEvent {
                 ...RenamedEvent_event
+              }
+              ...on UnlabeledEvent {
+                ...UnlabeledEvent_event
               }
             }
           }
@@ -83,40 +151,19 @@ export default withRouter(createPaginationContainer(UserAssetTimeline,
       }
     `,
   },
-  {
-    direction: 'forward',
-    query: graphql`
-      query UserAssetTimelineForwardQuery(
-        $owner: String!,
-        $name: String!,
-        $filename: String!,
-        $count: Int!,
-        $after: String
-      ) {
-        study(owner: $owner, name: $name) {
-          asset(name: $filename) {
-            ...UserAssetTimeline_asset
-          }
+  graphql`
+    query UserAssetTimelineForwardQuery(
+      $owner: String!,
+      $name: String!,
+      $filename: String!,
+      $count: Int!,
+      $after: String
+    ) {
+      study(owner: $owner, name: $name) {
+        asset(name: $filename) {
+          ...UserAssetTimeline_asset
         }
       }
-    `,
-    getConnectionFromProps(props) {
-      return get(props, "asset.timeline")
-    },
-    getFragmentVariables(previousVariables, totalCount) {
-      return {
-        ...previousVariables,
-        count: totalCount,
-      }
-    },
-    getVariables(props, paginationInfo, getFragmentVariables) {
-      return {
-        owner: props.match.params.owner,
-        name: props.match.params.name,
-        filename: props.match.params.filename,
-        count: paginationInfo.count,
-        after: paginationInfo.cursor,
-      }
-    },
-  },
-))
+    }
+  `,
+)

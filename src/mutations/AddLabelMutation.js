@@ -4,7 +4,7 @@ import {
 import graphql from 'babel-plugin-relay/macro'
 import { ConnectionHandler } from 'relay-runtime'
 import environment from 'Environment'
-import { get, isNil } from 'utils'
+import {get} from 'utils'
 
 const mutation = graphql`
   mutation AddLabelMutation($input: AddLabelInput!) {
@@ -13,6 +13,9 @@ const mutation = graphql`
         node {
           ...Label_label
         }
+      }
+      labelable {
+        __typename
       }
     }
   }
@@ -33,15 +36,30 @@ export default (labelId, labelableId, callback) => {
       variables,
       updater: proxyStore => {
         const addLabelField = proxyStore.getRootField("addLabel")
-        if (!isNil(addLabelField)) {
+        if (addLabelField) {
+          const labelLabelable = addLabelField.getLinkedRecord("labelable")
+          const labelableType = labelLabelable && labelLabelable.getValue("__typename")
           const labelable = proxyStore.get(labelableId)
-          const labels = ConnectionHandler.getConnection(
-            labelable,
-            "LessonLabels_labels",
-          )
-          const edge = addLabelField.getLinkedRecord("labelEdge")
-          if (edge) {
-            ConnectionHandler.insertEdgeAfter(labels, edge)
+          if (labelable) {
+            let labels
+            switch (labelableType) {
+              case "Lesson":
+                labels = ConnectionHandler.getConnection(
+                  labelable,
+                  "LessonLabels_labels",
+                )
+                break
+              case "UserAsset":
+                labels = ConnectionHandler.getConnection(
+                  labelable,
+                  "UserAssetLabels_labels",
+                )
+                break
+              default:
+                return
+            }
+            const edge = addLabelField.getLinkedRecord("labelEdge")
+            labels && edge && ConnectionHandler.insertEdgeAfter(labels, edge)
           }
         }
       },

@@ -6,8 +6,8 @@ import environment from 'Environment'
 import {nullString} from 'utils'
 
 const mutation = graphql`
-  mutation ResetLessonCommentDraftMutation($input: ResetLessonCommentDraftInput!) {
-    resetLessonCommentDraft(input: $input) {
+  mutation ResetCommentDraftMutation($input: ResetCommentDraftInput!) {
+    resetCommentDraft(input: $input) {
       id
       draft
       lastEditedAt
@@ -16,10 +16,10 @@ const mutation = graphql`
   }
 `
 
-export default (lessonCommentId, callback) => {
+export default (commentId, callback) => {
   const variables = {
     input: {
-      lessonCommentId: nullString(lessonCommentId),
+      commentId: nullString(commentId),
     },
   }
 
@@ -29,13 +29,13 @@ export default (lessonCommentId, callback) => {
       mutation,
       variables,
       updater: proxyStore => {
-        const resetLessonCommentDraftField = proxyStore.getRootField('resetLessonCommentDraft')
-        if (resetLessonCommentDraftField) {
-          const newDraft = resetLessonCommentDraftField.getValue('draft')
-          const newLastEditedAt = resetLessonCommentDraftField.getValue('lastEditedAt')
-          const newUpdatedAt = resetLessonCommentDraftField.getValue('updatedAt')
+        const resetCommentDraftField = proxyStore.getRootField('resetCommentDraft')
+        if (resetCommentDraftField) {
+          const newDraft = resetCommentDraftField.getValue('draft')
+          const newLastEditedAt = resetCommentDraftField.getValue('lastEditedAt')
+          const newUpdatedAt = resetCommentDraftField.getValue('updatedAt')
 
-          const comment = proxyStore.get(lessonCommentId)
+          const comment = proxyStore.get(commentId)
           if (comment) {
             comment.setValue(newDraft, 'draft')
             comment.setValue(newLastEditedAt, 'lastEditedAt')
@@ -44,7 +44,7 @@ export default (lessonCommentId, callback) => {
         }
       },
       onCompleted: (response, error) => {
-        callback(response.resetLessonCommentDraft, error)
+        callback(response.resetCommentDraft, error)
       },
       onError: err => callback(null, err),
     },

@@ -5,13 +5,20 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import environment from 'Environment'
+import {Link} from 'react-router-dom'
 import NotFound from 'components/NotFound'
+import StudyLabels from 'components/StudyLabels'
+import AddCommentForm from 'components/AddCommentForm'
 import UserAsset from './UserAsset'
 import UserAssetHeader from './UserAssetHeader'
+import UserAssetLabels from './UserAssetLabels'
 import UserAssetTimeline from './UserAssetTimeline'
-import { get, isNil } from 'utils'
+import AppContext from 'containers/App/Context'
+import {get} from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
+
+import "./styles.css"
 
 const UserAssetPageQuery = graphql`
   query UserAssetPageQuery($owner: String!, $name: String!, $filename: String!, $count: Int!, $after: String) {
@@ -20,16 +27,25 @@ const UserAssetPageQuery = graphql`
         id
         ...UserAssetHeader_asset
         ...UserAsset_asset
+        ...UserAssetLabels_asset
         ...UserAssetTimeline_asset
+        ...AddCommentForm_commentable
       }
     }
   }
 `
 
 class UserAssetPage extends React.Component {
+  userAssetTimelineElement_ = React.createRef()
+
+  handleLabelToggled_ = (checked) => {
+    this.userAssetTimelineElement_ && this.userAssetTimelineElement_.current &&
+      this.userAssetTimelineElement_.current.refetch()
+  }
+
   get classes() {
     const {className} = this.props
-    return cls("UserAssetPage rn-page mdc-layout-grid", className)
+    return cls("UserAssetPage rn-page rn-page--column", className)
   }
 
   render() {
@@ -48,18 +64,41 @@ class UserAssetPage extends React.Component {
             return <div>{error.message}</div>
           } else if (props) {
             const asset = get(props, "study.asset", null)
-            if (isNil(asset)) {
+            if (!asset) {
               return <NotFound />
             }
             return (
               <div className={this.classes}>
-                <div className="mdc-layout-grid__inner">
-                  <UserAssetHeader asset={asset} />
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <UserAsset asset={props.study.asset} />
+                <div className="mdc-layout-grid mw8">
+                  <div className="mdc-layout-grid__inner">
+                    <UserAssetHeader asset={asset} />
+                    <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      <UserAsset asset={props.study.asset} />
+                    </div>
+                    <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      <div className="center mw8">
+                        <StudyLabels fragment="toggle">
+                          <UserAssetLabels asset={asset} onLabelToggled={this.handleLabelToggled_} />
+                        </StudyLabels>
+                      </div>
+                    </div>
                   </div>
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <UserAssetTimeline asset={asset} />
+                </div>
+                <div className="UserAssetPage__timeline mdc-layout-grid">
+                  <div className="UserAssetPage__timeline__container mdc-layout-grid__inner mw7">
+                    {!this.context.isAuthenticated()
+                    ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                        <div className="mdc-card mdc-card--outlined">
+                          <div className="rn-card__header">
+                            <Link className="rn-link rn-link--underlined mr1" to="/signin">Sign in</Link>
+                            or
+                            <Link className="rn-link rn-link--underlined mh1" to="/signup">Sign up</Link>
+                            to leave a comment
+                          </div>
+                        </div>
+                      </div>
+                    : <AddCommentForm commentable={asset} />}
+                    <UserAssetTimeline ref={this.userAssetTimelineElement_} asset={asset} />
                   </div>
                 </div>
               </div>
@@ -71,5 +110,7 @@ class UserAssetPage extends React.Component {
     )
   }
 }
+
+UserAssetPage.contextType = AppContext
 
 export default UserAssetPage
