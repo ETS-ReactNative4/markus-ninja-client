@@ -5,7 +5,7 @@ import List from 'components/mdc/List'
 import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import Menu, {Corner} from 'components/mdc/Menu'
-import {get, getHandleClickLink, timeDifferenceForDate} from 'utils'
+import {capitalize, get, getHandleClickLink, timeDifferenceForDate} from 'utils'
 
 class ListTopicPreview extends React.Component {
   state = {
@@ -37,7 +37,7 @@ class ListTopicPreview extends React.Component {
           </span>
           <Link className="mdc-list-item__text" to={topic.resourcePath}>
             <span className="mdc-list-item__primary-text">
-              {topic.name}
+              {capitalize(topic.name)}
             </span>
             <span className="mdc-list-item__secondary-text">
               First used

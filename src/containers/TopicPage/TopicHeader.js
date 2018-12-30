@@ -6,7 +6,7 @@ import graphql from 'babel-plugin-relay/macro'
 import {withRouter} from 'react-router-dom';
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import UpdateTopicMutation from 'mutations/UpdateTopicMutation'
-import {get, isEmpty, isNil} from 'utils'
+import {capitalize, get, isEmpty, isNil} from 'utils'
 
 class TopicHeader extends React.Component {
   state = {
@@ -67,7 +67,7 @@ class TopicHeader extends React.Component {
     return (
       <React.Fragment>
         <h4 className="mdc-layout-grid__cell mdc-layout-grid__cell-span-12">
-          {topic.name}
+          {capitalize(topic.name)}
         </h4>
         {open && topic.viewerCanUpdate
         ? this.renderForm()

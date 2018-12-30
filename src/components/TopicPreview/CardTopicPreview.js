@@ -5,7 +5,7 @@ import List from 'components/mdc/List'
 import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import Menu, {Corner} from 'components/mdc/Menu'
-import {get, getHandleClickLink, timeDifferenceForDate} from 'utils'
+import {capitalize, get, getHandleClickLink, timeDifferenceForDate} from 'utils'
 
 class CardTopicPreview extends React.Component {
   state = {
@@ -36,7 +36,7 @@ class CardTopicPreview extends React.Component {
             <Icon as="span" className="rn-card__header__graphic" icon="topic" />
             <div className="rn-card__text">
               <h6 className="rn-card__title">
-                {topic.name}
+                {capitalize(topic.name)}
               </h6>
               <div className="rn-card__subtitle">
                 First used

@@ -249,3 +249,8 @@ export function getHandleClickLink(to) {
 export function filterDefinedReactChildren(children) {
   return React.Children.map(children, c => c).filter(isDefined)
 }
+
+export function capitalize(s) {
+  if (typeof s !== "string") return ""
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
