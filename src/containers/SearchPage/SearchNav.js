@@ -10,12 +10,13 @@ import Icon from 'components/Icon'
 import Counter from 'components/Counter'
 import { get } from 'utils'
 
-const COURSE_INDEX = 0,
-      LESSON_INDEX = 1,
-      STUDY_INDEX = 2,
-      TOPIC_INDEX = 3,
-      USER_INDEX = 4,
-      USER_ASSET_INDEX = 5
+const USER_ASSET_INDEX = 0,
+      ACTIVITY_INDEX = 1,
+      COURSE_INDEX = 2,
+      LESSON_INDEX = 3,
+      STUDY_INDEX = 4,
+      TOPIC_INDEX = 5,
+      USER_INDEX = 6
 
 class SearchNav extends React.Component {
   state = {
@@ -37,6 +38,8 @@ class SearchNav extends React.Component {
     const query = queryString.parse(get(this.props, "location.search", ""))
     const pathname = get(location, "pathname", "")
 
+    query.t = "activity"
+    const searchActivities = queryString.stringify(query)
     query.t = "course"
     const searchCourses = queryString.stringify(query)
     query.t = "lesson"
@@ -52,6 +55,9 @@ class SearchNav extends React.Component {
 
     let to = {pathname}
     switch (selectedIndex) {
+      case ACTIVITY_INDEX:
+        to.search = searchActivities
+        break
       case COURSE_INDEX:
         to.search = searchCourses
         break
@@ -108,6 +114,24 @@ class SearchNav extends React.Component {
             handleSelect={this.handleSelect_}
           >
             <List.Item className="pointer">
+              <List.Item.Graphic graphic={<Icon icon="asset" />} />
+              <List.Item.Text primaryText={
+                <span>
+                  Assets
+                  <Counter>{counts.userAsset}</Counter>
+                </span>
+              }/>
+            </List.Item>
+            <List.Item className="pointer">
+              <List.Item.Graphic graphic={<Icon icon="activity" />} />
+              <List.Item.Text primaryText={
+                <span>
+                  Activities
+                  <Counter>{counts.activity}</Counter>
+                </span>
+              }/>
+            </List.Item>
+            <List.Item className="pointer">
               <List.Item.Graphic graphic={<Icon icon="course" />} />
               <List.Item.Text primaryText={
                 <span>
@@ -152,15 +176,6 @@ class SearchNav extends React.Component {
                 </span>
               }/>
             </List.Item>
-            <List.Item className="pointer">
-              <List.Item.Graphic graphic={<Icon icon="asset" />} />
-              <List.Item.Text primaryText={
-                <span>
-                  Assets
-                  <Counter>{counts.userAsset}</Counter>
-                </span>
-              }/>
-            </List.Item>
           </List>
         </Drawer.Content>
       </Drawer>
@@ -170,6 +185,7 @@ class SearchNav extends React.Component {
 
 SearchNav.propTypes = {
   counts: PropTypes.shape({
+    activity: PropTypes.number,
     course: PropTypes.number,
     lesson: PropTypes.number,
     study: PropTypes.number,
@@ -182,6 +198,7 @@ SearchNav.propTypes = {
 
 SearchNav.defaultProps = {
   counts: {
+    activity: 0,
     course: 0,
     lesson: 0,
     study: 0,

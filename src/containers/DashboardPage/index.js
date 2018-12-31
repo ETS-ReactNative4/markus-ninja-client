@@ -10,7 +10,7 @@ import StudyPreview from 'components/StudyPreview'
 import IconLink from 'components/IconLink'
 import Drawer from 'components/mdc/Drawer'
 import SearchViewerStudies from './SearchViewerStudies'
-import ViewerReceivedActivity from './ViewerReceivedActivity'
+import ViewerReceivedTimeline from './ViewerReceivedTimeline'
 import {get} from 'utils'
 import { EVENTS_PER_PAGE } from 'consts'
 
@@ -23,7 +23,7 @@ const DashboardPageQuery = graphql`
       ...StudyPreview_study
     }
     viewer {
-      ...ViewerReceivedActivity_viewer @arguments(
+      ...ViewerReceivedTimeline_viewer @arguments(
         count: $count,
         after: $after
       )
@@ -142,7 +142,7 @@ class DashboardPage extends React.Component {
                             <StudyPreview.Card study={get(props, "gettingStartedStudy", null)} />
                           </div>
                         </React.Fragment>}
-                      <ViewerReceivedActivity viewer={props.viewer} />
+                      <ViewerReceivedTimeline viewer={props.viewer} />
                     </div>
                   </div>
                 </div>

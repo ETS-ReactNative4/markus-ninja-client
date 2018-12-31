@@ -76,6 +76,7 @@ class SearchContainer extends React.Component {
     const search = get(this.props, "results.search", {})
 
     return {
+      activity: search.activityCount,
       course: search.courseCount,
       label: search.labelCount,
       lesson: search.lessonCount,
@@ -122,6 +123,7 @@ SearchContainer.defaultProps = {
 
 export const SearchProp = PropTypes.shape({
   counts: PropTypes.shape({
+    activity: PropTypes.number,
     course: PropTypes.number,
     label: PropTypes.number,
     lesson: PropTypes.number,
@@ -139,6 +141,7 @@ export const SearchProp = PropTypes.shape({
 
 export const SearchPropDefaults = {
   counts: {
+    activity: 0,
     course: 0,
     label: 0,
     lesson: 0,
@@ -169,6 +172,9 @@ const refetchContainer = createRefetchContainer(SearchContainer,
             cursor
             node {
               id
+              ...on Activity {
+                ...ActivityPreview_activity
+              }
               ...on Course {
                 ...CoursePreview_course
               }
@@ -196,6 +202,7 @@ const refetchContainer = createRefetchContainer(SearchContainer,
             hasNextPage
             endCursor
           }
+          activityCount
           courseCount
           labelCount
           lessonCount

@@ -6,12 +6,12 @@ import {
 import graphql from 'babel-plugin-relay/macro'
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
-import CreateCourseLink from 'components/CreateCourseLink'
-import StudyCourses from 'components/StudyCourses'
-import StudyCoursesPageCourses from './StudyCoursesPageCourses'
+import CreateActivityLink from 'components/CreateActivityLink'
+import StudyActivities from 'components/StudyActivities'
+import StudyActivitiesPageActivities from './StudyActivitiesPageActivities'
 import {debounce, get, isEmpty} from 'utils'
 
-class StudyCoursesPage extends React.Component {
+class StudyActivitiesPage extends React.Component {
   constructor(props) {
     super(props)
 
@@ -40,7 +40,7 @@ class StudyCoursesPage extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("StudyCoursesPage mdc-layout-grid__inner", className)
+    return cls("StudyActivitiesPage mdc-layout-grid__inner", className)
   }
 
   get _filterBy() {
@@ -88,19 +88,19 @@ class StudyCoursesPage extends React.Component {
             </div>
             <div className="rn-text-field__actions">
               {study.viewerCanAdmin &&
-              <CreateCourseLink
+              <CreateActivityLink
                 className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
                 study={study}
               >
-                New course
-              </CreateCourseLink>}
+                New activity
+              </CreateActivityLink>}
             </div>
           </div>
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <StudyCourses filterBy={this._filterBy} orderBy={this._orderBy}>
-            <StudyCoursesPageCourses study={study} />
-          </StudyCourses>
+          <StudyActivities filterBy={this._filterBy} orderBy={this._orderBy}>
+            <StudyActivitiesPageActivities study={study} />
+          </StudyActivities>
         </div>
       </div>
     )
@@ -112,13 +112,13 @@ class StudyCoursesPage extends React.Component {
     return (
       <TextField
         fullWidth
-        label="Find a course..."
+        label="Find an activity..."
         trailingIcon={<Icon><i className="material-icons">search</i></Icon>}
       >
         <Input
           name="q"
           autoComplete="off"
-          placeholder="Find a course..."
+          placeholder="Find an activity..."
           value={q}
           onChange={this.handleChange}
         />
@@ -127,9 +127,9 @@ class StudyCoursesPage extends React.Component {
   }
 }
 
-export default createFragmentContainer(StudyCoursesPage, graphql`
-  fragment StudyCoursesPage_study on Study {
-    ...CreateCourseLink_study
+export default createFragmentContainer(StudyActivitiesPage, graphql`
+  fragment StudyActivitiesPage_study on Study {
+    ...CreateActivityLink_study
     resourcePath
     viewerCanAdmin
   }

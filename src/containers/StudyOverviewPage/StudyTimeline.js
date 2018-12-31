@@ -4,12 +4,12 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router'
-import StudyActivityEvent from 'components/StudyActivityEvent'
+import StudyTimelineEvent from 'components/StudyTimelineEvent'
 import { get, isEmpty } from 'utils'
 
-import {STUDY_ACTIVITY_PER_PAGE} from 'consts'
+import {STUDY_EVENTS_PER_PAGE} from 'consts'
 
-class StudyActivity extends React.Component {
+class StudyTimeline extends React.Component {
   _loadMore = () => {
     const relay = get(this.props, "relay")
     if (!relay.hasMore()) {
@@ -20,18 +20,18 @@ class StudyActivity extends React.Component {
       return
     }
 
-    relay.loadMore(STUDY_ACTIVITY_PER_PAGE)
+    relay.loadMore(STUDY_EVENTS_PER_PAGE)
   }
 
   render() {
     return (
       <React.Fragment>
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          Recent activity
+          Recent timeline
         </h5>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="mdc-card mdc-card--outlined ph2">
-            {this.renderActivity()}
+            {this.renderTimeline()}
             {this.props.relay.hasMore() &&
             <div className="mdc-card__actions">
               <div className="mdc-card__action-buttons">
@@ -39,7 +39,7 @@ class StudyActivity extends React.Component {
                 className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
                   onClick={this._loadMore}
                 >
-                  Load more activity
+                  Load more timeline
                 </button>
               </div>
             </div>}
@@ -49,9 +49,9 @@ class StudyActivity extends React.Component {
     )
   }
 
-  renderActivity() {
+  renderTimeline() {
     const {relay} = this.props
-    const edges = get(this.props, "study.activity.edges", [])
+    const edges = get(this.props, "study.timeline.edges", [])
     const noResults = isEmpty(edges)
 
     return (
@@ -59,28 +59,28 @@ class StudyActivity extends React.Component {
         {relay.isLoading() && noResults
         ? <li className="mdc-list-item">Loading...</li>
         : noResults
-          ? <li className="mdc-list-item">No recent activity</li>
+          ? <li className="mdc-list-item">No recent timeline</li>
         : edges.map(({node}) => (
             node &&
-            <StudyActivityEvent key={node.id} event={node} />
+            <StudyTimelineEvent key={node.id} event={node} />
           ))}
       </ul>
     )
   }
 }
 
-export default withRouter(createPaginationContainer(StudyActivity,
+export default withRouter(createPaginationContainer(StudyTimeline,
   {
     study: graphql`
-      fragment StudyActivity_study on Study @argumentDefinitions(
+      fragment StudyTimeline_study on Study @argumentDefinitions(
         count: {type: "Int!"},
         after: {type: "String"}
       ) {
-        activity(
+        timeline(
           first: $count,
           after: $after,
           orderBy: {direction: DESC, field: CREATED_AT}
-        ) @connection(key: "StudyActivity_activity", filters: []) {
+        ) @connection(key: "StudyTimeline_timeline", filters: []) {
           edges {
             node {
               __typename
@@ -104,14 +104,14 @@ export default withRouter(createPaginationContainer(StudyActivity,
   {
     direction: 'forward',
     query: graphql`
-      query StudyActivityForwardQuery(
+      query StudyTimelineForwardQuery(
         $owner: String!,
         $name: String!,
         $count: Int!,
         $after: String
       ) {
         study(owner: $owner, name: $name) {
-          ...StudyActivity_study @arguments(
+          ...StudyTimeline_study @arguments(
             count: $count,
             after: $after
           )
@@ -119,7 +119,7 @@ export default withRouter(createPaginationContainer(StudyActivity,
       }
     `,
     getConnectionFromProps(props) {
-      return get(props, "study.activity")
+      return get(props, "study.timeline")
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {

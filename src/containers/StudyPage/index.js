@@ -10,8 +10,10 @@ import PrivateRoute from 'components/PrivateRoute'
 import CreateLabelDialog from 'components/CreateLabelDialog'
 import CreateLessonDialog from 'components/CreateLessonDialog'
 import CreateUserAssetDialog from 'components/CreateUserAssetDialog'
+import CreateActivityPage from 'containers/CreateActivityPage'
 import CreateCoursePage from 'containers/CreateCoursePage'
 import LabelPage from 'containers/LabelPage'
+import StudyActivitiesPage from 'containers/StudyActivitiesPage'
 import StudyCoursesPage from 'containers/StudyCoursesPage'
 import StudyLabelsPage from 'containers/StudyLabelsPage'
 import StudyLessonsPage from 'containers/StudyLessonsPage'
@@ -33,6 +35,7 @@ import "./styles.css"
 const StudyPageQuery = graphql`
   query StudyPageQuery($owner: String!, $name: String!) {
     study(owner: $owner, name: $name) {
+      ...CreateActivityPage_study
       ...CreateCoursePage_study
       ...CreateLabelDialog_study
       ...CreateLessonDialog_study
@@ -43,6 +46,7 @@ const StudyPageQuery = graphql`
       ...StudyLessonsPage_study
       ...StudyAssetsPage_study
       ...StudyCoursesPage_study
+      ...StudyActivitiesPage_study
       ...StudySettingsPage_study
       viewerCanAdmin
     }
@@ -124,6 +128,17 @@ class StudyPage extends React.Component {
                           exact
                           path="/u/:owner/:name"
                           render={(routeProps) => <StudyOverviewPage {...routeProps} study={props.study} />}
+                        />
+                        <Route
+                          exact
+                          path="/u/:owner/:name/activities"
+                          render={(routeProps) => <StudyActivitiesPage {...routeProps} study={props.study} />}
+                        />
+                        <PrivateRoute
+                          exact
+                          path="/u/:owner/:name/activities/new"
+                          authenticated={authenticated}
+                          render={(routeProps) => <CreateActivityPage {...routeProps} study={props.study} />}
                         />
                         <Route
                           exact

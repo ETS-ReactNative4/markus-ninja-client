@@ -6,8 +6,6 @@ import Search from 'components/Search'
 import SearchPageResults from './SearchPageResults'
 import {get} from 'utils'
 
-import './styles.css'
-
 class SearchPage extends React.Component {
   get classes() {
     const {className} = this.props
