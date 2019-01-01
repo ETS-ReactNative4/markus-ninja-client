@@ -34,7 +34,7 @@ class LoginPage extends React.Component {
               <p className="mb1">
                 New here?
                 <Link
-                  className="rn-link rn-link--underlined ml1"
+                  className="rn-link ml1"
                   to="/signup"
                 >
                   Create an account.

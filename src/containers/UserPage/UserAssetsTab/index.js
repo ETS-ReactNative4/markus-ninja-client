@@ -78,7 +78,7 @@ class UserAssetsTab extends React.Component {
           </div>
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <UserAssets filterBy={this._filterBy} orderBy={this._orderBy}>
+          <UserAssets filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
             <UserAssetsTabAssets />
           </UserAssets>
         </div>

@@ -5,16 +5,19 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import getHistory from 'react-router-global-history'
-import {HelperText} from '@material/react-text-field'
+import MaterialTextField, {HelperText, Input} from '@material/react-text-field'
 import ErrorText from 'components/ErrorText'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import CreateActivityMutation from 'mutations/CreateActivityMutation'
+import ActivityLessonDialog from './ActivityLessonDialog'
 import {isEmpty, isNil} from 'utils'
 
 class CreateActivityForm extends React.Component {
   state = {
+    activityLessonDialogOpen: false,
     error: null,
     description: defaultTextFieldState,
+    lesson: null,
     name: defaultTextFieldState,
   }
 
@@ -24,11 +27,23 @@ class CreateActivityForm extends React.Component {
     })
   }
 
+
+  handleSelectLesson = (lesson) => {
+    this.setState({
+      lesson,
+      name: {
+        ...this.state.name,
+        value: lesson.title,
+      }
+    })
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
-    const { description, name } = this.state
+    const {description, lesson,  name} = this.state
     CreateActivityMutation(
       this.props.study.id,
+      lesson.id,
       name.value,
       description.value,
       (activity, errors) => {
@@ -41,22 +56,56 @@ class CreateActivityForm extends React.Component {
     )
   }
 
+  handleToggleActivityLessonDialog = () => {
+    const {activityLessonDialogOpen} = this.state
+    this.setState({
+      activityLessonDialogOpen: !activityLessonDialogOpen,
+    })
+  }
+
   get classes() {
     const {className} = this.props
     return cls("CreateActivityForm mdc-layout-grid__inner", className)
   }
 
   get isFormValid() {
-    const {description, name} = this.state
+    const {description, lesson, name} = this.state
     return !isEmpty(name.value) && name.valid &&
-      description.valid
+      description.valid && !isEmpty(lesson.id)
   }
 
   render() {
-    const {error} = this.state
+    const {activityLessonDialogOpen, error, lesson, name} = this.state
 
     return (
       <form className={this.classes} onSubmit={this.handleSubmit}>
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <button
+            type="button"
+            className="mdc-button mdc-button--unelevated mdc-theme--secondary-bg"
+            onClick={this.handleToggleActivityLessonDialog}
+          >
+            Select Lesson
+          </button>
+        </div>
+        <input
+          type="hidden"
+          required
+          value={lesson ? lesson.id : ""}
+        />
+        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet">
+          <MaterialTextField
+            className="rn-form__input"
+            label="Lesson"
+          >
+            <Input
+              onClick={this.handleToggleActivityLessonDialog}
+              name="lesson"
+              required
+              value={lesson ? `${lesson.study.nameWithOwner}/${lesson.title}` : ""}
+            />
+          </MaterialTextField>
+        </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet">
           <TextField
             className="rn-form__input"
@@ -65,6 +114,7 @@ class CreateActivityForm extends React.Component {
               name: "name",
               required: true,
               onChange: this.handleChange,
+              value: name.value,
             }}
           />
         </div>
@@ -90,6 +140,11 @@ class CreateActivityForm extends React.Component {
         <ErrorText
           className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
           error={error}
+        />
+        <ActivityLessonDialog
+          open={activityLessonDialogOpen}
+          onClose={this.handleToggleActivityLessonDialog}
+          onSelect={this.handleSelectLesson}
         />
       </form>
     )

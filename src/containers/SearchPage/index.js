@@ -57,6 +57,7 @@ class SearchPage extends React.Component {
           type={query.type}
           query={query.query}
           orderBy={query.orderBy}
+          fragment="list"
         >
           <SearchPageResults />
         </Search>

@@ -98,9 +98,9 @@ class LessonPage extends React.Component {
                     ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                         <div className="mdc-card mdc-card--outlined">
                           <div className="rn-card__header">
-                            <Link className="rn-link rn-link--underlined mr1" to="/signin">Sign in</Link>
+                            <Link className="rn-link mr1" to="/signin">Sign in</Link>
                             or
-                            <Link className="rn-link rn-link--underlined mh1" to="/signup">Sign up</Link>
+                            <Link className="rn-link mh1" to="/signup">Sign up</Link>
                             to leave a comment
                           </div>
                         </div>

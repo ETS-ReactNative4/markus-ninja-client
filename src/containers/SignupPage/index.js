@@ -33,7 +33,7 @@ class SignupPage extends React.Component {
               <span>
                 Already have an account?
                 <Link
-                  className="rn-link rn-link--underlined ml1"
+                  className="rn-link ml1"
                   to="/signin"
                 >
                   Sign in.

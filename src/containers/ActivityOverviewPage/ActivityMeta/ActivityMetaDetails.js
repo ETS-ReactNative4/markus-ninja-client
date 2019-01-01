@@ -44,6 +44,7 @@ class ActivityMetaDetails extends React.Component {
 
   handleCancel = () => {
     this.setState({open: false})
+    this.props.onClose()
     this._reset()
   }
 
@@ -78,7 +79,7 @@ class ActivityMetaDetails extends React.Component {
     const open = !this.state.open
 
     this.setState({ open })
-    this.props.onOpen(open)
+    this.props.onOpen()
   }
 
   _reset = () => {
@@ -184,11 +185,13 @@ class ActivityMetaDetails extends React.Component {
 }
 
 ActivityMetaDetails.propTypes = {
+  onClose: PropTypes.func,
   onOpen: PropTypes.func,
 }
 
 ActivityMetaDetails.defaulProps = {
-  onOpen: () => {}
+  onClose: () => {},
+  onOpen: () => {},
 }
 
 export default withRouter(createFragmentContainer(ActivityMetaDetails, graphql`

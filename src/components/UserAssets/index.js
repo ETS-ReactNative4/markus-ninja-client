@@ -20,7 +20,9 @@ const UserAssetsQuery = graphql`
     $orderBy: UserAssetOrder,
     $isUser: Boolean!,
     $isViewer: Boolean!,
-    $stylePreview: Boolean!,
+    $styleCard: Boolean!,
+    $styleList: Boolean!,
+    $styleSelect: Boolean!,
   ) {
     user(login: $login) @skip(if: $isViewer) {
       ...UserAssetsContainer_user @arguments(
@@ -28,7 +30,9 @@ const UserAssetsQuery = graphql`
         count: $count,
         filterBy: $filterBy,
         orderBy: $orderBy,
-        stylePreview: $stylePreview,
+        styleCard: $styleCard,
+        styleList: $styleList,
+        styleSelect: $styleSelect,
       )
     }
     viewer @skip(if: $isUser) {
@@ -37,7 +41,9 @@ const UserAssetsQuery = graphql`
         count: $count,
         filterBy: $filterBy,
         orderBy: $orderBy,
-        stylePreview: $stylePreview,
+        styleCard: $styleCard,
+        styleList: $styleList,
+        styleSelect: $styleSelect,
       )
     }
   }
@@ -70,7 +76,9 @@ class UserAssets extends React.Component {
           orderBy,
           isUser: !isViewer,
           isViewer,
-          stylePreview: fragment === "preview",
+          styleCard: fragment === "card",
+          styleList: fragment === "list",
+          styleSelect: fragment === "select",
         }}
         render={({error,  props}) => {
           if (error) {
@@ -108,13 +116,12 @@ UserAssets.propTypes = {
     topics: PropTypes.arrayOf(PropTypes.string),
     search: PropTypes.string,
   }),
-  fragment: PropTypes.oneOf(["preview"]),
+  fragment: PropTypes.oneOf(["card", "list", "select"]).isRequired,
   isViewer: PropTypes.bool,
 }
 
 UserAssets.defaultProps = {
   count: ASSETS_PER_PAGE,
-  fragment: "preview",
   isViewer: false,
 }
 

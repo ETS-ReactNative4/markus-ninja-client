@@ -17,9 +17,9 @@ class Lessons extends React.Component {
     lessonId: "",
   }
 
-  handleSelect = (lessonId) => {
-    this.setState({lessonId})
-    this.props.onSelect(lessonId)
+  handleSelect = (lesson) => {
+    this.setState({lessonId: lesson.id})
+    this.props.onSelect(lesson.id)
   }
 
   render() {

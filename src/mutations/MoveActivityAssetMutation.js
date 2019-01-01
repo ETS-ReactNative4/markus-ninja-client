@@ -10,7 +10,7 @@ const mutation = graphql`
     moveActivityAsset(input: $input) {
       assetEdge {
         node {
-          ...UserAssetPreview_asset
+          ...ListUserAssetPreview_asset
         }
       }
     }

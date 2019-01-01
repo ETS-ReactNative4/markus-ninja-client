@@ -13,6 +13,8 @@ import {isNil} from 'utils'
 
 import {ASSETS_PER_PAGE} from 'consts'
 
+import "./styles.css"
+
 const ActivityOverviewPageQuery = graphql`
   query ActivityOverviewPageQuery(
     $owner: String!,

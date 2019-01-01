@@ -44,7 +44,8 @@ class CourseMetaDetails extends React.Component {
 
   handleCancel = () => {
     this.setState({open: false})
-    this._reset()
+    this.props.onClose()
+    this.reset_()
   }
 
   handleChange = (field) => {
@@ -78,10 +79,10 @@ class CourseMetaDetails extends React.Component {
     const open = !this.state.open
 
     this.setState({ open })
-    this.props.onOpen(open)
+    this.props.onOpen()
   }
 
-  _reset = () => {
+  reset_ = () => {
     this.setState({
       error: null,
       description: {
@@ -184,11 +185,13 @@ class CourseMetaDetails extends React.Component {
 }
 
 CourseMetaDetails.propTypes = {
+  onClose: PropTypes.func,
   onOpen: PropTypes.func,
 }
 
 CourseMetaDetails.defaulProps = {
-  onOpen: () => {}
+  onClose: () => {},
+  onOpen: () => {},
 }
 
 export default withRouter(createFragmentContainer(CourseMetaDetails, graphql`

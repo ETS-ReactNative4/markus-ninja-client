@@ -165,6 +165,9 @@ const refetchContainer = createRefetchContainer(SearchContainer,
         orderBy: {type: "SearchOrder"},
         query: {type: "String!"},
         type: {type: "SearchType!"},
+        styleCard: {type: "Boolean!"},
+        styleList: {type: "Boolean!"},
+        styleSelect: {type: "Boolean!"},
       ) {
         search(first: $count, after: $after, orderBy: $orderBy, query: $query, type: $type)
         @connection(key: "SearchContainer_search", filters: ["orderBy", "type"]) {
@@ -182,7 +185,9 @@ const refetchContainer = createRefetchContainer(SearchContainer,
                 ...ListLabelPreview_label
               }
               ...on Lesson {
-                ...ListLessonPreview_lesson
+                ...CardLessonPreview_lesson @include(if: $styleCard)
+                ...ListLessonPreview_lesson @include(if: $styleList)
+                ...SelectLessonPreview_lesson @include(if: $styleSelect)
               }
               ...on Study {
                 ...StudyPreview_study
@@ -194,7 +199,8 @@ const refetchContainer = createRefetchContainer(SearchContainer,
                 ...UserPreview_user
               }
               ...on UserAsset {
-                ...UserAssetPreview_asset
+                ...ListUserAssetPreview_asset @include(if: $styleList)
+                ...SelectUserAssetPreview_asset @include(if: $styleSelect)
               }
             }
           }
@@ -221,6 +227,9 @@ const refetchContainer = createRefetchContainer(SearchContainer,
       $orderBy: SearchOrder,
       $query: String!,
       $type: SearchType!,
+      $styleCard: Boolean!,
+      $styleList: Boolean!,
+      $styleSelect: Boolean!,
     ) {
       ...SearchContainer_results @arguments(
         count: $count,
@@ -228,6 +237,9 @@ const refetchContainer = createRefetchContainer(SearchContainer,
         orderBy: $orderBy,
         query: $query,
         type: $type,
+        styleCard: $styleCard,
+        styleList: $styleList,
+        styleSelect: $styleSelect,
       )
     }
   `,

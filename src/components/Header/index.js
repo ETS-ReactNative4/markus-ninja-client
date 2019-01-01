@@ -11,7 +11,6 @@ import Icon from 'components/Icon'
 import Logo from 'components/Logo'
 import Menu, {Corner} from 'components/mdc/Menu'
 import IconLink from 'components/IconLink'
-import LoginLink from 'components/LoginLink'
 import SearchBar from './SearchBar'
 import {get, getHandleClickLink} from 'utils'
 import AppContext from 'containers/App/Context'
@@ -150,7 +149,7 @@ class Header extends React.Component {
             >
               <List>
                 <List.Item onClick={getHandleClickLink("/signin")}>
-                  <List.Item.Graphic graphic={<Icon icon="exit_to_app" />}/>
+                  <List.Item.Graphic graphic={<Icon icon="person" />}/>
                   <List.Item.Text primaryText="Sign in" />
                 </List.Item>
                 <List.Item onClick={getHandleClickLink("/signup")}>
@@ -162,11 +161,22 @@ class Header extends React.Component {
           </Menu.Anchor>
         </section>
         <section className="Header__auth-nav--spread mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-          <div className="mdc-top-app-bar__title">
-            <LoginLink className="rn-link rn-link--undecorated rn-link--on-primary" aria-label="Sign in">Sign in</LoginLink>
-            <span className="mdc-theme--text-hint-on-dark"> or </span>
-            <Link className="rn-link rn-link--undecorated rn-link--on-primary" to="/signup" aria-label="Sign up">Sign up</Link>
-          </div>
+          <IconLink
+            className="mdc-top-app-bar__navigation-icon"
+            to="/signin"
+            aria-label="Sign in"
+            title="Sign in"
+          >
+            person
+          </IconLink>
+          <IconLink
+            className="mdc-top-app-bar__navigation-icon"
+            to="/signup"
+            aria-label="Sign up"
+            title="Sign up"
+          >
+            person_add
+          </IconLink>
         </section>
       </React.Fragment>
     )

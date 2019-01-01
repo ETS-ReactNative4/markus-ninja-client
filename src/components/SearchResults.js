@@ -2,6 +2,7 @@ import * as React from 'react'
 import cls from 'classnames'
 import pluralize from 'pluralize'
 import {SearchProp, SearchPropDefaults} from 'components/Search'
+import ActivityPreview from 'components/ActivityPreview'
 import CoursePreview from 'components/CoursePreview'
 import LessonPreview from 'components/LessonPreview'
 import StudyPreview from 'components/StudyPreview'
@@ -19,6 +20,8 @@ class ListSearchResults extends React.Component {
   get type() {
     const {search} = this.props
     switch (search.type) {
+      case "ACTIVITY":
+        return "activity"
       case "COURSE":
         return "course"
       case "LESSON":
@@ -111,6 +114,8 @@ class ListSearchResults extends React.Component {
   renderNodePreview(node) {
     const {search} = this.props
     switch (search.type) {
+      case "ACTIVITY":
+        return <ActivityPreview.List key={node.id} activity={node} />
       case "COURSE":
         return <CoursePreview.List key={node.id} course={node} />
       case "LESSON":
@@ -122,7 +127,7 @@ class ListSearchResults extends React.Component {
       case "USER":
         return <UserPreview.List key={node.id} user={node} />
       case "USER_ASSET":
-        return <UserAssetPreview key={node.id} asset={node} />
+        return <UserAssetPreview.List key={node.id} asset={node} />
       default:
         return ""
     }

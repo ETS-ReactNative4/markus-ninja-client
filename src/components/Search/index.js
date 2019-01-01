@@ -18,6 +18,9 @@ const SearchQuery = graphql`
     $orderBy: SearchOrder,
     $query: String!,
     $type: SearchType!,
+    $styleCard: Boolean!,
+    $styleList: Boolean!,
+    $styleSelect: Boolean!,
   ) {
     ...SearchContainer_results @arguments(
       count: $count,
@@ -25,6 +28,9 @@ const SearchQuery = graphql`
       orderBy: $orderBy,
       query: $query,
       type: $type,
+      styleCard: $styleCard,
+      styleList: $styleList,
+      styleSelect: $styleSelect,
     )
   }
 `
@@ -44,7 +50,7 @@ class Search extends React.Component {
 
   render() {
     const {orderBy, query, type} = this.state
-    const {count} = this.props
+    const {count, fragment} = this.props
 
     return (
       <QueryRenderer
@@ -55,6 +61,9 @@ class Search extends React.Component {
           query,
           type,
           orderBy,
+          styleCard: fragment === "card",
+          styleList: fragment === "list",
+          styleSelect: fragment === "select",
         }}
         render={({error,  props}) => {
           if (error) {
@@ -89,6 +98,7 @@ Search.propTypes = {
   }),
   query: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
+  fragment: PropTypes.oneOf(["card", "list", "select"]).isRequired,
 }
 
 Search.defaultProps = {

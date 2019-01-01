@@ -5,28 +5,29 @@ import {
   createFragmentContainer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
-import {withRouter} from 'react-router-dom'
-import getHistory from 'react-router-global-history'
 import { get } from 'utils'
 
-class UserAssetPreview extends React.Component {
-  handleClickImage = (e) => {
+class SelectUserAssetPreview extends React.Component {
+  handleClick = (e) => {
     const {asset} = this.props
-    getHistory().push(asset.resourcePath)
+    this.props.onClick(asset)
   }
 
   get classes() {
-    const {className} = this.props
-    return cls("UserAssetPreview mdc-image-list__item", className)
+    const {className, selected} = this.props
+
+    return cls("UserAssetPreview mdc-image-list__item rn-image-list__item", className, {
+      "rn-image-list__item--selected": selected,
+    })
   }
 
   render() {
     const asset = get(this.props, "asset", {})
+
     return (
-      <li className={this.classes}>
+      <li className={this.classes} onClick={this.handleClick}>
         <div
           className="mdc-image-list__image-aspect-container pointer"
-          onClick={this.handleClickImage}
         >
           <img
             className="mdc-image-list__image"
@@ -35,7 +36,7 @@ class UserAssetPreview extends React.Component {
           />
         </div>
         <div className="mdc-image-list__supporting">
-          <div className="mdc-image-list__label">
+          <div className="mdc-image-list__label" title={asset.name}>
             {asset.name}
           </div>
         </div>
@@ -44,26 +45,28 @@ class UserAssetPreview extends React.Component {
   }
 }
 
-UserAssetPreview.propTypes = {
+SelectUserAssetPreview.propTypes = {
   asset: PropTypes.shape({
     href: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    resourcePath: PropTypes.string.isRequired,
-  })
+  }),
+  onClick: PropTypes.func.isRequired,
+  selected: PropTypes.bool,
 }
 
-UserAssetPreview.defaultProps = {
+SelectUserAssetPreview.defaultProps = {
   asset: {
     href: "",
     name: "",
-    resourcePath: "",
-  }
+  },
+  onClick: () => {},
+  selected: false,
 }
 
-export default withRouter(createFragmentContainer(UserAssetPreview, graphql`
-  fragment UserAssetPreview_asset on UserAsset {
+export default createFragmentContainer(SelectUserAssetPreview, graphql`
+  fragment SelectUserAssetPreview_asset on UserAsset {
     href
+    id
     name
-    resourcePath
   }
-`))
+`)

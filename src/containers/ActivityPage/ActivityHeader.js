@@ -109,16 +109,18 @@ class ActivityHeader extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="rn-text-field">
-          <TextField
-            className="flex-auto"
-            label="Name"
-            floatingLabelClassName={!isEmpty(name) ? "mdc-floating-label--float-above" : ""}
-            inputProps={{
-              name: "name",
-              value: name.value,
-              onChange: this.handleChange,
-            }}
-          />
+          <div className="rn-text-field__input">
+            <TextField
+              className="flex-auto"
+              label="Name"
+              floatingLabelClassName={!isEmpty(name) ? "mdc-floating-label--float-above" : ""}
+              inputProps={{
+                name: "name",
+                value: name.value,
+                onChange: this.handleChange,
+              }}
+            />
+          </div>
           <div className="rn-text-field__actions">
             <button
               type="submit"

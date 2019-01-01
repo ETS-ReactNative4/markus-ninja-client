@@ -1,5 +1,6 @@
 @import "@material/image-list/mixins";
 @import "@material/layout-grid/mixins";
+@import "@material/theme/variables";
 
 .rn-image-list {
   @include mdc-layout-grid-media-query_(desktop) {
@@ -10,5 +11,14 @@
   }
   @include mdc-layout-grid-media-query_(phone) {
     @include mdc-image-list-standard-columns(2);
+  }
+
+  list-style-type: none;
+}
+
+.rn-image-list__item.rn-image-list__item--selected {
+  .mdc-image-list__supporting {
+    background: $mdc-theme-primary;
+    opacity: 0.9;
   }
 }

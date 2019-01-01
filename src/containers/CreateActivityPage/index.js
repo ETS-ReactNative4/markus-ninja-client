@@ -10,6 +10,8 @@ import environment from 'Environment'
 import CreateActivityForm from './CreateActivityForm'
 import {get} from 'utils'
 
+import "./styles.css"
+
 const CreateActivityPageQuery = graphql`
   query CreateActivityPageQuery($owner: String!, $name: String!) {
     study(owner: $owner, name: $name) {

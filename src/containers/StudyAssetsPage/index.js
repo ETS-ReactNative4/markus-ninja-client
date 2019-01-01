@@ -103,7 +103,7 @@ class StudyAssetsPage extends React.Component {
           </div>
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <StudyAssets filterBy={this._filterBy} orderBy={this._orderBy}>
+          <StudyAssets filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
             <StudyAssetsPageAssets study={study} />
           </StudyAssets>
         </div>

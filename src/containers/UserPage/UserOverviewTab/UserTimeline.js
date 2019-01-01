@@ -27,7 +27,7 @@ class UserTimeline extends React.Component {
     return (
       <React.Fragment>
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          Recent timeline
+          Recent events
         </h5>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="mdc-card mdc-card--outlined ph2">
@@ -39,7 +39,7 @@ class UserTimeline extends React.Component {
                 className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
                   onClick={this._loadMore}
                 >
-                  Load more timeline
+                  Load more
                 </button>
               </div>
             </div>}
@@ -59,7 +59,7 @@ class UserTimeline extends React.Component {
         {relay.isLoading() && noResults
         ? <li className="mdc-list-item">Loading...</li>
         : noResults
-          ? <li className="mdc-list-item">No recent timeline</li>
+          ? <li className="mdc-list-item">No recent events</li>
         : edges.map(({node}) => (
             node &&
             <UserTimelineEvent key={node.id} withUser event={node} />

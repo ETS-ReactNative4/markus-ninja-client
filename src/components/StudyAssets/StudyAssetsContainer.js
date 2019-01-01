@@ -4,7 +4,6 @@ import {
   createRefetchContainer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
-import {withRouter} from 'react-router-dom'
 import isEqual from 'lodash.isequal'
 import {debounce, get, isNil} from 'utils'
 
@@ -131,6 +130,9 @@ const refetchContainer = createRefetchContainer(StudyAssetsContainer,
         after: {type: "String"},
         filterBy: {type: "UserAssetFilters"},
         orderBy: {type: "UserAssetOrder"},
+        styleCard: {type: "Boolean!"},
+        styleList: {type: "Boolean!"},
+        styleSelect: {type: "Boolean!"},
       ) {
         assets(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
         @connection(key: "StudyAssetsContainer_assets", filters: []) {
@@ -139,7 +141,8 @@ const refetchContainer = createRefetchContainer(StudyAssetsContainer,
             node {
               id
               ...on UserAsset {
-                ...UserAssetPreview_asset
+                ...ListUserAssetPreview_asset @include(if: $styleList)
+                ...SelectUserAssetPreview_asset @include(if: $styleSelect)
               }
             }
           }
@@ -160,6 +163,9 @@ const refetchContainer = createRefetchContainer(StudyAssetsContainer,
       $after: String,
       $filterBy: UserAssetFilters,
       $orderBy: UserAssetOrder,
+      $styleCard: Boolean!,
+      $styleList: Boolean!,
+      $styleSelect: Boolean!,
     ) {
       study(owner: $owner, name: $name) {
         ...StudyAssetsContainer_study @arguments(
@@ -167,10 +173,13 @@ const refetchContainer = createRefetchContainer(StudyAssetsContainer,
           after: $after,
           filterBy: $filterBy,
           orderBy: $orderBy,
+          styleCard: $styleCard,
+          styleList: $styleList,
+          styleSelect: $styleSelect,
         )
       }
     }
   `,
 )
 
-export default withRouter(refetchContainer)
+export default refetchContainer

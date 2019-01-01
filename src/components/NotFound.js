@@ -12,7 +12,7 @@ const NotFound = () => (
             </h4>
             <p className="mb3">
               You may not have permission to see this page.
-              <Link className="rn-link rn-link--underlined ml1" to="/signin">Sign in.</Link>
+              <Link className="rn-link ml1" to="/signin">Sign in.</Link>
             </p>
             <p>
               Check that you typed the address correctly,

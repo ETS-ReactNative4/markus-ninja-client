@@ -108,9 +108,11 @@ class ActivityAssets extends React.Component {
     return (
       <div className={this.classes}>
         <div className="mdc-card mdc-card--outlined ph2">
-          {edit
-          ? this.renderEdittableAssets()
-          : this.renderAssets()}
+          <div className="rn-card__body">
+            {edit
+            ? this.renderEdittableAssets()
+            : this.renderAssets()}
+          </div>
           {(!noResults || viewerCanAdmin) &&
           <div className="mdc-card__actions">
             <div className="mdc-card__action-buttons">
@@ -119,7 +121,7 @@ class ActivityAssets extends React.Component {
                   className="mdc-button mdc-card__action mdc-card__action--button"
                   to={this.firstAssetResourcePath}
                 >
-                  Begin
+                  Explore
                 </Link>
               : viewerCanAdmin
                 ? <button
@@ -182,17 +184,17 @@ class ActivityAssets extends React.Component {
 
     return (
       <DragDropContext onDragEnd={this.handleDragEnd}>
-        <Droppable droppableId="droppable">
+        <Droppable droppableId="droppable" direction="horizontal">
           {(provided, snapshot) => (
             <ul
               ref={provided.innerRef}
-              className="mdc-list mdc-list--two-line"
+              className="rn-image-list mdc-image-list mdc-image-list--with-text-protection"
             >
               {edges.map(({node}, index) => (
                 node &&
                 <Draggable key={node.id} draggableId={node.id} index={index}>
                   {(provided, snapshot) => (
-                    <UserAssetPreview
+                    <UserAssetPreview.List
                       innerRef={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
@@ -215,13 +217,14 @@ class ActivityAssets extends React.Component {
     const {edges} = this.state
     const noResults = isEmpty(edges)
 
+    if (noResults) {
+      return this.renderEmptyListPlaceholder()
+    }
     return (
       <ul className="rn-image-list mdc-image-list mdc-image-list--with-text-protection">
-        {noResults
-        ? this.renderEmptyListPlaceholder()
-        : edges.map(({node}, index) => (
+        {edges.map(({node}, index) => (
             node &&
-            <UserAssetPreview
+            <UserAssetPreview.List
               key={node.id}
               isActivity
               asset={node}
@@ -235,19 +238,21 @@ class ActivityAssets extends React.Component {
     const viewerCanAdmin = get(this.props, "activity.viewerCanAdmin", false)
 
     return (
-      <li
-        className="mdc-list-item pointer"
-        onClick={viewerCanAdmin ? this.handleToggleAddFormDialog : null}
-      >
-        <Icon as="span" className="mdc-list-item__graphic" icon="asset" />
-        {viewerCanAdmin
-        ? "Add the first asset"
-        : "No assets"}
-        {viewerCanAdmin &&
-        <span className="mdc-list-item__meta">
-          <i className="material-icons">add</i>
-        </span>}
-      </li>
+      <ul className="mdc-list">
+        <li
+          className="mdc-list-item pointer"
+          onClick={viewerCanAdmin ? this.handleToggleAddFormDialog : null}
+        >
+          <Icon as="span" className="mdc-list-item__graphic" icon="asset" />
+          {viewerCanAdmin
+          ? "Add the first asset"
+          : "No assets"}
+          {viewerCanAdmin &&
+          <span className="mdc-list-item__meta">
+            <i className="material-icons">add</i>
+          </span>}
+        </li>
+      </ul>
     )
   }
 }
@@ -269,7 +274,7 @@ export default createPaginationContainer(ActivityAssets,
           edges {
             cursor
             node {
-              ...UserAssetPreview_asset
+              ...ListUserAssetPreview_asset
               activityNumber
               id
               resourcePath

@@ -11,9 +11,6 @@
     display: inline-flex;
     flex-wrap: no-wrap;
 
-    &.ActivityHeader__action--apple {
-      min-width: 125.5px;
-    }
     &.ActivityeHeader__action--edit {
       margin-left: 1em;
     }
@@ -24,10 +21,6 @@
     align-items: start;
 
     .ActivityHeader__action {
-      &.ActivityeHeader__action--apple {
-        margin-bottom: 0;
-        margin-left: 0;
-      }
       &.ActivityHeader__action--edit {
         margin-bottom: 0;
         margin-left: 0;

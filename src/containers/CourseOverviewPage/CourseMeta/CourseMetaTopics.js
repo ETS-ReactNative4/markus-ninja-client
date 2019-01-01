@@ -31,6 +31,12 @@ class CourseMetaTopics extends React.Component {
     }
   }
 
+  handleCancel = () => {
+    this.setState({open: false})
+    this.props.onClose()
+    this.reset_()
+  }
+
   handleChange = (field) => {
     this.setState({
       [field.name]: field,
@@ -67,17 +73,6 @@ class CourseMetaTopics extends React.Component {
 
     this.setState({ open, error: null })
     this.props.onOpen(open)
-  }
-
-  handleToggleOpen = () => {
-    const open = !this.state.open
-
-    this.setState({ open, error: null })
-    this.props.onOpen(open)
-
-    if (!open) {
-      this.reset_()
-    }
   }
 
   _loadMore = () => {
@@ -149,7 +144,7 @@ class CourseMetaTopics extends React.Component {
           <button
             className="mdc-button ml2"
             type="button"
-            onClick={this.handleToggleOpen}
+            onClick={this.handleCancel}
           >
             Cancel
           </button>
@@ -207,11 +202,13 @@ class CourseMetaTopics extends React.Component {
 }
 
 CourseMetaTopics.propTypes = {
+  onClose: PropTypes.func,
   onOpen: PropTypes.func,
 }
 
 CourseMetaTopics.defaulProps = {
-  onOpen: () => {}
+  onClose: () => {},
+  onOpen: () => {},
 }
 
 export default withRouter(createPaginationContainer(CourseMetaTopics,

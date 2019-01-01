@@ -16,7 +16,7 @@ class CreateActivityLink extends React.Component {
   render() {
     const study = get(this.props, "study", {})
     return (
-      <Link className={this.classes} to={study.resourcePath + "/activitys/new"}>
+      <Link className={this.classes} to={study.resourcePath + "/activities/new"}>
         {this.props.children}
       </Link>
     )

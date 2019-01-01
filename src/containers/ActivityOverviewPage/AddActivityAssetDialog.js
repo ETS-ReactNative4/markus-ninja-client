@@ -17,9 +17,9 @@ class Assets extends React.Component {
     assetId: "",
   }
 
-  handleSelect = (assetId) => {
-    this.setState({assetId})
-    this.props.onSelect(assetId)
+  handleSelect = (asset) => {
+    this.setState({assetId: asset.id})
+    this.props.onSelect(asset.id)
   }
 
   render() {
@@ -28,11 +28,16 @@ class Assets extends React.Component {
     const edges = get(assets, "edges", [])
     const noResults = isEmpty(edges)
 
+    if (noResults) {
+      return (
+        <ul className="mdc-list">
+          <li className="mdc-list-item">No assets found</li>
+        </ul>
+      )
+    }
     return (
-      <ul className="mdc-list">
-        {noResults
-        ? <li className="mdc-list-item">No assets found</li>
-        : edges.map(({node}) => (
+      <ul className="AddActivityAssetDialog__assets rn-image-list mdc-image-list mdc-image-list--with-text-protection">
+        {edges.map(({node}) => (
             node &&
             <UserAssetPreview.Select
               key={node.id}

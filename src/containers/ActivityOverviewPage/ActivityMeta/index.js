@@ -5,6 +5,7 @@ import {
 import graphql from 'babel-plugin-relay/macro'
 import { get } from 'utils'
 import ActivityMetaDetails from './ActivityMetaDetails'
+import ActivityMetaLesson from './ActivityMetaLesson'
 
 class ActivityMeta extends React.Component {
   state = {
@@ -12,12 +13,17 @@ class ActivityMeta extends React.Component {
   }
 
   render() {
-    const activity = get(this.props, "activity", null)
     const {detailsOpen} = this.state
+    const activity = get(this.props, "activity", null)
     return (
       <React.Fragment>
-        {detailsOpen &&
-        <ActivityMetaDetails onOpen={(open) => this.setState({ detailsOpen: open })} activity={activity} />}
+        <ActivityMetaDetails
+          onOpen={() => this.setState({ detailsOpen: true})}
+          onClose={() => this.setState({ detailsOpen: false})}
+          activity={activity}
+        />
+        {!detailsOpen &&
+        <ActivityMetaLesson activity={activity} />}
       </React.Fragment>
     )
   }
@@ -26,5 +32,6 @@ class ActivityMeta extends React.Component {
 export default createFragmentContainer(ActivityMeta, graphql`
   fragment ActivityMeta_activity on Activity {
     ...ActivityMetaDetails_activity
+    ...ActivityMetaLesson_activity
   }
 `)

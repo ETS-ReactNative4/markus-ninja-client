@@ -11,7 +11,7 @@ const mutation = graphql`
       assetEdge {
         cursor
         node {
-          ...UserAssetPreview_asset
+          ...ListUserAssetPreview_asset
           activityNumber
           id
           resourcePath

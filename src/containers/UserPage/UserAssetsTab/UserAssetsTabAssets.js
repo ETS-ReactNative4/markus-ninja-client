@@ -47,7 +47,7 @@ class UserAssetsPageAssets extends React.Component {
       <div className="w-100 pv2">
         <ul className="rn-image-list mdc-image-list mdc-image-list--with-text-protection">
           {edges.map(({node}) => (
-            node && <UserAssetPreview key={node.id} asset={node} />
+            node && <UserAssetPreview.List key={node.id} asset={node} />
           ))}
         </ul>
       </div>

@@ -19,15 +19,42 @@ const USER_ASSET_INDEX = 0,
       USER_INDEX = 6
 
 class SearchNav extends React.Component {
-  state = {
-    open: this.props.open,
-    selectedIndex: STUDY_INDEX,
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      open: this.props.open,
+      selectedIndex: this.getSelectedIndex(),
+    }
   }
 
   componentDidUpdate(prevProps) {
     const {open} = this.props
     if (prevProps.open !== open) {
       this.setState({open})
+    }
+  }
+
+  getSelectedIndex = () => {
+    const query = queryString.parse(get(this.props, "location.search", ""))
+    const t = get(query, "t", "")
+    switch (t.toLowerCase()) {
+      case "user_asset":
+        return USER_ASSET_INDEX
+      case "activity":
+        return ACTIVITY_INDEX
+      case "course":
+        return COURSE_INDEX
+      case "lesson":
+        return LESSON_INDEX
+      case "study":
+        return STUDY_INDEX
+      case "topic":
+        return TOPIC_INDEX
+      case "user":
+        return USER_INDEX
+      default:
+        return STUDY_INDEX
     }
   }
 
