@@ -6,6 +6,12 @@
 @import "@material/theme/mixins";
 @import "@material/theme/variables";
 
+// Center grid inner within grid
+.mdc-layout-grid__inner {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 // Fixes size of FontAwesomeIcon within mdc-icon-button
 .mdc-icon-button svg {
   &.svg-inline--fa {

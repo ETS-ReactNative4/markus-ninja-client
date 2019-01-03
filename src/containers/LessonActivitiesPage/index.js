@@ -1,16 +1,17 @@
 import * as React from 'react'
+import cls from 'classnames'
 import {
   createFragmentContainer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import TextField, {Icon, Input} from '@material/react-text-field'
 import queryString from 'query-string'
-import {Link, withRouter} from 'react-router-dom'
-import UserStudies from 'components/UserStudies'
-import UserStudiesTabStudies from './UserStudiesTabStudies'
+import CreateLessonActivityLink from 'components/CreateLessonActivityLink'
+import LessonActivities from 'components/LessonActivities'
+import LessonActivitiesPageActivities from './LessonActivitiesPageActivities'
 import {debounce, get, isEmpty} from 'utils'
 
-class UserStudiesTab extends React.Component {
+class LessonActivitiesPage extends React.Component {
   constructor(props) {
     super(props)
 
@@ -37,6 +38,11 @@ class UserStudiesTab extends React.Component {
     history.replace({pathname: location.pathname, search})
   }, 300)
 
+  get classes() {
+    const {className} = this.props
+    return cls("LessonActivitiesPage mdc-layout-grid", className)
+  }
+
   get _filterBy() {
     const {q} = this.state
     return {search: q}
@@ -56,18 +62,14 @@ class UserStudiesTab extends React.Component {
     })()
     const field = (() => {
       switch (o) {
-      case "advanced":
-        return "ADVANCED_AT"
       case "created":
         return "CREATED_AT"
-      case "lessons":
-        return "LESSON_COUNT"
-      case "NAME":
-        return "NAME"
+      case "number":
+        return "NUMBER"
       case "updated":
         return "UPDATED_AT"
       default:
-        return "ADVANCED_AT"
+        return "NUMBER"
       }
     })()
 
@@ -75,27 +77,33 @@ class UserStudiesTab extends React.Component {
   }
 
   render() {
-    const user = get(this.props, "user", {})
+    const {lesson} = this.props
 
     return (
-      <React.Fragment>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <div className="rn-text-field">
-            <div className="rn-text-field__input">
-              {this.renderInput()}
+      <div className={this.classes}>
+        <div className="mdc-layout-grid__inner mw8">
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <div className="rn-text-field">
+              <div className="rn-text-field__input">
+                {this.renderInput()}
+              </div>
+              <div className="rn-text-field__actions">
+                <CreateLessonActivityLink
+                  className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
+                  lesson={lesson}
+                >
+                  New activity
+                </CreateLessonActivityLink>
+              </div>
             </div>
-            {user.isViewer &&
-            <div className="rn-text-field__actions">
-              <Link className="mdc-button mdc-button--unelevated" to="/new">New study</Link>
-            </div>}
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <LessonActivities filterBy={this._filterBy} orderBy={this._orderBy}>
+              <LessonActivitiesPageActivities />
+            </LessonActivities>
           </div>
         </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <UserStudies filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
-            <UserStudiesTabStudies user={user} />
-          </UserStudies>
-        </div>
-      </React.Fragment>
+      </div>
     )
   }
 
@@ -105,13 +113,13 @@ class UserStudiesTab extends React.Component {
     return (
       <TextField
         fullWidth
-        label="Find a study..."
+        label="Find an activity..."
         trailingIcon={<Icon><i className="material-icons">search</i></Icon>}
       >
         <Input
           name="q"
           autoComplete="off"
-          placeholder="Find a study..."
+          placeholder="Find an activity..."
           value={q}
           onChange={this.handleChange}
         />
@@ -120,8 +128,9 @@ class UserStudiesTab extends React.Component {
   }
 }
 
-export default withRouter(createFragmentContainer(UserStudiesTab, graphql`
-  fragment UserStudiesTab_user on User {
-    isViewer
+export default createFragmentContainer(LessonActivitiesPage, graphql`
+  fragment LessonActivitiesPage_lesson on Lesson {
+    ...CreateLessonActivityLink_lesson
+    resourcePath
   }
-`))
+`)

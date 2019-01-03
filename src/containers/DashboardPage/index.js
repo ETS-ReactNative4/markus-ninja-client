@@ -20,7 +20,7 @@ const DashboardPageQuery = graphql`
   query DashboardPageQuery($count: Int!, $after: String) {
     gettingStartedStudy: study(owner: "markus", name: "Getting_Started") {
       id
-      ...StudyPreview_study
+      ...CardStudyPreview_study
     }
     viewer {
       ...ViewerReceivedTimeline_viewer @arguments(

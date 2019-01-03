@@ -7,7 +7,6 @@ import graphql from 'babel-plugin-relay/macro'
 import { Link, withRouter } from 'react-router-dom'
 import AppleButton from 'components/AppleButton'
 import EnrollmentSelect from 'components/EnrollmentSelect'
-import StudyLink from 'components/StudyLink'
 import UserLink from 'components/UserLink'
 import {get} from 'utils'
 
@@ -36,7 +35,9 @@ class StudyHeader extends React.Component {
           <UserLink className="rn-link rn-file-path__directory" user={get(study, "owner", null)} />
           <span className="rn-file-path__separator">/</span>
           <span className="rn-file-path__file">
-            <StudyLink className="rn-link rn-file-path__file__text" study={study} />
+            <Link className="rn-link rn-file-path__file__text" to={study.resourcePath}>
+              {study.name}
+            </Link>
             {get(study, "viewerCanAdmin", false) &&
             <button
               type="button"
@@ -78,7 +79,6 @@ StudyHeader.contextType = Context
 
 export default withRouter(createFragmentContainer(StudyHeader, graphql`
   fragment StudyHeader_study on Study {
-    ...StudyLink_study
     ...AppleButton_appleable
     advancedAt
     appleGivers(first: 0) {

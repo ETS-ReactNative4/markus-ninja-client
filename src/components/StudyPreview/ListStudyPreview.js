@@ -1,5 +1,9 @@
 import * as React from 'react'
 import cls from 'classnames'
+import {
+  createFragmentContainer,
+} from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import {Link} from 'react-router-dom'
 import List from 'components/mdc/List'
 import AppleIconButton from 'components/AppleIconButton'
@@ -9,7 +13,12 @@ import ListEnrollButton from 'components/ListEnrollButton'
 import Counter from 'components/Counter'
 import Icon from 'components/Icon'
 import Menu, {Corner} from 'components/mdc/Menu'
-import {filterDefinedReactChildren, get, getHandleClickLink, timeDifferenceForDate} from 'utils'
+import {
+  filterDefinedReactChildren,
+  get,
+  getHandleClickLink,
+  timeDifferenceForDate,
+} from 'utils'
 
 class ListStudyPreview extends React.Component {
   state = {
@@ -150,4 +159,30 @@ class ListStudyPreview extends React.Component {
   }
 }
 
-export default ListStudyPreview
+export default createFragmentContainer(ListStudyPreview, graphql`
+  fragment ListStudyPreview_study on Study {
+    advancedAt
+    createdAt
+    enrollmentStatus
+    id
+    lessons(first: 0) {
+      totalCount
+    }
+    name
+    owner {
+      login
+      resourcePath
+    }
+    resourcePath
+    topics(first: 2) {
+      nodes {
+        id
+        name
+        resourcePath
+      }
+    }
+    viewerCanApple
+    viewerCanEnroll
+    viewerHasAppled
+  }
+`)

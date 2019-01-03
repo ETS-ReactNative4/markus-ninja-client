@@ -167,7 +167,7 @@ const refetchContainer = createRefetchContainer(TopicTopicablesContainer,
                 ...CoursePreview_course
               }
               ...on Study {
-                ...StudyPreview_study
+                ...ListStudyPreview_study
               }
             }
           }

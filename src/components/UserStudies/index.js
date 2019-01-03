@@ -20,8 +20,10 @@ const UserStudiesQuery = graphql`
     $orderBy: StudyOrder,
     $isUser: Boolean!,
     $isViewer: Boolean!,
+    $styleCard: Boolean!,
     $styleLink: Boolean!,
-    $stylePreview: Boolean!,
+    $styleList: Boolean!,
+    $styleSelect: Boolean!,
   ) {
     user(login: $login) @skip(if: $isViewer) {
       ...UserStudiesContainer_user @arguments(
@@ -29,8 +31,10 @@ const UserStudiesQuery = graphql`
         count: $count,
         filterBy: $filterBy,
         orderBy: $orderBy,
+        styleCard: $styleCard,
         styleLink: $styleLink,
-        stylePreview: $stylePreview,
+        styleList: $styleList,
+        styleSelect: $styleSelect,
       )
     }
     viewer @skip(if: $isUser) {
@@ -39,8 +43,10 @@ const UserStudiesQuery = graphql`
         count: $count,
         filterBy: $filterBy,
         orderBy: $orderBy,
+        styleCard: $styleCard,
         styleLink: $styleLink,
-        stylePreview: $stylePreview,
+        styleList: $styleList,
+        styleSelect: $styleSelect,
       )
     }
   }
@@ -73,8 +79,10 @@ class UserStudies extends React.Component {
           orderBy,
           isUser: !isViewer,
           isViewer,
+          styleCard: fragment === "card",
           styleLink: fragment === "link",
-          stylePreview: fragment === "preview",
+          styleList: fragment === "list",
+          styleSelect: fragment === "select",
         }}
         render={({error,  props}) => {
           if (error) {
@@ -112,13 +120,12 @@ UserStudies.propTypes = {
     topics: PropTypes.arrayOf(PropTypes.string),
     search: PropTypes.string,
   }),
-  fragment: PropTypes.oneOf(["link", "preview"]),
+  fragment: PropTypes.oneOf(["card", "link", "list", "select"]).isRequired,
   isViewer: PropTypes.bool,
 }
 
 UserStudies.defaultProps = {
   count: STUDIES_PER_PAGE,
-  fragment: "preview",
   isViewer: false,
 }
 

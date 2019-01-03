@@ -24,11 +24,7 @@ class LoginPage extends React.Component {
               <h5>Sign in</h5>
             </header>
           </div>
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <div className="mdc-card pa4">
-              <LoginForm />
-            </div>
-          </div>
+          <LoginForm />
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             <div className="mdc-card pa3">
               <p className="mb1">

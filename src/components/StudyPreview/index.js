@@ -1,67 +1,11 @@
-import * as React from 'react'
-import cls from 'classnames'
-import Relay from 'react-relay'
-import graphql from 'babel-plugin-relay/macro'
-import hoistNonReactStatic from 'hoist-non-react-statics'
-import {Link} from 'react-router-dom'
-import { get } from 'utils'
 import CardStudyPreview from './CardStudyPreview'
+import LinkStudyPreview from './LinkStudyPreview'
 import ListStudyPreview from './ListStudyPreview'
+import SelectStudyPreview from './SelectStudyPreview'
 
-const FRAGMENT = graphql`
-  fragment StudyPreview_study on Study {
-    advancedAt
-    appleGivers(first: 0) {
-      totalCount
-    }
-    createdAt
-    descriptionHTML
-    description
-    enrollmentStatus
-    id
-    isPrivate
-    lessons(first: 0) {
-      totalCount
-    }
-    name
-    owner {
-      login
-      resourcePath
-    }
-    resourcePath
-    topics(first: 2) {
-      nodes {
-        id
-        name
-        resourcePath
-      }
-    }
-    viewerCanApple
-    viewerCanEnroll
-    viewerHasAppled
-  }
-`
-
-class StudyPreview extends React.Component {
-  static Card = Relay.createFragmentContainer(CardStudyPreview, FRAGMENT)
-  static List = Relay.createFragmentContainer(ListStudyPreview, FRAGMENT)
-
-  get classes() {
-    const {className} = this.props
-    return cls("StudyPreview", className)
-  }
-
-  render() {
-    const study = get(this.props, "study", {})
-    return (
-      <div className={this.classes}>
-        <Link to={study.resourcePath}>{study.name}</Link>
-      </div>
-    )
-  }
+export default {
+  Card: CardStudyPreview,
+  Link: LinkStudyPreview,
+  List: ListStudyPreview,
+  Select: SelectStudyPreview,
 }
-
-export default hoistNonReactStatic(
-  Relay.createFragmentContainer(StudyPreview, FRAGMENT),
-  StudyPreview,
-)

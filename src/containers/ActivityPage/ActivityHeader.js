@@ -7,7 +7,7 @@ import graphql from 'babel-plugin-relay/macro'
 import TextField, {defaultTextFieldState} from 'components/TextField'
 import Icon from 'components/Icon'
 import Snackbar from 'components/mdc/Snackbar'
-import StudyLink from 'components/StudyLink'
+import StudyPreview from 'components/StudyPreview'
 import UserLink from 'components/UserLink'
 import UpdateActivityMutation from 'mutations/UpdateActivityMutation'
 import {get, isEmpty, throttle} from 'utils'
@@ -149,7 +149,7 @@ class ActivityHeader extends React.Component {
         <h4 className="rn-header__text rn-file-path">
           <UserLink className="rn-link rn-file-path__directory" user={get(activity, "study.owner", null)} />
           <span className="rn-file-path__separator">/</span>
-          <StudyLink className="rn-link rn-file-path__directory" study={get(activity, "study", null)} />
+          <StudyPreview.Link className="rn-link rn-file-path__directory" study={get(activity, "study", null)} />
           <span className="rn-file-path__separator">/</span>
           <span className="rn-file-path__file">
             <span className="rn-file-path__file__text">
@@ -183,7 +183,7 @@ export default createFragmentContainer(ActivityHeader, graphql`
     number
     resourcePath
     study {
-      ...StudyLink_study
+      ...LinkStudyPreview_study
       owner {
         ...UserLink_user
       }

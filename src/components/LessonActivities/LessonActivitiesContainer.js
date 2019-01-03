@@ -9,7 +9,7 @@ import {debounce, get, isNil} from 'utils'
 
 import {ACTIVITIES_PER_PAGE} from 'consts'
 
-class StudyActivitiesContainer extends React.Component {
+class LessonActivitiesContainer extends React.Component {
   state = {
     error: null,
     loading: false,
@@ -26,7 +26,7 @@ class StudyActivitiesContainer extends React.Component {
 
   _loadMore = () => {
     const {loading} = this.state
-    const after = get(this.props, "study.activities.pageInfo.endCursor")
+    const after = get(this.props, "lesson.activities.pageInfo.endCursor")
 
     if (!this._hasMore) {
       console.log("Nothing more to load")
@@ -68,28 +68,28 @@ class StudyActivitiesContainer extends React.Component {
   }, 200)
 
   get _hasMore() {
-    return get(this.props, "study.activities.pageInfo.hasNextPage", false)
+    return get(this.props, "lesson.activities.pageInfo.hasNextPage", false)
   }
 
   render() {
     const child = React.Children.only(this.props.children)
-    const studyActivities = get(this.props, "study.activities", {})
+    const lessonActivities = get(this.props, "lesson.activities", {})
     const {loading, stale} = this.state
 
     return React.cloneElement(child, {
       activities: {
         dataIsStale: stale,
-        edges: studyActivities.edges,
+        edges: lessonActivities.edges,
         hasMore: this._hasMore,
         isLoading: loading,
         loadMore: this._loadMore,
-        totalCount: studyActivities.totalCount,
+        totalCount: lessonActivities.totalCount,
       },
     })
   }
 }
 
-StudyActivitiesContainer.propTypes = {
+LessonActivitiesContainer.propTypes = {
   count: PropTypes.number,
   orderBy: PropTypes.shape({
     direction: PropTypes.string,
@@ -100,11 +100,11 @@ StudyActivitiesContainer.propTypes = {
   }),
 }
 
-StudyActivitiesContainer.defaultProps = {
+LessonActivitiesContainer.defaultProps = {
   count: ACTIVITIES_PER_PAGE,
 }
 
-export const StudyActivitiesProp = PropTypes.shape({
+export const LessonActivitiesProp = PropTypes.shape({
   dataIsStale: PropTypes.bool,
   edges: PropTypes.array,
   isLoading: PropTypes.bool,
@@ -113,7 +113,7 @@ export const StudyActivitiesProp = PropTypes.shape({
   totalCount: PropTypes.number,
 })
 
-export const StudyActivitiesPropDefaults = {
+export const LessonActivitiesPropDefaults = {
   dataIsStale: false,
   edges: [],
   isLoading: false,
@@ -122,17 +122,17 @@ export const StudyActivitiesPropDefaults = {
   totalCount: 0,
 }
 
-const refetchContainer = createRefetchContainer(StudyActivitiesContainer,
+const refetchContainer = createRefetchContainer(LessonActivitiesContainer,
   {
-    study: graphql`
-      fragment StudyActivitiesContainer_study on Study @argumentDefinitions(
+    lesson: graphql`
+      fragment LessonActivitiesContainer_lesson on Lesson @argumentDefinitions(
         count: {type: "Int!"},
         after: {type: "String"},
         filterBy: {type: "ActivityFilters"},
         orderBy: {type: "ActivityOrder"},
       ) {
         activities(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
-        @connection(key: "StudyActivitiesContainer_activities", filters: ["filterBy", "orderBy"]) {
+        @connection(key: "LessonActivitiesContainer_activities", filters: ["filterBy", "orderBy"]) {
           edges {
             cursor
             node {
@@ -152,21 +152,24 @@ const refetchContainer = createRefetchContainer(StudyActivitiesContainer,
     `,
   },
   graphql`
-    query StudyActivitiesContainerRefetchQuery(
+    query LessonActivitiesContainerRefetchQuery(
       $owner: String!,
       $name: String!,
+      $number: Int!,
       $count: Int!,
       $after: String,
       $filterBy: ActivityFilters,
       $orderBy: ActivityOrder,
     ) {
       study(owner: $owner, name: $name) {
-        ...StudyActivitiesContainer_study @arguments(
-          count: $count,
-          after: $after,
-          filterBy: $filterBy,
-          orderBy: $orderBy,
-        )
+        lesson(number: $number) {
+          ...LessonActivitiesContainer_lesson @arguments(
+            count: $count,
+            after: $after,
+            filterBy: $filterBy,
+            orderBy: $orderBy,
+          )
+        }
       }
     }
   `,

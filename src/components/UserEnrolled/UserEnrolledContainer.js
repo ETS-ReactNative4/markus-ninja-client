@@ -170,7 +170,7 @@ const refetchContainer = createRefetchContainer(UserEnrolledContainer,
                 ...ListLessonPreview_lesson
               }
               ...on Study {
-                ...StudyPreview_study
+                ...ListStudyPreview_study
               }
               ...on User {
                 ...UserPreview_user

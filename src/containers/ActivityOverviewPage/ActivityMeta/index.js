@@ -24,6 +24,9 @@ class ActivityMeta extends React.Component {
         />
         {!detailsOpen &&
         <ActivityMetaLesson activity={activity} />}
+        <p className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          Please note that assets may be part of only <strong>one</strong> activity.
+        </p>
       </React.Fragment>
     )
   }

@@ -190,7 +190,9 @@ const refetchContainer = createRefetchContainer(SearchContainer,
                 ...SelectLessonPreview_lesson @include(if: $styleSelect)
               }
               ...on Study {
-                ...StudyPreview_study
+                ...CardStudyPreview_study @include(if: $styleCard)
+                ...ListStudyPreview_study @include(if: $styleList)
+                ...SelectStudyPreview_study @include(if: $styleSelect)
               }
               ...on Topic {
                 ...TopicPreview_topic
