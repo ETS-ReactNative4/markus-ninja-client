@@ -16,6 +16,8 @@ class Icon extends React.PureComponent {
     switch (icon.toLowerCase()) {
       case "":
         return children
+      case "activity":
+        return "local_activity"
       case "asset":
         return "image"
       case "email":
@@ -49,6 +51,8 @@ class Icon extends React.PureComponent {
       return label
     }
     switch (icon) {
+      case "activity":
+        return "Activity"
       case "asset":
         return "Asset"
       case "email":

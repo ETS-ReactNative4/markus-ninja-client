@@ -4,12 +4,12 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router'
-import UserActivityEvent from 'components/UserActivityEvent'
+import UserTimelineEvent from 'components/UserTimelineEvent'
 import { get, isEmpty } from 'utils'
 
 import { EVENTS_PER_PAGE } from 'consts'
 
-class ViewerReceivedActivity extends React.Component {
+class ViewerReceivedTimeline extends React.Component {
   _loadMore = () => {
     const relay = get(this.props, "relay")
     if (!relay.hasMore()) {
@@ -31,7 +31,7 @@ class ViewerReceivedActivity extends React.Component {
         </h5>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="mdc-card mdc-card--outlined ph2">
-            {this.renderActivity()}
+            {this.renderTimeline()}
             {this.props.relay.hasMore() &&
             <div className="mdc-card__actions">
               <div className="mdc-card__action-buttons">
@@ -49,9 +49,9 @@ class ViewerReceivedActivity extends React.Component {
     )
   }
 
-  renderActivity() {
+  renderTimeline() {
     const {relay} = this.props
-    const edges = get(this.props, "viewer.receivedActivity.edges", [])
+    const edges = get(this.props, "viewer.receivedTimeline.edges", [])
     const noResults = isEmpty(edges)
 
     return (
@@ -62,25 +62,25 @@ class ViewerReceivedActivity extends React.Component {
           ? <li className="mdc-list-item">No recent activity</li>
         : edges.map(({node}) => (
             node &&
-            <UserActivityEvent key={node.id} withUser event={node} />
+            <UserTimelineEvent key={node.id} withUser event={node} />
           ))}
       </ul>
     )
   }
 }
 
-export default withRouter(createPaginationContainer(ViewerReceivedActivity,
+export default withRouter(createPaginationContainer(ViewerReceivedTimeline,
   {
     viewer: graphql`
-      fragment ViewerReceivedActivity_viewer on User @argumentDefinitions(
+      fragment ViewerReceivedTimeline_viewer on User @argumentDefinitions(
         count: {type: "Int!"},
         after: {type: "String"}
       ) {
-        receivedActivity(
+        receivedTimeline(
           first: $count,
           after: $after,
           orderBy: {direction: DESC, field: CREATED_AT}
-        ) @connection(key: "ViewerReceivedActivity_receivedActivity", filters: []) {
+        ) @connection(key: "ViewerReceivedTimeline_receivedTimeline", filters: []) {
           edges {
             node {
               __typename
@@ -107,12 +107,12 @@ export default withRouter(createPaginationContainer(ViewerReceivedActivity,
   {
     direction: 'forward',
     query: graphql`
-      query ViewerReceivedActivityForwardQuery(
+      query ViewerReceivedTimelineForwardQuery(
         $count: Int!,
         $after: String
       ) {
         viewer {
-          ...ViewerReceivedActivity_viewer @arguments(
+          ...ViewerReceivedTimeline_viewer @arguments(
             count: $count,
             after: $after
           )
@@ -120,7 +120,7 @@ export default withRouter(createPaginationContainer(ViewerReceivedActivity,
       }
     `,
     getConnectionFromProps(props) {
-      return get(props, "viewer.receivedActivity")
+      return get(props, "viewer.receivedTimeline")
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {

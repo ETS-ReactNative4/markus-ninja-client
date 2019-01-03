@@ -5,7 +5,7 @@ import {
 import graphql from 'babel-plugin-relay/macro'
 import { Link } from 'react-router-dom'
 
-class StudyLink extends React.Component {
+class LinkStudyPreview extends React.Component {
   render() {
     const {
       className,
@@ -29,8 +29,8 @@ class StudyLink extends React.Component {
   }
 }
 
-export default createFragmentContainer(StudyLink, graphql`
-  fragment StudyLink_study on Study {
+export default createFragmentContainer(LinkStudyPreview, graphql`
+  fragment LinkStudyPreview_study on Study {
     id
     name
     nameWithOwner

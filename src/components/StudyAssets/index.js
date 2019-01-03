@@ -8,7 +8,7 @@ import { withRouter } from 'react-router'
 import environment from 'Environment'
 import StudyAssetsContainer, {StudyAssetsProp, StudyAssetsPropDefaults} from './StudyAssetsContainer'
 
-import { COURSES_PER_PAGE } from 'consts'
+import { ASSETS_PER_PAGE } from 'consts'
 
 const StudyAssetsQuery = graphql`
   query StudyAssetsQuery(
@@ -18,6 +18,9 @@ const StudyAssetsQuery = graphql`
     $count: Int!,
     $filterBy: UserAssetFilters,
     $orderBy: UserAssetOrder,
+    $styleCard: Boolean!,
+    $styleList: Boolean!,
+    $styleSelect: Boolean!,
   ) {
     study(owner: $owner, name: $name) {
       ...StudyAssetsContainer_study @arguments(
@@ -25,6 +28,9 @@ const StudyAssetsQuery = graphql`
         count: $count,
         filterBy: $filterBy,
         orderBy: $orderBy,
+        styleCard: $styleCard,
+        styleList: $styleList,
+        styleSelect: $styleSelect,
       )
     }
   }
@@ -44,7 +50,7 @@ class StudyAssets extends React.Component {
 
   render() {
     const {orderBy, filterBy} = this.state
-    const {count, match} = this.props
+    const {count, fragment, match} = this.props
 
     return (
       <QueryRenderer
@@ -56,6 +62,9 @@ class StudyAssets extends React.Component {
           count,
           filterBy,
           orderBy,
+          styleCard: fragment === "card",
+          styleList: fragment === "list",
+          styleSelect: fragment === "select",
         }}
         render={({error,  props}) => {
           if (error) {
@@ -91,10 +100,11 @@ StudyAssets.propTypes = {
     topics: PropTypes.arrayOf(PropTypes.string),
     search: PropTypes.string,
   }),
+  fragment: PropTypes.oneOf(["card", "list", "select"]).isRequired,
 }
 
 StudyAssets.defaultProps = {
-  count: COURSES_PER_PAGE,
+  count: ASSETS_PER_PAGE,
 }
 
 export {StudyAssetsProp, StudyAssetsPropDefaults}

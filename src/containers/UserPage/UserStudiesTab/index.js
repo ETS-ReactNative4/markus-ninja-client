@@ -91,7 +91,7 @@ class UserStudiesTab extends React.Component {
           </div>
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <UserStudies filterBy={this._filterBy} orderBy={this._orderBy}>
+          <UserStudies filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
             <UserStudiesTabStudies user={user} />
           </UserStudies>
         </div>

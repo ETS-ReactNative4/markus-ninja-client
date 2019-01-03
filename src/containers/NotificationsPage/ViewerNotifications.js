@@ -3,7 +3,7 @@ import {
   createPaginationContainer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
-import StudyLink from 'components/StudyLink'
+import StudyPreview from 'components/StudyPreview'
 import UserLink from 'components/UserLink'
 import Notification from './Notification.js'
 import MarkAllStudyNotificationsAsReadMutation from 'mutations/MarkAllStudyNotificationsAsReadMutation'
@@ -61,7 +61,7 @@ class ViewerNotifications extends React.Component {
                     user={get(this.props, "viewer", null)}
                   />
                   <span>/</span>
-                  <StudyLink
+                  <StudyPreview.Link
                     className="rn-link"
                     study={get(notificationsByStudy[key][0], "node.study", null)}
                   />
@@ -109,7 +109,7 @@ export default createPaginationContainer(ViewerNotifications,
             node {
               id
               study {
-                ...StudyLink_study
+                ...LinkStudyPreview_study
                 id
               }
               ...Notification_notification

@@ -28,6 +28,12 @@ class StudyMetaDetails extends React.Component {
     }
   }
 
+  handleCancel = () => {
+    this.setState({open: false})
+    this.props.onClose()
+    this.reset_()
+  }
+
   handleChange = (field) => {
     this.setState({
       [field.name]: field,
@@ -55,8 +61,6 @@ class StudyMetaDetails extends React.Component {
 
     this.setState({ open })
     this.props.onOpen(open)
-
-    this.reset_()
   }
 
   reset_ = () => {
@@ -122,7 +126,7 @@ class StudyMetaDetails extends React.Component {
           <button
             className="mdc-button ml2"
             type="button"
-            onClick={this.handleToggleOpen}
+            onClick={this.handleCancel}
           >
             Cancel
           </button>
@@ -157,11 +161,13 @@ class StudyMetaDetails extends React.Component {
 }
 
 StudyMetaDetails.propTypes = {
+  onClose: PropTypes.func,
   onOpen: PropTypes.func,
 }
 
 StudyMetaDetails.defaulProps = {
-  onOpen: () => {}
+  onClose: () => {},
+  onOpen: () => {},
 }
 
 export default withRouter(createFragmentContainer(StudyMetaDetails, graphql`

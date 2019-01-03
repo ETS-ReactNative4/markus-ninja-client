@@ -6,8 +6,6 @@ import Search from 'components/Search'
 import SearchPageResults from './SearchPageResults'
 import {get} from 'utils'
 
-import './styles.css'
-
 class SearchPage extends React.Component {
   get classes() {
     const {className} = this.props
@@ -59,6 +57,7 @@ class SearchPage extends React.Component {
           type={query.type}
           query={query.query}
           orderBy={query.orderBy}
+          fragment="list"
         >
           <SearchPageResults />
         </Search>

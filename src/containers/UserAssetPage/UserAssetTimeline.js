@@ -126,6 +126,9 @@ export default createRefetchContainer(UserAssetTimeline,
             node {
               __typename
               id
+              ...on AddedToActivityEvent {
+                ...AddedToActivityEvent_event
+              }
               ...on Comment {
                 ...Comment_comment
               }
@@ -134,6 +137,9 @@ export default createRefetchContainer(UserAssetTimeline,
               }
               ...on ReferencedEvent {
                 ...ReferencedEvent_event
+              }
+              ...on RemovedFromActivityEvent {
+                ...RemovedFromActivityEvent_event
               }
               ...on RenamedEvent {
                 ...RenamedEvent_event

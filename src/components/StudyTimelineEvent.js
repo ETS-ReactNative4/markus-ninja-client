@@ -3,7 +3,7 @@ import { get } from 'utils'
 import CreatedEvent from 'components/CreatedEvent'
 import PublishedEvent from 'components/PublishedEvent'
 
-class StudyActivityEvent extends React.Component {
+class StudyTimelineEvent extends React.Component {
   get otherProps() {
     const {
       className,
@@ -28,4 +28,4 @@ class StudyActivityEvent extends React.Component {
   }
 }
 
-export default StudyActivityEvent
+export default StudyTimelineEvent

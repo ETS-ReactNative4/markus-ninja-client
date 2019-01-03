@@ -2,7 +2,7 @@ import * as React from 'react'
 import cls from 'classnames'
 import List from 'components/mdc/List'
 import {UserStudiesProp, UserStudiesPropDefaults} from 'components/UserStudies'
-import StudyLink from 'components/StudyLink'
+import StudyPreview from 'components/StudyPreview'
 import {filterDefinedReactChildren, isEmpty} from 'utils'
 
 class ViewerStudies extends React.Component {
@@ -21,7 +21,7 @@ class ViewerStudies extends React.Component {
       : noResults
         ? [<List.Item><List.Item.Text primaryText="No studies were found" /></List.Item>]
       : edges.map(({node}) => (
-          node && <List.Item key={node.id}><StudyLink study={node} /></List.Item>
+          node && <List.Item key={node.id}><StudyPreview.Link study={node} /></List.Item>
         ))
     if (hasMore) {
       listItems.push(

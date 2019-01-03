@@ -9,7 +9,7 @@ import graphql from 'babel-plugin-relay/macro'
 class SelectLessonPreview extends React.Component {
   handleClick = (e) => {
     const {lesson} = this.props
-    this.props.onClick(lesson.id)
+    this.props.onClick(lesson)
   }
 
   get classes() {
@@ -27,6 +27,7 @@ class SelectLessonPreview extends React.Component {
       innerRef,
       lesson,
       selected,
+      twoLine,
       ...otherProps
     } = this.props
 
@@ -47,11 +48,30 @@ class SelectLessonPreview extends React.Component {
         className={this.classes}
         onClick={this.handleClick}
       >
-        <span className="mdc-list-item__graphic" icon="lesson">#{lesson.number}</span>
-        <span className="mdc-list-item__text">
-          {lesson.title}
-        </span>
+        {this.renderText()}
       </li>
+    )
+  }
+
+  renderText() {
+    const {lesson, twoLine} = this.props
+    if (twoLine) {
+      return (
+        <span className="mdc-list-item__text">
+          <span className="mdc-list-item__primary-text">
+            {lesson.title}
+          </span>
+          <span className="mdc-list-item__secondary-text">
+            {lesson.study.nameWithOwner}#{lesson.number}
+          </span>
+        </span>
+      )
+    }
+
+    return (
+      <span className="mdc-list-item__text">
+        {lesson.title}
+      </span>
     )
   }
 }
@@ -61,10 +81,14 @@ SelectLessonPreview.propTypes = {
     id: PropTypes.string.isRequired,
     number: PropTypes.number.isRequired,
     resourcePath: PropTypes.string.isRequired,
+    study: PropTypes.shape({
+      nameWithOwner: PropTypes.string.isRequired,
+    }),
     title: PropTypes.string.isRequired,
   }),
   onClick: PropTypes.func.isRequired,
   selected: PropTypes.bool,
+  twoLine: PropTypes.bool,
 }
 
 SelectLessonPreview.defaultProps = {
@@ -72,10 +96,14 @@ SelectLessonPreview.defaultProps = {
     id: "",
     number: 0,
     resourcePath: "",
+    study: {
+      nameWithOwner: "",
+    },
     title: "",
   },
   onClick: () => {},
   selected: false,
+  twoLine: false,
 }
 
 export default createFragmentContainer(SelectLessonPreview, graphql`
@@ -83,6 +111,9 @@ export default createFragmentContainer(SelectLessonPreview, graphql`
     id
     number
     resourcePath
+    study {
+      nameWithOwner
+    }
     title
   }
 `)

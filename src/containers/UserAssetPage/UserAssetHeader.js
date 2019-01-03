@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import getHistory from 'react-router-global-history'
 import Icon from 'components/Icon'
 import Snackbar from 'components/mdc/Snackbar'
-import StudyLink from 'components/StudyLink'
+import StudyPreview from 'components/StudyPreview'
 import UserLink from 'components/UserLink'
 import UserAssetNameInput, {defaultUserAssetNameState} from 'components/UserAssetNameInput'
 import UpdateUserAssetMutation from 'mutations/UpdateUserAssetMutation'
@@ -150,7 +150,7 @@ class UserAssetHeader extends React.Component {
         <h4 className="rn-header__text rn-file-path">
           <UserLink className="rn-link rn-file-path__directory" user={get(asset, "study.owner", null)} />
           <span className="rn-file-path__separator">/</span>
-          <StudyLink className="rn-link rn-file-path__directory" study={get(asset, "study", null)} />
+          <StudyPreview.Link className="rn-link rn-file-path__directory" study={get(asset, "study", null)} />
           <span className="rn-file-path__separator">/</span>
           <span className="rn-file-path__file">
             <span className="rn-file-path__file__text">
@@ -177,7 +177,7 @@ export default withRouter(createFragmentContainer(UserAssetHeader, graphql`
     id
     name
     study {
-      ...StudyLink_study
+      ...LinkStudyPreview_study
       owner {
         ...UserLink_user
       }

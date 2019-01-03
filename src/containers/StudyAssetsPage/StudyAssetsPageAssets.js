@@ -70,7 +70,7 @@ class StudyAssetsPageAssets extends React.Component {
       <div className="rn-card__body">
         <ul className="rn-image-list mdc-image-list mdc-image-list--with-text-protection">
           {edges.map(({node}) => (
-            node && <UserAssetPreview key={node.id} asset={node} />
+            node && <UserAssetPreview.List key={node.id} asset={node} />
           ))}
         </ul>
       </div>

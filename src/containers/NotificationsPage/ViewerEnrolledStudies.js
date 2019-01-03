@@ -3,7 +3,7 @@ import {
   createPaginationContainer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
-import StudyLink from 'components/StudyLink'
+import StudyPreview from 'components/StudyPreview'
 import EnrollIconButton from 'components/EnrollIconButton'
 import Icon from 'components/Icon'
 import { get, isEmpty } from 'utils'
@@ -41,7 +41,7 @@ class ViewerEnrolledStudies extends React.Component {
                 <li key={node.id} className="rn-list-preview">
                   <span className="mdc-list-item">
                     <Icon as="span" className="mdc-list-item__graphic" icon="study" />
-                    <StudyLink study={node} />
+                    <StudyPreview.Link study={node} />
                     <span className="mdc-list-item__meta">
                       <EnrollIconButton enrollable={node} />
                     </span>
@@ -76,7 +76,7 @@ export default createPaginationContainer(ViewerEnrolledStudies,
             node {
               id
               ...on Study {
-                ...StudyLink_study
+                ...LinkStudyPreview_study
                 enrollmentStatus
                 id
                 viewerCanEnroll

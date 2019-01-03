@@ -138,8 +138,10 @@ const refetchContainer = createRefetchContainer(UserStudiesContainer,
         after: {type: "String"},
         filterBy: {type: "StudyFilters"},
         orderBy: {type: "StudyOrder"},
+        styleCard: {type: "Boolean!"},
         styleLink: {type: "Boolean!"},
-        stylePreview: {type: "Boolean!"},
+        styleList: {type: "Boolean!"},
+        styleSelect: {type: "Boolean!"},
       ) {
         studies(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
         @connection(key: "UserStudiesContainer_studies", filters: ["filterBy", "orderBy"]) {
@@ -148,8 +150,10 @@ const refetchContainer = createRefetchContainer(UserStudiesContainer,
             node {
               id
               ...on Study {
-                ...StudyLink_study @include(if: $styleLink)
-                ...StudyPreview_study @include(if: $stylePreview)
+                ...CardStudyPreview_study @include(if: $styleCard)
+                ...LinkStudyPreview_study @include(if: $styleLink)
+                ...ListStudyPreview_study @include(if: $styleList)
+                ...SelectStudyPreview_study @include(if: $styleSelect)
               }
             }
           }
@@ -171,8 +175,10 @@ const refetchContainer = createRefetchContainer(UserStudiesContainer,
       $orderBy: StudyOrder,
       $isUser: Boolean!,
       $isViewer: Boolean!,
+      $styleCard: Boolean!,
       $styleLink: Boolean!,
-      $stylePreview: Boolean!,
+      $styleList: Boolean!,
+      $styleSelect: Boolean!,
     ) {
       user(login: $login) @skip(if: $isViewer) {
         ...UserStudiesContainer_user @arguments(
@@ -180,8 +186,10 @@ const refetchContainer = createRefetchContainer(UserStudiesContainer,
           count: $count,
           filterBy: $filterBy,
           orderBy: $orderBy,
+          styleCard: $styleCard,
           styleLink: $styleLink,
-          stylePreview: $stylePreview,
+          styleList: $styleList,
+          styleSelect: $styleSelect,
         )
       }
       viewer @skip(if: $isUser) {
@@ -190,8 +198,10 @@ const refetchContainer = createRefetchContainer(UserStudiesContainer,
           count: $count,
           filterBy: $filterBy,
           orderBy: $orderBy,
+          styleCard: $styleCard,
           styleLink: $styleLink,
-          stylePreview: $stylePreview,
+          styleList: $styleList,
+          styleSelect: $styleSelect,
         )
       }
     }

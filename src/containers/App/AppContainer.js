@@ -11,6 +11,7 @@ import PrivateRoute from 'components/PrivateRoute'
 import Header from 'components/Header'
 import NotFound from 'components/NotFound'
 
+import ActivityPage from 'containers/ActivityPage'
 import CreateStudyPage from 'containers/CreateStudyPage'
 import CoursePage from 'containers/CoursePage'
 import LessonPage from 'containers/LessonPage'
@@ -196,6 +197,10 @@ class AppContainer extends React.Component {
                       <Route exact path="/topics" component={TopicsPage} />
                       <Route exact path="/topics/:name" component={TopicPage} />
                       <Route exact path="/u/:login" component={UserPage} />
+                      <Route
+                        path="/u/:owner/:name/activity/:number"
+                        component={ActivityPage}
+                      />
                       <Route
                         path="/u/:owner/:name/asset/:filename"
                         component={UserAssetPage}

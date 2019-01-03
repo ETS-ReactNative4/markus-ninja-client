@@ -1,45 +1,14 @@
-@import "@material/theme/variables";
+@import "@material/theme/mixins";
 @import "./variables";
 
 .rn-link {
+  @include mdc-theme-prop(color, secondary);
+
   text-decoration: none;
-  transition: color $rn-link-transition-duration;
-  color: inherit;
+  opacity: 1;
+  transition: opacity $rn-link-transition-duration;
 
   &:hover {
-    color: var(--mdc-theme-text-secondary-on-light);
-
-    &.rn-link--secondary {
-      color: var(--mdc-theme-text-primary-on-light);
-    }
-  }
-
-  &.rn-link--on-primary {
-    color: $mdc-theme-on-primary;
-
-    &:hover {
-      color: var(--mdc-theme-text-secondary-on-dark);
-
-      &.rn-link--secondary {
-        color: var(--mdc-theme-text-primary-on-dark);
-      }
-    }
-  }
-
-  &.rn-link--on-secondary {
-    color: $mdc-theme-on-secondary;
-
-    &:hover {
-      color: var(--mdc-theme-text-secondary-on-dark);
-
-      &.rn-link--secondary {
-        color: var(--mdc-theme-text-primary-on-dark);
-      }
-    }
+    opacity: 0.5;
   }
 }
-
-.rn-link--underlined {
-  text-decoration: underline;
-}
-

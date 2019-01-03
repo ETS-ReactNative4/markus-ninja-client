@@ -1,5 +1,9 @@
 import * as React from 'react'
 import cls from 'classnames'
+import {
+  createFragmentContainer,
+} from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import {Link} from 'react-router-dom'
 import List from 'components/mdc/List'
 import EnrollIconButton from 'components/EnrollIconButton'
@@ -105,4 +109,17 @@ class ListUserPreview extends React.Component {
   }
 }
 
-export default ListUserPreview
+export default createFragmentContainer(ListUserPreview, graphql`
+  fragment ListUserPreview_user on User {
+    createdAt
+    enrollmentStatus
+    id
+    isViewer
+    login
+    resourcePath
+    studies(first: 0) {
+      totalCount
+    }
+    viewerCanEnroll
+  }
+`)

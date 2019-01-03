@@ -4,7 +4,6 @@ import {
   createRefetchContainer,
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
-import {withRouter} from 'react-router-dom'
 import isEqual from 'lodash.isequal'
 import {debounce, get, isNil} from 'utils'
 
@@ -130,7 +129,9 @@ const refetchContainer = createRefetchContainer(UserAssetsContainer,
         after: {type: "String"},
         filterBy: {type: "UserAssetFilters"},
         orderBy: {type: "UserAssetOrder"},
-        stylePreview: {type: "Boolean!"},
+        styleCard: {type: "Boolean!"},
+        styleList: {type: "Boolean!"},
+        styleSelect: {type: "Boolean!"},
       ) {
         assets(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
         @connection(key: "UserAssetsContainer_assets", filters: ["filterBy", "orderBy"]) {
@@ -139,7 +140,8 @@ const refetchContainer = createRefetchContainer(UserAssetsContainer,
             node {
               id
               ...on UserAsset {
-                ...UserAssetPreview_asset @include(if: $stylePreview)
+                ...ListUserAssetPreview_asset @include(if: $styleList)
+                ...SelectUserAssetPreview_asset @include(if: $styleSelect)
               }
             }
           }
@@ -161,7 +163,9 @@ const refetchContainer = createRefetchContainer(UserAssetsContainer,
       $orderBy: UserAssetOrder,
       $isUser: Boolean!,
       $isViewer: Boolean!,
-      $stylePreview: Boolean!,
+      $styleCard: Boolean!,
+      $styleList: Boolean!,
+      $styleSelect: Boolean!,
     ) {
       user(login: $login) @skip(if: $isViewer) {
         ...UserAssetsContainer_user @arguments(
@@ -169,7 +173,9 @@ const refetchContainer = createRefetchContainer(UserAssetsContainer,
           count: $count,
           filterBy: $filterBy,
           orderBy: $orderBy,
-          stylePreview: $stylePreview,
+          styleCard: $styleCard,
+          styleList: $styleList,
+          styleSelect: $styleSelect,
         )
       }
       viewer @skip(if: $isUser) {
@@ -178,11 +184,13 @@ const refetchContainer = createRefetchContainer(UserAssetsContainer,
           count: $count,
           filterBy: $filterBy,
           orderBy: $orderBy,
-          stylePreview: $stylePreview,
+          styleCard: $styleCard,
+          styleList: $styleList,
+          styleSelect: $styleSelect,
         )
       }
     }
   `,
 )
 
-export default withRouter(refetchContainer)
+export default refetchContainer

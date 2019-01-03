@@ -24,17 +24,13 @@ class LoginPage extends React.Component {
               <h5>Sign in</h5>
             </header>
           </div>
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <div className="mdc-card pa4">
-              <LoginForm />
-            </div>
-          </div>
+          <LoginForm />
           <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
             <div className="mdc-card pa3">
               <p className="mb1">
                 New here?
                 <Link
-                  className="rn-link rn-link--underlined ml1"
+                  className="rn-link ml1"
                   to="/signup"
                 >
                   Create an account.

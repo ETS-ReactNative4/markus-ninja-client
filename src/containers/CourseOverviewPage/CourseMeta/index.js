@@ -21,9 +21,17 @@ class CourseMeta extends React.Component {
     return (
       <React.Fragment>
         {!topicsOpen &&
-        <CourseMetaDetails onOpen={(open) => this.setState({ detailsOpen: open })} course={course} />}
+        <CourseMetaDetails
+          onClose={() => this.setState({ detailsOpen: false })}
+          onOpen={() => this.setState({ detailsOpen: true })}
+          course={course}
+        />}
         {!detailsOpen &&
-        <CourseMetaTopics onOpen={(open) => this.setState({ topicsOpen: open })} course={course} />}
+        <CourseMetaTopics
+          onClose={() => this.setState({ topicsOpen: false })}
+          onOpen={() => this.setState({ topicsOpen: true })}
+          course={course}
+        />}
       </React.Fragment>
     )
   }

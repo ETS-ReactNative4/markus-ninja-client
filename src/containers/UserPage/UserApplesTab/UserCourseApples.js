@@ -82,7 +82,7 @@ export default createPaginationContainer(UserCourseApples,
             node {
               id
               ...on Course {
-                ...CoursePreview_course
+                ...CardCoursePreview_course
               }
             }
           }

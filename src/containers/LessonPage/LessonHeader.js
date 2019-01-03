@@ -10,7 +10,7 @@ import Dialog from 'components/Dialog'
 import EnrollmentSelect from 'components/EnrollmentSelect'
 import Icon from 'components/Icon'
 import Snackbar from 'components/mdc/Snackbar'
-import StudyLink from 'components/StudyLink'
+import StudyPreview from 'components/StudyPreview'
 import UserLink from 'components/UserLink'
 import PublishLessonDraftMutation from 'mutations/PublishLessonDraftMutation'
 import UpdateLessonMutation from 'mutations/UpdateLessonMutation'
@@ -185,7 +185,7 @@ class LessonHeader extends React.Component {
         <h4 className="rn-header__text rn-file-path">
           <UserLink className="rn-link rn-file-path__directory" user={get(lesson, "study.owner", null)} />
           <span className="rn-file-path__separator">/</span>
-          <StudyLink className="rn-link rn-file-path__directory" study={get(lesson, "study", null)} />
+          <StudyPreview.Link className="rn-link rn-file-path__directory" study={get(lesson, "study", null)} />
           <span className="rn-file-path__separator">/</span>
           <span className="rn-file-path__file">
             <Icon className="rn-file-path__file__icon" icon="lesson" />
@@ -269,7 +269,7 @@ export default withRouter(createFragmentContainer(LessonHeader, graphql`
     isPublished
     number
     study {
-      ...StudyLink_study
+      ...LinkStudyPreview_study
       owner {
         ...UserLink_user
       }

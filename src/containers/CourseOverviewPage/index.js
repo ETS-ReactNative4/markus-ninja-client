@@ -9,7 +9,6 @@ import { withRouter } from 'react-router'
 import { get } from 'utils'
 import CourseLessons from './CourseLessons'
 import CourseMeta from './CourseMeta'
-// import AddCourseLessonForm from './AddCourseLessonForm'
 import {isNil} from 'utils'
 
 import {LESSONS_PER_PAGE, TOPICS_PER_PAGE} from 'consts'
@@ -75,9 +74,6 @@ class CourseOverviewPage extends React.Component {
             return (
               <div className={this.classes}>
                 <CourseMeta course={course} />
-                {/*<div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                  <AddCourseLessonForm course={course} />
-                </div>*/}
                 <CourseLessons course={course} />
               </div>
             )

@@ -7,10 +7,10 @@ import graphql from 'babel-plugin-relay/macro'
 import environment from 'Environment'
 import CoursePreview from 'components/CoursePreview'
 import LessonPreview from 'components/LessonPreview'
-import StudyActivity from './StudyActivity'
+import StudyTimeline from './StudyTimeline'
 import StudyMeta from './StudyMeta'
 import {get, isEmpty} from 'utils'
-import {STUDY_ACTIVITY_PER_PAGE, TOPICS_PER_PAGE} from 'consts'
+import {STUDY_EVENTS_PER_PAGE, TOPICS_PER_PAGE} from 'consts'
 
 
 const StudyOverviewPageQuery = graphql`
@@ -24,7 +24,7 @@ const StudyOverviewPageQuery = graphql`
   ) {
     study(owner: $owner, name: $name) {
       ...CreateLessonLink_study
-      ...StudyActivity_study @arguments(
+      ...StudyTimeline_study @arguments(
         after: $afterEvent,
         count: $eventCount,
       )
@@ -37,7 +37,7 @@ const StudyOverviewPageQuery = graphql`
           node {
             id
             ...on Course {
-              ...CoursePreview_course
+              ...CardCoursePreview_course
             }
           }
         }
@@ -73,7 +73,7 @@ class StudyOverviewPage extends React.Component {
         variables={{
           owner: match.params.owner,
           name: match.params.name,
-          eventCount: STUDY_ACTIVITY_PER_PAGE,
+          eventCount: STUDY_EVENTS_PER_PAGE,
           topicCount: TOPICS_PER_PAGE,
         }}
         render={({error,  props}) => {
@@ -110,7 +110,7 @@ class StudyOverviewPage extends React.Component {
                     </div>
                   ))}
                 </React.Fragment>}
-                <StudyActivity study={props.study} />
+                <StudyTimeline study={props.study} />
               </div>
             )
           }

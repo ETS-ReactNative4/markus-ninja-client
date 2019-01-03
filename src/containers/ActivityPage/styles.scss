@@ -1,0 +1,30 @@
+@import "@material/layout-grid/mixins";
+
+.ActivityHeader__actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: end;
+  flex-wrap: wrap;
+  width: 100%;
+
+  .ActivityeHeader__action {
+    display: inline-flex;
+    flex-wrap: no-wrap;
+
+    &.ActivityeHeader__action--edit {
+      margin-left: 1em;
+    }
+  }
+
+  @include mdc-layout-grid-media-query_(phone) {
+    flex-direction: column;
+    align-items: start;
+
+    .ActivityHeader__action {
+      &.ActivityHeader__action--edit {
+        margin-bottom: 0;
+        margin-left: 0;
+      }
+    }
+  }
+}

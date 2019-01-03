@@ -1,3 +1,4 @@
+export const ACTIVITIES_PER_PAGE = 10
 export const APPLES_PER_PAGE = 10
 export const ASSETS_PER_PAGE = 10
 export const COURSES_PER_PAGE = 10
@@ -10,8 +11,8 @@ export const NOTIFICATIONS_PER_PAGE = 10
 export const SEARCH_RESULTS_PER_PAGE = 10
 export const SEARCH_BAR_RESULTS_PER_PAGE = 5
 export const STUDIES_PER_PAGE = 10
-export const STUDY_ACTIVITY_PER_PAGE = 4
+export const STUDY_EVENTS_PER_PAGE = 4
 export const TOPICABLES_PER_PAGE = 10
 export const TOPICS_PER_PAGE = 10
 export const USERS_PER_PAGE = 10
-export const USER_ACTIVITY_PER_PAGE = 4
+export const USER_EVENTS_PER_PAGE = 4

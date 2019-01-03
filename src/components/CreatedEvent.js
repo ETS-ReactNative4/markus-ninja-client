@@ -17,6 +17,8 @@ class CreatedEvent extends React.Component {
 
   get createableType() {
     switch (get(this.props, "event.createable.__typename", "")) {
+      case "Activity":
+        return "course"
       case "Course":
         return "course"
       case "Lesson":
@@ -31,6 +33,8 @@ class CreatedEvent extends React.Component {
   get createableLink() {
     const createable = get(this.props, "event.createable", {})
     switch (createable.__typename) {
+      case "Activity":
+        return createable.name
       case "Course":
         return createable.name
       case "Lesson":
@@ -87,6 +91,10 @@ export default createFragmentContainer(CreatedEvent, graphql`
   fragment CreatedEvent_event on CreatedEvent {
     createable {
       __typename
+      ...on Activity {
+        name
+        resourcePath
+      }
       ...on Course {
         name
         resourcePath

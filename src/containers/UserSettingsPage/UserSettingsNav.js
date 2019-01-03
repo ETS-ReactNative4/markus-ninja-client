@@ -21,6 +21,16 @@ class UserSettingsNav extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    const pathname = get(this.props, "location.pathname", "")
+    const prevPathname = get(prevProps, "location.pathname", "")
+    if (pathname !== prevPathname) {
+      this.setState({
+        activeIndex: this.getActiveIndex(),
+      })
+    }
+  }
+
   getActiveIndex = () => {
     const pathname = get(this.props, "location.pathname", "")
     switch (pathname) {
@@ -49,7 +59,6 @@ class UserSettingsNav extends React.Component {
   }
 
   handleActiveIndexUpdate_ = (activeIndex) => {
-    this.setState({activeIndex})
     const path = this.activeIndexToPath(activeIndex)
     getHistory().push(path)
   }

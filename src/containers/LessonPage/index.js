@@ -5,47 +5,29 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import environment from 'Environment'
-import {Link} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 import NotFound from 'components/NotFound'
-import StudyLabels from 'components/StudyLabels'
-import AddCommentForm from 'components/AddCommentForm'
-import LessonCourse from './LessonCourse'
+import CreateLessonActivityPage from 'containers/CreateLessonActivityPage'
+import LessonHomePage from 'containers/LessonHomePage'
+import LessonActivitiesPage from 'containers/LessonActivitiesPage'
 import LessonHeader from './LessonHeader'
-import LessonLabels from './LessonLabels'
-import LessonBody from './LessonBody'
-import LessonTimeline from './LessonTimeline'
-import AppContext from 'containers/App/Context'
+import LessonNav from './LessonNav'
 import {get} from 'utils'
 
-import { EVENTS_PER_PAGE } from 'consts'
-
-import "./styles.css"
-
 const LessonPageQuery = graphql`
-  query LessonPageQuery($owner: String!, $name: String!, $number: Int!, $count: Int!, $after: String) {
+  query LessonPageQuery($owner: String!, $name: String!, $number: Int!) {
     study(owner: $owner, name: $name) {
       lesson(number: $number) {
         id
-        isCourseLesson
-        ...LessonCourse_lesson
         ...LessonHeader_lesson
-        ...LessonLabels_lesson
-        ...LessonBody_lesson
-        ...LessonTimeline_lesson
-        ...AddCommentForm_commentable
+        ...LessonNav_lesson
+        ...LessonActivitiesPage_lesson
       }
     }
   }
 `
 
 class LessonPage extends React.Component {
-  lessonTimelineElement_ = React.createRef()
-
-  handleLabelToggled_ = (checked) => {
-    this.lessonTimelineElement_ && this.lessonTimelineElement_.current &&
-      this.lessonTimelineElement_.current.refetch()
-  }
-
   get classes() {
     const {className} = this.props
     return cls("LessonPage rn-page rn-page--column", className)
@@ -60,7 +42,6 @@ class LessonPage extends React.Component {
           owner: this.props.match.params.owner,
           name: this.props.match.params.name,
           number: parseInt(this.props.match.params.number, 10),
-          count: EVENTS_PER_PAGE,
         }}
         render={({error,  props}) => {
           if (error) {
@@ -74,41 +55,31 @@ class LessonPage extends React.Component {
 
             return (
               <div className={this.classes}>
-                <div className="mdc-layout-grid mw8">
-                  <div className="mdc-layout-grid__inner">
+                <div className="mdc-layout-grid">
+                  <div className="mdc-layout-grid__inner mw8">
                     <LessonHeader className="LessonPage__header" lesson={lesson}/>
-                    {lesson.isCourseLesson &&
                     <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                      <LessonCourse lesson={lesson} />
-                    </div>}
-                    <LessonBody className="LessonPage__body" lesson={lesson}/>
-                    <div className="LessonPage__meta mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                      <div className="center mw8">
-                        <StudyLabels fragment="toggle">
-                          <LessonLabels lesson={lesson} onLabelToggled={this.handleLabelToggled_} />
-                        </StudyLabels>
-                        {lesson.isCourseLesson && <LessonCourse lesson={lesson} />}
-                      </div>
+                      <LessonNav lesson={lesson} />
                     </div>
                   </div>
                 </div>
-                <div className="LessonPage__timeline mdc-layout-grid">
-                  <div className="LessonPage__timeline__container mdc-layout-grid__inner mw7">
-                    {!this.context.isAuthenticated()
-                    ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                        <div className="mdc-card mdc-card--outlined">
-                          <div className="rn-card__header">
-                            <Link className="rn-link rn-link--underlined mr1" to="/signin">Sign in</Link>
-                            or
-                            <Link className="rn-link rn-link--underlined mh1" to="/signup">Sign up</Link>
-                            to leave a comment
-                          </div>
-                        </div>
-                      </div>
-                    : <AddCommentForm commentable={lesson} />}
-                    <LessonTimeline ref={this.lessonTimelineElement_} lesson={lesson} />
-                  </div>
-                </div>
+                <Switch>
+                  <Route
+                    exact
+                    path="/u/:owner/:name/lesson/:number"
+                    render={(routeProps) => <LessonHomePage {...routeProps} lessonId={lesson.id} />}
+                  />
+                  <Route
+                    exact
+                    path="/u/:owner/:name/lesson/:number/activities"
+                    render={(routeProps) => <LessonActivitiesPage {...routeProps} lesson={lesson} />}
+                  />
+                  <Route
+                    exact
+                    path="/u/:owner/:name/lesson/:number/activities/new"
+                    component={CreateLessonActivityPage}
+                  />
+                </Switch>
               </div>
             )
           }
@@ -118,7 +89,5 @@ class LessonPage extends React.Component {
     )
   }
 }
-
-LessonPage.contextType = AppContext
 
 export default LessonPage

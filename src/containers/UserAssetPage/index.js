@@ -10,6 +10,7 @@ import NotFound from 'components/NotFound'
 import StudyLabels from 'components/StudyLabels'
 import AddCommentForm from 'components/AddCommentForm'
 import UserAsset from './UserAsset'
+import UserAssetActivity from './UserAssetActivity'
 import UserAssetHeader from './UserAssetHeader'
 import UserAssetLabels from './UserAssetLabels'
 import UserAssetTimeline from './UserAssetTimeline'
@@ -25,6 +26,8 @@ const UserAssetPageQuery = graphql`
     study(owner: $owner, name: $name) {
       asset(name: $filename) {
         id
+        isActivityAsset
+        ...UserAssetActivity_asset
         ...UserAssetHeader_asset
         ...UserAsset_asset
         ...UserAssetLabels_asset
@@ -72,6 +75,10 @@ class UserAssetPage extends React.Component {
                 <div className="mdc-layout-grid mw8">
                   <div className="mdc-layout-grid__inner">
                     <UserAssetHeader asset={asset} />
+                    {asset.isActivityAsset &&
+                    <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      <UserAssetActivity asset={asset} />
+                    </div>}
                     <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                       <UserAsset asset={props.study.asset} />
                     </div>
@@ -80,6 +87,7 @@ class UserAssetPage extends React.Component {
                         <StudyLabels fragment="toggle">
                           <UserAssetLabels asset={asset} onLabelToggled={this.handleLabelToggled_} />
                         </StudyLabels>
+                        {asset.isActivityAsset && <UserAssetActivity asset={asset} />}
                       </div>
                     </div>
                   </div>
@@ -90,9 +98,9 @@ class UserAssetPage extends React.Component {
                     ? <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                         <div className="mdc-card mdc-card--outlined">
                           <div className="rn-card__header">
-                            <Link className="rn-link rn-link--underlined mr1" to="/signin">Sign in</Link>
+                            <Link className="rn-link mr1" to="/signin">Sign in</Link>
                             or
-                            <Link className="rn-link rn-link--underlined mh1" to="/signup">Sign up</Link>
+                            <Link className="rn-link mh1" to="/signup">Sign up</Link>
                             to leave a comment
                           </div>
                         </div>

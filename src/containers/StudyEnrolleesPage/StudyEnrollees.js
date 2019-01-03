@@ -79,7 +79,7 @@ export default createPaginationContainer(StudyEnrollees,
           edges {
             node {
               id
-              ...UserPreview_user
+              ...ListUserPreview_user
             }
           }
           pageInfo {

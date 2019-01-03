@@ -1,0 +1,14 @@
+@import "@material/image-list/mixins";
+@import "@material/layout-grid/mixins";
+
+.AddActivityAssetDialog__assets {
+  @include mdc-image-list-standard-columns(2);
+
+  padding: 8px 0;
+  min-width: 400px;
+
+  @include mdc-layout-grid-media-query_(phone) {
+    @include mdc-image-list-standard-columns(1);
+    min-width: unset;
+  }
+}

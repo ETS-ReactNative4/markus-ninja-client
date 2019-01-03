@@ -4,12 +4,12 @@ import {
 } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
 import { withRouter } from 'react-router'
-import UserActivityEvent from 'components/UserActivityEvent'
+import UserTimelineEvent from 'components/UserTimelineEvent'
 import { get, isEmpty } from 'utils'
 
-import {USER_ACTIVITY_PER_PAGE} from 'consts'
+import {USER_EVENTS_PER_PAGE} from 'consts'
 
-class UserActivity extends React.Component {
+class UserTimeline extends React.Component {
   _loadMore = () => {
     const relay = get(this.props, "relay")
     if (!relay.hasMore()) {
@@ -20,18 +20,18 @@ class UserActivity extends React.Component {
       return
     }
 
-    relay.loadMore(USER_ACTIVITY_PER_PAGE)
+    relay.loadMore(USER_EVENTS_PER_PAGE)
   }
 
   render() {
     return (
       <React.Fragment>
         <h5 className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          Recent activity
+          Recent events
         </h5>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
           <div className="mdc-card mdc-card--outlined ph2">
-            {this.renderActivity()}
+            {this.renderTimeline()}
             {this.props.relay.hasMore() &&
             <div className="mdc-card__actions">
               <div className="mdc-card__action-buttons">
@@ -39,7 +39,7 @@ class UserActivity extends React.Component {
                 className="mdc-button mdc-button--unelevated mdc-card__action mdc-card__action--button"
                   onClick={this._loadMore}
                 >
-                  Load more activity
+                  Load more
                 </button>
               </div>
             </div>}
@@ -49,9 +49,9 @@ class UserActivity extends React.Component {
     )
   }
 
-  renderActivity() {
+  renderTimeline() {
     const {relay} = this.props
-    const edges = get(this.props, "user.activity.edges", [])
+    const edges = get(this.props, "user.timeline.edges", [])
     const noResults = isEmpty(edges)
 
     return (
@@ -59,28 +59,28 @@ class UserActivity extends React.Component {
         {relay.isLoading() && noResults
         ? <li className="mdc-list-item">Loading...</li>
         : noResults
-          ? <li className="mdc-list-item">No recent activity</li>
+          ? <li className="mdc-list-item">No recent events</li>
         : edges.map(({node}) => (
             node &&
-            <UserActivityEvent key={node.id} withUser event={node} />
+            <UserTimelineEvent key={node.id} withUser event={node} />
           ))}
       </ul>
     )
   }
 }
 
-export default withRouter(createPaginationContainer(UserActivity,
+export default withRouter(createPaginationContainer(UserTimeline,
   {
     user: graphql`
-      fragment UserActivity_user on User @argumentDefinitions(
+      fragment UserTimeline_user on User @argumentDefinitions(
         count: {type: "Int!"},
         after: {type: "String"}
       ) {
-        activity(
+        timeline(
           first: $count,
           after: $after,
           orderBy: {direction: DESC, field: CREATED_AT}
-        ) @connection(key: "UserActivity_activity", filters: []) {
+        ) @connection(key: "UserTimeline_timeline", filters: []) {
           edges {
             node {
               __typename
@@ -107,13 +107,13 @@ export default withRouter(createPaginationContainer(UserActivity,
   {
     direction: 'forward',
     query: graphql`
-      query UserActivityForwardQuery(
+      query UserTimelineForwardQuery(
         $login: String!,
         $count: Int!,
         $after: String
       ) {
         user(login: $login) {
-          ...UserActivity_user @arguments(
+          ...UserTimeline_user @arguments(
             count: $count,
             after: $after
           )
@@ -121,7 +121,7 @@ export default withRouter(createPaginationContainer(UserActivity,
       }
     `,
     getConnectionFromProps(props) {
-      return get(props, "user.activity")
+      return get(props, "user.timeline")
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {

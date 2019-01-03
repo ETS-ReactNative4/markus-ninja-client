@@ -68,7 +68,7 @@ class LoginForm extends React.Component {
 
   get classes() {
     const {className} = this.props
-    return cls("LoginForm mdc-layout-grid__inner", className)
+    return cls("LoginForm mdc-card pa3 mdc-layout-grid__cell mdc-layout-grid__cell--span-12", className)
   }
 
   get formIsValid() {
@@ -85,42 +85,44 @@ class LoginForm extends React.Component {
         className={this.classes}
         onSubmit={this.handleSubmit}
       >
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <TextField
-            className="w-100"
-            label="Username or email"
-            inputProps={{
-              name: "username",
-              required: true,
-              maxLength: 39,
-              onChange: this.handleChange,
-            }}
+        <div className="mdc-layout-grid__inner w-100">
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <TextField
+              className="w-100"
+              label="Username or email"
+              inputProps={{
+                name: "username",
+                required: true,
+                maxLength: 39,
+                onChange: this.handleChange,
+              }}
+            />
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <TextField
+              className="w-100"
+              label="Password"
+              inputProps={{
+                type: "password",
+                name: "password",
+                required: true,
+                onChange: this.handleChange,
+              }}
+            />
+          </div>
+          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+            <button
+              type="submit"
+              className="mdc-button mdc-button--unelevated w-100"
+            >
+              Sign in
+            </button>
+          </div>
+          <ErrorText
+            className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+            error={error}
           />
         </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <TextField
-            className="w-100"
-            label="Password"
-            inputProps={{
-              type: "password",
-              name: "password",
-              required: true,
-              onChange: this.handleChange,
-            }}
-          />
-        </div>
-        <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <button
-            type="submit"
-            className="mdc-button mdc-button--unelevated w-100"
-          >
-            Sign in
-          </button>
-        </div>
-        <ErrorText
-          className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-          error={error}
-        />
       </form>
     )
   }

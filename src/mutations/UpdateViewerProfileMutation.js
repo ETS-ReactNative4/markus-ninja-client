@@ -35,20 +35,6 @@ export default (bio, emailId, name, callback) => {
     {
       mutation,
       variables,
-      updater: proxyStore => {
-        const updateViewerProfileField = proxyStore.getRootField('updateViewerProfile')
-        const userId = updateViewerProfileField.getValue("id")
-        const newBio = updateViewerProfileField.getValue('bio')
-        const newBioHTML = updateViewerProfileField.getValue('bioHTML')
-        const newName = updateViewerProfileField.getValue('name')
-        const newProfileUpdatedAt = updateViewerProfileField.getValue('profileUpdatedAt')
-
-        const user = proxyStore.get(userId)
-        user.setValue(newBio, 'bio')
-        user.setValue(newBioHTML, 'bioHTML')
-        user.setValue(newName, 'name')
-        user.setValue(newProfileUpdatedAt, 'profileUpdatedAt')
-      },
       onCompleted: (response, error) => callback(get(response, "updateViewerProfile"), error),
       onError: err => callback(null, err),
     },

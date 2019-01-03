@@ -10,7 +10,7 @@ import StudyPreview from 'components/StudyPreview'
 import IconLink from 'components/IconLink'
 import Drawer from 'components/mdc/Drawer'
 import SearchViewerStudies from './SearchViewerStudies'
-import ViewerReceivedActivity from './ViewerReceivedActivity'
+import ViewerReceivedTimeline from './ViewerReceivedTimeline'
 import {get} from 'utils'
 import { EVENTS_PER_PAGE } from 'consts'
 
@@ -20,10 +20,10 @@ const DashboardPageQuery = graphql`
   query DashboardPageQuery($count: Int!, $after: String) {
     gettingStartedStudy: study(owner: "markus", name: "Getting_Started") {
       id
-      ...StudyPreview_study
+      ...CardStudyPreview_study
     }
     viewer {
-      ...ViewerReceivedActivity_viewer @arguments(
+      ...ViewerReceivedTimeline_viewer @arguments(
         count: $count,
         after: $after
       )
@@ -104,7 +104,7 @@ class DashboardPage extends React.Component {
                     <div className="rn-header--hero__content">
                       <h3>
                         Welcome back
-                        <Link className="rn-link rn-link--on-primary" to={props.viewer.resourcePath}>
+                        <Link className="rn-link" to={props.viewer.resourcePath}>
                           {` @${props.viewer.login}`}
                         </Link>
                       </h3>
@@ -142,7 +142,7 @@ class DashboardPage extends React.Component {
                             <StudyPreview.Card study={get(props, "gettingStartedStudy", null)} />
                           </div>
                         </React.Fragment>}
-                      <ViewerReceivedActivity viewer={props.viewer} />
+                      <ViewerReceivedTimeline viewer={props.viewer} />
                     </div>
                   </div>
                 </div>

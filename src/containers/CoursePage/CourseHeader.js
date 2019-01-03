@@ -10,7 +10,7 @@ import Icon from 'components/Icon'
 import AppleButton from 'components/AppleButton'
 import Dialog from 'components/Dialog'
 import Snackbar from 'components/mdc/Snackbar'
-import StudyLink from 'components/StudyLink'
+import StudyPreview from 'components/StudyPreview'
 import UserLink from 'components/UserLink'
 import PublishCourseMutation from 'mutations/PublishCourseMutation'
 import UpdateCourseMutation from 'mutations/UpdateCourseMutation'
@@ -73,7 +73,6 @@ class CourseHeader extends React.Component {
           return
         }
         this.setState({
-          name: get(updatedCourse, "name", ""),
           showSnackbar: true,
           snackbarMessage: "Name updated",
         })
@@ -150,16 +149,18 @@ class CourseHeader extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="rn-text-field">
-          <TextField
-            className="flex-auto"
-            label="Name"
-            floatingLabelClassName={!isEmpty(name) ? "mdc-floating-label--float-above" : ""}
-            inputProps={{
-              name: "name",
-              value: name.value,
-              onChange: this.handleChange,
-            }}
-          />
+          <div className="rn-text-field__input">
+            <TextField
+              className="flex-auto"
+              label="Name"
+              floatingLabelClassName={!isEmpty(name) ? "mdc-floating-label--float-above" : ""}
+              inputProps={{
+                name: "name",
+                value: name.value,
+                onChange: this.handleChange,
+              }}
+            />
+          </div>
           <div className="rn-text-field__actions">
             <button
               type="submit"
@@ -188,7 +189,7 @@ class CourseHeader extends React.Component {
         <h4 className="rn-header__text rn-file-path">
           <UserLink className="rn-link rn-file-path__directory" user={get(course, "study.owner", null)} />
           <span className="rn-file-path__separator">/</span>
-          <StudyLink className="rn-link rn-file-path__directory" study={get(course, "study", null)} />
+          <StudyPreview.Link className="rn-link rn-file-path__directory" study={get(course, "study", null)} />
           <span className="rn-file-path__separator">/</span>
           <span className="rn-file-path__file">
             <span className="rn-file-path__file__text">
@@ -284,7 +285,7 @@ export default withRouter(createFragmentContainer(CourseHeader, graphql`
     number
     resourcePath
     study {
-      ...StudyLink_study
+      ...LinkStudyPreview_study
       owner {
         ...UserLink_user
       }

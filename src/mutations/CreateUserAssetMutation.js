@@ -13,7 +13,7 @@ const mutation = graphql`
         node {
           href
           name
-          ...UserAssetPreview_asset
+          ...ListUserAssetPreview_asset
         }
       }
       study {

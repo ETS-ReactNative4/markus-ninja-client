@@ -4,7 +4,7 @@ import AppledEvent from 'components/AppledEvent'
 import CreatedEvent from 'components/CreatedEvent'
 import PublishedEvent from 'components/PublishedEvent'
 
-class UserActivityEvent extends React.Component {
+class UserTimelineEvent extends React.Component {
   get otherProps() {
     const {
       className,
@@ -31,4 +31,4 @@ class UserActivityEvent extends React.Component {
   }
 }
 
-export default UserActivityEvent
+export default UserTimelineEvent

@@ -1,0 +1,8 @@
+@import "@material/elevation/mixins";
+@import "@material/layout-grid/mixins";
+@import "@material/theme/mixins";
+
+.ListUserAssetPreview--dragging {
+  @include mdc-elevation(2);
+  @include mdc-theme-prop(background-color, background);
+}

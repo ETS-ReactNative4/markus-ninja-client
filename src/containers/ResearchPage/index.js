@@ -19,7 +19,7 @@ const ResearchPageQuery = graphql`
         node {
           id
           ...on Course {
-            ...CoursePreview_course
+            ...CardCoursePreview_course
           }
         }
       }
@@ -29,7 +29,7 @@ const ResearchPageQuery = graphql`
         node {
           id
           ...on Study {
-            ...StudyPreview_study
+            ...CardStudyPreview_study
           }
         }
       }
@@ -39,7 +39,7 @@ const ResearchPageQuery = graphql`
         node {
           id
           ...on Topic {
-            ...TopicPreview_topic
+            ...CardTopicPreview_topic
           }
         }
       }

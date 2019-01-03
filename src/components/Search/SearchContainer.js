@@ -76,6 +76,7 @@ class SearchContainer extends React.Component {
     const search = get(this.props, "results.search", {})
 
     return {
+      activity: search.activityCount,
       course: search.courseCount,
       label: search.labelCount,
       lesson: search.lessonCount,
@@ -122,6 +123,7 @@ SearchContainer.defaultProps = {
 
 export const SearchProp = PropTypes.shape({
   counts: PropTypes.shape({
+    activity: PropTypes.number,
     course: PropTypes.number,
     label: PropTypes.number,
     lesson: PropTypes.number,
@@ -139,6 +141,7 @@ export const SearchProp = PropTypes.shape({
 
 export const SearchPropDefaults = {
   counts: {
+    activity: 0,
     course: 0,
     label: 0,
     lesson: 0,
@@ -162,6 +165,9 @@ const refetchContainer = createRefetchContainer(SearchContainer,
         orderBy: {type: "SearchOrder"},
         query: {type: "String!"},
         type: {type: "SearchType!"},
+        styleCard: {type: "Boolean!"},
+        styleList: {type: "Boolean!"},
+        styleSelect: {type: "Boolean!"},
       ) {
         search(first: $count, after: $after, orderBy: $orderBy, query: $query, type: $type)
         @connection(key: "SearchContainer_search", filters: ["orderBy", "type"]) {
@@ -169,26 +175,39 @@ const refetchContainer = createRefetchContainer(SearchContainer,
             cursor
             node {
               id
+              ...on Activity {
+                ...CardActivityPreview_activity @include(if: $styleCard)
+                ...ListActivityPreview_activity @include(if: $styleList)
+                ...SelectActivityPreview_activity @include(if: $styleSelect)
+              }
               ...on Course {
-                ...CoursePreview_course
+                ...CardCoursePreview_course @include(if: $styleCard)
+                ...ListCoursePreview_course @include(if: $styleList)
+                ...SelectCoursePreview_course @include(if: $styleSelect)
               }
               ...on Label {
                 ...ListLabelPreview_label
               }
               ...on Lesson {
-                ...ListLessonPreview_lesson
+                ...CardLessonPreview_lesson @include(if: $styleCard)
+                ...ListLessonPreview_lesson @include(if: $styleList)
+                ...SelectLessonPreview_lesson @include(if: $styleSelect)
               }
               ...on Study {
-                ...StudyPreview_study
+                ...CardStudyPreview_study @include(if: $styleCard)
+                ...ListStudyPreview_study @include(if: $styleList)
+                ...SelectStudyPreview_study @include(if: $styleSelect)
               }
               ...on Topic {
-                ...TopicPreview_topic
+                ...CardTopicPreview_topic @include(if: $styleCard)
+                ...ListTopicPreview_topic @include(if: $styleList)
               }
               ...on User {
-                ...UserPreview_user
+                ...ListUserPreview_user @include(if: $styleList)
               }
               ...on UserAsset {
-                ...UserAssetPreview_asset
+                ...ListUserAssetPreview_asset @include(if: $styleList)
+                ...SelectUserAssetPreview_asset @include(if: $styleSelect)
               }
             }
           }
@@ -196,6 +215,7 @@ const refetchContainer = createRefetchContainer(SearchContainer,
             hasNextPage
             endCursor
           }
+          activityCount
           courseCount
           labelCount
           lessonCount
@@ -214,6 +234,9 @@ const refetchContainer = createRefetchContainer(SearchContainer,
       $orderBy: SearchOrder,
       $query: String!,
       $type: SearchType!,
+      $styleCard: Boolean!,
+      $styleList: Boolean!,
+      $styleSelect: Boolean!,
     ) {
       ...SearchContainer_results @arguments(
         count: $count,
@@ -221,6 +244,9 @@ const refetchContainer = createRefetchContainer(SearchContainer,
         orderBy: $orderBy,
         query: $query,
         type: $type,
+        styleCard: $styleCard,
+        styleList: $styleList,
+        styleSelect: $styleSelect,
       )
     }
   `,

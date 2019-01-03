@@ -15,7 +15,8 @@ const OVERVIEW_TAB = 0,
       LESSONS_TAB = 1,
       COURSES_TAB = 2,
       ASSETS_TAB = 3,
-      SETTINGS_TAB = 4
+      ACTIVITIES_TAB = 4,
+      SETTINGS_TAB = 5
 
 class StudyNav extends React.Component {
   constructor(props) {
@@ -23,6 +24,16 @@ class StudyNav extends React.Component {
 
     this.state = {
       activeIndex: this.getActiveIndex(),
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const pathname = get(this.props, "location.pathname", "")
+    const prevPathname = get(prevProps, "location.pathname", "")
+    if (pathname !== prevPathname) {
+      this.setState({
+        activeIndex: this.getActiveIndex(),
+      })
     }
   }
 
@@ -38,6 +49,8 @@ class StudyNav extends React.Component {
         return COURSES_TAB
       case resourcePath+"/assets":
         return ASSETS_TAB
+      case resourcePath+"/activities":
+        return ACTIVITIES_TAB
       case resourcePath+"/settings":
         return SETTINGS_TAB
       default:
@@ -56,6 +69,8 @@ class StudyNav extends React.Component {
         return resourcePath+"/courses"
       case ASSETS_TAB:
         return resourcePath+"/assets"
+      case ACTIVITIES_TAB:
+        return resourcePath+"/activities"
       case SETTINGS_TAB:
         return resourcePath+"/settings"
       default:
@@ -64,7 +79,6 @@ class StudyNav extends React.Component {
   }
 
   handleActiveIndexUpdate_ = (activeIndex) => {
-    this.setState({activeIndex})
     const path = this.activeIndexToPath(activeIndex)
     getHistory().push(path)
   }
@@ -107,6 +121,13 @@ class StudyNav extends React.Component {
             <Counter>{get(study, "assets.totalCount", 0)}</Counter>
           </span>
         </Tab>,
+        <Tab minWidth>
+          <Icon as="span" className="mdc-tab__icon" icon="activity" />
+          <span className="mdc-tab__text-label">
+            Activities
+            <Counter>{get(study, "activities.totalCount", 0)}</Counter>
+          </span>
+        </Tab>,
         study.viewerCanAdmin &&
         <Tab minWidth>
           <Icon as="span" className="mdc-tab__icon">settings</Icon>
@@ -121,6 +142,9 @@ class StudyNav extends React.Component {
 
 export default withRouter(createFragmentContainer(StudyNav, graphql`
   fragment StudyNav_study on Study {
+    activities(first: 0) {
+      totalCount
+    }
     assets(first: 0) {
       totalCount
     }

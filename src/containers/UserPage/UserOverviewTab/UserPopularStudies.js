@@ -40,7 +40,7 @@ export default createFragmentContainer(UserPopularStudies, graphql`
         node {
           id
           ...on Study {
-            ...StudyPreview_study
+            ...CardStudyPreview_study
           }
         }
       }

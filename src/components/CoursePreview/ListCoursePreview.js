@@ -1,5 +1,9 @@
 import * as React from 'react'
 import cls from 'classnames'
+import {
+  createFragmentContainer,
+} from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import {Link} from 'react-router-dom'
 import List from 'components/mdc/List'
 import AppleIconButton from 'components/AppleIconButton'
@@ -147,4 +151,31 @@ class ListCoursePreview extends React.Component {
   }
 }
 
-export default ListCoursePreview
+export default createFragmentContainer(ListCoursePreview, graphql`
+  fragment ListCoursePreview_course on Course {
+    advancedAt
+    createdAt
+    id
+    isPublished
+    lessons(first: 0) {
+      totalCount
+    }
+    name
+    number
+    owner {
+      login
+      resourcePath
+    }
+    resourcePath
+    topics(first: 2) {
+      nodes {
+        id
+        name
+        resourcePath
+      }
+    }
+    viewerCanAdmin
+    viewerCanApple
+    viewerHasAppled
+  }
+`)

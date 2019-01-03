@@ -45,7 +45,7 @@ class VerifyEmailPage extends React.Component {
               <span>
                 If you would like to do this later, please
                 <Link
-                  className="rn-link rn-link--underlined mh1"
+                  className="rn-link mh1"
                   to="/signout"
                 >
                   Sign out

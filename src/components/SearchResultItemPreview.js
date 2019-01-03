@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { get } from 'utils'
+import ActivityPreview from './ActivityPreview'
 import CoursePreview from './CoursePreview'
 import LessonPreview from './LessonPreview'
 import StudyPreview from './StudyPreview'
@@ -13,6 +14,8 @@ class SearchResultItemPreview extends React.Component {
     const item = get(this.props, "item", {})
 
     switch(item.__typename) {
+      case "Activity":
+        return <ActivityPreview.List className={className} activity={item} />
       case "Course":
         return <CoursePreview.List className={className} course={item} />
       case "Lesson":
@@ -24,7 +27,7 @@ class SearchResultItemPreview extends React.Component {
       case "User":
         return <UserPreview.List className={className} user={item} />
       case "UserAsset":
-        return <UserAssetPreview className={className} asset={item} />
+        return <UserAssetPreview.List className={className} asset={item} />
       default:
         return null
     }

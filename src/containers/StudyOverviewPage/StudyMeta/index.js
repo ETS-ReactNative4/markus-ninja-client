@@ -21,9 +21,17 @@ class StudyMeta extends React.Component {
     return (
       <React.Fragment>
         {!topicsOpen &&
-        <StudyMetaDetails onOpen={(open) => this.setState({ detailsOpen: open })} study={study} />}
+        <StudyMetaDetails
+          onClose={() => this.setState({ detailsOpen: false })}
+          onOpen={() => this.setState({ detailsOpen: true })}
+          study={study}
+        />}
         {!detailsOpen &&
-        <StudyMetaTopics onOpen={(open) => this.setState({ topicsOpen: open })} study={study} />}
+        <StudyMetaTopics
+          onClose={() => this.setState({ topicsOpen: false })}
+          onOpen={() => this.setState({ topicsOpen: true })}
+          study={study}
+        />}
       </React.Fragment>
     )
   }
