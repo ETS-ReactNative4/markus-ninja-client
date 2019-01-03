@@ -82,7 +82,7 @@ export default createPaginationContainer(UserStudyApples,
             node {
               id
               ...on Study {
-                ...ListStudyPreview_study
+                ...CardStudyPreview_study
               }
             }
           }

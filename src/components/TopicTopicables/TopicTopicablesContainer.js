@@ -164,7 +164,7 @@ const refetchContainer = createRefetchContainer(TopicTopicablesContainer,
             node {
               id
               ...on Course {
-                ...CoursePreview_course
+                ...ListCoursePreview_course
               }
               ...on Study {
                 ...ListStudyPreview_study

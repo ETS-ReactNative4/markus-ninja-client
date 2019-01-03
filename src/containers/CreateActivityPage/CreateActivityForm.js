@@ -8,8 +8,8 @@ import getHistory from 'react-router-global-history'
 import MaterialTextField, {HelperText, Input} from '@material/react-text-field'
 import ErrorText from 'components/ErrorText'
 import TextField, {defaultTextFieldState} from 'components/TextField'
+import ActivityLessonDialog from 'components/ActivityLessonDialog'
 import CreateActivityMutation from 'mutations/CreateActivityMutation'
-import ActivityLessonDialog from './ActivityLessonDialog'
 import {isEmpty, isNil} from 'utils'
 
 class CreateActivityForm extends React.Component {

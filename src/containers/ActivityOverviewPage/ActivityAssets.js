@@ -108,6 +108,9 @@ class ActivityAssets extends React.Component {
     return (
       <div className={this.classes}>
         <div className="mdc-card mdc-card--outlined ph2">
+          <div className="rn-card__header mdc-typography--caption mdc-theme--text-secondary-on-light">
+            Please note that assets may be part of only one activity.
+          </div>
           <div className="rn-card__body">
             {edit
             ? this.renderEdittableAssets()

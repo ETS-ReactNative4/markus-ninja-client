@@ -1,5 +1,9 @@
 import * as React from 'react'
 import cls from 'classnames'
+import {
+  createFragmentContainer,
+} from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import {Link} from 'react-router-dom'
 import List from 'components/mdc/List'
 import Counter from 'components/Counter'
@@ -67,13 +71,6 @@ class ListActivityPreview extends React.Component {
           </span>
           <span className="mdc-list-item__meta rn-list-preview__actions">
             <span className="rn-list-preview__actions--spread">
-              {activity.viewerCanAdmin && activity.isPublished &&
-              <Icon
-                as="span"
-                className="mdc-theme--secondary rn-list-preview__action rn-list-preview__action--icon"
-                icon="publish"
-                label="Published"
-              />}
               <Link
                 className="mdc-button rn-list-preview__action rn-list-preview__action--button"
                 to={activity.resourcePath}
@@ -128,4 +125,23 @@ class ListActivityPreview extends React.Component {
   }
 }
 
-export default ListActivityPreview
+export default createFragmentContainer(ListActivityPreview, graphql`
+  fragment ListActivityPreview_activity on Activity {
+    advancedAt
+    assets(first: 0) {
+      totalCount
+    }
+    createdAt
+    description
+    descriptionHTML
+    id
+    name
+    number
+    owner {
+      login
+      resourcePath
+    }
+    resourcePath
+    viewerCanAdmin
+  }
+`)

@@ -10,17 +10,25 @@ const mutation = graphql`
     updateActivity(input: $input) {
       id
       description
+      lesson {
+        resourcePath
+        study {
+          nameWithOwner
+        }
+        title
+      }
       name
       updatedAt
     }
   }
 `
 
-export default (activityId, description, name, callback) => {
+export default (activityId, description, lessonId, name, callback) => {
   const variables = {
     input: {
       activityId,
       description,
+      lessonId,
       name,
     },
   }
@@ -36,17 +44,17 @@ export default (activityId, description, name, callback) => {
           activity.setValue(description, 'description')
         }
       },
-      updater: proxyStore => {
-        const updateActivityField = proxyStore.getRootField('updateActivity')
-        const newDescription = updateActivityField.getValue('description')
-        const newName = updateActivityField.getValue('name')
-        const newUpdatedAt = updateActivityField.getValue('updatedAt')
-
-        const activity = proxyStore.get(activityId)
-        activity.setValue(newDescription, 'description')
-        activity.setValue(newName, 'name')
-        activity.setValue(newUpdatedAt, 'updatedAt')
-      },
+      // updater: proxyStore => {
+      //   const updateActivityField = proxyStore.getRootField('updateActivity')
+      //   const newDescription = updateActivityField.getValue('description')
+      //   const newName = updateActivityField.getValue('name')
+      //   const newUpdatedAt = updateActivityField.getValue('updatedAt')
+      //
+      //   const activity = proxyStore.get(activityId)
+      //   activity.setValue(newDescription, 'description')
+      //   activity.setValue(newName, 'name')
+      //   activity.setValue(newUpdatedAt, 'updatedAt')
+      // },
       onCompleted: (response, error) => {
         callback(response.updateActivity, error)
       },

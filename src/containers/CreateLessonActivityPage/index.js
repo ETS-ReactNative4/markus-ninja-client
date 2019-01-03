@@ -14,6 +14,7 @@ const CreateLessonActivityPageQuery = graphql`
     study(owner: $owner, name: $name) {
       lesson(number: $number) {
         ...CreateLessonActivityForm_lesson
+        isPublished
       }
     }
   }
@@ -44,16 +45,22 @@ class CreateLessonActivityPage extends React.Component {
             return (
               <div className={this.classes}>
                 <div className="mdc-layout-grid__inner mw8">
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <div className="mdc-typography--headline4">Create a new activity for this lesson</div>
-                    <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light pb3">
-                      Organize a study's assets into lists of examples for this lesson
-                    </div>
-                  </div>
-                  <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
-                  <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                    <CreateLessonActivityForm lesson={props.study.lesson} />
-                  </div>
+                  {props.study.lesson.isPublished
+                  ? <React.Fragment>
+                      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                        <div className="mdc-typography--headline4">Create a new activity for this lesson</div>
+                        <div className="mdc-typography--subtitle1 mdc-theme--text-secondary-on-light pb3">
+                          Organize a study's assets into lists of examples for this lesson
+                        </div>
+                      </div>
+                      <div className="rn-divider mdc-layout-grid__cell mdc-layout-grid__cell--span-12" />
+                      <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                        <CreateLessonActivityForm lesson={props.study.lesson} />
+                      </div>
+                    </React.Fragment>
+                  : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                      Lessons must be published to have activities.
+                    </div>}
                 </div>
               </div>
             )

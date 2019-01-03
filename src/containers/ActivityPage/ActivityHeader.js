@@ -37,6 +37,7 @@ class ActivityHeader extends React.Component {
     UpdateActivityMutation(
       this.props.activity.id,
       null,
+      null,
       name.value,
       (updatedActivity, errors) => {
         if (errors) {
@@ -48,7 +49,6 @@ class ActivityHeader extends React.Component {
           return
         }
         this.setState({
-          name: get(updatedActivity, "name", ""),
           showSnackbar: true,
           snackbarMessage: "Name updated",
         })

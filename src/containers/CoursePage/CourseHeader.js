@@ -73,7 +73,6 @@ class CourseHeader extends React.Component {
           return
         }
         this.setState({
-          name: get(updatedCourse, "name", ""),
           showSnackbar: true,
           snackbarMessage: "Name updated",
         })

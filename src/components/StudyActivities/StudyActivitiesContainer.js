@@ -130,6 +130,9 @@ const refetchContainer = createRefetchContainer(StudyActivitiesContainer,
         after: {type: "String"},
         filterBy: {type: "ActivityFilters"},
         orderBy: {type: "ActivityOrder"},
+        styleCard: {type: "Boolean!"},
+        styleList: {type: "Boolean!"},
+        styleSelect: {type: "Boolean!"},
       ) {
         activities(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
         @connection(key: "StudyActivitiesContainer_activities", filters: ["filterBy", "orderBy"]) {
@@ -138,7 +141,9 @@ const refetchContainer = createRefetchContainer(StudyActivitiesContainer,
             node {
               id
               ...on Activity {
-                ...ActivityPreview_activity
+                ...CardActivityPreview_activity @include(if: $styleCard)
+                ...ListActivityPreview_activity @include(if: $styleList)
+                ...SelectActivityPreview_activity @include(if: $styleSelect)
               }
             }
           }
@@ -159,6 +164,9 @@ const refetchContainer = createRefetchContainer(StudyActivitiesContainer,
       $after: String,
       $filterBy: ActivityFilters,
       $orderBy: ActivityOrder,
+      $styleCard: Boolean!,
+      $styleList: Boolean!,
+      $styleSelect: Boolean!,
     ) {
       study(owner: $owner, name: $name) {
         ...StudyActivitiesContainer_study @arguments(
@@ -166,6 +174,9 @@ const refetchContainer = createRefetchContainer(StudyActivitiesContainer,
           after: $after,
           filterBy: $filterBy,
           orderBy: $orderBy,
+          styleCard: $styleCard,
+          styleList: $styleList,
+          styleSelect: $styleSelect,
         )
       }
     }

@@ -82,26 +82,32 @@ class LessonActivitiesPage extends React.Component {
     return (
       <div className={this.classes}>
         <div className="mdc-layout-grid__inner mw8">
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <div className="rn-text-field">
-              <div className="rn-text-field__input">
-                {this.renderInput()}
+          {lesson.isPublished
+          ? <React.Fragment>
+              <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                <div className="rn-text-field">
+                  <div className="rn-text-field__input">
+                    {this.renderInput()}
+                  </div>
+                  <div className="rn-text-field__actions">
+                    <CreateLessonActivityLink
+                      className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
+                      lesson={lesson}
+                    >
+                      New activity
+                    </CreateLessonActivityLink>
+                  </div>
+                </div>
               </div>
-              <div className="rn-text-field__actions">
-                <CreateLessonActivityLink
-                  className="mdc-button mdc-button--unelevated rn-text-field__action rn-text-field__action--button"
-                  lesson={lesson}
-                >
-                  New activity
-                </CreateLessonActivityLink>
+              <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                <LessonActivities filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
+                  <LessonActivitiesPageActivities />
+                </LessonActivities>
               </div>
-            </div>
-          </div>
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-            <LessonActivities filterBy={this._filterBy} orderBy={this._orderBy}>
-              <LessonActivitiesPageActivities />
-            </LessonActivities>
-          </div>
+            </React.Fragment>
+          : <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              Lessons must be published to have activities.
+            </div>}
         </div>
       </div>
     )
@@ -131,6 +137,7 @@ class LessonActivitiesPage extends React.Component {
 export default createFragmentContainer(LessonActivitiesPage, graphql`
   fragment LessonActivitiesPage_lesson on Lesson {
     ...CreateLessonActivityLink_lesson
+    isPublished
     resourcePath
   }
 `)

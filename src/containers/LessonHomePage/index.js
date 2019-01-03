@@ -110,7 +110,15 @@ class LessonHomePage extends React.Component {
               </React.Fragment>
             )
           }
-          return <div>Loading</div>
+          return (
+            <div className="mdc-layout-grid">
+              <div className="mdc-layout-grid__inner mw8">
+                <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                  Loading
+                </div>
+              </div>
+            </div>
+          )
         }}
       />
     )

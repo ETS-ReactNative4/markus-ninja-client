@@ -98,7 +98,7 @@ class StudyActivitiesPage extends React.Component {
           </div>
         </div>
         <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          <StudyActivities filterBy={this._filterBy} orderBy={this._orderBy}>
+          <StudyActivities filterBy={this._filterBy} orderBy={this._orderBy} fragment="list">
             <StudyActivitiesPageActivities study={study} />
           </StudyActivities>
         </div>

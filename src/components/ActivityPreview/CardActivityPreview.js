@@ -1,5 +1,9 @@
 import * as React from 'react'
 import cls from 'classnames'
+import {
+  createFragmentContainer,
+} from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import { Link } from 'react-router-dom'
 import List from 'components/mdc/List'
 import Counter from 'components/Counter'
@@ -113,4 +117,23 @@ class CardActivityPreview extends React.Component {
   }
 }
 
-export default CardActivityPreview
+export default createFragmentContainer(CardActivityPreview, graphql`
+  fragment CardActivityPreview_activity on Activity {
+    advancedAt
+    assets(first: 0) {
+      totalCount
+    }
+    createdAt
+    description
+    descriptionHTML
+    id
+    name
+    number
+    owner {
+      login
+      resourcePath
+    }
+    resourcePath
+    viewerCanAdmin
+  }
+`)

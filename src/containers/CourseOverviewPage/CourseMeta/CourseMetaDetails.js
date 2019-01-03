@@ -29,19 +29,6 @@ class CourseMetaDetails extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const newDescription = get(this.props, "course.description", "")
-    if (newDescription !== this.state.description.initialValue) {
-      this.setState({
-        description: {
-          ...this.state.description,
-          initialValue: newDescription,
-          value: newDescription,
-        }
-      })
-    }
-  }
-
   handleCancel = () => {
     this.setState({open: false})
     this.props.onClose()

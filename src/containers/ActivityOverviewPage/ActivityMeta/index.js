@@ -10,23 +10,26 @@ import ActivityMetaLesson from './ActivityMetaLesson'
 class ActivityMeta extends React.Component {
   state = {
     detailsOpen: false,
+    lessonOpen: false,
   }
 
   render() {
-    const {detailsOpen} = this.state
+    const {detailsOpen, lessonOpen} = this.state
     const activity = get(this.props, "activity", null)
     return (
       <React.Fragment>
+        {!lessonOpen &&
         <ActivityMetaDetails
           onOpen={() => this.setState({ detailsOpen: true})}
           onClose={() => this.setState({ detailsOpen: false})}
           activity={activity}
-        />
+        />}
         {!detailsOpen &&
-        <ActivityMetaLesson activity={activity} />}
-        <p className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-          Please note that assets may be part of only <strong>one</strong> activity.
-        </p>
+        <ActivityMetaLesson
+          onOpen={() => this.setState({ lessonOpen: true})}
+          onClose={() => this.setState({ lessonOpen: false})}
+          activity={activity}
+        />}
       </React.Fragment>
     )
   }

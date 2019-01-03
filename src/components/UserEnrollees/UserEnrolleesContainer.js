@@ -134,7 +134,7 @@ const refetchContainer = createRefetchContainer(UserEnrolleesContainer,
             node {
               id
               ...on User {
-                ...UserPreview_user
+                ...ListUserPreview_user
               }
             }
           }

@@ -176,10 +176,14 @@ const refetchContainer = createRefetchContainer(SearchContainer,
             node {
               id
               ...on Activity {
-                ...ActivityPreview_activity
+                ...CardActivityPreview_activity @include(if: $styleCard)
+                ...ListActivityPreview_activity @include(if: $styleList)
+                ...SelectActivityPreview_activity @include(if: $styleSelect)
               }
               ...on Course {
-                ...CoursePreview_course
+                ...CardCoursePreview_course @include(if: $styleCard)
+                ...ListCoursePreview_course @include(if: $styleList)
+                ...SelectCoursePreview_course @include(if: $styleSelect)
               }
               ...on Label {
                 ...ListLabelPreview_label
@@ -195,10 +199,11 @@ const refetchContainer = createRefetchContainer(SearchContainer,
                 ...SelectStudyPreview_study @include(if: $styleSelect)
               }
               ...on Topic {
-                ...TopicPreview_topic
+                ...CardTopicPreview_topic @include(if: $styleCard)
+                ...ListTopicPreview_topic @include(if: $styleList)
               }
               ...on User {
-                ...UserPreview_user
+                ...ListUserPreview_user @include(if: $styleList)
               }
               ...on UserAsset {
                 ...ListUserAssetPreview_asset @include(if: $styleList)

@@ -79,7 +79,7 @@ export default createPaginationContainer(StudyAppleGivers,
           edges {
             node {
               id
-              ...UserPreview_user
+              ...ListUserPreview_user
             }
           }
           pageInfo {

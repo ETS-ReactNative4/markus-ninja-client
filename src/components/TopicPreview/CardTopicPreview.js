@@ -1,5 +1,9 @@
 import * as React from 'react'
 import cls from 'classnames'
+import {
+  createFragmentContainer,
+} from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import { Link } from 'react-router-dom'
 import List from 'components/mdc/List'
 import Counter from 'components/Counter'
@@ -125,4 +129,15 @@ class CardTopicPreview extends React.Component {
   }
 }
 
-export default CardTopicPreview
+export default createFragmentContainer(CardTopicPreview, graphql`
+  fragment CardTopicPreview_topic on Topic {
+    createdAt
+    description
+    name
+    resourcePath
+    topicables(first: 0, type: COURSE) {
+      courseCount
+      studyCount
+    }
+  }
+`)

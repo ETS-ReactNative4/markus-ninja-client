@@ -1,5 +1,9 @@
 import * as React from 'react'
 import cls from 'classnames'
+import {
+  createFragmentContainer,
+} from 'react-relay'
+import graphql from 'babel-plugin-relay/macro'
 import { Link } from 'react-router-dom'
 import List from 'components/mdc/List'
 import AppleIconButton from 'components/AppleIconButton'
@@ -122,4 +126,23 @@ class CardCoursePreview extends React.Component {
   }
 }
 
-export default CardCoursePreview
+export default createFragmentContainer(CardCoursePreview, graphql`
+  fragment CardCoursePreview_course on Course {
+    createdAt
+    description
+    id
+    lessons(first: 0) {
+      totalCount
+    }
+    name
+    number
+    owner {
+      login
+      resourcePath
+    }
+    resourcePath
+    viewerCanAdmin
+    viewerCanApple
+    viewerHasAppled
+  }
+`)

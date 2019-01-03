@@ -29,19 +29,6 @@ class ActivityMetaDetails extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const newDescription = get(this.props, "activity.description", "")
-    if (newDescription !== this.state.description.initialValue) {
-      this.setState({
-        description: {
-          ...this.state.description,
-          initialValue: newDescription,
-          value: newDescription,
-        }
-      })
-    }
-  }
-
   handleCancel = () => {
     this.setState({open: false})
     this.props.onClose()
@@ -63,6 +50,7 @@ class ActivityMetaDetails extends React.Component {
     UpdateActivityMutation(
       this.props.activity.id,
       description.value,
+      null,
       null,
       (updateActivity, errors) => {
         this.setState({loading: false})

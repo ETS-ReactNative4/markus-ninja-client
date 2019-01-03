@@ -136,7 +136,6 @@ class CardStudyPreview extends React.Component {
 
 export default createFragmentContainer(CardStudyPreview, graphql`
   fragment CardStudyPreview_study on Study {
-    advancedAt
     createdAt
     enrollmentStatus
     id

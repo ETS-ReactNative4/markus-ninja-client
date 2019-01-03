@@ -86,7 +86,7 @@ export default createPaginationContainer(UserTutors,
           edges {
             node {
               id
-              ...UserPreview_user
+              ...ListUserPreview_user
             }
           }
           pageInfo {

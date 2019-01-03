@@ -18,6 +18,9 @@ const StudyCoursesQuery = graphql`
     $count: Int!,
     $filterBy: CourseFilters,
     $orderBy: CourseOrder,
+    $styleCard: Boolean!,
+    $styleList: Boolean!,
+    $styleSelect: Boolean!,
   ) {
     study(owner: $owner, name: $name) {
       ...StudyCoursesContainer_study @arguments(
@@ -25,6 +28,9 @@ const StudyCoursesQuery = graphql`
         count: $count,
         filterBy: $filterBy,
         orderBy: $orderBy,
+        styleCard: $styleCard,
+        styleList: $styleList,
+        styleSelect: $styleSelect,
       )
     }
   }
@@ -44,7 +50,7 @@ class StudyCourses extends React.Component {
 
   render() {
     const {orderBy, filterBy} = this.state
-    const {count, match} = this.props
+    const {count, fragment, match} = this.props
 
     return (
       <QueryRenderer
@@ -56,6 +62,9 @@ class StudyCourses extends React.Component {
           count,
           filterBy,
           orderBy,
+          styleCard: fragment === "card",
+          styleList: fragment === "list",
+          styleSelect: fragment === "select",
         }}
         render={({error,  props}) => {
           if (error) {
@@ -91,6 +100,7 @@ StudyCourses.propTypes = {
     topics: PropTypes.arrayOf(PropTypes.string),
     search: PropTypes.string,
   }),
+  fragment: PropTypes.oneOf(["card", "list", "select"]).isRequired,
 }
 
 StudyCourses.defaultProps = {

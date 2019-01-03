@@ -133,6 +133,9 @@ const refetchContainer = createRefetchContainer(StudyCoursesContainer,
         after: {type: "String"},
         filterBy: {type: "CourseFilters"},
         orderBy: {type: "CourseOrder"},
+        styleCard: {type: "Boolean!"},
+        styleList: {type: "Boolean!"},
+        styleSelect: {type: "Boolean!"},
       ) {
         courses(first: $count, after: $after, filterBy: $filterBy, orderBy: $orderBy)
         @connection(key: "StudyCoursesContainer_courses", filters: ["filterBy", "orderBy"]) {
@@ -141,7 +144,9 @@ const refetchContainer = createRefetchContainer(StudyCoursesContainer,
             node {
               id
               ...on Course {
-                ...CoursePreview_course
+                ...CardCoursePreview_course @include(if: $styleCard)
+                ...ListCoursePreview_course @include(if: $styleList)
+                ...SelectCoursePreview_course @include(if: $styleSelect)
               }
             }
           }
@@ -162,6 +167,9 @@ const refetchContainer = createRefetchContainer(StudyCoursesContainer,
       $after: String,
       $filterBy: CourseFilters,
       $orderBy: CourseOrder,
+      $styleCard: Boolean!,
+      $styleList: Boolean!,
+      $styleSelect: Boolean!,
     ) {
       study(owner: $owner, name: $name) {
         ...StudyCoursesContainer_study @arguments(
@@ -169,6 +177,9 @@ const refetchContainer = createRefetchContainer(StudyCoursesContainer,
           after: $after,
           filterBy: $filterBy,
           orderBy: $orderBy,
+          styleCard: $styleCard,
+          styleList: $styleList,
+          styleSelect: $styleSelect,
         )
       }
     }
